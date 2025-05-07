@@ -1,0 +1,47 @@
+
+.titlePaciente {
+    margin-top: -460px;
+    margin-left: 620px;
+    font-size:34px;
+}
+
+h1 {
+    color: #333;
+}
+
+/* Estilos da tabela */
+table {
+    
+    width: 60%;
+    margin-top: 20px;
+    margin-left: 350px;
+    border-collapse: collapse; /* Remove espaçamento entre as bordas */
+}
+
+thead {
+    background: #808080;
+}
+
+/* Adiciona bordas nas células */
+th, td {
+    border: 1px solid #f9f9f9; /* Linha cinza clara */
+    padding: 12px; /* Espaçamento interno */
+    text-align: center;
+}
+/* Estilo do cabeçalho */
+th {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    font-weight: bold;
+}
+
+/* Linhas alternadas com cores diferentes */
+tr:nth-child(even) {
+}
+
+/* Efeito hover */
+tr:hover {
+    background-color: #000000; /* Cinza mais escuro */
+}
+
+

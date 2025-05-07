@@ -1,0 +1,361 @@
+﻿
+body {
+    align-items: center;
+    font-size: inherit;
+    margin-top: 0px;
+    padding: 0px;
+    height: auto;
+    overflow:auto;
+    font-size: 18px;
+    color: white;
+    background-size: 200% 100%;
+    animation: gradientAnimation2 5s infinite alternate;
+    /* Barra de menu com gradiente animado */
+    background: linear-gradient(90deg, #6d83c8, #ccc, #6d83c8);
+    
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0px;
+}
+
+html {
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    box-sizing: border-box;
+    background-color: rgba(176, 171, 171, 0.9);
+    overflow: auto;
+    font-family: 'Times New Roman', Times, serif;
+    height: 100vh;
+    
+}
+
+.h1Basic {
+    
+    text-align: center;
+    font-size: 60px;
+    color: #000000;
+    text-shadow: 0 0 1px #fff, 0 0 2px #954ebf, 0 0 4px #fff;
+}
+h3{
+    text-align:center;
+    align-items:center;
+    margin-top:10px;
+    font-size:40px;
+   }
+p{
+    margin-left:10px;
+    font-size:18px;
+    align-items:center;
+    
+
+    
+}
+.sobre {
+    background: linear-gradient(to right, #007BFF, #00C6FF); /* Degradê bonito */
+    color: #000000; /* Texto branco para contraste */
+    padding: 60px 20px;
+    text-align: center;
+}
+
+    .sobre .containerSobre{
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .sobre h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .sobre p {
+        font-size: 20px;
+        line-height: 1.6;
+        opacity: 0.9;
+    }
+
+    .containerBasic {
+    gap: 10px;
+    box-shadow: 20px;
+    display: grid;
+    flex-wrap: wrap;
+    color: #fff;
+    padding: 10px;
+    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.box1, .box2, .box3 {
+    display:flow;   
+    height: 65vh;
+    width: 45vh;
+    border-radius: 20px;
+    background-color: #264d9f;
+    margin-left: 120px;
+    box-shadow: 8px 8px 15px rgba(0.4, 0.2, 0.3, 0.4);
+   
+}
+
+
+.navBar {
+    /* Barra de menu com gradiente animado */
+    background: linear-gradient(90deg, #5b73e6, #2e2c2c, #0e469f);
+    animation: gradientAnimation 5s infinite alternate; /* Anima��o cont�nua */
+    color: #255cb4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 3vw;
+    width: 98vw;
+    margin-left: 0;
+    margin-right: 0;
+    background-size: 200% 100%; /* Faz o gradiente se mover ao longo do eixo horizontal */
+}
+main {
+    flex: 1; /* Faz o conteúdo principal crescer e empurrar o footer para baixo */
+}
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 0px;
+    position: fixed; /* Fixa no final da página */
+    bottom: 0;
+    width: 100%;
+}
+
+@keyframes gradientAnimation2 {
+
+    0% {
+        background-position: 0% 50%; /* Gradiente come�a do lado esquerdo */
+        background-color:azure/* Cor inicial */
+    }
+
+    50% {
+        background-position: 100% 50%; /* Gradiente se move para a direita */
+        background-color:white; /* Mudan�a de cor no meio da anima��o */
+    }
+
+    100% {
+        background-position: 0% 50%; /* Gradiente retorna para a esquerda */
+        background-color: #fff; /* Cor final */
+    }
+}
+@keyframes gradientAnimation {
+
+    0% {
+        background-position: 0% 50%; /* Gradiente come�a do lado esquerdo */
+        background-color: #0e469f; /* Cor inicial */
+    }
+
+    50% {
+        background-position: 100% 50%; /* Gradiente se move para a direita */
+        background-color: #fff; /* Mudan�a de cor no meio da anima��o */
+    }
+
+    100% {
+        background-position: 0% 50%; /* Gradiente retorna para a esquerda */
+        background-color:rgba(176, 171, 171, 0.9); /* Cor final */
+    }
+}
+
+
+
+.navBarLinkDekstop {
+    list-style: none;
+    margin: 0;
+    margin-right:20px;
+    padding: 0;
+    display: flex;
+    font-size: 24px; /*tamanho letra menu*/
+}
+
+    .navBarLinkDekstop li {
+        color: #fff;
+        padding: 0 15px;
+    }
+
+    .navBarLinkDekstop a,
+    .navBarMobile a {
+        color: #fff; /*cor ddas letras inicio*/
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .navBarLinkDekstop a:hover {
+            color: #954ebf;
+        }
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 0;
+    width: 30%;
+    height: 60%;
+    background: rgba(176, 171, 171, 0.9);
+    flex-direction: column;
+    align-items: center;
+    font-size: 2rem;
+    z-index: 5;
+}
+
+.navBarLinkMobile {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+    width: 80%;
+    list-style: none;
+    padding: 0;
+}
+
+.navBarLinkMobile {
+    border-bottom: 1px solid rgba(114, 44, 134, 0.9);
+    padding-bottom: 1.2rem;
+}
+
+.Hamburger,
+.close {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+}
+
+.close {
+    margin-top: 20px;
+    margin-right: 20px;
+    display: block;
+    align-self: end;
+}
+
+.flex {
+    display: flex;
+}
+
+.logo {
+    font-size: 50px;
+    color: rgba(176, 171, 171, 0.9); /* Melhor prática: usar 'rgba' para opacidade */
+    -webkit-text-stroke: 1px rgba(114, 44, 134, 0.9);
+    font-family: 'Times New Roman';
+    display: flex; /* Define o contêiner como flexível */
+    align-items: center; /* Alinha os itens no centro verticalmente */
+    white-space: nowrap; /* Impede quebra de linha no texto */
+}
+
+.logo-img {
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+    max-width: 5rem; /* Define a largura máxima da imagem */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-left: 20px; /* Ajusta o deslocamento */
+    display: block; /* Corrige o uso de 'flex' na imagem */
+}
+
+
+
+.navBarLinkDekstop {
+    display: flex;
+}
+
+.Hamburger {
+    display: none;
+}
+
+
+
+/*kkkkkkk*/
+@media (max-width: 768px) {
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0px;
+    }
+
+    .logo-img {
+        margin-right: 10px; /* Espaço entre a imagem e o texto */
+        max-width: 5rem; /* Define a largura máxima da imagem */
+        height: auto; /* Mantém a proporção da imagem */
+        margin-left: 20px; /* Ajusta o deslocamento */
+        display: block; /* Corrige o uso de 'flex' na imagem */
+    }
+
+
+    .body {
+        align-items: center;
+        font-size: inherit;
+        margin-top: 0px;
+        padding: 0;
+        height: 100vw;
+        font-size: 18px;
+        color: white;
+        background-image: url("fundo1.png");
+        background-size: contain;
+        overflow: hidden;
+        background-position: center;
+    }
+
+    .html {
+        margin-top: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        box-sizing: border-box;
+        background-color: #000000;
+        overflow: hidden;
+        font-family: 'Times New Roman', Times, serif;
+        height: 100vw;
+    }
+
+
+    .navBarLinkDekstop {
+        display: none;
+    }
+
+    .Hamburger {
+        display: flex;
+    }
+
+    .navBarLinkMobile {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 2.2rem;
+        width: 70%;
+        list-style: none;
+        padding: 0;
+    }
+
+    .mobile-menu { /*menu hambuger*/
+
+        top: 50px;
+        right: 0;
+        width: 40%;
+        height: 75%;
+        background: radial-gradient( #fff);
+        flex-direction: column;
+        align-items: center;
+        font-size: 2rem;
+        z-index: 5;
+    }
+}
+
+.erro { /*toda vez que houver erro ao digitar nas caixas esse � o estilo*/
+
+    color: #fff;
+    background: #de2a2a;
+    padding: 0px;
+    margin: 0px 0;
+    border-radius: 3px;
+    display: none; /*significa que o elemente html existe, mas est� invisivel*/
+    text-align: center;
+}
+

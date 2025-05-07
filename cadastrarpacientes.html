@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Cadastrar Paciente</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, inicial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="cadastropacientes.css">
+    <link rel="stylesheet" href="cadastrarpaciente.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="geralpsi.js" defer></script>
+</head>
+  <body>
+    <nav class="navBar">
+
+        <div class="logo">
+            <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+
+        </div>
+
+        <ul class="navBarLinkDekstop">
+
+            <li><a href="home.html">Home</a></li>
+            <li><a href="login.html">Sair</a></li>
+
+        </ul>
+
+        <div class="mobile-menu" id="MobileMenu">
+
+            <button class="close" id="closeButton">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <ul class="navBarLinkMobile">
+
+                <li><a href="home.html">Home</a></li>
+                <li><a href="login.html">Sair</a></li>
+
+            </ul>
+        </div>
+
+        <button class="Hamburger" id="HamburgerButton">
+            <i class="fas fa-bars"></i>
+        </button>
+
+    </nav>
+    <nav class="navInter">
+        <div>
+
+            <div class="boxFixo">
+                <ul class="menuFixado">
+
+                    <li><a href="paginaprincipal.html">Home</a></li>
+                    <li><a href="paciente.html">Pacientes</a></li>
+                    <li><a href="cadastrarpacientes.html">Cadastrar</a></li>
+                    <li><a href="tarefas.html">Tarefas</a></li>
+                    <li><a href="agenda.html">Agenda</a></li>
+                    <li><a href="login.html">Sair</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    
+    <!--Cadastro-->
+    <header>
+
+        <div>
+
+            <div class="containerPsi">
+
+
+                <div class="boxPsi">
+
+                    <h1 class="cadas1">Cadastrar Paciente</h1>
+
+                    <form class="formPsi">
+
+                        <div class="row">
+
+                            <div class="left">
+
+                                <label for="name">Nome ( Paciente)</label>
+                                <input tape="text" class="input-field" id="nome">
+
+                            </div>
+                            <div>
+                                <label for="sobrenome">Sobrenome</label>
+                                <input tape="text" class=" input-field" id="sobrenome" />
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="left">
+                                <label for="dataNasc">Data de Nascimento</label>
+                                <input type="date" class="input-field" id="dataNasc" />
+                            </div>
+
+                            <div>
+                                <label for="genero">Gênero</label>
+
+                                <select class="input-field" id="genero">
+                                    <option>Homem Cis</option>
+                                    <option>Mulher Cis</option>
+                                    <option>Não binário</option>
+                                    <option>Homem Transgenero</option>
+                                    <option>Mulher Transgenero</option>
+                                    <option>Não identificado</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="left">
+
+                                <label for="email">E-mail</label>
+                                <input tape="email" class="input-field" id=" email" />
+                            </div>
+
+                            <div>
+                                <label for="telefone">Telefone</label>
+                                <input type="tel" class="input-field" id="telefone" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="left">
+                                <label for="endereco">Endereço</label>
+                                <input type="text" class="input-field" id="endereco" />
+                            </div>
+
+                            <div>
+                                <label for="numero">Nº</label>
+                                <input type="number" class="input-field" id="numero" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="left">
+                                <label for="estado">Uf</label>
+                                <input type="text" class="input-field" id="estado" />
+                            </div>
+                            <div>
+                                <label for="cidade">Cidade</label>
+                                <input type="text" class="input-field" id="cidade" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="left">
+                                <label for="cep">Cep</label>
+                                <input type="number" class="input-field" id="cep" />
+                            </div>
+                            <div>
+                                <label for="complemento">Complemento</label>
+                                <input type="text" class="input-field" id="complemento" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="left">
+
+                                <label for="DataInicio">Inicio dos Atendimentos</label>
+                                <input type="date" class="input-field" id="DataInicio" />
+                            </div>
+
+                            <div>
+                                <label for="formPag">Forma de Pagamento</label>
+
+                                <select class="input-field" id="formPag">
+                                    <option>Pix</option>
+                                    <option>Dinheiro</option>
+                                    <option>Cartão de Crédito</option>
+                                    <option>Cartão de Débito</option>
+                                    <option>Transferência Bancária</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="left">
+                                <label for="Queixa">Queixa Inicial</label>
+                                <input type="text" class="input-field" id="Queixa" />
+                            </div>
+
+                            <div>
+                                <label for="qtdSessoes">Qt de Sessões</label>
+                                <input type="number" class=" input-field" id="qtdSessoes" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="left">
+
+                                <label for="id">Id</label>
+                                <input type="password" id="senha" />
+
+                            </div>
+                            <div>
+                                <label for="senha">Confirme a Senha</label>
+                                <input type="password" id="senha" />
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                    <button class="Cadastro" id="cadastro">Cadastrar</button>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </header>
+  </body>
+</html>
+

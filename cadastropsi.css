@@ -1,0 +1,340 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    border: 0px;
+}
+
+body {
+    align-items: center;
+    font-size: inherit;
+    margin: 0;
+    margin-top: 0px;
+    padding: 0;
+    height: 130vh;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: white;
+    overflow-y: auto;
+    
+}
+
+
+html {
+    margin: 0;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    box-sizing: border-box;
+    background-color: #000000;
+    overflow-x: auto;
+    font-family: 'Times New Roman', Times, serif
+}
+
+
+button {
+    background-color: #255cb4;
+    color: #fff;
+    display:flex;
+    cursor: pointer;
+    border: none;
+    min-height: 4px;
+    min-width: 0px;
+    padding: 0;
+    border-radius: 1px;
+    text-align: center;
+    align-items:center;
+    font-size: 12px;
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+.Cadastro{
+    align-items:center;
+
+}
+.a {
+    color: #129a15;
+    text-decoration: none;
+    margin: 5px;
+    margin-top: 5px;
+    white-space: nowrap;
+}
+
+p {
+    margin: 1px 2px;
+    text-align: center;
+    color: #2b2b69;
+    margin-top: 15px;
+    white-space: nowrap;
+}
+
+
+
+.formPsi {
+    display:flex;
+    align-items: center;
+    gap: 1px;
+    flex-direction: column;
+    margin-top:0;
+}
+
+formPsi input[type=text],
+formPsi input[type=password],
+formPsi input[type=number],
+formPsi input[type=email] {
+    flex: 1 1 45%; /* Ocupa 45% da largura da tela */
+    flex-wrap: nowrap; /* Permite que os elementos se ajustem em várias linhas */
+    display:flex;
+    align-items:center;
+}
+
+    .formPsi input {
+        box-shadow: 0 0px 2px rgb(255, 252, 252);
+        border: 1px solid;
+    }
+.row {
+    margin: 3px 0px;
+    display: flex;
+    align-items:center;
+}
+
+.left {
+    margin-right: 40px;
+}
+.input-field {
+    width: 40vh;
+}
+
+
+.containerPsi {
+    display:flex;/* Ativa o Flexbox no contêiner */
+    justify-content: center; /* Centraliza o botão na horizontal */
+    align-items: center; /* Centraliza o botão na vertical */
+    height:70%;/* Define a altura da "caixa" */
+
+
+}
+h1 {
+    text-align: center;
+    color: #000000;
+    font-size: 5rem;
+    
+}
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 2px;
+    position: fixed; /* Fixa no final da página */
+    bottom: 0;
+    width: 100%;
+}
+
+.containerPsi h1 {
+    color: #954ebf;
+    margin-top: 0px;
+    font-size: 5rem;
+    text-align: center;
+    width: 0px;
+    display: flex;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+    .containerPsi button {
+        
+        background: linear-gradient( #255cb4, #2b2b69);
+        color: #fff;
+        font-size: 1rem;
+        padding: 1rem 3rem;
+        transition: 0.4s;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 0px;
+        margin-top:10px;
+       margin-left:160px;
+    }
+        .containerPsi button:hover {
+            background-color: #129a15;
+            color: #129a15;
+        }
+
+.boxPsi {
+    background: radial-gradient(cicle,#c27dd9,#6ea5cf);
+    border-radius: 30px;
+    margin: 50px;
+    box-shadow: 0 5px 30px rgb(255, 252, 252);
+    padding: 5vh;
+    margin: auto;
+    width: 80vh;
+    height: 80vh;
+    margin-top: 0;
+    margin-left: 70px;
+    margin-right: 70px;
+    
+}
+/*atenção*/
+@media (max-width: 768px) {
+    body {
+        align-items: center;
+        font-size: inherit;
+        margin: 0;
+        margin-top: 0px;
+        padding: 0;
+        height: 100vh;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: white;
+        overflow-y: auto;
+    }
+
+
+    html {
+        margin: 0;
+        margin-top: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 10vh;
+        box-sizing: border-box;
+        background-color: #000000;
+        overflow-x: auto;
+        font-family: 'Times New Roman', Times, serif
+    }
+
+
+    button {
+        background-color: #255cb4;
+        color: #fff;
+        display: flex;
+        cursor: pointer;
+        border: none;
+        min-height: 4px;
+        min-width: 0px;
+        padding: 0;
+        border-radius: 1px;
+        text-align: center;
+        align-items: center;
+        font-size: 12px;
+        box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    }
+
+    .a {
+        color: #129a15;
+        text-decoration: none;
+        margin: 5px;
+        margin-top: 10px;
+        white-space: nowrap;
+    }
+
+    p {
+        margin: 5px 0;
+        text-align: center;
+        color: #2b2b69;
+        margin-top: 20px;
+        white-space: nowrap;
+    }
+
+
+
+    .formPsi {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        flex-direction: column;
+        
+    }
+
+    formPsi input[type=text],
+    formPsi input[type=password],
+    formPsi input[type=number],
+    formPsi input[type=email] {
+        flex: 1 1 45%; /* Ocupa 45% da largura da tela */
+        flex-wrap: nowrap; /* Permite que os elementos se ajustem em várias linhas */
+        display: flex;
+    }
+
+    .formPsi input {
+        box-shadow: 0 0px 2px rgb(255, 252, 252);
+        border: 1px solid;
+    }
+
+    .row {
+        margin: 3px 0px;
+        display: flex;
+    }
+
+    .left {
+        margin-right: 40px;
+    }
+
+    .input-field {
+        width: 30vh;
+    }
+
+
+    .containerPsi {
+        display: flex; /* Ativa o Flexbox no contêiner */
+        justify-content: center; /* Centraliza o botão na horizontal */
+        align-items: center; /* Centraliza o botão na vertical */
+        height: 50%; /* Define a altura da "caixa" */
+    }
+
+    h1 {
+        text-align: center;
+        color: #954ebf;
+        font-size: 5rem;
+    }
+
+    .containerPsi h1 {
+        color: #954ebf;
+        margin-top: 1px;
+        font-size: 5rem;
+        text-align: center;
+        width: 0px;
+        display: flex;
+        white-space: nowrap;
+        overflow-x: auto;
+    }
+
+    .containerPsi button {
+        border: 1px solid;
+        background: linear-gradient( #954ebf, #2e2c2c);
+        color: #fff;
+        font-size: 1rem;
+        padding: 1rem 3rem;
+        transition: 0.4s;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 0px;
+        margin-top: 10px;
+        margin-left: 170px;
+    }
+
+        .containerPsi button:hover {
+            background-color: #255cb4;
+            color: #4d8de5;
+        }
+
+    .boxPsi {
+        background: radial-gradient(cicle,#c27dd9,#6ea5cf);
+        border-radius: 30px;
+        margin: 50px;
+        box-shadow: 0 5px 30px rgb(255, 252, 252);
+        padding: 10vh;
+        margin: 0;
+        width: 50vh;
+        height: 54vh;
+        margin-top: 0px;
+        margin-left: 70px;
+        margin-right: 70px;
+    }
+}  
+.erro { /*toda vez que houver erro ao digitar nas caixas esse � o estilo*/
+
+        color: #fff;
+        background: #de2a2a;
+        padding: 5px;
+        margin: 25px 0;
+        border-radius: 3px;
+        display: none;
+        text-align: center;
+}
+

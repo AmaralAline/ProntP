@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Pront Psi</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, inicial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cadastropsi.css">
+    <link rel="stylesheet" href="paginainicial.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="geralpsi.js" defer></script>
+</head>
+<body>
+   <header>
+    <nav class="navBar">
+
+        <div class="logo">
+            <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+
+        </div>
+
+        <ul class="navBarLinkDekstop">
+
+            <li><a href="paginainicial.html">Home</a></li>
+            <li><a href="sobre.html">Sobre</a>  </li>
+            <li><a href="cadastropsi.html">Cadastro</a></li>
+            <li><a href="login.html">Login</a></li>
+
+        </ul>
+
+        <div class="mobile-menu" id="MobileMenu">
+            <button class="close" id="closeButton">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul class="navBarLinkMobile">
+
+                <li><a href="paginainicial.html">Home</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="cadastropsi.html">Cadastro</a></li>
+                <li><a href="login.html">Login</a></li>
+
+            </ul>
+        </div>
+
+        <button class="Hamburger" id="HamburgerButton">
+            <i class="fas fa-bars"></i>
+        </button>
+
+
+    </nav>
+   </header>
+
+    <!--Cadastro-->
+    
+        <div>
+            <h1>Cadastre-se</h1>
+            <div class="containerPsi">
+
+
+                <div class="boxPsi">
+
+
+                    <form class="formPsi">
+
+                        <div class="row">
+
+                            <div class="left">
+
+                                <label for="name">Nome</label>
+                                <input tape="text" class="input-field" id="nome">
+
+                            </div>
+                            <div>
+                                <label for="sobrenome">Sobrenome</label>
+                                <input tape="text" class=" input-field" id="sobrenome" />
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="left">
+                                <label for="dataNasc">Data de Nascimento</label>
+                                <input type="date" class="input-field" id="dataNasc" />
+                            </div>
+                            <div>
+                                <label for="genero">Gênero</label>
+
+                                <select class="input-field" id="genero">
+                                    <option>Homem Cis</option>
+                                    <option>Mulher Cis</option>
+                                    <option>Não binário</option>
+                                    <option>Homem Transgenero</option>
+                                    <option>Mulher Transgenero</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="left">
+
+                                <label for="email">E-mail</label>
+                                <input tape="email" class="input-field" id=" email" />
+                            </div>
+
+                            <div>
+                                <label for="telefone">Telefone</label>
+                                <input type="tel" class="input-field" id="telefone" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="left">
+                                <label for="endereco">Endereço</label>
+                                <input type="text" class="input-field" id="endereco" />
+                            </div>
+                            <div>
+                                <label for="numero">Nº</label>
+                                <input type="number" class="input-field" id="numero" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="left">
+                                <label for="estado">Uf</label>
+                                <input type="text" class="input-field" id="estado" />
+                            </div>
+                            <div>
+                                <label for="cidade">Cidade</label>
+                                <input type="text" class="input-field" id="cidade" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="left">
+                                <label for="cep">Cep</label>
+                                <input type="number" class="input-field" id="cep" />
+                            </div>
+                            <div>
+                                <label for="complemento">Complemento</label>
+                                <input type="text" class="input-field" id="complemento" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="left">
+
+                                <label for="anoFormacao">Ano de Formação</label>
+                                <input type="date" class="input-field" id="anoFormacao" />
+                            </div>
+
+                            <div>
+                                <label for="faculdade">Faculdade</label>
+                                <input type="text" class="input-field" id="faculdade" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="left">
+                                <label for="crp">Registo do Conselho</label>
+                                <input type="number" class="input-field" id="crp" />
+                            </div>
+
+                            <div>
+                                <label for="PosGraduacao">Especializações</label>
+                                <input type="text" class=" input-field" id="PosGraduacao" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="left">
+
+                                <label for="senha">Crie uma Senha</label>
+                                <input type="password" id="senha" />
+
+                            </div>
+                            <div>
+                                <label for="senha">Confirme a Senha</label>
+                                <input type="password" id="senha" />
+                            </div>
+
+                        </div>
+
+
+                    </form>
+
+                    <button class="Cadastro" id="cadastro">Cadastrar</button>
+
+                    <div>
+                        <p> Já possui conta? <a href="login.html"> Faça Login </a></p>
+                        <p> Dúvidas sobre se cadastrar? <a href="sobre.html">Leia mais</a></p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    
+    <footer>
+        <p>&copy; 2025 ProntPsi. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
