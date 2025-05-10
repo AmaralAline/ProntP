@@ -63,11 +63,12 @@ p{
 }
 
     .sobre .containerSobre{
-        max-width: 800px;
-        margin: auto;
+       
+       margin-top:10px;
     }
 
     .sobre h2 {
+
         font-size: 32px;
         margin-bottom: 20px;
         text-transform: uppercase;
@@ -98,7 +99,7 @@ p{
     border-radius: 20px;
     background-color: #264d9f;
     margin-left: 120px;
-    box-shadow: 8px 8px 15px rgba(0.4, 0.2, 0.3, 0.4);
+    box-shadow: 4px 4px 15px rgba(0.4, 0.2, 0.3, 0.4);
    
 }
 

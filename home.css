@@ -1,15 +1,234 @@
 ﻿
-.circleOne, .circleThree {
-    border-radius: 5%; /* Torna o botão circular */
-    border: none;
-    background: linear-gradient( #954ebf, #2e2c2c); /* Cor do botão */
-    color: white;
-    font-size: 34px;
-    cursor: pointer;
-    box-shadow: 0 1px 5px rgb(255, 252, 252);
-    transition: transform 0.2s ease, background-color 0.2s ease;
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F7F9FC;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
-.circleOne {
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 60px 20px;
+}
+
+h1 {
+    font-size: 40px;
+    color: #4A90E2;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 24px;
+    color: #7ED6DF;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.photo {
+    display: block;
+    margin: 30px auto;
+    max-width: 200px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.benefits {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.benefit {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    width: 300px;
+    text-align: center;
+    
+}
+
+    .benefit h3 {
+        color: #4A90E2;
+        margin-bottom: 15px;
+    }
+
+    .benefit p {
+        font-size: 16px;
+        color: #555;
+    }
+
+.button {
+    background-color: #4A90E2;
+    color: white;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 30px;
+}
+
+    .button:hover {
+        background-color: #357ABD;
+    }
+
+.whatsapp-button {
+    background-color: #25D366;
+    margin-left: 10px;
+}
+
+    .whatsapp-button:hover {
+        background-color: #1EBE5D;
+    }
+
+.button img {
+    width:10px;
+    height: 18px;
+    margin-right: 10px;
+}
+    .navBar {
+   
+    color: #255cb4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 3vw;
+    width: 98vw;
+    margin-left: 0;
+    margin-right: 0;
+   
+}
+
+.navBarLinkDekstop{
+    list-style: none;
+    margin: 0;
+    margin-right: 500px;
+    padding: 0;
+    display: flex;
+    font-size: 24px; /*tamanho letra menu*/
+}
+
+.navBarLinkDekstop li {
+    color: black;
+    padding: 0 15px;
+}
+
+.navBarLinkDekstop a,
+.navBarMobile a {
+    color: black;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+    .navBarLinkDekstop a:hover {
+        color: #954ebf;
+    }
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 0;
+    width: 30%;
+    height: 60%;
+    background: rgba(176, 171, 171, 0.9);
+    flex-direction: column;
+    align-items: center;
+    font-size: 2rem;
+    z-index: 5;
+}
+
+.navBarLinkMobile {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+    width: 80%;
+    list-style: none;
+    padding: 0;
+}
+
+.navBarLinkMobile {
+    border-bottom: 1px solid rgba(114, 44, 134, 0.9);
+    padding-bottom: 1.2rem;
+}
+
+.Hamburger,
+.close {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+}
+
+.close {
+    margin-top: 20px;
+    margin-right: 20px;
+    display: block;
+    align-self: end;
+}
+
+.flex {
+    display: flex;
+}
+
+.logo {
+    font-size: 50px;
+    color: rgba(176, 171, 171, 0.9); /* Melhor prática: usar 'rgba' para opacidade */
+    -webkit-text-stroke: 1px rgba(114, 44, 134, 0.9);
+    font-family: 'Times New Roman';
+    display: flex; /* Define o contêiner como flexível */
+    align-items: center; /* Alinha os itens no centro verticalmente */
+    white-space: nowrap; /* Impede quebra de linha no texto */
+}
+
+.logo-img {
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+    max-width: 5rem; /* Define a largura máxima da imagem */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-left: 20px; /* Ajusta o deslocamento */
+    display: block; /* Corrige o uso de 'flex' na imagem */
+}
+
+
+
+.navBarLinkDekstop {
+    display: flex;
+}
+
+.Hamburger {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+    .circleOne {
     position: absolute; /* Controle direto da posição */
     top: 0px; /* Move para cima */
     margin-left: 30%;
