@@ -352,17 +352,17 @@ p {
     .button {
         background-color: #4A90E2;
         color: white;
-        padding: 14px 28px;
+        padding:10px 20px;
         border: none;
         border-radius: 8px;
-        font-size: 18px;
+        font-size: 14px;
         cursor: pointer;
         transition: background-color 0.3s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        margin-top: 10px;
-        margin-left:250px;
+        margin-top:0px;
+        margin-left:85px;
     }
 
         .button:hover {
@@ -381,7 +381,7 @@ p {
         display: inline-flex;
         align-items: center;
         margin-top: 10px;
-        margin-left: 250px;
+        margin-left: 50px;
     }
         .container {
         
