@@ -1,0 +1,266 @@
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #1C2526, #000000);
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    font-size: 50px;
+    color: rgba(176, 171, 171, 0.9); /* Melhor prática: usar 'rgba' para opacidade */
+    -webkit-text-stroke: 1px rgba(114, 44, 134, 0.9);
+    font-family: 'Times New Roman';
+    display: flex; /* Define o contêiner como flexível */
+    align-items: center; /* Alinha os itens no centro verticalmente */
+    white-space: nowrap; /* Impede quebra de linha no texto */
+}
+
+.logo-img {
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+    max-width: 5rem; /* Define a largura máxima da imagem */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-left: 20px; /* Ajusta o deslocamento */
+    display: block; /* Corrige o uso de 'flex' na imagem */
+}
+.navBarLinkDekstop {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    font-size: 20px; /*tamanho letra menu*/
+    gap: 10px;
+    justify-content: center;
+}
+
+    .navBarLinkDekstop li {
+        color: #fff;
+        padding: 5px 10px;
+        margin: 0;
+    }
+
+    .navBarLinkDekstop a,
+    .navBarMobile a {
+        color: #fff;
+        text-decoration: none;
+        transition: 0.3s;
+        line-height: 1.2;
+    }
+
+        .navBarLinkDekstop a:hover {
+            color: #954ebf;
+        }
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 0;
+    width: 30%;
+    height: 60%;
+    background: rgba(176, 171, 171, 0.9);
+    flex-direction: column;
+    align-items: center;
+    font-size: 2rem;
+    z-index: 5;
+}
+.navBarLinkMobile {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+    width: 80%;
+    list-style: none;
+    padding: 0;
+}
+
+.navBarLinkMobile {
+    border-bottom: 1px solid rgba(114, 44, 134, 0.9);
+    padding-bottom: 1.2rem;
+}
+.navBarLinkDekstop {
+    display: flex;
+}
+.Hamburger {
+    display: none;
+} 
+.Hamburger,
+.close {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+}
+
+.close {
+    margin-top: 20px;
+    margin-right: 20px;
+    display: block;
+    align-self: end;
+}
+
+.flex {
+    display: flex;
+}
+
+/*box*/
+.box1 {
+    background-color: transparent;
+    padding: 20px;
+    color: #fff;
+    max-width: 2100px;
+    height: 500px;
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    border-radius: 20px; /* cantos levemente arredondados */
+    padding: 3px; /* espaço interno */
+    margin-top: 5px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+.frase-impacto span {
+    display: block; /* quebra de linha */
+    font-size:30px;
+    margin-top:5px;
+    margin-left:70px;
+    
+}
+.imgPrincipal {
+    width: 490px;
+    height: 500px;
+    object-fit: cover;
+    margin-left: 20px;
+}
+.conteudo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* coloca um de cada lado */
+    flex-wrap: wrap; /* permite adaptação em telas menores */
+}
+.depoimentos{
+   height:200px;
+}
+.whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366; /* cor verde WhatsApp */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    text-decoration: none;
+    z-index: 1000;
+    transition: transform 0.3s;
+}
+
+    .whatsapp-button:hover {
+        transform: scale(1.1);
+    }
+
+    .whatsapp-button img {
+        width: 30px;
+        height: 30px;
+    }
+.button{
+    background-color: #4A90E2;
+    color: white;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    margin-left:150px;
+    margin-top:-80px;
+}
+
+@media (max-width: 768px) {
+    .navBarMobile a {
+        color: black;
+        text-decoration: none;
+        transition: 0.3s;
+        line-height: 1.2;
+    }
+
+    .navBarLinkMobile a:hover {
+        color: #EFD9F9;
+    }
+
+    .mobile-menu { /*menu hambuger*/
+
+        position: fixed;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 60%;
+        max-width: 200px;
+        height: auto;
+        background: #fff;
+        display: none; /* Escondido por padrão */
+        flex-direction: column;
+        align-items: center;
+        font-size: 1.8rem;
+        padding: 2rem 1rem;
+        z-index: 1000;
+        border-radius: 8px 0 0 8px;
+    }
+
+        .mobile-menu.ativo {
+            display: flex;
+        }
+
+    .navBarLinkMobile {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 1.2rem;
+        width: 100%;
+        list-style: none;
+        padding: 0;
+    }
+
+        .navBarLinkMobile li {
+            border-bottom: 1px solid #787272;
+            padding-bottom: 1.2rem;
+        }
+
+        .navBarLinkMobile a {
+            color: #000;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+            .navBarLinkMobile a:hover {
+                color: #954ebf;
+            }
+
+    /* Botões */
+    .Hamburger,
+    .close {
+        font-size: 20px;
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    /* Ajuste visual dos botões */
+    .Hamburger {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .close {
+        align-self: flex-end;
+        margin-bottom: 1rem;
+    }
+}

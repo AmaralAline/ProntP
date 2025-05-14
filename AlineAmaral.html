@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="psicóloga, Aline Amaral, terapia cognitivo-comportamental, obesidade, depressão, ansiedade, burnout">
+    <title>Aline Amaral - Psicóloga</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #e0e6ed;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #16222f;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+            header h1 {
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: 500;
+            }
+
+        .navBar {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            max-width: 60px;
+            border-radius: 10%;
+        }
+
+        .navBarLinkDekstop {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+            .navBarLinkDekstop li {
+                margin-left: 1.5rem;
+            }
+
+            .navBarLinkDekstop a {
+                color: #e0e6ed;
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s;
+            }
+
+                .navBarLinkDekstop a:hover {
+                    color: #5cd2b6;
+                }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #16222f;
+            padding: 2rem;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .mobile-menu.active {
+                transform: translateX(0);
+            }
+
+        .navBarLinkMobile {
+            list-style: none;
+            padding: 0;
+        }
+
+            .navBarLinkMobile li {
+                margin: 1rem 0;
+            }
+
+            .navBarLinkMobile a {
+                color: #e0e6ed;
+                text-decoration: none;
+                font-size: 1.2rem;
+            }
+
+                .navBarLinkMobile a:hover {
+                    color: #5cd2b6;
+                }
+
+        .Hamburger, .close {
+            background: none;
+            border: none;
+            color: #e0e6ed;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            background-color: #1b2a38;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .hero-text {
+            max-width: 600px;
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+
+            .hero-text h2 {
+                font-size: 2.2rem; /* Reduzido de 2.5rem para melhor proporção */
+                line-height: 1.3; /* Ajustado para maior coesão */
+                margin-bottom: 2rem;
+                max-width: 650px; /* Limita a largura para evitar texto espalhado */
+                opacity: 0;
+                animation: fadeInText 1s ease-out forwards;
+                animation-delay: 0.3s;
+            }
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366; /* cor verde WhatsApp */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-decoration: none;
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+            .whatsapp-button:hover {
+                transform: scale(1.1);
+            }
+
+            .whatsapp-button img {
+                width: 30px;
+                height: 30px;
+            }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero-text h2 {
+                font-size: 1.6rem; /* Menor em telas pequenas */
+                line-height: 1.4;
+                max-width: 100%; /* Ocupa a largura disponível */
+                text-align: center; /* Centralizado para melhor estética */
+            }
+        }
+
+        .hero img {
+            max-width: 400px;
+            border-radius: 12px;
+            opacity: 0;
+            animation: slideInRight 0.8s ease-out forwards;
+            animation-delay: 0.4s;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            color: white;
+            background-color: #6B7280; /* Roxo suave */
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+
+            .buttons a:hover {
+                background-color: #4B5563; /* Roxo mais escuro */
+                transform: scale(1.05);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+        /* Modal */
+        .modal-content button {
+            background-color: #6B7280; /* Roxo suave */
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .modal-content button:hover {
+                background-color: #4B5563; /* Roxo mais escuro */
+            }
+
+        /* Novas seções */
+        .section {
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+            .section h2 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+                color: #6B7280; /* Roxo suave */
+            }
+
+        .about, .approach, .testimonials, .services {
+            background-color: #16222f;
+        }
+
+        .about-content, .approach-content, .services-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+        }
+
+        .about img {
+            max-width: 200px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background-color: #1b2a38;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+            .testimonial-card:nth-child(1) {
+                animation-delay: 0.2s;
+            }
+
+            .testimonial-card:nth-child(2) {
+                animation-delay: 0.4s;
+            }
+
+            .testimonial-card:nth-child(3) {
+                animation-delay: 0.6s;
+            }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background-color: #1b2a38;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+            .service-card:nth-child(1) {
+                animation-delay: 0.2s;
+            }
+
+            .service-card:nth-child(2) {
+                animation-delay: 0.4s;
+            }
+
+            .service-card:nth-child(3) {
+                animation-delay: 0.6s;
+            }
+
+            .service-card:hover {
+                transform: translateY(-10px);
+            }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #16222f;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+                .hero img {
+                    margin-top: 2rem;
+                    max-width: 100%;
+                }
+
+            .hero-text h2 {
+                font-size: 1.8rem;
+            }
+
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            .navBarLinkDekstop {
+                display: none;
+            }
+
+            .Hamburger, .close {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .buttons a {
+                margin-right: 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .logo-img {
+                max-width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="fundoLogo.png" alt="Logo Aline Amaral" class="logo-img">
+        </div>
+        <h1>ALINE AMARAL</h1>
+        <nav class="navBar">
+            <ul class="navBarLinkDekstop">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#abordagem">Abordagem</a></li>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#depoimentos">Depoimentos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <div class="mobile-menu" id="MobileMenu">
+                <button class="close" id="closeButton">
+                    <i class="fas fa-times"></i>
+                </button>
+                <ul class="navBarLinkMobile">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#abordagem">Abordagem</a></li>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </div>
+            <button class="Hamburger" id="HamburgerButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-text">
+            <h2>Cuidar da mente transforma sua relação com o corpo e a vida</h2>
+            <div class="buttons">
+                <a href="escalaCompulsaoAlimentar.html" target="_blank" aria-label="Acessar Escala de Compulsão">
+                    <i class="fas fa-notes-medical"></i> Escala de Compulsão
+                </a>
+                <a href="escalaDas.html" target="_blank" aria-label="Acessar Escala de Depressão">
+                    <i class="fas fa-heart-broken"></i> Escala de Depressão, Ansiedade e Depressão
+                </a>
+                <a href="https://wa.me/5511947454936" target="_blank" aria-label="Agendar Consulta">
+                    <i class="fas fa-calendar-check"></i> Agendar Consulta
+                </a>
+            </div>
+        </div>
+        <img src="alineAmaral.png" alt="Aline Amaral Psicóloga">
+    </section>
+
+    <section id="sobre" class="section about">
+        <h2>Quem Sou Eu</h2>
+        <div class="about-content">
+            <img src="AlineA.jpg" alt="Foto de Aline Amaral">
+            <p>
+                Sou Aline Amaral, psicóloga formada com uma trajetória dedicada a promover saúde mental e qualidade de vida. Com especializações em Psicologia Hospitalar, Psicopatologia, Dependência Química, Terapia Cognitivo-Comportamental (TCC) e Gestão em Saúde, trago uma abordagem integrativa e baseada em evidências científicas.
+            </p>
+            <p>
+                Minha experiência abrange atendimentos individuais e em grupo, presenciais e online, além de palestras e workshops. Atuo com foco em demandas como obesidade, pré e pós-cirurgia bariátrica, depressão, ansiedade, obesidade infantil, mudança de estilo de vida, burnout e desafios corporativos. Meu objetivo é oferecer um espaço acolhedor e seguro, onde cada pessoa possa explorar suas emoções, superar obstáculos e construir uma relação saudável consigo mesma e com o mundo.
+            </p>
+        </div>
+    </section>
+
+    <section id="abordagem" class="section approach">
+        <h2>Minha Abordagem</h2>
+        <div class="approach-content">
+            <p>
+                Minha prática é baseada na Terapia Cognitivo-Comportamental (TCC), uma abordagem comprovada que ajuda a identificar padrões de pensamento e comportamento que impactam a saúde mental. Além disso, integro técnicas de mindfulness e psicologia positiva para promover autoconhecimento e resiliência.
+            </p>
+            <p>
+                Cada sessão é personalizada, respeitando o ritmo e as necessidades do cliente, sempre com foco em resultados práticos e duradouros.
+            </p>
+        </div>
+    </section>
+
+    <section id="servicos" class="section services">
+        <h2>Serviços</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-user-check fa-2x" style="color: #5cd2b6;"></i>
+                <h3>Terapia Individual</h3>
+                <p>Sessões personalizadas para trabalhar questões emocionais, ansiedade, depressão e mais.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-clipboard-list fa-2x" style="color: #5cd2b6;"></i>
+                <h3>Escalas de Avaliação</h3>
+                <p>Ferramentas como a Escala de Compulsão e Depressão para mapear seu estado emocional.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-users fa-2x" style="color: #5cd2b6;"></i>
+                <h3>Workshops e Grupos</h3>
+                <p>Encontros para desenvolver habilidades emocionais em grupo.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="depoimentos" class="section testimonials">
+        <h2>Depoimentos</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p>"As sessões com a Aline me ajudaram a entender melhor minhas emoções e a lidar com a ansiedade. Ela é incrível!"</p>
+                <p><strong>- Mariana S.</strong></p>
+            </div>
+            <div class="testimonial-card">
+                <p>"Profissional competente, transparente e assertiva.."</p>
+                <p><strong>- ALEXANDRE L.</strong></p>
+            </div>
+            <div class="testimonial-card">
+                <p>
+                    "Adoro o trabalho da Dra Aline, não atoa a procurei depois de tantos anos e já recomendei para outras pessoas.
+                    "
+                </p>
+                <p><strong>GABRIELA G</strong></p>
+            </div>
+            <div class="testimonial-card">
+                <p>
+                    "
+                    Aline tem sido uma grande ajuda no meu processo. As nossas consultas trazem reflexões necessárias e, muitas vezes, são o ponto de partida que preciso para enfrentar o restante da semana. Desde que iniciei o tratamento, sinto uma mudança significativa e sou muito grata por tudo."
+                </p>
+                <p><strong>- IZABELA .G.</strong></p>
+            </div>
+            <div class="testimonial-card">
+                <p>
+                    "
+                    A Aline é uma mega profissional que sempre foi super atenciosa e prestativa comigo, sempre empática , me ajudou muito no meu desenvolvimento como pessoa em diversos aspectos.."
+                </p>
+                <p><strong>- VINÍCIUS R</strong></p>
+            </div>
+            <div class="testimonial-card">
+                <p>
+                    "
+                    Comecei o acompanhamento com a Aline em um momento muito desafiador, e só tenho a agradecer por todo o cuidado e profissionalismo. Ela é extremamente atenciosa, acolhedora e respeitosa, sempre me deixando à vontade para falar sobre minhas questões. As sessões têm sido fundamentais para meu autoconhecimento e para lidar melhor com os desafios do dia a dia. Recomendo o trabalho da Aline com toda certeza"
+                </p>
+                <p><strong>- PAMELA C</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="section contact">
+        <h2>Contato</h2>
+        <div class="contact-content">
+            <p>Entre em contato para agendar uma consulta ou tirar dúvidas:</p>
+            <div class="buttons">
+                <a href="https://wa.me/5511947454936" target="_blank" aria-label="Entrar em contato via WhatsApp">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="mailto:" aria-label="Enviar e-mail">
+                    <i class="fas fa-envelope"></i> E-mail
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+    </a>
+
+
+    <footer>
+        © 2025 Aline Amaral - Psicóloga. Todos os direitos reservados.
+    </footer>
+
+    <script>
+        // JavaScript para o menu mobile
+        const hamburgerButton = document.getElementById('HamburgerButton');
+        const closeButton = document.getElementById('closeButton');
+        const mobileMenu = document.getElementById('MobileMenu');
+
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        closeButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Fechar o menu ao clicar em um link
+        const mobileLinks = document.querySelectorAll('.navBarLinkMobile a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

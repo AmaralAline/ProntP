@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Depressão, Ansiedade e Estresse (DASS-21)</title>
+    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
+    <link rel="stylesheet" href="home.css">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+ </head>
+
+ <body>
+    <header>
+        <nav class="navBar">
+
+            <div class="logo">
+                <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+
+            </div>
+
+            <ul class="navBarLinkDekstop">
+
+                <li><a href="paginainicial.html">Home</a></li>
+                <li><a href="sobre.html">Sobre</a>  </li>
+                <li><a href="#">Cadastro</a></li>
+                <li><a href="#">Login</a></li>
+
+            </ul>
+
+            <div class="mobile-menu" id="MobileMenu">
+                <button class="close" id="closeButton">
+                    <i class="fas fa-times"></i>
+                </button>
+                <ul class="navBarLinkMobile">
+
+                    <li><a href="paginainicial.html">Home</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="#">Cadastro</a></li>
+                    <li><a href="#">Login</a></li>
+                </ul>
+            </div>
+
+            <button class="Hamburger" id="HamburgerButton">
+                <i class="fas fa-bars"></i>
+            </button>
+
+
+        </nav>
+    </header>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #1C2526, #000000);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #e5941e;
+            }
+
+        #result {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: left;
+        }
+
+        .result-section {
+            margin-bottom: 10px;
+        }
+    </style>
+   
+    <div class="form-container">
+        <h2>Escala de Depressão, Ansiedade e Estresse (DASS-21)</h2>
+        <p>Por favor, leia cada afirmação e indique o quanto ela se aplicou a você na última semana. Não há respostas certas ou erradas.</p>
+        <form id="dassForm">
+            <!-- Depressão -->
+            <h3>Depressão</h3>
+            
+                <div class="question">
+                    <p> Senti que não tinha nada pelo que esperar.</p>
+                    <input type="radio" name="d2" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="d2" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="d2" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="d2" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Senti que a vida não tinha sentido.</p>
+                    <input type="radio" name="d1" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="d1" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="d1" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="d1" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+                <div class="question">
+                    <p>Senti que não tinha valor como pessoa.</p>
+                    <input type="radio" name="d3" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="d3" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="d3" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="d3" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Tenho tendência a reagir de forma exagerada às situações.</p>
+                    <input type="radio" name="d4" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="d4" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="d4" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="d4" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+                <div class="question">
+                    <p>Fui intolerante com coisas que me atrapalhavam.</p>
+                    <input type="radio" name="d6" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="d6" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="d6" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="d6" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p> Não consegui sentir nenhum sentimento positivo.</p>
+                    <input type="radio" name="d7" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="d7" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="d7" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="d7" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Achei difícil tomar iniciativa para fazer coisas.</p>
+                    <input type="radio" name="d5" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="d5" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="d5" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="d5" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+                <!-- Ansiedade -->
+                <h3>Ansiedade</h3>
+                <div class="question">
+                    <p>Senti meu coração batendo forte mesmo sem esforço físico.</p>
+                    <input type="radio" name="a1" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="a1" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="a1" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="a1" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Senti medo sem motivo aparente.</p>
+                    <input type="radio" name="a2" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="a2" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="a2" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="a2" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Senti que estava à beira de um ataque de pânico.</p>
+                    <input type="radio" name="a3" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="a3" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="a3" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="a3" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Senti que estava gastando muita energia nervosa.</p>
+                    <input type="radio" name="a4" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="a4" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="a4" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="a4" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Senti minha boca seca.</p>
+                    <input type="radio" name="a5" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="a5" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="a5" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="a5" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Não consegui me liberar com nada.</p>
+                    <input type="radio" name="a6" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="a6" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="a6" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="a6" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Tive dificuldade em respirar (ex.: respiração ofegante sem motivo aparente).</p>
+                    <input type="radio" name="a7" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="a7" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="a7" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="a7" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+
+                <!-- Estresse -->
+                <h3>Estresse</h3>
+                <div class="question">
+                    <p>Senti-me agitada.</p>
+                    <input type="radio" name="s1" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="s1" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="s1" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="s1" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Achei difícil me enganar.</p>
+                    <input type="radio" name="s2" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="s2" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="s2" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="s2" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Senti tremores (ex.: nas mãos).</p>
+                    <input type="radio" name="s4" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="s4" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="s4" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="s4" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+                <div class="question">
+                    <p>Preocupei-me com situações em que poderia entrar em pânico ou fazer papel de bobo.</p>
+                    <input type="radio" name="s3" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="s3" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="s3" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="s3" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+                <div class="question">
+                    <p>Achei difícil relaxar.</p>
+                    <input type="radio" name="s5" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="s5" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="s5" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="s5" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+                <div class="question">
+                    <p>Senti-me desanimado e triste.</p>
+                    <input type="radio" name="s6" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="s6" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="s6" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="s6" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+                <div class="question">
+                    <p>Senti que estava muito irritado.</p>
+                    <input type="radio" name="s7" value="0" required>Não se aplicou de forma alguma<br>
+                    <input type="radio" name="s7" value="1">Algum grau, ou por algum tempo<br>
+                    <input type="radio" name="s7" value="2">Grau considerável, ou por um tempo considerável<br>
+                    <input type="radio" name="s7" value="3">Muito, ou na maior parte do tempo<br>
+                </div>
+
+                <button type="button" onclick="calcularPontuacao()">Calcular Resultado</button>
+            
+        </form>
+
+        <div id="result"></div>
+
+        <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+        </a>
+    </div>
+
+        <script>
+            function calcularPontuacao() {
+                let depressao = 0, ansiedade = 0, estresse = 0;
+                const form = document.getElementById('dassForm');
+                const resultDiv = document.getElementById('result');
+
+                // Cálculo para Depressão (d1 a d7)
+                for (let i = 1; i <= 7; i++) { // Ajuste para 7 quando completar as perguntas
+                    const selectedOption = form.querySelector(`input[name="d${i}"]:checked`);
+                    if (selectedOption) {
+                        depressao += parseInt(selectedOption.value);
+                    } else {
+                        resultDiv.innerHTML = "Por favor, responda todas as perguntas.";
+                        return;
+                    }
+                }
+
+                // Cálculo para Ansiedade (a1 a a7)
+                for (let i = 1; i <= 7; i++) { // Ajuste para 7
+                    const selectedOption = form.querySelector(`input[name="a${i}"]:checked`);
+                    if (selectedOption) {
+                        ansiedade += parseInt(selectedOption.value);
+                    } else {
+                        resultDiv.innerHTML = "Por favor, responda todas as perguntas.";
+                        return;
+                    }
+                }
+
+                // Cálculo para Estresse (s1 a s7)
+                for (let i = 1; i <= 7; i++) { // Ajuste para 7
+                    const selectedOption = form.querySelector(`input[name="s${i}"]:checked`);
+                    if (selectedOption) {
+                        estresse += parseInt(selectedOption.value);
+                    } else {
+                        resultDiv.innerHTML = "Por favor, responda todas as perguntas.";
+                        return;
+                    }
+                }
+
+                // Multiplica as pontuações por 2 (conversão para DASS-42)
+                depressao *= 2;
+                ansiedade *= 2;
+                estresse *= 2;
+
+                // Interpretação dos resultados
+                const interpretacaoDepressao = interpretarDepressao(depressao);
+                const interpretacaoAnsiedade = interpretarAnsiedade(ansiedade);
+                const interpretacaoEstresse = interpretarEstresse(estresse);
+
+                // Exibe o resultado
+                resultDiv.innerHTML = `
+                            <div class="result-section">
+                                <strong>Depressão:</strong> ${depressao} (${interpretacaoDepressao})<br>
+                            </div>
+                            <div class="result-section">
+                                <strong>Ansiedade:</strong> ${ansiedade} (${interpretacaoAnsiedade})<br>
+                            </div>
+                            <div class="result-section">
+                                <strong>Estresse:</strong> ${estresse} (${interpretacaoEstresse})<br>
+                            </div>
+                            <p><em>Nota: Este resultado é apenas uma indicação. Consulte um profissional para uma avaliação completa.Clique no Whatsapp ao lado e realize seu agendamento</em></p>
+                        `;
+            }
+
+            // Funções de interpretação
+            function interpretarDepressao(score) {
+                if (score <= 9) return "Normal";
+                if (score <= 13) return "Leve";
+                if (score <= 20) return "Moderado";
+                if (score <= 27) return "Grave";
+                return "Extremamente Grave";
+            }
+
+            function interpretarAnsiedade(score) {
+                if (score <= 7) return "Normal";
+                if (score <= 9) return "Leve";
+                if (score <= 14) return "Moderado";
+                if (score <= 19) return "Grave";
+                return "Extremamente Grave";
+            }
+
+            function interpretarEstresse(score) {
+                if (score <= 14) return "Normal";
+                if (score <= 18) return "Leve";
+                if (score <= 25) return "Moderado";
+                if (score <= 33) return "Grave";
+                return "Extremamente Grave";
+            }
+        </script>
+ </body>
+</html>

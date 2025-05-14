@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Compulsão Alimentar</title>
+    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
+    <link rel="stylesheet" href="home.css">
+   
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="geralpsi.js" defer></script>
+</head>
+
+ <body>
+    <header>
+        <nav class="navBar">
+
+            <div class="logo">
+                <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+
+            </div>
+
+            <ul class="navBarLinkDekstop">
+
+                <li><a href="paginainicial.html">Home</a></li>
+                <li><a href="sobre.html">Sobre</a>  </li>
+                <li><a href="#">Cadastro</a></li>
+                <li><a href="#">Login</a></li>
+
+            </ul>
+
+            <div class="mobile-menu" id="MobileMenu">
+                <button class="close" id="closeButton">
+                    <i class="fas fa-times"></i>
+                </button>
+                <ul class="navBarLinkMobile">
+
+                    <li><a href="paginainicial.html">Home</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="#">Cadastro</a></li>
+                    <li><a href="#">Login</a></li>
+                </ul>
+            </div>
+
+            <button class="Hamburger" id="HamburgerButton">
+                <i class="fas fa-bars"></i>
+            </button>
+
+
+        </nav>
+    </header>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #1C2526, #000000);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #e5941e;
+            }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        p {
+            text-align: justify;
+            line-height: 1.6; /* Espaçamento entre linhas para melhor legibilidade */
+        }
+    </style>
+    
+    
+        <div class="form-container">
+            <h2>Escala de Compulsão Alimentar (ECAP)</h2>
+            <p>Responda às perguntas abaixo para avaliar seu comportamento alimentar. Escolha a opção que melhor descreve sua experiência.</p>
+            <form id="ecapForm">
+                <div class="question">
+                    <p>Questão 1</p>
+                    <input type="radio" name="q1" value="0" required>  Eu não me sinto constrangido(a) com o meu peso ou o tamanho do meu
+                    corpo quando estou com outras pessoas.<br>
+                    <input type="radio" name="q1" value="0">  Eu me sinto preocupado(a) em como pareço para os outros, mas
+                    isto, normalmente, não me faz sentir desapontado(a) comigo mesmo(a)br>
+                    <input type="radio" name="q1" value="1"> Eu fico mesmo constrangido(a) com a minha aparência e o meu peso,
+                    o que me faz sentir desapontado(a) comigo mesmo(a).<br>
+                    <input type="radio" name="q1" value="3">  Eu me sinto muito constrangido(a) com o meu peso e, freqüentemente,
+                    sinto muita vergonha e desprezo por mim mesmo(a). Tento evitar contatos
+                    sociais por causa desse constrangimento<br>
+                </div>
+                <div class="question">
+                    <p>Questão 2</p>
+                    <input type="radio" name="q2" value="0" required>  Eu não tenho nenhuma dificuldade para comer devagar, de maneira
+                    apropriada<br>
+                    <input type="radio" name="q2" value="1"> Embora pareça que eu devore os alimentos, não acabo me sentindo
+                    empanturrado(a) por comer demais<br>
+                    <input type="radio" name="q2" value="2"> Às vezes tendo a comer rapidamente, sentindo-me então
+                    desconfortavelmente cheio(a) depois<br>
+                    <input type="radio" name="q2" value="3"> Eu tenho o hábito de engolir minha comida sem realmente mastigála. Quando isto acontece, em geral me sinto desconfortavelmente
+                    empanturrado(a) por ter comido demais.<br>
+                </div>
+                <div class="question">
+                    <p>Questão 3</p>
+                    <input type="radio" name="q3" value="0" required>Eu me sinto capaz de controlar meus impulsos para comer, quando
+                    eu quero<br>
+                    <input type="radio" name="q3" value="1"> Eu sinto que tenho falhado em controlar meu comportamento alimentar
+                    mais do que a média das pessoas<br>
+                    <input type="radio" name="q3" value="3"> 3. Eu me sinto totalmente incapaz de controlar meus impulsos para comer<br>
+                    <input type="radio" name="q3" value="3"> Por me sentir tão incapaz de controlar meu comportamento alimentar,
+                    entro em desespero tentando manter o controle<br>
+                </div>
+                <!-- Adicione mais perguntas aqui (total de 16) -->
+                <!-- Para simplificar, vou incluir apenas 3 perguntas, mas você pode replicar o padrão -->
+                <div class="question">
+                    <p>Questão 4</p>
+                    <input type="radio" name="q4" value="0" required> 1. Eu não tenho o hábito de comer quando estou chateado(a)<br>
+                    <input type="radio" name="q4" value="0"> Às vezes eu como quando estou chateado(a) mas, freqüentemente<br>
+                    <input type="radio" name="q4" value="0">Eu tenho o hábito regular de comer quando estou chateado(a) mas, de
+                    vez em quando, posso usar alguma outra atividade para afastar minha
+                    mente da comida<br>
+                    <input type="radio" name="q4" value="2"> Mesmo que não esteja fisicamente com fome, tenho uma sensação de
+                    fome em minha boca que somente parece ser satisfeita quando eu como
+                    um alimento, tipo um sanduíche, que enche a minha boca. Às vezes,
+                    quando eu como o alimento para satisfazer minha “fome na boca”, em
+                    seguida eu o cuspo, assim não ganharei peso.<br>
+                </div>
+                <div class="question">
+                    <p>Questão 5</p>
+                    <input type="radio" name="q5" value="0" required>  Normalmente quando como alguma coisa é porque estou fisicamente
+                    com fome<br>
+                    <input type="radio" name="q5" value="1">De vez em quando como alguma coisa por impulso, mesmo quando
+                    não estou realmente com fome.
+                    <br>
+                    <input type="radio" name="q5" value="2"> Eu tenho o hábito regular de comer alimentos que realmente não aprecio
+                    para satisfazer uma sensação de fome, mesmo que fisicamente eu não
+                    necessite de comida.<br>
+                    <input type="radio" name="q5" value="3">  Mesmo que não esteja fisicamente com fome, tenho uma sensação de
+                    fome em minha boca que somente parece ser satisfeita quando eu como
+                    um alimento, tipo um sanduíche, que enche a minha boca. Às vezes,
+                    quando eu como o alimento para satisfazer minha “fome na boca”, em
+                    seguida eu o cuspo, assim não ganharei peso.
+                    <br>
+                </div>
+                <div class="question">
+                    <p>Questão 6</p>
+                    <input type="radio" name="q6" value="0" required>  Eu não sinto qualquer culpa ou ódio de mim mesmo(a) depois de comer
+                    demais.<br>
+                    <input type="radio" name="q6" value="1"> De vez em quando sinto culpa ou ódio de mim mesmo(a) depois de
+                    comer demais<br>
+                    <input type="radio" name="q6" value="3"> Quase o tempo todo sinto muita culpa ou ódio de mim mesmo(a) depois
+                    de comer demais.<br>
+                    
+                </div>
+                <div class="question">
+                    <p>Questão 7</p>
+                    <input type="radio" name="q7" value="0" required>  1. Eu não perco o controle total da minha alimentação quando estou em
+                    dieta, mesmo após períodos em que como demais<br>
+                    <input type="radio" name="q7" value="2">  Às vezes, quando estou em dieta e como um alimento proibido, sinto
+                    como se tivesse estragado tudo e como ainda mais.<br>
+                    <input type="radio" name="q7" value="3"> Freqüentemente, quando como demais durante uma dieta, tenho o
+                    hábito de dizer para mim mesmo(a): “agora que estraguei tudo, porque não
+                    irei até o fim”. Quando isto acontece, eu como ainda mais.<br>
+                    <input type="radio" name="q7" value="3">  Eu tenho o hábito regular de começar dietas rigorosas por mim mesmo(a),
+                    mas quebro as dietas entrando numa compulsão alimentar. Minha vida
+                    parece ser “uma festa” ou “um morrer de fome”.
+                    <br>
+                </div>
+                <div class="question">
+                    <p>Questão 8</p>
+                    <input type="radio" name="q8" value="0" required> Eu raramente como tanta comida a ponto de me sentir
+                    desconfortavelmente empanturrado(a) depois<br>
+                    <input type="radio" name="q8" value="1"> . Normalmente, cerca de uma vez por mês, como uma tal quantidade de
+                    comida que acabo me sentindo muito empanturrado(a)<br>
+                    <input type="radio" name="q8" value="2">  Eu tenho períodos regulares durante o mês, quando como grandes
+                    quantidades de comida, seja na hora das refeições, seja nos lanches.<br>
+                    <input type="radio" name="q8" value="3"> . Eu como tanta comida que, regularmente, me sinto bastante
+                    desconfortável depois de comer e, algumas vezes, um pouco enjoado(a)<br>
+                </div>
+                <div class="question">
+                    <p>Questão 9</p>
+                    <input type="radio" name="q9" value="0" required> Em geral, minha ingesta calórica não sobe a níveis muito altos, nem
+                    desce a níveis muito baixos.<br>
+                    <input type="radio" name="q9" value="1"> Às vezes, depois de comer demais, tento reduzir minha ingesta calórica
+                    para quase nada, para compensar o excesso de calorias que ingeri.<br>
+                    <input type="radio" name="q9" value="2">  Eu tenho o hábito regular de comer demais durante a noite. Parece que
+                    a minha rotina não é estar com fome de manhã, mas comer demais à
+                    noite<br>
+                    <input type="radio" name="q9" value="3">  Na minha vida adulta tenho tido períodos, que duram semanas, nos
+                    quais praticamente me mato de fome. Isto se segue a períodos em que
+                    como demais. Parece que vivo uma vida de “festa” ou de “morrer de
+                    fome”.
+                    <br>
+                </div>
+                <div class="question">
+                    <p>Questão 10</p>
+                    <input type="radio" name="q10" value="0" required> Normalmente eu sou capaz de parar de comer quando quero. Eu sei
+                    quando “já chega”<br>
+                    <input type="radio" name="q10" value="1">  De vez em quando, eu tenho uma compulsão para comer que parece
+                    que não posso controlar.<br>
+                    <input type="radio" name="q10" value="2">  Freqüentemente tenho fortes impulsos para comer que parece que não
+                    sou capaz de controlar, mas, em outras ocasiões, posso controlar meus
+                    impulsos para comer.<br>
+                    <input type="radio" name="q10" value="3">  Eu me sinto incapaz de controlar impulsos para comer. Eu tenho medo
+                    de não ser capaz de parar de comer por vontade própria.<br>
+                </div>
+                <div class="question">
+                    <p>Questão 11</p>
+                    <input type="radio" name="q11" value="0" required> Eu não tenho problema algum para parar de comer quando me sinto
+                    cheio(a)<br>
+                    <input type="radio" name="q11" value="1"> Eu, normalmente, posso parar de comer quando me sinto cheio(a)
+                    mas, de vez em quando, comer demais me deixa desconfortavelmente
+                    empanturrado(a).<br>
+                    <input type="radio" name="q11" value="2">  Eu tenho um problema para parar de comer uma vez que eu tenha
+                    começado e, normalmente, sinto-me desconfortavelmente empanturrado(a)
+                    depois que faço uma refeição<br>
+                    <input type="radio" name="q11" value="3"> Por eu ter o problema de não ser capaz de parar de comer quando
+                    quero, às vezes tenho que provocar o vômito, usar laxativos e/ou diuréticos
+                    para aliviar minha sensação de empanturramento.<br>
+                </div>
+                <div class="question">
+                    <p>Questão 12</p>
+                    <input type="radio" name="q12" value="0" required> Parece que eu como tanto quando estou com os outros (reuniões
+                    familiares, sociais), como quando estou sozinho(a).<br>
+                    <input type="radio" name="q12" value="1"> Às vezes, quando eu estou com outras pessoas, não como tanto
+                    quanto eu quero comer porque me sinto constrangido(a) com o meu
+                    comportamento alimentar.<br>
+                    <input type="radio" name="q12" value="2">  Freqüentemente eu como só uma pequena quantidade de comida quando
+                    outros estão presentes, pois me sinto muito embaraçado(a) com o meu
+                    comportamento alimentar<br>
+                    <input type="radio" name="q12" value="3">  Eu me sinto tão envergonhado(a) por comer demais que escolho horas
+                    para comer demais quando sei que ninguém me verá. Eu me sinto como
+                    uma pessoa que se esconde para comer.<br>
+                </div>
+                <div class="question">
+                    <p>Questão 13</p>
+                    <input type="radio" name="q13" value="0" required> 1 Eu faço três refeições ao dia com apenas um lanche ocasional entre as
+                    refeições.<br>
+                    <input type="radio" name="q13" value="0"> Eu faço três refeições ao dia mas, normalmente, também lancho entre
+                    as refeições.<br>
+                    <input type="radio" name="q13" value="2"> Quando eu faço lanches pesados, tenho o hábito de pular as refeições
+                    regulares<br>
+                    <input type="radio" name="q13" value="3"> Há períodos regulares em que parece que eu estou continuamente
+                    comendo, sem refeições planejadas.<br>
+                </div>
+                <div class="question">
+                    <p>Questão 14</p>
+                    <input type="radio" name="q14" value="0" required> Eu não penso muito em tentar controlar impulsos indesejáveis para
+                    comer.<br>
+                    <input type="radio" name="q14" value="1"> Pelo menos, em algum momento, sinto que meus pensamentos estão
+                    “pré-ocupados” com tentar controlar meus impulsos para comer.<br>
+                    <input type="radio" name="q14" value="2"> Freqüentemente, sinto que gasto muito tempo pensando no quanto
+                    comi ou tentando não comer mais<br>
+                    <input type="radio" name="q14" value="3"> Parece, para mim, que a maior parte das horas que passo acordado(a)
+                    estão “pré-ocupadas” por pensamentos sobre comer ou não comer. Sinto
+                    como se eu estivesse constantemente lutando para não comer<br>
+                </div>
+                <div class="question">
+                    <p>Questão 15</p>
+                    <input type="radio" name="q15" value="0" required> Eu não penso muito sobre comida<br>
+                    <input type="radio" name="q15" value="1"> Eu tenho fortes desejos por comida, mas eles só duram curtos
+                    períodos de tempo.<br>
+                    <input type="radio" name="q15" value="2">  Há dias em que parece que eu não posso pensar em mais nada a não
+                    ser comida.<br>
+                    <input type="radio" name="q15" value="3">Na maioria dos dias, meus pensamentos parecem estar
+                    “pré-ocupados” com comida. Sinto como se eu vivesse para comer.<br>
+
+                </div>
+                <div class="question">
+                    <p>Questão 16</p>
+                    <input type="radio" name="q16" value="0" required>  Eu normalmente sei se estou ou não fisicamente com fome. Eu como
+                    a porção certa de comida para me satisfazer<br>
+                    <input type="radio" name="q16" value="1"> De vez em quando eu me sinto em dúvida para saber se estou ou não
+                    fisicamente com fome. Nessas ocasiões é difícil saber quanto eu deveria
+                    comer para me satisfazer<br>
+                    <input type="radio" name="q16" value="2"> 3. Mesmo que se eu pudesse saber quantas calorias eu deveria ingerir,
+                    não teria idéia alguma de qual seria a quantidade “normal” de comida para
+                    mim.<br>
+                    
+                </div>
+               
+                <button type="button" onclick="calcularPontuacao()">Calcular Resultado</button>
+            </form>
+            <div id="result"></div>
+        </div>
+
+        <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+        </a>
+  </body>
+</html>
+
+
