@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Sonolência de Epworth (ESE) - ProntPsi</title>
+    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="geralpsi.js" defer></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .options label:hover {
+                    background-color: #4B5563;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #4B5563;
+                    font-weight: 600;
+                }
+
+        .calculate-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover {
+                background-color: #4B5563;
+            }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navBar">
+            <div class="logo">
+                <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+            </div>
+            <ul class="navBarLinkDekstop">
+                <li><a href="paginainicial.html">Home</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="#">Cadastro</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+            <div class="mobile-menu" id="MobileMenu">
+                <button class="close" id="closeButton">
+                    <i class="fas fa-times"></i>
+                </button>
+                <ul class="navBarLinkMobile">
+                    <li><a href="paginainicial.html">Home</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="#">Cadastro</a></li>
+                    <li><a href="#">Login</a></li>
+                </ul>
+            </div>
+            <button class="Hamburger" id="HamburgerButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="logo">
+            <img src="fundoLogo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Escala de Sonolência de Epworth (ESE)</h1>
+        <h2>Responda às perguntas abaixo indicando sua chance de adormecer em cada situação nos últimos tempos. Use a escala: 0 = Nunca, 1 = Pouca chance, 2 = Chance moderada, 3 = Alta chance.</h2>
+
+        <form id="eseForm">
+            <div class="question">
+                <p>1. Sentado(a) e lendo.</p>
+                <div class="options">
+                    <input type="radio" name="q1" value="0" id="q1-0" required><label for="q1-0">0</label>
+                    <input type="radio" name="q1" value="1" id="q1-1"><label for="q1-1">1</label>
+                    <input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">2</label>
+                    <input type="radio" name="q1" value="3" id="q1-3"><label for="q1-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Assistindo TV.</p>
+                <div class="options">
+                    <input type="radio" name="q2" value="0" id="q2-0" required><label for="q2-0">0</label>
+                    <input type="radio" name="q2" value="1" id="q2-1"><label for="q2-1">1</label>
+                    <input type="radio" name="q2" value="2" id="q2-2"><label for="q2-2">2</label>
+                    <input type="radio" name="q2" value="3" id="q2-3"><label for="q2-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. Sentado(a) inativo(a) em um local público (ex.: teatro ou reunião).</p>
+                <div class="options">
+                    <input type="radio" name="q3" value="0" id="q3-0" required><label for="q3-0">0</label>
+                    <input type="radio" name="q3" value="1" id="q3-1"><label for="q3-1">1</label>
+                    <input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">2</label>
+                    <input type="radio" name="q3" value="3" id="q3-3"><label for="q3-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. Como passageiro em um carro por uma hora sem parar.</p>
+                <div class="options">
+                    <input type="radio" name="q4" value="0" id="q4-0" required><label for="q4-0">0</label>
+                    <input type="radio" name="q4" value="1" id="q4-1"><label for="q4-1">1</label>
+                    <input type="radio" name="q4" value="2" id="q4-2"><label for="q4-2">2</label>
+                    <input type="radio" name="q4" value="3" id="q4-3"><label for="q4-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. Deitado(a) para descansar à tarde quando pode.</p>
+                <div class="options">
+                    <input type="radio" name="q5" value="0" id="q5-0" required><label for="q5-0">0</label>
+                    <input type="radio" name="q5" value="1" id="q5-1"><label for="q5-1">1</label>
+                    <input type="radio" name="q5" value="2" id="q5-2"><label for="q5-2">2</label>
+                    <input type="radio" name="q5" value="3" id="q5-3"><label for="q5-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Sentado(a) e conversando com alguém.</p>
+                <div class="options">
+                    <input type="radio" name="q6" value="0" id="q6-0" required><label for="q6-0">0</label>
+                    <input type="radio" name="q6" value="1" id="q6-1"><label for="q6-1">1</label>
+                    <input type="radio" name="q6" value="2" id="q6-2"><label for="q6-2">2</label>
+                    <input type="radio" name="q6" value="3" id="q6-3"><label for="q6-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>7. Sentado(a) calmamente após almoço sem álcool.</p>
+                <div class="options">
+                    <input type="radio" name="q7" value="0" id="q7-0" required><label for="q7-0">0</label>
+                    <input type="radio" name="q7" value="1" id="q7-1"><label for="q7-1">1</label>
+                    <input type="radio" name="q7" value="2" id="q7-2"><label for="q7-2">2</label>
+                    <input type="radio" name="q7" value="3" id="q7-3"><label for="q7-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>8. Em um carro parado por alguns minutos no trânsito.</p>
+                <div class="options">
+                    <input type="radio" name="q8" value="0" id="q8-0" required><label for="q8-0">0</label>
+                    <input type="radio" name="q8" value="1" id="q8-1"><label for="q8-1">1</label>
+                    <input type="radio" name="q8" value="2" id="q8-2"><label for="q8-2">2</label>
+                    <input type="radio" name="q8" value="3" id="q8-3"><label for="q8-3">3</label>
+                </div>
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+    </a>
+
+    <script>
+        function calculateScore() {
+            const form = document.getElementById('eseForm');
+            let totalScore = 0;
+
+            // Calcular pontuação para os 8 itens
+            for (let i = 1; i <= 8; i++) {
+                const question = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!question) {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+                totalScore += parseInt(question.value);
+            }
+
+            // Exibir resultado
+            const resultDiv = document.getElementById('result');
+            let message = `Pontuação Total: ${totalScore} de 24\n\n`;
+            if (totalScore >= 18) {
+                message += 'Sonolência: Severa. ';
+            } else if (totalScore >= 15) {
+                message += 'Sonolência: Moderada. ';
+            } else if (totalScore >= 11) {
+                message += 'Sonolência: Leve. ';
+            } else {
+                message += 'Sonolência: Normal. ';
+            }
+            message += 'Consulte um médico ou especialista do sono para uma avaliação detalhada.';
+
+            resultDiv.textContent = message;
+            resultDiv.style.whiteSpace = 'pre-line';
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

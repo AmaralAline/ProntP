@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Técnica: Cartões Lembrete</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+            .section p {
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: #6B7280;
+            color: #ffffff;
+        }
+
+        .card {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+            .card p {
+                font-size: 16px;
+                margin: 0 0 10px;
+            }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        button {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #1428a3;
+            }
+
+        #reflection-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        #error {
+            color: #ff4d4d;
+            text-align: center;
+            display: none;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Técnica: Cartões Lembrete</h1>
+        <h2>Crie novas regras funcionais para substituir pensamentos disfuncionais</h2>
+        <div class="section">
+            <p>Escreva a ideia principal para sua nova regra funcional:</p>
+            <input type="text" id="cardInput" placeholder="Ex.: 'Eu sou capaz de enfrentar desafios, mesmo que sejam difíceis.'">
+            <button onclick="addCard()">Adicionar Cartão</button>
+        </div>
+        <p id="error"></p>
+        <div id="cardsList"></div>
+        <div id="reflection-section">
+            <p>Reflita: Como essas novas regras estão afetando seus pensamentos ou comportamentos?</p>
+            <textarea id="reflection" placeholder="Escreva suas reflexões aqui..."></textarea>
+            <button onclick="saveReflection()">Salvar Reflexão</button>
+        </div>
+    </div>
+
+    <script>
+        let cards = [];
+
+        function addCard() {
+            const cardInput = document.getElementById('cardInput');
+            const idea = cardInput.value.trim();
+
+            if (!idea) {
+                document.getElementById('error').textContent = 'Por favor, insira uma ideia principal.';
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+
+            cards.push({ idea, createdAt: new Date().toISOString() });
+            cardInput.value = '';
+            document.getElementById('error').style.display = 'none';
+            renderCards();
+            saveData();
+        }
+
+        function editCard(index) {
+            const newIdea = prompt('Edite a ideia principal:', cards[index].idea);
+            if (newIdea && newIdea.trim()) {
+                cards[index].idea = newIdea.trim();
+                renderCards();
+                saveData();
+            }
+        }
+
+        function removeCard(index) {
+            if (confirm('Tem certeza que deseja remover este cartão?')) {
+                cards.splice(index, 1);
+                renderCards();
+                saveData();
+            }
+        }
+
+        function renderCards() {
+            const cardsList = document.getElementById('cardsList');
+            cardsList.innerHTML = '';
+
+            cards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card';
+                cardDiv.innerHTML = `
+                    <p><strong>Regra Funcional:</strong> ${card.idea}</p>
+                    <p><small>Criado em: ${formatDate(card.createdAt)}</small></p>
+                    <div class="card-actions">
+                        <button onclick="editCard(${index})">Editar</button>
+                        <button onclick="removeCard(${index})">Remover</button>
+                    </div>
+                `;
+                cardsList.appendChild(cardDiv);
+            });
+        }
+
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflection').value;
+            saveData(reflection);
+            alert('Reflexão salva com sucesso! Os dados estão no localStorage (chave: cartoes_lembrete).');
+        }
+
+        function saveData(reflection = document.getElementById('reflection')?.value || '') {
+            localStorage.setItem('cartoes_lembrete', JSON.stringify({ cards, reflection }));
+        }
+
+        // Carrega dados salvos do localStorage
+        window.onload = function() {
+            const savedData = localStorage.getItem('cartoes_lembrete');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                cards = data.cards || [];
+                renderCards();
+                document.getElementById('reflection').value = data.reflection || '';
+            }
+        };
+    </script>
+</body>
+</html>

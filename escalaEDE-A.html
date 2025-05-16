@@ -1,0 +1,508 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala EDE-A - ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .options label:hover {
+                    background-color: #1428a3;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #1428a3;
+                    font-weight: 600;
+                }
+
+        .frequency-input {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            width: 100px;
+            font-size: 16px;
+        }
+
+        .calculate-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover {
+                background-color: #4B5563;
+            }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Escala EDE-A - Avaliação de Transtornos Alimentares</h1>
+        <h2>Responda às perguntas abaixo com base nos últimos 28 dias.</h2>
+
+        <form id="edeaForm">
+            <!-- Restrição Alimentar -->
+            <div class="question">
+                <p>1. Você tentou evitar comer alimentos que gosta para controlar seu peso ou forma?</p>
+                <div class="options">
+                    <input type="radio" name="q1" value="0" id="q1-0" required><label for="q1-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q1" value="1" id="q1-1"><label for="q1-1">1</label>
+                    <input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">2</label>
+                    <input type="radio" name="q1" value="3" id="q1-3"><label for="q1-3">3</label>
+                    <input type="radio" name="q1" value="4" id="q1-4"><label for="q1-4">4</label>
+                    <input type="radio" name="q1" value="5" id="q1-5"><label for="q1-5">5</label>
+                    <input type="radio" name="q1" value="6" id="q1-6"><label for="q1-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Você tentou seguir regras alimentares específicas (ex.: limitar calorias) para influenciar seu peso ou forma?</p>
+                <div class="options">
+                    <input type="radio" name="q2" value="0" id="q2-0" required><label for="q2-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q2" value="1" id="q2-1"><label for="q2-1">1</label>
+                    <input type="radio" name="q2" value="2" id="q2-2"><label for="q2-2">2</label>
+                    <input type="radio" name="q2" value="3" id="q2-3"><label for="q2-3">3</label>
+                    <input type="radio" name="q2" value="4" id="q2-4"><label for="q2-4">4</label>
+                    <input type="radio" name="q2" value="5" id="q2-5"><label for="q2-5">5</label>
+                    <input type="radio" name="q2" value="6" id="q2-6"><label for="q2-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. Você evitou comer por longos períodos (8 horas ou mais acordado) para controlar seu peso ou forma?</p>
+                <div class="options">
+                    <input type="radio" name="q3" value="0" id="q3-0" required><label for="q3-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q3" value="1" id="q3-1"><label for="q3-1">1</label>
+                    <input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">2</label>
+                    <input type="radio" name="q3" value="3" id="q3-3"><label for="q3-3">3</label>
+                    <input type="radio" name="q3" value="4" id="q3-4"><label for="q3-4">4</label>
+                    <input type="radio" name="q3" value="5" id="q3-5"><label for="q3-5">5</label>
+                    <input type="radio" name="q3" value="6" id="q3-6"><label for="q3-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <!-- Preocupação com Alimentação -->
+            <div class="question">
+                <p>4. Você sentiu medo de perder o controle sobre o quanto come?</p>
+                <div class="options">
+                    <input type="radio" name="q4" value="0" id="q4-0" required><label for="q4-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q4" value="1" id="q4-1"><label for="q4-1">1</label>
+                    <input type="radio" name="q4" value="2" id="q4-2"><label for="q4-2">2</label>
+                    <input type="radio" name="q4" value="3" id="q4-3"><label for="q4-3">3</label>
+                    <input type="radio" name="q4" value="4" id="q4-4"><label for="q4-4">4</label>
+                    <input type="radio" name="q4" value="5" id="q4-5"><label for="q4-5">5</label>
+                    <input type="radio" name="q4" value="6" id="q4-6"><label for="q4-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. Você sentiu culpa por comer?</p>
+                <div class="options">
+                    <input type="radio" name="q5" value="0" id="q5-0" required><label for="q5-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q5" value="1" id="q5-1"><label for="q5-1">1</label>
+                    <input type="radio" name="q5" value="2" id="q5-2"><label for="q5-2">2</label>
+                    <input type="radio" name="q5" value="3" id="q5-3"><label for="q5-3">3</label>
+                    <input type="radio" name="q5" value="4" id="q5-4"><label for="q5-4">4</label>
+                    <input type="radio" name="q5" value="5" id="q5-5"><label for="q5-5">5</label>
+                    <input type="radio" name="q5" value="6" id="q5-6"><label for="q5-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Você se sentiu preocupado por comer em público?</p>
+                <div class="options">
+                    <input type="radio" name="q6" value="0" id="q6-0" required><label for="q6-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q6" value="1" id="q6-1"><label for="q6-1">1</label>
+                    <input type="radio" name="q6" value="2" id="q6-2"><label for="q6-2">2</label>
+                    <input type="radio" name="q6" value="3" id="q6-3"><label for="q6-3">3</label>
+                    <input type="radio" name="q6" value="4" id="q6-4"><label for="q6-4">4</label>
+                    <input type="radio" name="q6" value="5" id="q6-5"><label for="q6-5">5</label>
+                    <input type="radio" name="q6" value="6" id="q6-6"><label for="q6-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <!-- Preocupação com Peso -->
+            <div class="question">
+                <p>7. O quanto você se sentiu insatisfeito com seu peso?</p>
+                <div class="options">
+                    <input type="radio" name="q7" value="0" id="q7-0" required><label for="q7-0">0 - Nada</label>
+                    <input type="radio" name="q7" value="1" id="q7-1"><label for="q7-1">1</label>
+                    <input type="radio" name="q7" value="2" id="q7-2"><label for="q7-2">2</label>
+                    <input type="radio" name="q7" value="3" id="q7-3"><label for="q7-3">3</label>
+                    <input type="radio" name="q7" value="4" id="q7-4"><label for="q7-4">4</label>
+                    <input type="radio" name="q7" value="5" id="q7-5"><label for="q7-5">5</label>
+                    <input type="radio" name="q7" value="6" id="q7-6"><label for="q7-6">6 - Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>8. O quanto seu peso influenciou como você se sente sobre si mesmo?</p>
+                <div class="options">
+                    <input type="radio" name="q8" value="0" id="q8-0" required><label for="q8-0">0 - Nada</label>
+                    <input type="radio" name="q8" value="1" id="q8-1"><label for="q8-1">1</label>
+                    <input type="radio" name="q8" value="2" id="q8-2"><label for="q8-2">2</label>
+                    <input type="radio" name="q8" value="3" id="q8-3"><label for="q8-3">3</label>
+                    <input type="radio" name="q8" value="4" id="q8-4"><label for="q8-4">4</label>
+                    <input type="radio" name="q8" value="5" id="q8-5"><label for="q8-5">5</label>
+                    <input type="radio" name="q8" value="6" id="q8-6"><label for="q8-6">6 - Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>9. O quanto você desejou perder peso?</p>
+                <div class="options">
+                    <input type="radio" name="q9" value="0" id="q9-0" required><label for="q9-0">0 - Nada</label>
+                    <input type="radio" name="q9" value="1" id="q9-1"><label for="q9-1">1</label>
+                    <input type="radio" name="q9" value="2" id="q9-2"><label for="q9-2">2</label>
+                    <input type="radio" name="q9" value="3" id="q9-3"><label for="q9-3">3</label>
+                    <input type="radio" name="q9" value="4" id="q9-4"><label for="q9-4">4</label>
+                    <input type="radio" name="q9" value="5" id="q9-5"><label for="q9-5">5</label>
+                    <input type="radio" name="q9" value="6" id="q9-6"><label for="q9-6">6 - Extremamente</label>
+                </div>
+            </div>
+
+            <!-- Preocupação com Forma Corporal -->
+            <div class="question">
+                <p>10. O quanto você se sentiu insatisfeito com a forma do seu corpo?</p>
+                <div class="options">
+                    <input type="radio" name="q10" value="0" id="q10-0" required><label for="q10-0">0 - Nada</label>
+                    <input type="radio" name="q10" value="1" id="q10-1"><label for="q10-1">1</label>
+                    <input type="radio" name="q10" value="2" id="q10-2"><label for="q10-2">2</label>
+                    <input type="radio" name="q10" value="3" id="q10-3"><label for="q10-3">3</label>
+                    <input type="radio" name="q10" value="4" id="q10-4"><label for="q10-4">4</label>
+                    <input type="radio" name="q10" value="5" id="q10-5"><label for="q10-5">5</label>
+                    <input type="radio" name="q10" value="6" id="q10-6"><label for="q10-6">6 - Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>11. O quanto a forma do seu corpo influenciou como você se sente sobre si mesmo?</p>
+                <div class="options">
+                    <input type="radio" name="q11" value="0" id="q11-0" required><label for="q11-0">0 - Nada</label>
+                    <input type="radio" name="q11" value="1" id="q11-1"><label for="q11-1">1</label>
+                    <input type="radio" name="q11" value="2" id="q11-2"><label for="q11-2">2</label>
+                    <input type="radio" name="q11" value="3" id="q11-3"><label for="q11-3">3</label>
+                    <input type="radio" name="q11" value="4" id="q11-4"><label for="q11-4">4</label>
+                    <input type="radio" name="q11" value="5" id="q11-5"><label for="q11-5">5</label>
+                    <input type="radio" name="q11" value="6" id="q11-6"><label for="q11-6">6 - Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>12. Você se sentiu desconfortável ao ver seu corpo (ex.: no espelho)?</p>
+                <div class="options">
+                    <input type="radio" name="q12" value="0" id="q12-0" required><label for="q12-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q12" value="1" id="q12-1"><label for="q12-1">1</label>
+                    <input type="radio" name="q12" value="2" id="q12-2"><label for="q12-2">2</label>
+                    <input type="radio" name="q12" value="3" id="q12-3"><label for="q12-3">3</label>
+                    <input type="radio" name="q12" value="4" id="q12-4"><label for="q12-4">4</label>
+                    <input type="radio" name="q12" value="5" id="q12-5"><label for="q12-5">5</label>
+                    <input type="radio" name="q12" value="6" id="q12-6"><label for="q12-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <!-- Mais itens para cada subescala -->
+            <div class="question">
+                <p>13. Você evitou comer certos alimentos por medo de engordar? (Restrição)</p>
+                <div class="options">
+                    <input type="radio" name="q13" value="0" id="q13-0" required><label for="q13-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q13" value="1" id="q13-1"><label for="q13-1">1</label>
+                    <input type="radio" name="q13" value="2" id="q13-2"><label for="q13-2">2</label>
+                    <input type="radio" name="q13" value="3" id="q13-3"><label for="q13-3">3</label>
+                    <input type="radio" name="q13" value="4" id="q13-4"><label for="q13-4">4</label>
+                    <input type="radio" name="q13" value="5" id="q13-5"><label for="q13-5">5</label>
+                    <input type="radio" name="q13" value="6" id="q13-6"><label for="q13-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>14. Você se preocupou com a ideia de comer mesmo estando com fome? (Preocupação com Alimentação)</p>
+                <div class="options">
+                    <input type="radio" name="q14" value="0" id="q14-0" required><label for="q14-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q14" value="1" id="q14-1"><label for="q14-1">1</label>
+                    <input type="radio" name="q14" value="2" id="q14-2"><label for="q14-2">2</label>
+                    <input type="radio" name="q14" value="3" id="q14-3"><label for="q14-3">3</label>
+                    <input type="radio" name="q14" value="4" id="q14-4"><label for="q14-4">4</label>
+                    <input type="radio" name="q14" value="5" id="q14-5"><label for="q14-5">5</label>
+                    <input type="radio" name="q14" value="6" id="q14-6"><label for="q14-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>15. O quanto você se sentiu preocupado com o que os outros pensam do seu peso? (Preocupação com Peso)</p>
+                <div class="options">
+                    <input type="radio" name="q15" value="0" id="q15-0" required><label for="q15-0">0 - Nada</label>
+                    <input type="radio" name="q15" value="1" id="q15-1"><label for="q15-1">1</label>
+                    <input type="radio" name="q15" value="2" id="q15-2"><label for="q15-2">2</label>
+                    <input type="radio" name="q15" value="3" id="q15-3"><label for="q15-3">3</label>
+                    <input type="radio" name="q15" value="4" id="q15-4"><label for="q15-4">4</label>
+                    <input type="radio" name="q15" value="5" id="q15-5"><label for="q15-5">5</label>
+                    <input type="radio" name="q15" value="6" id="q15-6"><label for="q15-6">6 - Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>16. Você evitou situações sociais por causa da forma do seu corpo? (Preocupação com Forma)</p>
+                <div class="options">
+                    <input type="radio" name="q16" value="0" id="q16-0" required><label for="q16-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q16" value="1" id="q16-1"><label for="q16-1">1</label>
+                    <input type="radio" name="q16" value="2" id="q16-2"><label for="q16-2">2</label>
+                    <input type="radio" name="q16" value="3" id="q16-3"><label for="q16-3">3</label>
+                    <input type="radio" name="q16" value="4" id="q16-4"><label for="q16-4">4</label>
+                    <input type="radio" name="q16" value="5" id="q16-5"><label for="q16-5">5</label>
+                    <input type="radio" name="q16" value="6" id="q16-6"><label for="q16-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>17. Você se sentiu angustiado ao pensar em comer certos alimentos? (Preocupação com Alimentação)</p>
+                <div class="options">
+                    <input type="radio" name="q17" value="0" id="q17-0" required><label for="q17-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q17" value="1" id="q17-1"><label for="q17-1">1</label>
+                    <input type="radio" name="q17" value="2" id="q17-2"><label for="q17-2">2</label>
+                    <input type="radio" name="q17" value="3" id="q17-3"><label for="q17-3">3</label>
+                    <input type="radio" name="q17" value="4" id="q17-4"><label for="q17-4">4</label>
+                    <input type="radio" name="q17" value="5" id="q17-5"><label for="q17-5">5</label>
+                    <input type="radio" name="q17" value="6" id="q17-6"><label for="q17-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>18. Você desejou ter um estômago vazio para controlar seu peso? (Restrição)</p>
+                <div class="options">
+                    <input type="radio" name="q18" value="0" id="q18-0" required><label for="q18-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q18" value="1" id="q18-1"><label for="q18-1">1</label>
+                    <input type="radio" name="q18" value="2" id="q18-2"><label for="q18-2">2</label>
+                    <input type="radio" name="q18" value="3" id="q18-3"><label for="q18-3">3</label>
+                    <input type="radio" name="q18" value="4" id="q18-4"><label for="q18-4">4</label>
+                    <input type="radio" name="q18" value="5" id="q18-5"><label for="q18-5">5</label>
+                    <input type="radio" name="q18" value="6" id="q18-6"><label for="q18-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>19. Você se comparou com outras pessoas em termos de peso? (Preocupação com Peso)</p>
+                <div class="options">
+                    <input type="radio" name="q19" value="0" id="q19-0" required><label for="q19-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q19" value="1" id="q19-1"><label for="q19-1">1</label>
+                    <input type="radio" name="q19" value="2" id="q19-2"><label for="q19-2">2</label>
+                    <input type="radio" name="q19" value="3" id="q19-3"><label for="q19-3">3</label>
+                    <input type="radio" name="q19" value="4" id="q19-4"><label for="q19-4">4</label>
+                    <input type="radio" name="q19" value="5" id="q19-5"><label for="q19-5">5</label>
+                    <input type="radio" name="q19" value="6" id="q19-6"><label for="q19-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>20. Você se sentiu gordo(a), mesmo que outros dissessem que não? (Preocupação com Forma)</p>
+                <div class="options">
+                    <input type="radio" name="q20" value="0" id="q20-0" required><label for="q20-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q20" value="1" id="q20-1"><label for="q20-1">1</label>
+                    <input type="radio" name="q20" value="2" id="q20-2"><label for="q20-2">2</label>
+                    <input type="radio" name="q20" value="3" id="q20-3"><label for="q20-3">3</label>
+                    <input type="radio" name="q20" value="4" id="q20-4"><label for="q20-4">4</label>
+                    <input type="radio" name="q20" value="5" id="q20-5"><label for="q20-5">5</label>
+                    <input type="radio" name="q20" value="6" id="q20-6"><label for="q20-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>21. Você se preocupou com o que comeu durante o dia? (Preocupação com Alimentação)</p>
+                <div class="options">
+                    <input type="radio" name="q21" value="0" id="q21-0" required><label for="q21-0">0 - Nenhum dia</label>
+                    <input type="radio" name="q21" value="1" id="q21-1"><label for="q21-1">1</label>
+                    <input type="radio" name="q21" value="2" id="q21-2"><label for="q21-2">2</label>
+                    <input type="radio" name="q21" value="3" id="q21-3"><label for="q21-3">3</label>
+                    <input type="radio" name="q21" value="4" id="q21-4"><label for="q21-4">4</label>
+                    <input type="radio" name="q21" value="5" id="q21-5"><label for="q21-5">5</label>
+                    <input type="radio" name="q21" value="6" id="q21-6"><label for="q21-6">6 - Todos os dias</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>22. O quanto você desejou mudar a forma do seu corpo? (Preocupação com Forma)</p>
+                <div class="options">
+                    <input type="radio" name="q22" value="0" id="q22-0" required><label for="q22-0">0 - Nada</label>
+                    <input type="radio" name="q22" value="1" id="q22-1"><label for="q22-1">1</label>
+                    <input type="radio" name="q22" value="2" id="q22-2"><label for="q22-2">2</label>
+                    <input type="radio" name="q22" value="3" id="q22-3"><label for="q22-3">3</label>
+                    <input type="radio" name="q22" value="4" id="q22-4"><label for="q22-4">4</label>
+                    <input type="radio" name="q22" value="5" id="q22-5"><label for="q22-5">5</label>
+                    <input type="radio" name="q22" value="6" id="q22-6"><label for="q22-6">6 - Extremamente</label>
+                </div>
+            </div>
+
+            <!-- Itens de Frequência -->
+            <div class="question">
+                <p>23. Nos últimos 28 dias, quantas vezes você teve episódios de compulsão alimentar (comer grandes quantidades de comida sentindo perda de controle)?</p>
+                <input type="number" name="q23" id="q23" class="frequency-input" min="0" required placeholder="Digite um número">
+            </div>
+
+            <div class="question">
+                <p>24. Nos últimos 28 dias, quantas vezes você provocou vômitos para controlar seu peso ou forma?</p>
+                <input type="number" name="q24" id="q24" class="frequency-input" min="0" required placeholder="Digite um número">
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateScore() {
+            const form = document.getElementById('edeaForm');
+
+            // Verificar se todas as perguntas de rádio foram respondidas
+            for (let i = 1; i <= 22; i++) {
+                const question = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!question) {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+            }
+
+            // Verificar se os campos de frequência foram preenchidos
+            const bingeEpisodes = parseInt(form.querySelector('#q23').value) || 0;
+            const vomitingEpisodes = parseInt(form.querySelector('#q24').value) || 0;
+
+            // Calcular subescalas
+            // Restrição: Itens 1, 2, 3, 13, 18
+            const restraintItems = [1, 2, 3, 13, 18].map(i => parseInt(form.querySelector(`input[name="q${i}"]:checked`).value));
+            const restraintScore = restraintItems.reduce((sum, val) => sum + val, 0) / restraintItems.length;
+
+            // Preocupação com Alimentação: Itens 4, 5, 6, 14, 17, 21
+            const eatingConcernItems = [4, 5, 6, 14, 17, 21].map(i => parseInt(form.querySelector(`input[name="q${i}"]:checked`).value));
+            const eatingConcernScore = eatingConcernItems.reduce((sum, val) => sum + val, 0) / eatingConcernItems.length;
+
+            // Preocupação com Peso: Itens 7, 8, 9, 15, 19
+            const weightConcernItems = [7, 8, 9, 15, 19].map(i => parseInt(form.querySelector(`input[name="q${i}"]:checked`).value));
+            const weightConcernScore = weightConcernItems.reduce((sum, val) => sum + val, 0) / weightConcernItems.length;
+
+            // Preocupação com Forma: Itens 10, 11, 12, 16, 20, 22
+            const shapeConcernItems = [10, 11, 12, 16, 20, 22].map(i => parseInt(form.querySelector(`input[name="q${i}"]:checked`).value));
+            const shapeConcernScore = shapeConcernItems.reduce((sum, val) => sum + val, 0) / shapeConcernItems.length;
+
+            // Calcular pontuação global
+            const globalScore = (restraintScore + eatingConcernScore + weightConcernScore + shapeConcernScore) / 4;
+
+            // Exibir resultado
+            const resultDiv = document.getElementById('result');
+            let message = `Resultados (médias de 0 a 6):\n\n`;
+            message += `Restrição Alimentar: ${restraintScore.toFixed(2)}\n`;
+            message += `Preocupação com Alimentação: ${eatingConcernScore.toFixed(2)}\n`;
+            message += `Preocupação com Peso: ${weightConcernScore.toFixed(2)}\n`;
+            message += `Preocupação com Forma Corporal: ${shapeConcernScore.toFixed(2)}\n`;
+            message += `Pontuação Global: ${globalScore.toFixed(2)}\n\n`;
+            message += `Frequência de Comportamentos (últimos 28 dias):\n`;
+            message += `Episódios de Compulsão Alimentar: ${bingeEpisodes}\n`;
+            message += `Episódios de Vômitos Autoinduzidos: ${vomitingEpisodes}\n\n`;
+
+            // Mensagem orientativa
+            if (globalScore >= 4 || bingeEpisodes >= 4 || vomitingEpisodes >= 4) {
+                message += 'Pontuações altas ou comportamentos frequentes podem indicar sinais de transtornos alimentares. ';
+            } else if (globalScore >= 2.5 || bingeEpisodes >= 2 || vomitingEpisodes >= 2) {
+                message += 'As pontuações sugerem alguns sinais que podem precisar de atenção. ';
+            } else {
+                message += 'As pontuações estão dentro de um intervalo baixo para transtornos alimentares. ';
+            }
+            message += 'Consulte um profissional de saúde mental para uma avaliação completa.';
+
+            resultDiv.textContent = message;
+            resultDiv.style.whiteSpace = 'pre-line';
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

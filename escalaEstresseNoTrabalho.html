@@ -1,0 +1,454 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Estresse no Trabalho (EET) - ProntPsi</title>
+    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="geralpsi.js" defer></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .options label:hover {
+                    background-color: #4B5563;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #4B5563;
+                    font-weight: 600;
+                }
+
+        .calculate-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover {
+                background-color: #4B5563;
+            }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navBar">
+            <div class="logo">
+                <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+            </div>
+            <ul class="navBarLinkDekstop">
+                <li><a href="paginainicial.html">Home</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="#">Cadastro</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+            <div class="mobile-menu" id="MobileMenu">
+                <button class="close" id="closeButton">
+                    <i class="fas fa-times"></i>
+                </button>
+                <ul class="navBarLinkMobile">
+                    <li><a href="paginainicial.html">Home</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="#">Cadastro</a></li>
+                    <li><a href="#">Login</a></li>
+                </ul>
+            </div>
+            <button class="Hamburger" id="HamburgerButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="logo">
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Escala de Estresse no Trabalho (EET)</h1>
+        <h2>Responda às perguntas abaixo com base em sua experiência no trabalho nos últimos meses. Escolha o quanto cada situação o(a) afeta.</h2>
+
+        <form id="eetForm">
+            <div class="question">
+                <p>1. Falta de autonomia para tomar decisões no trabalho.</p>
+                <div class="options">
+                    <input type="radio" name="q1" value="1" id="q1-1" required><label for="q1-1">Nada</label>
+                    <input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">Pouco</label>
+                    <input type="radio" name="q1" value="3" id="q1-3"><label for="q1-3">Moderadamente</label>
+                    <input type="radio" name="q1" value="4" id="q1-4"><label for="q1-4">Muito</label>
+                    <input type="radio" name="q1" value="5" id="q1-5"><label for="q1-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Sobrecarga de tarefas ou prazos apertados.</p>
+                <div class="options">
+                    <input type="radio" name="q2" value="1" id="q2-1" required><label for="q2-1">Nada</label>
+                    <input type="radio" name="q2" value="2" id="q2-2"><label for="q2-2">Pouco</label>
+                    <input type="radio" name="q2" value="3" id="q2-3"><label for="q2-3">Moderadamente</label>
+                    <input type="radio" name="q2" value="4" id="q2-4"><label for="q2-4">Muito</label>
+                    <input type="radio" name="q2" value="5" id="q2-5"><label for="q2-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. Conflitos com colegas ou superiores.</p>
+                <div class="options">
+                    <input type="radio" name="q3" value="1" id="q3-1" required><label for="q3-1">Nada</label>
+                    <input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">Pouco</label>
+                    <input type="radio" name="q3" value="3" id="q3-3"><label for="q3-3">Moderadamente</label>
+                    <input type="radio" name="q3" value="4" id="q3-4"><label for="q3-4">Muito</label>
+                    <input type="radio" name="q3" value="5" id="q3-5"><label for="q3-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. Falta de reconhecimento pelo trabalho realizado.</p>
+                <div class="options">
+                    <input type="radio" name="q4" value="1" id="q4-1" required><label for="q4-1">Nada</label>
+                    <input type="radio" name="q4" value="2" id="q4-2"><label for="q4-2">Pouco</label>
+                    <input type="radio" name="q4" value="3" id="q4-3"><label for="q4-3">Moderadamente</label>
+                    <input type="radio" name="q4" value="4" id="q4-4"><label for="q4-4">Muito</label>
+                    <input type="radio" name="q4" value="5" id="q4-5"><label for="q4-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. Pressão por resultados ou metas inalcançáveis.</p>
+                <div class="options">
+                    <input type="radio" name="q5" value="1" id="q5-1" required><label for="q5-1">Nada</label>
+                    <input type="radio" name="q5" value="2" id="q5-2"><label for="q5-2">Pouco</label>
+                    <input type="radio" name="q5" value="3" id="q5-3"><label for="q5-3">Moderadamente</label>
+                    <input type="radio" name="q5" value="4" id="q5-4"><label for="q5-4">Muito</label>
+                    <input type="radio" name="q5" value="5" id="q5-5"><label for="q5-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Falta de suporte da equipe ou chefia.</p>
+                <div class="options">
+                    <input type="radio" name="q6" value="1" id="q6-1" required><label for="q6-1">Nada</label>
+                    <input type="radio" name="q6" value="2" id="q6-2"><label for="q6-2">Pouco</label>
+                    <input type="radio" name="q6" value="3" id="q6-3"><label for="q6-3">Moderadamente</label>
+                    <input type="radio" name="q6" value="4" id="q6-4"><label for="q6-4">Muito</label>
+                    <input type="radio" name="q6" value="5" id="q6-5"><label for="q6-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>7. Ambientes de trabalho inseguros ou desorganizados.</p>
+                <div class="options">
+                    <input type="radio" name="q7" value="1" id="q7-1" required><label for="q7-1">Nada</label>
+                    <input type="radio" name="q7" value="2" id="q7-2"><label for="q7-2">Pouco</label>
+                    <input type="radio" name="q7" value="3" id="q7-3"><label for="q7-3">Moderadamente</label>
+                    <input type="radio" name="q7" value="4" id="q7-4"><label for="q7-4">Muito</label>
+                    <input type="radio" name="q7" value="5" id="q7-5"><label for="q7-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>8. Rotina monótona ou repetitiva.</p>
+                <div class="options">
+                    <input type="radio" name="q8" value="1" id="q8-1" required><label for="q8-1">Nada</label>
+                    <input type="radio" name="q8" value="2" id="q8-2"><label for="q8-2">Pouco</label>
+                    <input type="radio" name="q8" value="3" id="q8-3"><label for="q8-3">Moderadamente</label>
+                    <input type="radio" name="q8" value="4" id="q8-4"><label for="q8-4">Muito</label>
+                    <input type="radio" name="q8" value="5" id="q8-5"><label for="q8-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>9. Falta de equilíbrio entre vida pessoal e profissional.</p>
+                <div class="options">
+                    <input type="radio" name="q9" value="1" id="q9-1" required><label for="q9-1">Nada</label>
+                    <input type="radio" name="q9" value="2" id="q9-2"><label for="q9-2">Pouco</label>
+                    <input type="radio" name="q9" value="3" id="q9-3"><label for="q9-3">Moderadamente</label>
+                    <input type="radio" name="q9" value="4" id="q9-4"><label for="q9-4">Muito</label>
+                    <input type="radio" name="q9" value="5" id="q9-5"><label for="q9-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>10. Mudanças frequentes ou imprevisíveis no trabalho.</p>
+                <div class="options">
+                    <input type="radio" name="q10" value="1" id="q10-1" required><label for="q10-1">Nada</label>
+                    <input type="radio" name="q10" value="2" id="q10-2"><label for="q10-2">Pouco</label>
+                    <input type="radio" name="q10" value="3" id="q10-3"><label for="q10-3">Moderadamente</label>
+                    <input type="radio" name="q10" value="4" id="q10-4"><label for="q10-4">Muito</label>
+                    <input type="radio" name="q10" value="5" id="q10-5"><label for="q10-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>11. Falta de recursos ou ferramentas adequadas.</p>
+                <div class="options">
+                    <input type="radio" name="q11" value="1" id="q11-1" required><label for="q11-1">Nada</label>
+                    <input type="radio" name="q11" value="2" id="q11-2"><label for="q11-2">Pouco</label>
+                    <input type="radio" name="q11" value="3" id="q11-3"><label for="q11-3">Moderadamente</label>
+                    <input type="radio" name="q11" value="4" id="q11-4"><label for="q11-4">Muito</label>
+                    <input type="radio" name="q11" value="5" id="q11-5"><label for="q11-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>12. Pressão por produtividade constante.</p>
+                <div class="options">
+                    <input type="radio" name="q12" value="1" id="q12-1" required><label for="q12-1">Nada</label>
+                    <input type="radio" name="q12" value="2" id="q12-2"><label for="q12-2">Pouco</label>
+                    <input type="radio" name="q12" value="3" id="q12-3"><label for="q12-3">Moderadamente</label>
+                    <input type="radio" name="q12" value="4" id="q12-4"><label for="q12-4">Muito</label>
+                    <input type="radio" name="q12" value="5" id="q12-5"><label for="q12-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>13. Comunicação inadequada entre a equipe.</p>
+                <div class="options">
+                    <input type="radio" name="q13" value="1" id="q13-1" required><label for="q13-1">Nada</label>
+                    <input type="radio" name="q13" value="2" id="q13-2"><label for="q13-2">Pouco</label>
+                    <input type="radio" name="q13" value="3" id="q13-3"><label for="q13-3">Moderadamente</label>
+                    <input type="radio" name="q13" value="4" id="q13-4"><label for="q13-4">Muito</label>
+                    <input type="radio" name="q13" value="5" id="q13-5"><label for="q13-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>14. Falta de feedback sobre o desempenho.</p>
+                <div class="options">
+                    <input type="radio" name="q14" value="1" id="q14-1" required><label for="q14-1">Nada</label>
+                    <input type="radio" name="q14" value="2" id="q14-2"><label for="q14-2">Pouco</label>
+                    <input type="radio" name="q14" value="3" id="q14-3"><label for="q14-3">Moderadamente</label>
+                    <input type="radio" name="q14" value="4" id="q14-4"><label for="q14-4">Muito</label>
+                    <input type="radio" name="q14" value="5" id="q14-5"><label for="q14-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>15. Jornada de trabalho excessiva ou horários irregulares.</p>
+                <div class="options">
+                    <input type="radio" name="q15" value="1" id="q15-1" required><label for="q15-1">Nada</label>
+                    <input type="radio" name="q15" value="2" id="q15-2"><label for="q15-2">Pouco</label>
+                    <input type="radio" name="q15" value="3" id="q15-3"><label for="q15-3">Moderadamente</label>
+                    <input type="radio" name="q15" value="4" id="q15-4"><label for="q15-4">Muito</label>
+                    <input type="radio" name="q15" value="5" id="q15-5"><label for="q15-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>16. Falta de oportunidades de crescimento profissional.</p>
+                <div class="options">
+                    <input type="radio" name="q16" value="1" id="q16-1" required><label for="q16-1">Nada</label>
+                    <input type="radio" name="q16" value="2" id="q16-2"><label for="q16-2">Pouco</label>
+                    <input type="radio" name="q16" value="3" id="q16-3"><label for="q16-3">Moderadamente</label>
+                    <input type="radio" name="q16" value="4" id="q16-4"><label for="q16-4">Muito</label>
+                    <input type="radio" name="q16" value="5" id="q16-5"><label for="q16-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>17. Pressão por multitarefa sem treinamento adequado.</p>
+                <div class="options">
+                    <input type="radio" name="q17" value="1" id="q17-1" required><label for="q17-1">Nada</label>
+                    <input type="radio" name="q17" value="2" id="q17-2"><label for="q17-2">Pouco</label>
+                    <input type="radio" name="q17" value="3" id="q17-3"><label for="q17-3">Moderadamente</label>
+                    <input type="radio" name="q17" value="4" id="q17-4"><label for="q17-4">Muito</label>
+                    <input type="radio" name="q17" value="5" id="q17-5"><label for="q17-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>18. Exigências contraditórias ou falta de clareza nas funções.</p>
+                <div class="options">
+                    <input type="radio" name="q18" value="1" id="q18-1" required><label for="q18-1">Nada</label>
+                    <input type="radio" name="q18" value="2" id="q18-2"><label for="q18-2">Pouco</label>
+                    <input type="radio" name="q18" value="3" id="q18-3"><label for="q18-3">Moderadamente</label>
+                    <input type="radio" name="q18" value="4" id="q18-4"><label for="q18-4">Muito</label>
+                    <input type="radio" name="q18" value="5" id="q18-5"><label for="q18-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>19. Insegurança em relação à estabilidade no emprego.</p>
+                <div class="options">
+                    <input type="radio" name="q19" value="1" id="q19-1" required><label for="q19-1">Nada</label>
+                    <input type="radio" name="q19" value="2" id="q19-2"><label for="q19-2">Pouco</label>
+                    <input type="radio" name="q19" value="3" id="q19-3"><label for="q19-3">Moderadamente</label>
+                    <input type="radio" name="q19" value="4" id="q19-4"><label for="q19-4">Muito</label>
+                    <input type="radio" name="q19" value="5" id="q19-5"><label for="q19-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>20. Trabalho em condições físicas inadequadas.</p>
+                <div class="options">
+                    <input type="radio" name="q20" value="1" id="q20-1" required><label for="q20-1">Nada</label>
+                    <input type="radio" name="q20" value="2" id="q20-2"><label for="q20-2">Pouco</label>
+                    <input type="radio" name="q20" value="3" id="q20-3"><label for="q20-3">Moderadamente</label>
+                    <input type="radio" name="q20" value="4" id="q20-4"><label for="q20-4">Muito</label>
+                    <input type="radio" name="q20" value="5" id="q20-5"><label for="q20-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>21. Falta de pausas ou tempo de descanso suficiente.</p>
+                <div class="options">
+                    <input type="radio" name="q21" value="1" id="q21-1" required><label for="q21-1">Nada</label>
+                    <input type="radio" name="q21" value="2" id="q21-2"><label for="q21-2">Pouco</label>
+                    <input type="radio" name="q21" value="3" id="q21-3"><label for="q21-3">Moderadamente</label>
+                    <input type="radio" name="q21" value="4" id="q21-4"><label for="q21-4">Muito</label>
+                    <input type="radio" name="q21" value="5" id="q21-5"><label for="q21-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>22. Exigência de estar sempre disponível (ex.: após horário).</p>
+                <div class="options">
+                    <input type="radio" name="q22" value="1" id="q22-1" required><label for="q22-1">Nada</label>
+                    <input type="radio" name="q22" value="2" id="q22-2"><label for="q22-2">Pouco</label>
+                    <input type="radio" name="q22" value="3" id="q22-3"><label for="q22-3">Moderadamente</label>
+                    <input type="radio" name="q22" value="4" id="q22-4"><label for="q22-4">Muito</label>
+                    <input type="radio" name="q22" value="5" id="q22-5"><label for="q22-5">Extremamente</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>23. Sensação de que o trabalho não tem significado ou propósito.</p>
+                <div class="options">
+                    <input type="radio" name="q23" value="1" id="q23-1" required><label for="q23-1">Nada</label>
+                    <input type="radio" name="q23" value="2" id="q23-2"><label for="q23-2">Pouco</label>
+                    <input type="radio" name="q23" value="3" id="q23-3"><label for="q23-3">Moderadamente</label>
+                    <input type="radio" name="q23" value="4" id="q23-4"><label for="q23-4">Muito</label>
+                    <input type="radio" name="q23" value="5" id="q23-5"><label for="q23-5">Extremamente</label>
+                </div>
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+    </a>
+
+    <script>
+        function calculateScore() {
+            const form = document.getElementById('eetForm');
+            let totalScore = 0;
+
+            // Calcular pontuação para os 23 itens
+            for (let i = 1; i <= 23; i++) {
+                const question = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!question) {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+                totalScore += parseInt(question.value);
+            }
+
+            // Exibir resultado
+            const resultDiv = document.getElementById('result');
+            let message = `Pontuação Total: ${totalScore} de 115\n\n`;
+            const averageScore = totalScore / 23;
+            if (averageScore >= 4) {
+                message += 'Nível de estresse alto. ';
+            } else if (averageScore >= 2.5) {
+                message += 'Nível de estresse moderado. ';
+            } else {
+                message += 'Nível de estresse baixo. ';
+            }
+            message += 'Consulte um profissional para uma avaliação detalhada e estratégias de manejo.';
+
+            resultDiv.textContent = message;
+            resultDiv.style.whiteSpace = 'pre-line';
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala SNAP-IV - ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .options label:hover {
+                    background-color: #1428a3;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #1428a3;
+                    font-weight: 600;
+                }
+
+        .calculate-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover {
+                background-color: #4B5563;
+            }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Escala SNAP-IV - Avaliação de TDAH e Comportamentos Opositivos</h1>
+        <h2>Responda às perguntas abaixo com base no comportamento da criança nos últimos 6 meses.</h2>
+
+        <form id="snapForm">
+            <!-- Desatenção (Itens 1 a 9) -->
+            <div class="question">
+                <p>1. Comete erros por descuido em tarefas escolares, no trabalho ou em outras atividades?</p>
+                <div class="options">
+                    <input type="radio" name="q1" value="0" id="q1-0" required><label for="q1-0">Nada</label>
+                    <input type="radio" name="q1" value="1" id="q1-1"><label for="q1-1">Um pouco</label>
+                    <input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">Bastante</label>
+                    <input type="radio" name="q1" value="3" id="q1-3"><label for="q1-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Tem dificuldade para manter a atenção em tarefas ou atividades recreativas?</p>
+                <div class="options">
+                    <input type="radio" name="q2" value="0" id="q2-0" required><label for="q2-0">Nada</label>
+                    <input type="radio" name="q2" value="1" id="q2-1"><label for="q2-1">Um pouco</label>
+                    <input type="radio" name="q2" value="2" id="q2-2"><label for="q2-2">Bastante</label>
+                    <input type="radio" name="q2" value="3" id="q2-3"><label for="q2-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. Parece não escutar quando lhe falam diretamente?</p>
+                <div class="options">
+                    <input type="radio" name="q3" value="0" id="q3-0" required><label for="q3-0">Nada</label>
+                    <input type="radio" name="q3" value="1" id="q3-1"><label for="q3-1">Um pouco</label>
+                    <input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">Bastante</label>
+                    <input type="radio" name="q3" value="3" id="q3-3"><label for="q3-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. Não segue instruções e não consegue terminar tarefas escolares ou deveres?</p>
+                <div class="options">
+                    <input type="radio" name="q4" value="0" id="q4-0" required><label for="q4-0">Nada</label>
+                    <input type="radio" name="q4" value="1" id="q4-1"><label for="q4-1">Um pouco</label>
+                    <input type="radio" name="q4" value="2" id="q4-2"><label for="q4-2">Bastante</label>
+                    <input type="radio" name="q4" value="3" id="q4-3"><label for="q4-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. Tem dificuldade para organizar tarefas e atividades?</p>
+                <div class="options">
+                    <input type="radio" name="q5" value="0" id="q5-0" required><label for="q5-0">Nada</label>
+                    <input type="radio" name="q5" value="1" id="q5-1"><label for="q5-1">Um pouco</label>
+                    <input type="radio" name="q5" value="2" id="q5-2"><label for="q5-2">Bastante</label>
+                    <input type="radio" name="q5" value="3" id="q5-3"><label for="q5-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Evita, não gosta ou reluta em se engajar em tarefas que exigem esforço mental prolongado?</p>
+                <div class="options">
+                    <input type="radio" name="q6" value="0" id="q6-0" required><label for="q6-0">Nada</label>
+                    <input type="radio" name="q6" value="1" id="q6-1"><label for="q6-1">Um pouco</label>
+                    <input type="radio" name="q6" value="2" id="q6-2"><label for="q6-2">Bastante</label>
+                    <input type="radio" name="q6" value="3" id="q6-3"><label for="q6-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>7. Perde coisas necessárias para tarefas ou atividades (ex.: brinquedos, lápis)?</p>
+                <div class="options">
+                    <input type="radio" name="q7" value="0" id="q7-0" required><label for="q7-0">Nada</label>
+                    <input type="radio" name="q7" value="1" id="q7-1"><label for="q7-1">Um pouco</label>
+                    <input type="radio" name="q7" value="2" id="q7-2"><label for="q7-2">Bastante</label>
+                    <input type="radio" name="q7" value="3" id="q7-3"><label for="q7-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>8. Distrai-se facilmente por estímulos externos?</p>
+                <div class="options">
+                    <input type="radio" name="q8" value="0" id="q8-0" required><label for="q8-0">Nada</label>
+                    <input type="radio" name="q8" value="1" id="q8-1"><label for="q8-1">Um pouco</label>
+                    <input type="radio" name="q8" value="2" id="q8-2"><label for="q8-2">Bastante</label>
+                    <input type="radio" name="q8" value="3" id="q8-3"><label for="q8-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>9. Esquece-se de atividades diárias (ex.: tarefas escolares, compromissos)?</p>
+                <div class="options">
+                    <input type="radio" name="q9" value="0" id="q9-0" required><label for="q9-0">Nada</label>
+                    <input type="radio" name="q9" value="1" id="q9-1"><label for="q9-1">Um pouco</label>
+                    <input type="radio" name="q9" value="2" id="q9-2"><label for="q9-2">Bastante</label>
+                    <input type="radio" name="q9" value="3" id="q9-3"><label for="q9-3">Muito</label>
+                </div>
+            </div>
+
+            <!-- Hiperatividade/Impulsividade (Itens 10 a 18) -->
+            <div class="question">
+                <p>10. Remexe-se ou mexe as mãos ou pés quando sentado?</p>
+                <div class="options">
+                    <input type="radio" name="q10" value="0" id="q10-0" required><label for="q10-0">Nada</label>
+                    <input type="radio" name="q10" value="1" id="q10-1"><label for="q10-1">Um pouco</label>
+                    <input type="radio" name="q10" value="2" id="q10-2"><label for="q10-2">Bastante</label>
+                    <input type="radio" name="q10" value="3" id="q10-3"><label for="q10-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>11. Levanta-se em situações em que deveria permanecer sentado (ex.: na sala de aula)?</p>
+                <div class="options">
+                    <input type="radio" name="q11" value="0" id="q11-0" required><label for="q11-0">Nada</label>
+                    <input type="radio" name="q11" value="1" id="q11-1"><label for="q11-1">Um pouco</label>
+                    <input type="radio" name="q11" value="2" id="q11-2"><label for="q11-2">Bastante</label>
+                    <input type="radio" name="q11" value="3" id="q11-3"><label for="q11-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>12. Corre ou escala excessivamente em situações inadequadas?</p>
+                <div class="options">
+                    <input type="radio" name="q12" value="0" id="q12-0" required><label for="q12-0">Nada</label>
+                    <input type="radio" name="q12" value="1" id="q12-1"><label for="q12-1">Um pouco</label>
+                    <input type="radio" name="q12" value="2" id="q12-2"><label for="q12-2">Bastante</label>
+                    <input type="radio" name="q12" value="3" id="q12-3"><label for="q12-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>13. Tem dificuldade para brincar ou se engajar em atividades de lazer de forma tranquila?</p>
+                <div class="options">
+                    <input type="radio" name="q13" value="0" id="q13-0" required><label for="q13-0">Nada</label>
+                    <input type="radio" name="q13" value="1" id="q13-1"><label for="q13-1">Um pouco</label>
+                    <input type="radio" name="q13" value="2" id="q13-2"><label for="q13-2">Bastante</label>
+                    <input type="radio" name="q13" value="3" id="q13-3"><label for="q13-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>14. Está sempre "a mil" ou age como se fosse movido a motor?</p>
+                <div class="options">
+                    <input type="radio" name="q14" value="0" id="q14-0" required><label for="q14-0">Nada</label>
+                    <input type="radio" name="q14" value="1" id="q14-1"><label for="q14-1">Um pouco</label>
+                    <input type="radio" name="q14" value="2" id="q14-2"><label for="q14-2">Bastante</label>
+                    <input type="radio" name="q14" value="3" id="q14-3"><label for="q14-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>15. Fala excessivamente?</p>
+                <div class="options">
+                    <input type="radio" name="q15" value="0" id="q15-0" required><label for="q15-0">Nada</label>
+                    <input type="radio" name="q15" value="1" id="q15-1"><label for="q15-1">Um pouco</label>
+                    <input type="radio" name="q15" value="2" id="q15-2"><label for="q15-2">Bastante</label>
+                    <input type="radio" name="q15" value="3" id="q15-3"><label for="q15-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>16. Responde antes que as perguntas sejam concluídas?</p>
+                <div class="options">
+                    <input type="radio" name="q16" value="0" id="q16-0" required><label for="q16-0">Nada</label>
+                    <input type="radio" name="q16" value="1" id="q16-1"><label for="q16-1">Um pouco</label>
+                    <input type="radio" name="q16" value="2" id="q16-2"><label for="q16-2">Bastante</label>
+                    <input type="radio" name="q16" value="3" id="q16-3"><label for="q16-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>17. Tem dificuldade para esperar sua vez?</p>
+                <div class="options">
+                    <input type="radio" name="q17" value="0" id="q17-0" required><label for="q17-0">Nada</label>
+                    <input type="radio" name="q17" value="1" id="q17-1"><label for="q17-1">Um pouco</label>
+                    <input type="radio" name="q17" value="2" id="q17-2"><label for="q17-2">Bastante</label>
+                    <input type="radio" name="q17" value="3" id="q17-3"><label for="q17-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>18. Interrompe ou se intromete em conversas ou atividades dos outros?</p>
+                <div class="options">
+                    <input type="radio" name="q18" value="0" id="q18-0" required><label for="q18-0">Nada</label>
+                    <input type="radio" name="q18" value="1" id="q18-1"><label for="q18-1">Um pouco</label>
+                    <input type="radio" name="q18" value="2" id="q18-2"><label for="q18-2">Bastante</label>
+                    <input type="radio" name="q18" value="3" id="q18-3"><label for="q18-3">Muito</label>
+                </div>
+            </div>
+
+            <!-- Transtorno Desafiador Opositivo (Itens 19 a 26) -->
+            <div class="question">
+                <p>19. Perde a paciência com frequência?</p>
+                <div class="options">
+                    <input type="radio" name="q19" value="0" id="q19-0" required><label for="q19-0">Nada</label>
+                    <input type="radio" name="q19" value="1" id="q19-1"><label for="q19-1">Um pouco</label>
+                    <input type="radio" name="q19" value="2" id="q19-2"><label for="q19-2">Bastante</label>
+                    <input type="radio" name="q19" value="3" id="q19-3"><label for="q19-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>20. Discute frequentemente com adultos?</p>
+                <div class="options">
+                    <input type="radio" name="q20" value="0" id="q20-0" required><label for="q20-0">Nada</label>
+                    <input type="radio" name="q20" value="1" id="q20-1"><label for="q20-1">Um pouco</label>
+                    <input type="radio" name="q20" value="2" id="q20-2"><label for="q20-2">Bastante</label>
+                    <input type="radio" name="q20" value="3" id="q20-3"><label for="q20-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>21. Desafia ativamente ou se recusa a cumprir pedidos ou regras de adultos?</p>
+                <div class="options">
+                    <input type="radio" name="q21" value="0" id="q21-0" required><label for="q21-0">Nada</label>
+                    <input type="radio" name="q21" value="1" id="q21-1"><label for="q21-1">Um pouco</label>
+                    <input type="radio" name="q21" value="2" id="q21-2"><label for="q21-2">Bastante</label>
+                    <input type="radio" name="q21" value="3" id="q21-3"><label for="q21-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>22. Faz coisas de propósito para irritar os outros?</p>
+                <div class="options">
+                    <input type="radio" name="q22" value="0" id="q22-0" required><label for="q22-0">Nada</label>
+                    <input type="radio" name="q22" value="1" id="q22-1"><label for="q22-1">Um pouco</label>
+                    <input type="radio" name="q22" value="2" id="q22-2"><label for="q22-2">Bastante</label>
+                    <input type="radio" name="q22" value="3" id="q22-3"><label for="q22-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>23. Culpa os outros pelos seus erros ou mau comportamento?</p>
+                <div class="options">
+                    <input type="radio" name="q23" value="0" id="q23-0" required><label for="q23-0">Nada</label>
+                    <input type="radio" name="q23" value="1" id="q23-1"><label for="q23-1">Um pouco</label>
+                    <input type="radio" name="q23" value="2" id="q23-2"><label for="q23-2">Bastante</label>
+                    <input type="radio" name="q23" value="3" id="q23-3"><label for="q23-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>24. É facilmente irritado ou aborrecido?</p>
+                <div class="options">
+                    <input type="radio" name="q24" value="0" id="q24-0" required><label for="q24-0">Nada</label>
+                    <input type="radio" name="q24" value="1" id="q24-1"><label for="q24-1">Um pouco</label>
+                    <input type="radio" name="q24" value="2" id="q24-2"><label for="q24-2">Bastante</label>
+                    <input type="radio" name="q24" value="3" id="q24-3"><label for="q24-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>25. Fica com raiva ou ressentido com frequência?</p>
+                <div class="options">
+                    <input type="radio" name="q25" value="0" id="q25-0" required><label for="q25-0">Nada</label>
+                    <input type="radio" name="q25" value="1" id="q25-1"><label for="q25-1">Um pouco</label>
+                    <input type="radio" name="q25" value="2" id="q25-2"><label for="q25-2">Bastante</label>
+                    <input type="radio" name="q25" value="3" id="q25-3"><label for="q25-3">Muito</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>26. É vingativo ou rancoroso?</p>
+                <div class="options">
+                    <input type="radio" name="q26" value="0" id="q26-0" required><label for="q26-0">Nada</label>
+                    <input type="radio" name="q26" value="1" id="q26-1"><label for="q26-1">Um pouco</label>
+                    <input type="radio" name="q26" value="2" id="q26-2"><label for="q26-2">Bastante</label>
+                    <input type="radio" name="q26" value="3" id="q26-3"><label for="q26-3">Muito</label>
+                </div>
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateScore() {
+            const form = document.getElementById('snapForm');
+            let inattentionScore = 0;
+            let hyperactivityScore = 0;
+            let oppositionalScore = 0;
+
+            // Calcular pontuação para Desatenção (itens 1 a 9)
+            for (let i = 1; i <= 9; i++) {
+                const question = form.querySelector(`input[name="q${i}"]:checked`);
+                if (question) {
+                    inattentionScore += parseInt(question.value);
+                } else {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+            }
+
+            // Calcular pontuação para Hiperatividade/Impulsividade (itens 10 a 18)
+            for (let i = 10; i <= 18; i++) {
+                const question = form.querySelector(`input[name="q${i}"]:checked`);
+                if (question) {
+                    hyperactivityScore += parseInt(question.value);
+                } else {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+            }
+
+            // Calcular pontuação para TDO (itens 19 a 26)
+            for (let i = 19; i <= 26; i++) {
+                const question = form.querySelector(`input[name="q${i}"]:checked`);
+                if (question) {
+                    oppositionalScore += parseInt(question.value);
+                } else {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+            }
+
+            // Calcular pontuação total
+            const totalScore = inattentionScore + hyperactivityScore + oppositionalScore;
+
+            // Exibir resultado
+            const resultDiv = document.getElementById('result');
+            let message = `Pontuação Total: ${totalScore} de 78\n\n`;
+            message += `Desatenção: ${inattentionScore} de 27\n`;
+            message += `Hiperatividade/Impulsividade: ${hyperactivityScore} de 27\n`;
+            message += `Transtorno Desafiador Opositivo: ${oppositionalScore} de 24\n\n`;
+
+            // Mensagem orientativa
+            if (totalScore >= 39 || inattentionScore >= 18 || hyperactivityScore >= 18 || oppositionalScore >= 12) {
+                message += 'Pontuações altas podem indicar sintomas de TDAH ou comportamentos opositivos. ';
+            } else if (totalScore >= 26 || inattentionScore >= 12 || hyperactivityScore >= 12 || oppositionalScore >= 8) {
+                message += 'As pontuações sugerem alguns sintomas que podem precisar de atenção. ';
+            } else {
+                message += 'As pontuações estão dentro de um intervalo baixo para sintomas de TDAH ou TDO. ';
+            }
+            message += 'Consulte um profissional de saúde mental para uma avaliação completa.';
+
+            resultDiv.textContent = message;
+            resultDiv.style.whiteSpace = 'pre-line';
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

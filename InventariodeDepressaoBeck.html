@@ -1,0 +1,412 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventário de Depressão de Beck (BDI) - ProntPsi</title>
+    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="geralpsi.js" defer></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .options label:hover {
+                    background-color: #4B5563;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #4B5563;
+                    font-weight: 600;
+                }
+
+        .calculate-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover {
+                background-color: #4B5563;
+            }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navBar">
+            <div class="logo">
+                <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+            </div>
+            <ul class="navBarLinkDekstop">
+                <li><a href="paginainicial.html">Home</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="#">Cadastro</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+            <div class="mobile-menu" id="MobileMenu">
+                <button class="close" id="closeButton">
+                    <i class="fas fa-times"></i>
+                </button>
+                <ul class="navBarLinkMobile">
+                    <li><a href="paginainicial.html">Home</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="#">Cadastro</a></li>
+                    <li><a href="#">Login</a></li>
+                </ul>
+            </div>
+            <button class="Hamburger" id="HamburgerButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="logo">
+            <img src="fundoLogo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Inventário de Depressão de Beck (BDI)</h1>
+        <h2>Responda às perguntas abaixo com base em como você se sentiu nos últimos 2 semanas, incluindo hoje. Escolha a opção que melhor reflete sua experiência.</h2>
+
+        <form id="bdiForm">
+            <div class="question">
+                <p>1. Tristeza (0 - Não me senti triste; 1 - Senti-me triste parte do tempo; 2 - Senti-me triste a maior parte do tempo; 3 - Senti-me triste ou infeliz o tempo todo).</p>
+                <div class="options">
+                    <input type="radio" name="q1" value="0" id="q1-0" required><label for="q1-0">0</label>
+                    <input type="radio" name="q1" value="1" id="q1-1"><label for="q1-1">1</label>
+                    <input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">2</label>
+                    <input type="radio" name="q1" value="3" id="q1-3"><label for="q1-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Desânimo ou insatisfação (0 - Não me senti desencorajado(a); 1 - Senti-me desencorajado(a) ou insatisfeito(a) parte do tempo; 2 - Senti-me desencorajado(a) ou insatisfeito(a) a maior parte do tempo; 3 - Senti-me desencorajado(a) ou insatisfeito(a) o tempo todo).</p>
+                <div class="options">
+                    <input type="radio" name="q2" value="0" id="q2-0" required><label for="q2-0">0</label>
+                    <input type="radio" name="q2" value="1" id="q2-1"><label for="q2-1">1</label>
+                    <input type="radio" name="q2" value="2" id="q2-2"><label for="q2-2">2</label>
+                    <input type="radio" name="q2" value="3" id="q2-3"><label for="q2-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. Sentimento de fracasso (0 - Não me senti um fracasso; 1 - Senti-me um fracasso em algumas coisas; 2 - Senti-me um fracasso como pessoa; 3 - Senti que fui um fracasso total).</p>
+                <div class="options">
+                    <input type="radio" name="q3" value="0" id="q3-0" required><label for="q3-0">0</label>
+                    <input type="radio" name="q3" value="1" id="q3-1"><label for="q3-1">1</label>
+                    <input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">2</label>
+                    <input type="radio" name="q3" value="3" id="q3-3"><label for="q3-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. Perda de prazer (0 - Sinto prazer como antes; 1 - Sinto menos prazer que antes; 2 - Não sinto prazer em nada; 3 - Não consigo sentir prazer em nada).</p>
+                <div class="options">
+                    <input type="radio" name="q4" value="0" id="q4-0" required><label for="q4-0">0</label>
+                    <input type="radio" name="q4" value="1" id="q4-1"><label for="q4-1">1</label>
+                    <input type="radio" name="q4" value="2" id="q4-2"><label for="q4-2">2</label>
+                    <input type="radio" name="q4" value="3" id="q4-3"><label for="q4-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. Sentimento de culpa (0 - Não me sinto culpado(a); 1 - Sinto-me culpado(a) por algumas coisas; 2 - Sinto-me bastante culpado(a); 3 - Sinto-me culpado(a) o tempo todo).</p>
+                <div class="options">
+                    <input type="radio" name="q5" value="0" id="q5-0" required><label for="q5-0">0</label>
+                    <input type="radio" name="q5" value="1" id="q5-1"><label for="q5-1">1</label>
+                    <input type="radio" name="q5" value="2" id="q5-2"><label for="q5-2">2</label>
+                    <input type="radio" name="q5" value="3" id="q5-3"><label for="q5-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Sentimento de punição (0 - Não me sinto punido(a); 1 - Sinto que mereço ser punido(a); 2 - Espero ser punido(a); 3 - Sinto que estou sendo punido(a)).</p>
+                <div class="options">
+                    <input type="radio" name="q6" value="0" id="q6-0" required><label for="q6-0">0</label>
+                    <input type="radio" name="q6" value="1" id="q6-1"><label for="q6-1">1</label>
+                    <input type="radio" name="q6" value="2" id="q6-2"><label for="q6-2">2</label>
+                    <input type="radio" name="q6" value="3" id="q6-3"><label for="q6-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>7. Autodesprezo (0 - Não me sinto desprezível; 1 - Sinto-me desprezível parte do tempo; 2 - Sinto-me bastante desprezível; 3 - Sinto-me totalmente desprezível).</p>
+                <div class="options">
+                    <input type="radio" name="q7" value="0" id="q7-0" required><label for="q7-0">0</label>
+                    <input type="radio" name="q7" value="1" id="q7-1"><label for="q7-1">1</label>
+                    <input type="radio" name="q7" value="2" id="q7-2"><label for="q7-2">2</label>
+                    <input type="radio" name="q7" value="3" id="q7-3"><label for="q7-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>8. Autocrítica (0 - Não me critico mais que o normal; 1 - Critico-me por falhas ou erros; 2 - Critico-me por tudo; 3 - Blamo-me por tudo).</p>
+                <div class="options">
+                    <input type="radio" name="q8" value="0" id="q8-0" required><label for="q8-0">0</label>
+                    <input type="radio" name="q8" value="1" id="q8-1"><label for="q8-1">1</label>
+                    <input type="radio" name="q8" value="2" id="q8-2"><label for="q8-2">2</label>
+                    <input type="radio" name="q8" value="3" id="q8-3"><label for="q8-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>9. Pensamentos suicidas (0 - Não tenho pensamentos suicidas; 1 - Tenho pensamentos de me machucar; 2 - Gostaria de me matar; 3 - Tenho planos de me matar).</p>
+                <div class="options">
+                    <input type="radio" name="q9" value="0" id="q9-0" required><label for="q9-0">0</label>
+                    <input type="radio" name="q9" value="1" id="q9-1"><label for="q9-1">1</label>
+                    <input type="radio" name="q9" value="2" id="q9-2"><label for="q9-2">2</label>
+                    <input type="radio" name="q9" value="3" id="q9-3"><label for="q9-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>10. Choro (0 - Não choro mais que o normal; 1 - Choro mais que o normal; 2 - Choro por qualquer coisa; 3 - Não consigo chorar mesmo querendo).</p>
+                <div class="options">
+                    <input type="radio" name="q10" value="0" id="q10-0" required><label for="q10-0">0</label>
+                    <input type="radio" name="q10" value="1" id="q10-1"><label for="q10-1">1</label>
+                    <input type="radio" name="q10" value="2" id="q10-2"><label for="q10-2">2</label>
+                    <input type="radio" name="q10" value="3" id="q10-3"><label for="q10-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>11. Agitação (0 - Não estou mais agitado(a) que o normal; 1 - Estou mais agitado(a) que o normal; 2 - Estou muito agitado(a); 3 - Estou tão agitado(a) que não consigo ficar quieto(a)).</p>
+                <div class="options">
+                    <input type="radio" name="q11" value="0" id="q11-0" required><label for="q11-0">0</label>
+                    <input type="radio" name="q11" value="1" id="q11-1"><label for="q11-1">1</label>
+                    <input type="radio" name="q11" value="2" id="q11-2"><label for="q11-2">2</label>
+                    <input type="radio" name="q11" value="3" id="q11-3"><label for="q11-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>12. Perda de interesse (0 - Estou interessado(a) nas coisas como antes; 1 - Perdi interesse em algumas coisas; 2 - Perdi interesse em quase tudo; 3 - Perdi interesse em tudo).</p>
+                <div class="options">
+                    <input type="radio" name="q12" value="0" id="q12-0" required><label for="q12-0">0</label>
+                    <input type="radio" name="q12" value="1" id="q12-1"><label for="q12-1">1</label>
+                    <input type="radio" name="q12" value="2" id="q12-2"><label for="q12-2">2</label>
+                    <input type="radio" name="q12" value="3" id="q12-3"><label for="q12-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>13. Indecisão (0 - Tomo decisões como antes; 1 - Tenho dificuldade para tomar decisões; 2 - Tenho muita dificuldade para decidir; 3 - Não consigo tomar decisões).</p>
+                <div class="options">
+                    <input type="radio" name="q13" value="0" id="q13-0" required><label for="q13-0">0</label>
+                    <input type="radio" name="q13" value="1" id="q13-1"><label for="q13-1">1</label>
+                    <input type="radio" name="q13" value="2" id="q13-2"><label for="q13-2">2</label>
+                    <input type="radio" name="q13" value="3" id="q13-3"><label for="q13-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>14. Perda de valor (0 - Sinto-me útil como antes; 1 - Sinto-me menos útil; 2 - Sinto-me inútil; 3 - Sinto-me completamente inútil).</p>
+                <div class="options">
+                    <input type="radio" name="q14" value="0" id="q14-0" required><label for="q14-0">0</label>
+                    <input type="radio" name="q14" value="1" id="q14-1"><label for="q14-1">1</label>
+                    <input type="radio" name="q14" value="2" id="q14-2"><label for="q14-2">2</label>
+                    <input type="radio" name="q14" value="3" id="q14-3"><label for="q14-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>15. Perda de energia (0 - Tenho tanta energia quanto antes; 1 - Tenho menos energia que antes; 2 - Tenho muito pouca energia; 3 - Estou muito cansado(a) ou sem energia).</p>
+                <div class="options">
+                    <input type="radio" name="q15" value="0" id="q15-0" required><label for="q15-0">0</label>
+                    <input type="radio" name="q15" value="1" id="q15-1"><label for="q15-1">1</label>
+                    <input type="radio" name="q15" value="2" id="q15-2"><label for="q15-2">2</label>
+                    <input type="radio" name="q15" value="3" id="q15-3"><label for="q15-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>16. Mudanças no sono (0 - Durmo bem; 1 - Durmo um pouco mais ou menos que o normal; 2 - Acordo cedo ou durmo muito; 3 - Não durmo ou durmo muito pouco).</p>
+                <div class="options">
+                    <input type="radio" name="q16" value="0" id="q16-0" required><label for="q16-0">0</label>
+                    <input type="radio" name="q16" value="1" id="q16-1"><label for="q16-1">1</label>
+                    <input type="radio" name="q16" value="2" id="q16-2"><label for="q16-2">2</label>
+                    <input type="radio" name="q16" value="3" id="q16-3"><label for="q16-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>17. Irritabilidade (0 - Não estou mais irritado(a) que o normal; 1 - Estou mais irritado(a); 2 - Estou muito irritado(a); 3 - Estou irritado(a) o tempo todo).</p>
+                <div class="options">
+                    <input type="radio" name="q17" value="0" id="q17-0" required><label for="q17-0">0</label>
+                    <input type="radio" name="q17" value="1" id="q17-1"><label for="q17-1">1</label>
+                    <input type="radio" name="q17" value="2" id="q17-2"><label for="q17-2">2</label>
+                    <input type="radio" name="q17" value="3" id="q17-3"><label for="q17-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>18. Mudanças no apetite (0 - Meu apetite está normal; 1 - Meu apetite está um pouco reduzido ou aumentado; 2 - Meu apetite está muito reduzido ou aumentado; 3 - Não tenho apetite ou como demais).</p>
+                <div class="options">
+                    <input type="radio" name="q18" value="0" id="q18-0" required><label for="q18-0">0</label>
+                    <input type="radio" name="q18" value="1" id="q18-1"><label for="q18-1">1</label>
+                    <input type="radio" name="q18" value="2" id="q18-2"><label for="q18-2">2</label>
+                    <input type="radio" name="q18" value="3" id="q18-3"><label for="q18-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>19. Concentração (0 - Consigo me concentrar como antes; 1 - Tenho dificuldade para me concentrar; 2 - Tenho muita dificuldade; 3 - Não consigo me concentrar).</p>
+                <div class="options">
+                    <input type="radio" name="q19" value="0" id="q19-0" required><label for="q19-0">0</label>
+                    <input type="radio" name="q19" value="1" id="q19-1"><label for="q19-1">1</label>
+                    <input type="radio" name="q19" value="2" id="q19-2"><label for="q19-2">2</label>
+                    <input type="radio" name="q19" value="3" id="q19-3"><label for="q19-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>20. Cansaço ou fadiga (0 - Não me sinto mais cansado(a) que o normal; 1 - Sinto-me mais cansado(a); 2 - Estou muito cansado(a); 3 - Estou exausto(a) ou sem energia).</p>
+                <div class="options">
+                    <input type="radio" name="q20" value="0" id="q20-0" required><label for="q20-0">0</label>
+                    <input type="radio" name="q20" value="1" id="q20-1"><label for="q20-1">1</label>
+                    <input type="radio" name="q20" value="2" id="q20-2"><label for="q20-2">2</label>
+                    <input type="radio" name="q20" value="3" id="q20-3"><label for="q20-3">3</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>21. Perda de interesse sexual (0 - Meu interesse sexual está normal; 1 - Meu interesse sexual está reduzido; 2 - Meu interesse sexual está muito reduzido; 3 - Perdi completamente o interesse sexual).</p>
+                <div class="options">
+                    <input type="radio" name="q21" value="0" id="q21-0" required><label for="q21-0">0</label>
+                    <input type="radio" name="q21" value="1" id="q21-1"><label for="q21-1">1</label>
+                    <input type="radio" name="q21" value="2" id="q21-2"><label for="q21-2">2</label>
+                    <input type="radio" name="q21" value="3" id="q21-3"><label for="q21-3">3</label>
+                </div>
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+    </a>
+
+    <script>
+        function calculateScore() {
+            const form = document.getElementById('bdiForm');
+            let totalScore = 0;
+
+            // Calcular pontuação para os 21 itens
+            for (let i = 1; i <= 21; i++) {
+                const question = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!question) {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+                totalScore += parseInt(question.value);
+            }
+
+            // Exibir resultado
+            const resultDiv = document.getElementById('result');
+            let message = `Pontuação Total: ${totalScore} de 63\n\n`;
+            if (totalScore >= 29) {
+                message += 'Gravidade: Grave. ';
+            } else if (totalScore >= 20) {
+                message += 'Gravidade: Moderada. ';
+            } else if (totalScore >= 14) {
+                message += 'Gravidade: Leve. ';
+            } else {
+                message += 'Gravidade: Mínima. ';
+            }
+            message += 'Consulte um profissional de saúde mental para uma avaliação detalhada.';
+
+            resultDiv.textContent = message;
+            resultDiv.style.whiteSpace = 'pre-line';
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

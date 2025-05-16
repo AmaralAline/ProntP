@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Técnica: Agenda de Relações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+            .section p {
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: #6B7280;
+            color: #ffffff;
+        }
+
+        .entry-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #6B7280;
+        }
+
+        th {
+            background-color: #1428a3;
+        }
+
+        button {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #1428a3;
+            }
+
+        #reflection-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        #error {
+            color: #ff4d4d;
+            text-align: center;
+            display: none;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Técnica: Agenda de Relações</h1>
+        <h2>Registre seus sentimentos e pensamentos associados</h2>
+        <div class="section">
+            <p>Registre seus sentimentos e os pensamentos associados a eles. Isso ajudará você e seu terapeuta a entender melhor as relações entre seus pensamentos e emoções.</p>
+            <p>Para cada entrada, descreva o sentimento e o pensamento por trás dele.</p>
+            <div class="entry-form">
+                <input type="text" id="feeling" placeholder="Ex.: Tristeza">
+                <input type="text" id="thought" placeholder="Ex.: Ninguém se importa comigo">
+                <button onclick="addEntry()">Adicionar Entrada</button>
+            </div>
+            <p id="error"></p>
+        </div>
+        <table id="entriesTable">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Sentimento</th>
+                    <th>Pensamento</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="entriesBody"></tbody>
+        </table>
+        <div id="reflection-section">
+            <p>Reflita: Como esses registros mostram a relação entre seus pensamentos e sentimentos?</p>
+            <textarea id="reflection" placeholder="Escreva suas reflexões aqui..."></textarea>
+            <button onclick="saveReflection()">Salvar Reflexão</button>
+        </div>
+    </div>
+
+    <script>
+        let entries = [];
+
+        function addEntry() {
+            const feeling = document.getElementById('feeling').value.trim();
+            const thought = document.getElementById('thought').value.trim();
+
+            if (!feeling || !thought) {
+                document.getElementById('error').textContent = 'Por favor, preencha ambos os campos.';
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+
+            const date = new Date().toISOString();
+            entries.push({ date, feeling, thought });
+            document.getElementById('feeling').value = '';
+            document.getElementById('thought').value = '';
+            document.getElementById('error').style.display = 'none';
+            renderEntries();
+            saveData();
+        }
+
+        function removeEntry(index) {
+            if (confirm('Tem certeza que deseja remover esta entrada?')) {
+                entries.splice(index, 1);
+                renderEntries();
+                saveData();
+            }
+        }
+
+        function renderEntries() {
+            const entriesBody = document.getElementById('entriesBody');
+            entriesBody.innerHTML = '';
+
+            entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+            entries.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${formatDate(entry.date)}</td>
+                        <td>${entry.feeling}</td>
+                        <td>${entry.thought}</td>
+                        <td><button onclick="removeEntry(${index})">Remover</button></td>
+                    `;
+                entriesBody.appendChild(row);
+            });
+        }
+
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflection').value;
+            saveData(reflection);
+            alert('Reflexão salva com sucesso! Os dados estão no localStorage (chave: agenda_relacoes).');
+        }
+
+        function saveData(reflection = document.getElementById('reflection')?.value || '') {
+            localStorage.setItem('agenda_relacoes', JSON.stringify({ entries, reflection }));
+        }
+
+        window.onload = function () {
+            const savedData = localStorage.getItem('agenda_relacoes');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                entries = data.entries || [];
+                renderEntries();
+                document.getElementById('reflection').value = data.reflection || '';
+            }
+        };
+    </script>
+</body>
+</html>

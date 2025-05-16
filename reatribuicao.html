@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Técnica: Reatribuição</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+            .section p {
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: #6B7280;
+            color: #ffffff;
+        }
+
+        .factor {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .factor input[type="text"] {
+                flex: 1;
+            }
+
+            .factor input[type="number"] {
+                width: 80px;
+            }
+
+        button {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #1428a3;
+            }
+
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+
+        canvas {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: #6B7280;
+            color: #ffffff;
+        }
+
+        #error {
+            color: #ff4d4d;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Técnica: Reatribuição</h1>
+        <h2>Distribua a responsabilidade entre os fatores envolvidos</h2>
+        <div class="section">
+            <p>Descreva a situação pela qual você sente culpa ou raiva:</p>
+            <input type="text" id="situation" placeholder="Ex.: Discuti com um amigo e me sinto culpado">
+        </div>
+        <div class="section">
+            <p>Adicione os fatores ou pessoas envolvidas e a porcentagem de responsabilidade:</p>
+            <div class="factor">
+                <input type="text" class="factor-name" placeholder="Ex.: Eu mesmo">
+                <input type="number" class="factor-percent" min="0" max="100" placeholder="%">
+                <button onclick="addFactor(this)">Adicionar</button>
+            </div>
+            <div id="factorsList"></div>
+        </div>
+        <p id="error">A soma das porcentagens deve ser exatamente 100%.</p>
+        <button onclick="showResults()">Analisar Distribuição</button>
+        <div id="results">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let factors = [];
+        let chart = null;
+
+        function addFactor(button) {
+            const factorDiv = button.parentElement;
+            const name = factorDiv.querySelector('.factor-name').value.trim();
+            const percent = parseInt(factorDiv.querySelector('.factor-percent').value) || 0;
+
+            if (!name || percent < 0) {
+                alert('Por favor, insira um nome válido e uma porcentagem não negativa.');
+                return;
+            }
+
+            factors.push({ name, percent });
+            factorDiv.querySelector('.factor-name').value = '';
+            factorDiv.querySelector('.factor-percent').value = '';
+            renderFactors();
+            localStorage.setItem('reatribuicao', JSON.stringify({
+                situation: document.getElementById('situation').value,
+                factors
+            }));
+        }
+
+        function removeFactor(index) {
+            factors.splice(index, 1);
+            renderFactors();
+            localStorage.setItem('reatribuicao', JSON.stringify({
+                situation: document.getElementById('situation').value,
+                factors
+            }));
+        }
+
+        function renderFactors() {
+            const factorsList = document.getElementById('factorsList');
+            factorsList.innerHTML = '';
+
+            factors.forEach((factor, index) => {
+                const factorDiv = document.createElement('div');
+                factorDiv.className = 'factor';
+                factorDiv.innerHTML = `
+                    <span>${factor.name}: ${factor.percent}%</span>
+                    <button onclick="removeFactor(${index})">Remover</button>
+                `;
+                factorsList.appendChild(factorDiv);
+            });
+        }
+
+        function showResults() {
+            const situation = document.getElementById('situation').value.trim();
+            if (!situation) {
+                alert('Por favor, descreva a situação.');
+                return;
+            }
+
+            const totalPercent = factors.reduce((sum, factor) => sum + factor.percent, 0);
+            const errorDiv = document.getElementById('error');
+            if (totalPercent !== 100) {
+                errorDiv.style.display = 'block';
+                return;
+            }
+            errorDiv.style.display = 'none';
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+
+            // Atualiza o gráfico
+            if (chart) chart.destroy();
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: factors.map(f => f.name),
+                    datasets: [{
+                        data: factors.map(f => f.percent),
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        title: { display: true, text: 'Distribuição de Responsabilidade', color: '#ffffff' }
+                    }
+                }
+            });
+
+            // Exibe resumo e reflexão
+            resultsDiv.innerHTML = `
+                <p><strong>Situação: ${situation}</strong></p>
+                <p><strong>Distribuição:</strong></p>
+                ${factors.map(f => `<p>${f.name}: ${f.percent}%</p>`).join('')}
+                <canvas id="pieChart"></canvas>
+                <p>Reflita: Como você se sente ao ver a responsabilidade distribuída? Isso reduz sua culpa ou raiva?</p>
+                <textarea id="reflection" placeholder="Escreva suas reflexões aqui..."></textarea>
+                <button onclick="saveReflection()">Salvar Reflexão</button>
+            `;
+            ctx.canvas.parentNode.insertBefore(ctx.canvas, resultsDiv.querySelector('p:last-of-type')); // Reinsere o canvas
+            localStorage.setItem('reatribuicao', JSON.stringify({
+                situation, factors, reflection: document.getElementById('reflection')?.value || ''
+            }));
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflection').value;
+            const savedData = JSON Chorizo, 2007). Verifique se a implementação online é autorizada para uso profissional.
+- **Conexão com Outras Técnicas**: A reatribuição pode complementar a Técnica 05 (Descatastrofização) ao reduzir a culpa associada a pensamentos catastróficos, a Técnica 03 (Lista de Méritos) ao reforçar conquistas, ou a Técnica 02 (Tomando Decisões) ao aliviar emoções que bloqueiam escolhas. Posso criar uma interface integrada, se desejar.
+
+O que acha? Quer testar, adicionar funcionalidades (ex.: exportação de PDF, múltiplas situações), ou ajustar o design (ex.: cores do gráfico)? Se quiser combinar com outras técnicas (Técnica 02, 03, 05, PSQI, ou EDE-IJ), posso desenvolver uma solução unificada.

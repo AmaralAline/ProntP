@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Técnica: Lista de Méritos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+            .section p {
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: #6B7280;
+            color: #ffffff;
+        }
+
+        .merit {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #1428a3;
+            }
+
+        #meritsList {
+            margin-top: 20px;
+        }
+
+        #weeklySummary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+
+        textarea {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Técnica: Lista de Méritos</h1>
+        <h2>Registre diariamente suas conquistas positivas</h2>
+        <div class="section">
+            <p>Adicione uma conquista que você merece crédito:</p>
+            <input type="text" id="meritInput" placeholder="Ex.: Consegui organizar minha agenda hoje">
+            <button onclick="addMerit()">Adicionar Mérito</button>
+        </div>
+        <button onclick="showWeeklySummary()">Ver Resumo Semanal</button>
+        <div id="meritsList"></div>
+        <div id="weeklySummary"></div>
+    </div>
+
+    <script>
+        let merits = [];
+
+        function addMerit() {
+            const meritInput = document.getElementById('meritInput');
+            const meritText = meritInput.value.trim();
+            if (!meritText) return;
+
+            const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+            merits.push({ text: meritText, date: today });
+            meritInput.value = '';
+            renderMerits();
+            localStorage.setItem('merits', JSON.stringify(merits));
+        }
+
+        function removeMerit(index) {
+            merits.splice(index, 1);
+            renderMerits();
+            localStorage.setItem('merits', JSON.stringify(merits));
+        }
+
+        function renderMerits() {
+            const meritsList = document.getElementById('meritsList');
+            meritsList.innerHTML = '';
+
+            // Agrupa méritos por data
+            const meritsByDate = merits.reduce((acc, merit) => {
+                acc[merit.date] = acc[merit.date] || [];
+                acc[merit.date].push(merit);
+                return acc;
+            }, {});
+
+            Object.keys(meritsByDate).sort().reverse().forEach(date => {
+                const meritDiv = document.createElement('div');
+                meritDiv.className = 'merit';
+                meritDiv.innerHTML = `<p><strong>${formatDate(date)}</strong></p>`;
+                meritsByDate[date].forEach((merit, index) => {
+                    const globalIndex = merits.findIndex(m => m.text === merit.text && m.date === merit.date);
+                    meritDiv.innerHTML += `
+                        <div class="item">
+                            <span>${merit.text}</span>
+                            <button onclick="removeMerit(${globalIndex})">Remover</button>
+                        </div>
+                    `;
+                });
+                meritsList.appendChild(meritDiv);
+            });
+        }
+
+        function formatDate(dateStr) {
+            const [year, month, day] = dateStr.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        function showWeeklySummary() {
+            const weeklySummary = document.getElementById('weeklySummary');
+            weeklySummary.style.display = 'block';
+            weeklySummary.innerHTML = '<p><strong>Resumo Semanal</strong></p>';
+
+            const today = new Date();
+            const oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const weeklyMerits = merits.filter(merit => {
+                const meritDate = new Date(merit.date);
+                return meritDate >= oneWeekAgo && meritDate <= today;
+            });
+
+            if (weeklyMerits.length === 0) {
+                weeklySummary.innerHTML += '<p>Nenhum mérito registrado na última semana.</p>';
+            } else {
+                weeklyMerits.forEach(merit => {
+                    weeklySummary.innerHTML += `<p>${formatDate(merit.date)}: ${merit.text}</p>`;
+                });
+                weeklySummary.innerHTML += `
+                    <p>Reflita: Como você se sente ao ver suas conquistas desta semana?</p>
+                    <textarea id="reflection" placeholder="Escreva suas reflexões aqui..."></textarea>
+                    <button onclick="saveReflection()">Salvar Reflexão</button>
+                `;
+            }
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflection').value;
+            localStorage.setItem('meritsReflection', reflection);
+            alert('Reflexão salva com sucesso!');
+        }
+
+        // Carrega dados salvos do localStorage
+        window.onload = function() {
+            const savedMerits = localStorage.getItem('merits');
+            if (savedMerits) {
+                merits = JSON.parse(savedMerits);
+                renderMerits();
+            }
+        };
+    </script>
+</body>
+</html>

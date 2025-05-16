@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Técnicas: Reatribuição e Descatastrofização</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+            .section p {
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: #6B7280;
+            color: #ffffff;
+        }
+
+        .factor, .question {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+        }
+
+        .factor {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .factor input[type="text"] {
+                flex: 1;
+            }
+
+            .factor input[type="number"] {
+                width: 80px;
+            }
+
+        .question p {
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #1428a3;
+            }
+
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+
+        canvas {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        #error {
+            color: #ff4d4d;
+            text-align: center;
+            display: none;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Técnicas: Reatribuição e Descatastrofização</h1>
+        <h2>Trabalhe a culpa, raiva e pensamentos catastróficos de uma situação</h2>
+        <div class="section">
+            <p>Descreva a situação que deseja analisar:</p>
+            <input type="text" id="situation" placeholder="Ex.: Perdi um prazo no trabalho e me sinto culpado">
+        </div>
+
+        <!-- Seção de Reatribuição -->
+        <div class="section">
+            <h2>Reatribuição: Distribua a responsabilidade</h2>
+            <p>Adicione os fatores ou pessoas envolvidas e a porcentagem de responsabilidade:</p>
+            <div class="factor">
+                <input type="text" class="factor-name" placeholder="Ex.: Eu mesmo">
+                <input type="number" class="factor-percent" min="0" max="100" placeholder="%">
+                <button onclick="addFactor(this)">Adicionar</button>
+            </div>
+            <div id="factorsList"></div>
+            <p id="error"></p>
+        </div>
+
+        <!-- Seção de Descatastrofização -->
+        <div class="section">
+            <h2>Descatastrofização: Reavalie pensamentos catastróficos</h2>
+            <p>Responda às perguntas abaixo para refletir sobre a situação:</p>
+            <div class="question">
+                <p>1. Qual é o pior que pode acontecer?</p>
+                <textarea id="q1" placeholder="Escreva sua resposta..."></textarea>
+            </div>
+            <div class="question">
+                <p>2. E se o pior acontecer, o que você fará?</p>
+                <textarea id="q2" placeholder="Escreva sua resposta..."></textarea>
+            </div>
+            <div class="question">
+                <p>3. E se isso acontecer, como a sua vida estará em três meses?</p>
+                <textarea id="q3" placeholder="Escreva sua resposta..."></textarea>
+            </div>
+            <div class="question">
+                <p>4. Você irá sobreviver a isso?</p>
+                <textarea id="q4" placeholder="Escreva sua resposta..."></textarea>
+            </div>
+            <div class="question">
+                <p>5. Alguma coisa muito ruim já aconteceu com você antes? E como você superou?</p>
+                <textarea id="q5" placeholder="Escreva sua resposta..."></textarea>
+            </div>
+            <div class="question">
+                <p>6. Afinal, por que isso é tão horrível assim?</p>
+                <textarea id="q6" placeholder="Escreva sua resposta..."></textarea>
+            </div>
+        </div>
+
+        <button onclick="showResults()">Analisar Resultados</button>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        let factors = [];
+        let chart = null;
+
+        function addFactor(button) {
+            const factorDiv = button.parentElement;
+            const name = factorDiv.querySelector('.factor-name').value.trim();
+            const percent = parseFloat(factorDiv.querySelector('.factor-percent').value) || 0;
+
+            if (!name || percent < 0) {
+                document.getElementById('error').textContent = 'Por favor, insira um nome válido e uma porcentagem não negativa.';
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+
+            factors.push({ name, percent });
+            factorDiv.querySelector('.factor-name').value = '';
+            factorDiv.querySelector('.factor-percent').value = '';
+            document.getElementById('error').style.display = 'none';
+            renderFactors();
+            saveData();
+        }
+
+        function removeFactor(index) {
+            factors.splice(index, 1);
+            renderFactors();
+            saveData();
+        }
+
+        function renderFactors() {
+            const factorsList = document.getElementById('factorsList');
+            factorsList.innerHTML = '';
+
+            factors.forEach((factor, index) => {
+                const factorDiv = document.createElement('div');
+                factorDiv.className = 'factor';
+                factorDiv.innerHTML = `
+                    <span>${factor.name}: ${factor.percent}%</span>
+                    <button onclick="removeFactor(${index})">Remover</button>
+                `;
+                factorsList.appendChild(factorDiv);
+            });
+        }
+
+        function showResults() {
+            const situation = document.getElementById('situation').value.trim();
+            const answers = {
+                q1: document.getElementById('q1').value.trim(),
+                q2: document.getElementById('q2').value.trim(),
+                q3: document.getElementById('q3').value.trim(),
+                q4: document.getElementById('q4').value.trim(),
+                q5: document.getElementById('q5').value.trim(),
+                q6: document.getElementById('q6').value.trim()
+            };
+
+            if (!situation) {
+                document.getElementById('error').textContent = 'Por favor, descreva a situação.';
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = `<p><strong>Situação: ${situation}</strong></p>`;
+
+            // Reatribuição
+            if (factors.length > 0) {
+                const totalPercent = factors.reduce((sum, factor) => sum + factor.percent, 0);
+                if (totalPercent !== 100) {
+                    document.getElementById('error').textContent = `A soma das porcentagens é ${totalPercent}%. Deve ser exatamente 100%.`;
+                    document.getElementById('error').style.display = 'block';
+                } else {
+                    document.getElementById('error').style.display = 'none';
+                }
+
+                resultsDiv.innerHTML += `
+                    <p><strong>Reatribuição - Distribuição de Responsabilidade:</strong></p>
+                    ${factors.map(f => `<p>${f.name}: ${f.percent}%</p>`).join('')}
+                    <canvas id="pieChart"></canvas>
+                `;
+
+                if (chart) chart.destroy();
+                const ctx = document.getElementById('pieChart').getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: factors.map(f => f.name),
+                        datasets: [{
+                            data: factors.map(f => f.percent),
+                            backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: '#ffffff' } },
+                            title: { display: true, text: 'Distribuição de Responsabilidade', color: '#ffffff' }
+                        }
+                    }
+                });
+            } else {
+                resultsDiv.innerHTML += `<p><strong>Reatribuição:</strong> Nenhum fator adicionado.</p>`;
+            }
+
+            // Descatastrofização
+            resultsDiv.innerHTML += `
+                <p><strong>Descatastrofização - Respostas:</strong></p>
+                ${answers.q1 ? `<p>1. Qual é o pior que pode acontecer? ${answers.q1}</p>` : ''}
+                ${answers.q2 ? `<p>2. E se o pior acontecer, o que você fará? ${answers.q2}</p>` : ''}
+                ${answers.q3 ? `<p>3. E se isso acontecer, como a sua vida estará em três meses? ${answers.q3}</p>` : ''}
+                ${answers.q4 ? `<p>4. Você irá sobreviver a isso? ${answers.q4}</p>` : ''}
+                ${answers.q5 ? `<p>5. Alguma coisa muito ruim já aconteceu com você antes? E como você superou? ${answers.q5}</p>` : ''}
+                ${answers.q6 ? `<p>6. Afinal, por que isso é tão horrível assim? ${answers.q6}</p>` : ''}
+                ${Object.values(answers).every(val => !val) ? `<p>Nenhuma resposta fornecida.</p>` : ''}
+            `;
+
+            // Reflexão Combinada
+            resultsDiv.innerHTML += `
+                <p>Reflita: Como a distribuição de responsabilidade e a reavaliação dos pensamentos afetaram sua percepção da situação?</p>
+                <textarea id="reflection" placeholder="Escreva suas reflexões aqui..."></textarea>
+                <button onclick="saveReflection()">Salvar Reflexão</button>
+            `;
+
+            saveData();
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflection').value;
+            saveData(reflection);
+            alert('Reflexão salva com sucesso! Os dados estão no localStorage (chave: integracao_tecnicas).');
+        }
+
+        function saveData(reflection = document.getElementById('reflection')?.value || '') {
+            const situation = document.getElementById('situation').value;
+            const answers = {
+                q1: document.getElementById('q1').value.trim(),
+                q2: document.getElementById('q2').value.trim(),
+                q3: document.getElementById('q3').value.trim(),
+                q4: document.getElementById('q4').value.trim(),
+                q5: document.getElementById('q5').value.trim(),
+                q6: document.getElementById('q6').value.trim()
+            };
+            localStorage.setItem('integracao_tecnicas', JSON.stringify({ situation, factors, answers, reflection }));
+        }
+
+        // Carrega dados salvos do localStorage
+        window.onload = function() {
+            const savedData = localStorage.getItem('integracao_tecnicas');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                document.getElementById('situation').value = data.situation || '';
+                factors = data.factors || [];
+                renderFactors();
+                document.getElementById('q1').value = data.answers?.q1 || '';
+                document.getElementById('q2').value = data.answers?.q2 || '';
+                document.getElementById('q3').value = data.answers?.q3 || '';
+                document.getElementById('q4').value = data.answers?.q4 || '';
+                document.getElementById('q5').value = data.answers?.q5 || '';
+                document.getElementById('q6').value = data.answers?.q6 || '';
+                if (data.factors?.length || Object.values(data.answers || {}).some(val => val) || data.reflection) {
+                    showResults();
+                    document.getElementById('reflection').value = data.reflection || '';
+                }
+            }
+        };
+    </script>
+</body>
+</html>

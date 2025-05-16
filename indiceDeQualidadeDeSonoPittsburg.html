@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de Qualidade do Sono de Pittsburgh (PSQI)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+                text-align: center; /* Centraliza o texto da pergunta */
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center; /* Centraliza as opções de resposta */
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .options label:hover {
+                    background-color: #1428a3; /* Azul escuro para hover */
+                }
+
+            .options input[type="radio"] {
+                display: none; /* Oculta botões de rádio */
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #1428a3; /* Azul escuro para selecionado */
+                    font-weight: 600;
+                }
+
+        .calculate-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover {
+                background-color: #4B5563;
+            }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Índice de Qualidade do Sono de Pittsburgh (PSQI)</h1>
+        <h2>Avalie a qualidade do seu sono no último mês</h2>
+        <form id="psqiForm">
+            <div class="question">
+                <p>1. Como você avalia a qualidade geral do seu sono?</p>
+                <div class="options">
+                    <input type="radio" id="q1-0" name="q1" value="0" required>
+                    <label for="q1-0">Muito boa</label>
+                    <input type="radio" id="q1-1" name="q1" value="1">
+                    <label for="q1-1">Boa</label>
+                    <input type="radio" id="q1-2" name="q1" value="2">
+                    <label for="q1-2">Ruim</label>
+                    <input type="radio" id="q1-3" name="q1" value="3">
+                    <label for="q1-3">Muito ruim</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>2. Quanto tempo, em média, você leva para adormecer?</p>
+                <div class="options">
+                    <input type="radio" id="q2-0" name="q2" value="0" required>
+                    <label for="q2-0">≤ 15 min</label>
+                    <input type="radio" id="q2-1" name="q2" value="1">
+                    <label for="q2-1">16-30 min</label>
+                    <input type="radio" id="q2-2" name="q2" value="2">
+                    <label for="q2-2">31-60 min</label>
+                    <input type="radio" id="q2-3" name="q2" value="3">
+                    <label for="q2-3">> 60 min</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>3. Quantas horas você dorme por noite, em média?</p>
+                <div class="options">
+                    <input type="radio" id="q3-0" name="q3" value="0" required>
+                    <label for="q3-0">> 7h</label>
+                    <input type="radio" id="q3-1" name="q3" value="1">
+                    <label for="q3-1">6-7h</label>
+                    <input type="radio" id="q3-2" name="q3" value="2">
+                    <label for="q3-2">5-6h</label>
+                    <input type="radio" id="q3-3" name="q3" value="3">
+                    <label for="q3-3">< 5h</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>4. Com que frequência você acorda durante a noite?</p>
+                <div class="options">
+                    <input type="radio" id="q4-0" name="q4" value="0" required>
+                    <label for="q4-0">Nunca</label>
+                    <input type="radio" id="q4-1" name="q4" value="1">
+                    <label for="q4-1">Raramente</label>
+                    <input type="radio" id="q4-2" name="q4" value="2">
+                    <label for="q4-2">Às vezes</label>
+                    <input type="radio" id="q4-3" name="q4" value="3">
+                    <label for="q4-3">Frequentemente</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>5. Com que frequência você usa medicação para dormir?</p>
+                <div class="options">
+                    <input type="radio" id="q5-0" name="q5" value="0" required>
+                    <label for="q5-0">Nunca</label>
+                    <input type="radio" id="q5-1" name="q5" value="1">
+                    <label for="q5-1">Raramente</label>
+                    <input type="radio" id="q5-2" name="q5" value="2">
+                    <label for="q5-2">Às vezes</label>
+                    <input type="radio" id="q5-3" name="q5" value="3">
+                    <label for="q5-3">Frequentemente</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>6. Você sente sonolência durante o dia?</p>
+                <div class="options">
+                    <input type="radio" id="q6-0" name="q6" value="0" required>
+                    <label for="q6-0">Nunca</label>
+                    <input type="radio" id="q6-1" name="q6" value="1">
+                    <label for="q6-1">Raramente</label>
+                    <input type="radio" id="q6-2" name="q6" value="2">
+                    <label for="q6-2">Às vezes</label>
+                    <input type="radio" id="q6-3" name="q6" value="3">
+                    <label for="q6-3">Frequentemente</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>7. O sono afeta sua capacidade de realizar tarefas diárias?</p>
+                <div class="options">
+                    <input type="radio" id="q7-0" name="q7" value="0" required>
+                    <label for="q7-0">Não afeta</label>
+                    <input type="radio" id="q7-1" name="q7" value="1">
+                    <label for="q7-1">Leve</label>
+                    <input type="radio" id="q7-2" name="q7" value="2">
+                    <label for="q7-2">Moderado</label>
+                    <input type="radio" id="q7-3" name="q7" value="3">
+                    <label for="q7-3">Grave</label>
+                </div>
+            </div>
+            <button type="submit" class="calculate-btn">Calcular Pontuação</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('psqiForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Coleta respostas
+            let score = 0;
+            const formData = new FormData(this);
+
+            for (let [key, value] of formData.entries()) {
+                score += parseInt(value);
+            }
+
+            // Exibe resultado
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `Pontuação Total: ${score} de 21<br>`;
+
+            // Interpretação conforme PSQI
+            if (score <= 5) {
+                resultDiv.innerHTML += 'Boa qualidade do sono.';
+            } else {
+                resultDiv.innerHTML += 'Má qualidade do sono. Considere consultar um profissional.';
+            }
+        });
+    </script>
+</body>
+</html>
