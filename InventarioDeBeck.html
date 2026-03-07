@@ -1,0 +1,494 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventário de Depressão de Beck - ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1, h2 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+        }
+
+        .question {
+            margin-bottom: 30px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                font-size: 14px;
+            }
+
+                .options label:hover {
+                    background-color: #1428a3;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #1428a3;
+                    font-weight: 600;
+                }
+
+        .calculate-btn, .reset-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover, .reset-btn:hover {
+                background-color: #4B5563;
+            }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+            white-space: pre-line;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .logo img {
+                max-width: 100px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            h2 {
+                font-size: 14px;
+            }
+
+            .question p {
+                font-size: 15px;
+            }
+
+            .options label {
+                font-size: 13px;
+                padding: 10px;
+            }
+
+            .calculate-btn,
+            .reset-btn {
+                width: 100%;
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #result {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+        .chat-toggle {
+            position: fixed;
+            bottom: 100px; /* Acima do WhatsApp */
+            right: 20px;
+            background: #1b2a38;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+            .whatsapp-float img {
+                width: 50px;
+                height: 50px;
+                background-color: #25D366;
+            }
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366; /* cor verde WhatsApp */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-decoration: none;
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+            .whatsapp-button:hover {
+                transform: scale(1.1);
+            }
+
+            .whatsapp-button img {
+                width: 30px;
+                height: 30px;
+            }
+
+
+        footer {
+            text-align: center;
+            padding: 0,5rem;
+            background-color: #16222f;
+            color: #aaa;
+            font-size: 0.9rem;
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="logo.png" alt="ProntPsi Logo" />
+        </div>
+        <h1>MODELO</h1>
+        <h1>Inventário de Depressão de Beck (BDI)</h1>
+        <h2>Autoaplicável — Responda com base em como você se sentiu na última semana.</h2>
+
+        <div id="form">
+            <div id="questions"></div>
+            <div class="button-container">
+                <button class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+                <button class="reset-btn" onclick="resetForm()">Reiniciar</button>
+            </div>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                text: "1. Tristeza",
+                options: [
+                    "0 - Não me sinto triste.",
+                    "1 - Sinto-me triste a maior parte do tempo.",
+                    "2 - Estou sempre triste e não consigo sair disso.",
+                    "3 - Estou tão triste ou infeliz que não consigo suportar."
+                ]
+            },
+            {
+                text: "2. Pessimismo",
+                options: [
+                    "0 - Não estou particularmente desanimado(a) quanto ao futuro.",
+                    "1 - Sinto-me desencorajado(a) em relação ao futuro.",
+                    "2 - Sinto que não há nada pelo que esperar.",
+                    "3 - Sinto que o futuro é sem esperança e que as coisas não podem melhorar."
+                ]
+            },
+            {
+                text: "3. Sentimentos de Fracasso",
+                options: [
+                    "0 - Não me sinto um fracasso.",
+                    "1 - Sinto que fracassei mais do que a maioria das pessoas.",
+                    "2 - Quando olho para trás, vejo muitos fracassos.",
+                    "3 - Sinto que sou um fracasso total como pessoa."
+                ]
+            },
+            {
+                text: "4. Perda de Prazer",
+                options: [
+                    "0 - Continuo a sentir prazer pelas coisas como antes.",
+                    "1 - Não sinto tanto prazer por coisas como antes.",
+                    "2 - Sinto muito pouco prazer com as coisas.",
+                    "3 - Não consigo sentir nenhum prazer por nada."
+                ]
+            },
+            {
+                text: "5. Sentimento de Culpa",
+                options: [
+                    "0 - Não me sinto particularmente culpado(a).",
+                    "1 - Sinto culpa razoavelmente frequente.",
+                    "2 - Sinto culpa na maior parte do tempo.",
+                    "3 - Sinto culpa o tempo todo."
+                ]
+            },
+            {
+                text: "6. Sentimentos de Castigo",
+                options: [
+                    "0 - Não sinto que esteja sendo punido(a).",
+                    "1 - Sinto que posso ser punido(a).",
+                    "2 - Espero ser punido(a).",
+                    "3 - Sinto que estou sendo punido(a)."
+                ]
+            },
+            {
+                text: "7. Autodepreciação",
+                options: [
+                    "0 - Sinto-me tão bem quanto os outros.",
+                    "1 - Critico-me mais do que o normal.",
+                    "2 - Culpo-me por todos os meus erros.",
+                    "3 - Sinto que não presto para nada."
+                ]
+            },
+            {
+                text: "8. Autocrítica",
+                options: [
+                    "0 - Não me sinto decepcionado(a) comigo mesmo(a).",
+                    "1 - Estou desapontado(a) comigo mesmo(a).",
+                    "2 - Estou enojado(a) comigo mesmo(a).",
+                    "3 - Odeio a mim mesmo(a)."
+                ]
+            },
+            {
+                text: "9. Ideias Suicidas",
+                options: [
+                    "0 - Nunca pensei em me matar.",
+                    "1 - Tenho pensamentos de me matar, mas não os colocaria em prática.",
+                    "2 - Gostaria de me matar.",
+                    "3 - Eu me mataria se tivesse chance."
+                ]
+            },
+            {
+                text: "10. Choro",
+                options: [
+                    "0 - Não choro mais do que o normal.",
+                    "1 - Choro mais agora do que antes.",
+                    "2 - Agora choro o tempo todo.",
+                    "3 - Costumava conseguir chorar, mas agora não consigo mais mesmo se quiser."
+                ]
+            },
+            {
+                text: "11. Agitação",
+                options: [
+                    "0 - Não estou mais agitado(a) do que o habitual.",
+                    "1 - Sinto-me mais inquieto(a) ou agitado(a) do que o normal.",
+                    "2 - Estou tão agitado(a) que é difícil ficar parado(a).",
+                    "3 - Estou tão agitado(a) que tenho que ficar em constante movimento ou fazer algo."
+                ]
+            },
+            {
+                text: "12. Perda de Interesse",
+                options: [
+                    "0 - Interesso-me por outras pessoas ou atividades como antes.",
+                    "1 - Estou menos interessado(a) que antes.",
+                    "2 - Tenho muito pouco interesse.",
+                    "3 - Perdi completamente o interesse."
+                ]
+            },
+            {
+                text: "13. Indecisão",
+                options: [
+                    "0 - Tomo decisões tão bem quanto antes.",
+                    "1 - Adio mais do que o normal para tomar decisões.",
+                    "2 - Tenho dificuldade em tomar decisões.",
+                    "3 - Não consigo mais tomar decisões."
+                ]
+            },
+            {
+                text: "14. Autoimagem",
+                options: [
+                    "0 - Não sinto que pareço pior do que antes.",
+                    "1 - Estou preocupado(a) que pareço velho(a) ou pouco atraente.",
+                    "2 - Sinto que há mudanças permanentes na minha aparência.",
+                    "3 - Sinto que pareço horrível."
+                ]
+            },
+            {
+                text: "15. Trabalho",
+                options: [
+                    "0 - Trabalho tão bem quanto antes.",
+                    "1 - Tenho que fazer um esforço extra para começar a fazer algo.",
+                    "2 - Tenho que me forçar muito para fazer qualquer coisa.",
+                    "3 - Não consigo fazer nenhum trabalho."
+                ]
+            },
+            {
+                text: "16. Sono",
+                options: [
+                    "0 - Durmo tão bem quanto de costume.",
+                    "1 - Não durmo tão bem quanto antes.",
+                    "2 - Acordo 1-2 horas mais cedo e tenho dificuldade para voltar a dormir.",
+                    "3 - Acordo várias horas mais cedo e não consigo voltar a dormir."
+                ]
+            },
+            {
+                text: "17. Cansaço",
+                options: [
+                    "0 - Não me sinto mais cansado(a) que o normal.",
+                    "1 - Fico cansado(a) mais facilmente que o normal.",
+                    "2 - Sinto-me cansado(a) ao fazer quase tudo.",
+                    "3 - Estou muito cansado(a) para fazer qualquer coisa."
+                ]
+            },
+            {
+                text: "18. Apetite",
+                options: [
+                    "0 - Meu apetite é normal.",
+                    "1 - Meu apetite é um pouco menor.",
+                    "2 - Meu apetite é muito menor.",
+                    "3 - Não tenho apetite nenhum."
+                ]
+            },
+            {
+                text: "19. Peso",
+                options: [
+                    "0 - Não percebi nenhuma perda significativa de peso.",
+                    "1 - Perdi mais de 2kg sem querer.",
+                    "2 - Perdi mais de 4kg sem querer.",
+                    "3 - Perdi mais de 6kg sem querer."
+                ]
+            },
+            {
+                text: "20. Saúde",
+                options: [
+                    "0 - Não estou mais preocupado(a) com minha saúde que o normal.",
+                    "1 - Estou mais preocupado(a) com problemas físicos.",
+                    "2 - Estou muito preocupado(a) e é difícil pensar em outra coisa.",
+                    "3 - Estou completamente absorvido(a) por problemas físicos."
+                ]
+            },
+            {
+                text: "21. Interesse sexual",
+                options: [
+                    "0 - O interesse sexual está normal.",
+                    "1 - Menos interesse do que o normal.",
+                    "2 - Quase nenhum interesse.",
+                    "3 - Nenhum interesse sexual."
+                ]
+            }
+        ];
+
+        function renderQuestions() {
+            const container = document.getElementById('questions');
+            container.innerHTML = '';
+            questions.forEach((q, i) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+                div.innerHTML = `<p>${q.text}</p><div class="options">
+                      ${q.options.map((opt, j) => `
+                        <input type="radio" name="q${i}" id="q${i}-${j}" value="${j}">
+                        <label for="q${i}-${j}">${opt}</label>
+                      `).join('')}
+                    </div>`;
+                container.appendChild(div);
+            });
+        }
+
+        function calculateScore() {
+            let total = 0;
+            for (let i = 0; i < questions.length; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    alert("Responda todas as perguntas antes de calcular.");
+                    return;
+                }
+                total += parseInt(selected.value);
+            }
+
+            let interpretation = '';
+            if (total < 10) interpretation = "Ausência ou mínima depressão";
+            else if (total < 19) interpretation = "Depressão leve";
+            else if (total < 30) interpretation = "Depressão moderada";
+            else interpretation = "Depressão grave";
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = `Pontuação Total: ${total} (de 0 a 63)\nClassificação: ${interpretation}\n\nProcure um profissional de saúde mental para avaliação mais detalhada.`;
+            resultDiv.style.display = 'block';
+        }
+
+        function resetForm() {
+            renderQuestions();
+            document.getElementById('result').style.display = 'none';
+        }
+
+        renderQuestions();
+    </script>
+    <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+    </a>
+    <footer>
+        © 2025 ProntPsi . Todos os direitos reservados.
+    </footer>
+
+</body>
+</html>

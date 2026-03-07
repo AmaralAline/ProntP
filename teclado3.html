@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teclado Minimalista Adaptado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        #output {
+            width: 80%;
+            height: 150px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-size: 24px;
+            white-space: pre-wrap;
+        }
+
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .key {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            padding: 30px;
+            font-size: 28px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+            .key:hover {
+                background-color: #45a049;
+            }
+
+        .special {
+            grid-column: span 2;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teclado Minimalista para Comunicação</h1>
+    <textarea id="output" readonly>Escreva aqui...</textarea>
+    <div class="keyboard">
+        <!-- Vogais -->
+        <div class="key" onclick="addLetter('A')">A</div>
+        <div class="key" onclick="addLetter('E')">E</div>
+        <div class="key" onclick="addLetter('I')">I</div>
+        <div class="key" onclick="addLetter('O')">O</div>
+        <div class="key" onclick="addLetter('U')">U</div>
+        <!-- Consoantes comuns -->
+        <div class="key" onclick="addLetter('B')">B</div>
+        <div class="key" onclick="addLetter('C')">C</div>
+        <div class="key" onclick="addLetter('D')">D</div>
+        <div class="key" onclick="addLetter('F')">F</div>
+        <div class="key" onclick="addLetter('G')">G</div>
+        <div class="key" onclick="addLetter('H')">H</div>
+        <div class="key" onclick="addLetter('J')">J</div>
+        <div class="key" onclick="addLetter('K')">K</div>
+        <div class="key" onclick="addLetter('L')">L</div>
+        <div class="key" onclick="addLetter('M')">M</div>
+        <div class="key" onclick="addLetter('N')">N</div>
+        <div class="key" onclick="addLetter('P')">P</div>
+        <div class="key" onclick="addLetter('Q')">Q</div>
+        <div class="key" onclick="addLetter('R')">R</div>
+        <div class="key" onclick="addLetter('S')">S</div>
+        <div class="key" onclick="addLetter('T')">T</div>
+        <div class="key" onclick="addLetter('V')">V</div>
+        <div class="key" onclick="addLetter('W')">W</div>
+        <div class="key" onclick="addLetter('X')">X</div>
+        <div class="key" onclick="addLetter('Y')">Y</div>
+        <div class="key" onclick="addLetter('Z')">Z</div>
+        <div class="key" onclick="addLetter('Ç')">Ç</div>
+        <!-- Números -->
+        <div class="key" onclick="addLetter('1')">1</div>
+        <div class="key" onclick="addLetter('2')">2</div>
+        <div class="key" onclick="addLetter('3')">3</div>
+        <div class="key" onclick="addLetter('4')">4</div>
+        <div class="key" onclick="addLetter('5')">5</div>
+        <div class="key" onclick="addLetter('6')">6</div>
+        <div class="key" onclick="addLetter('7')">7</div>
+        <div class="key" onclick="addLetter('8')">8</div>
+        <div class="key" onclick="addLetter('9')">9</div>
+        <div class="key" onclick="addLetter('0')">0</div>
+        <!-- Especiais -->
+        <div class="key special" onclick="addLetter(' ')">Espaço</div>
+        <div class="key special" onclick="backspace()">Apagar</div>
+        <div class="key special" onclick="addLetter('\n')">Enter</div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        function addLetter(letter) {
+            output.value += letter;
+            output.scrollTop = output.scrollHeight;
+        }
+        function backspace() {
+            output.value = output.value.slice(0, -1);
+        }
+    </script>
+</body>
+</html>

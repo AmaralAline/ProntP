@@ -1,0 +1,125 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #1b2a38, #1b2a38);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: #f7f9fc;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.login-form h1 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #1b2a38;
+    text-align: center;
+    margin-top:20px;
+}
+
+.login-form p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+    .login-form input:focus {
+        border-color: #954ebf;
+        outline: none;
+    }
+
+.login-form button {
+    width: 100%;
+    background-color: #1b2a38;
+    color: white;
+    padding: 14px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .login-form button:hover {
+        background-color: #1428a3;
+        transform: scale(1.02);
+    }
+
+.login-form a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #954ebf;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+    .login-form a:hover {
+        text-decoration: underline;
+    }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.logo {
+    font-size: 50px;
+    color: rgba(176, 171, 171, 0.9); /* Melhor prática: usar 'rgba' para opacidade */
+    -webkit-text-stroke: 1px rgba(114, 44, 134, 0.9);
+    font-family: 'Times New Roman';
+    display: flex; /* Define o contêiner como flexível */
+    align-items: center; /* Alinha os itens no centro verticalmente */
+    white-space: nowrap; /* Impede quebra de linha no texto */
+    margin-bottom: -30px;
+    margin: 0;
+    padding: 0;
+    margin-top: -40px;
+}
+
+.logo-img {
+    width: 120px; /* ajuste o tamanho conforme necessário */
+    display: block;
+    margin: 0 auto;
+    margin-left: 140px;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+    }
+
+    .login-form h1 {
+        font-size: 24px;
+    }
+}

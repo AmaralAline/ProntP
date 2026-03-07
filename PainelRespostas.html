@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Respostas - ProntPsi</title>
+    <link rel="stylesheet" href="PainelExclusivo.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Painel de Respostas dos Pacientes</h1>
+        <div id="respostas-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Formulário</th>
+                        <th>Paciente</th>
+                        <th>Data da Resposta</th>
+                        <th>Pontuação</th>
+                    </tr>
+                </thead>
+                <tbody id="respostas-tabela">
+                    <!-- Dados serão inseridos aqui via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch("https://localhost:44322/api/respostas");
+                if (!response.ok) throw new Error("Erro ao buscar dados");
+
+                const respostas = await response.json();
+                const tabela = document.getElementById("respostas-tabela");
+
+                if (respostas.length === 0) {
+                    tabela.innerHTML = '<tr><td colspan="4">Nenhuma resposta encontrada.</td></tr>';
+                    return;
+                }
+
+                respostas.forEach(resposta => {
+                    const linha = document.createElement("tr");
+                    linha.innerHTML = `
+                        <td>${resposta.nomeFormulario}</td>
+                        <td>${resposta.nomePaciente}</td>
+                        <td>${new Date(resposta.dataResposta).toLocaleDateString()}</td>
+                        <td>${resposta.pontuacaoTotal}</td>
+                    `;
+                    tabela.appendChild(linha);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar respostas:", error);
+                const tabela = document.getElementById("respostas-tabela");
+                tabela.innerHTML = `<tr><td colspan="4" style="color:red;">Erro ao carregar dados</td></tr>`;
+            }
+        });
+    </script>
+</body>
+</html>

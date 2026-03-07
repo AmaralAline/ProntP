@@ -1,52 +1,30 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <title>Prontu�rio Psi</title>
-    <meta name="robots" content="noindex,nofollow" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, inicial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="fundoLogo.png" />
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="cadastropsi.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="geralpsi.js" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - ProntPsi</title>
+    <link rel="stylesheet" href="login.css" />
 </head>
 <body>
-    <nav class="navBar">
-
+    <div class="login-container">
         <div class="logo">
-            <img src="fundoLogo.png" alt="logo-img" class="logo-img" />
+            <img src="logo.png" alt="logo-img" class="logo-img" />
 
         </div>
+        <form class="login-form" onsubmit="return login(event)">
+            <h1>Login</h1>
+            <p>Acesse seu painel com segurança</p>
 
-        <ul class="navBarLinkDekstop">
+            <input type="email" id="email" placeholder="E-mail" required />
+            <input type="password" id="password" placeholder="Senha" required />
 
-            <li><a href="home.html">Home</a></li>
-            <li><a href="sobre.htlm">Sobre</a>  </li>
-            <li><a href="#">Cadastro</a></li>
-            <li><a href="#">Login</a></li>
+            <button class="login" id="Login">Entrar</button>
+            <a href="esqueceusenha.html">Esqueceu a senha?</a>
+            <a href="home.html">Voltar</a>
+        </form>
+    </div>
 
-        </ul>
-
-        <div class="mobile-menu" id="MobileMenu">
-            <button class="close" id="closeButton">
-                <i class="fas fa-times"></i>
-            </button>
-            <ul class="navBarLinkMobile">
-
-                <li><a href="home.html">Home</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
-                <li><a href="#">Cadastro</a></li>
-                <li><a href="#">Login</a></li>
-
-            </ul>
-        </div>
-
-        <button class="Hamburger" id="HamburgerButton">
-            <i class="fas fa-bars"></i>
-        </button>
-
-    </nav>
+    <script src="login.js"></script>
 </body>
 </html>

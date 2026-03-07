@@ -46,3 +46,37 @@ function calcularPontuacao() {
 }
 
 
+/*chatbox*/
+function toggleChat() {
+    const chat = document.getElementById("chatBox");
+    chat.style.display = chat.style.display === "flex" ? "none" : "flex";
+}
+
+function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const text = input.value.trim();
+    if (text !== "") {
+        const chatBody = document.getElementById("chatBody");
+        const userMsg = document.createElement("div");
+        userMsg.className = "message user";
+        userMsg.textContent = text;
+        chatBody.appendChild(userMsg);
+        input.value = "";
+
+        // Simula resposta do bot
+        setTimeout(() => {
+            const botMsg = document.createElement("div");
+            botMsg.className = "message bot";
+            botMsg.textContent = "Em breve entraremos em contato!";
+            chatBody.appendChild(botMsg);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }, 1000);
+    }
+}
+function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const text = encodeURIComponent(input.value.trim());
+    if (text !== "") {
+        window.open(`https://wa.me/5511947454936?text=${text}`, "_blank");
+    }
+}

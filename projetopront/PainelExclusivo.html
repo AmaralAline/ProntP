@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Exclusivo</title>
+    <link rel="stylesheet" href="PainelExclusivo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>Painel Exclusivo</h2>
+            <ul>
+                <li><button id="btn-clock" aria-controls="clock-section" aria-current="page" class="active"><i class="fas fa-clock"></i> Início</button></li>
+                <li><button id="btn-agenda" aria-controls="agenda-section"><i class="fas fa-calendar-alt"></i> Agenda</button></li>
+                <li><button id="btn-evolucao" aria-controls="evolucao-section"><i class="fas fa-chart-line"></i> Evolução do Paciente</button></li>
+                <li><button id="btn-form" aria-controls="form-section"><i class="fas fa-list-ul"></i> Formulários</button></li>
+                <li><button id="btn-cadastro" aria-controls="cadastro-section"><i class="fas fa-user-plus"></i> Cadastro de Pacientes</button></li>
+                <li><button id="btn-inventarios" aria-controls="inventarios-section"><i class="fas fa-list-ul"></i> Inventários</button></li>
+                <li><button id="btn-escalas" aria-controls="escalas-section"><i class="fas fa-ruler"></i> Escalas</button></li>
+                <li><button id="btn-questionarios" aria-controls="questionarios-section"><i class="fas fa-question-circle"></i> Questionários</button></li>
+                <li><button id="btn-ferramentas-tcc" aria-controls="ferramentas-tcc-section"><i class="fas fa-tools"></i> Ferramentas TCC</button></li>
+                <li><button id="btn-resultados" aria-controls="resultados-section"><i class="fas fa-check-circle"></i> Resultados</button></li>
+            </ul>
+        </nav>
+        <button class="hamburger" aria-expanded="false" aria-label="Abrir menu"><i class="fas fa-bars"></i></button>
+        <main class="main-content">
+            <section id="clock-section" class="active-section">
+                <div class="clock">
+                    <div class="center-circle"></div>
+                    <div id="hour-hand" class="hand hour"></div>
+                    <div id="minute-hand" class="hand minute"></div>
+                    <div id="second-hand" class="hand second"></div>
+                </div>
+            </section>
+            <section id="form-section" class="hidden-section">
+                <button id="back-to-clock-1" class="btn-back">Voltar ao Início</button>
+                <h2>Formulários e Escalas</h2>
+
+                <div class="formularios-container">
+                    <!-- Seletor de paciente -->
+                    <div class="form-group">
+                        <label for="paciente-form">Selecione o Paciente:</label>
+                        <select id="paciente-form" required>
+                            <option value="">Escolha um paciente</option>
+                        </select>
+                    </div>
+
+                    <!-- Seletor de formulário -->
+                    <div class="form-group">
+                        <label for="tipo-formulario">Escolha o Formulário/Escala:</label>
+                        <select id="tipo-formulario" required>
+                            <option value="">Selecione...</option>
+                            <optgroup label="Inventários">
+                                <option value="beck">Inventário de Beck</option>
+                                <option value="pittsburg">Qualidade do Sono - Pittsburg</option>
+                                <option value="edi3">Inventário de Transtornos Alimentares (EDI-3)</option>
+                            </optgroup>
+                            <optgroup label="Escalas">
+                                <option value="event">Escala (EVENT)</option>
+                                <option value="asrh18">Escala ASRH18</option>
+                                <option value="das">Escala Das</option>
+                                <option value="hamilton">Escala de Ansiedade de Hamilton</option>
+                                <option value="bes">Escala de Compulsão Alimentar (BES)</option>
+                                <!-- Adicione mais conforme seus arquivos .html -->
+                            </optgroup>
+                            <optgroup label="Questionários">
+                                <option value="bsq">Questionário de Formato Corporal (BSQ)</option>
+                                <option value="scoff">Questionário SCOFF</option>
+                                <option value="riscos">Questionários de Riscos Psicossociais</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Senha opcional para o link -->
+                    <div class="form-group">
+                        <label for="senha-form">Senha de Acesso (opcional):</label>
+                        <input type="password" id="senha-form" placeholder="Deixe em branco para sem senha" minlength="4">
+                    </div>
+
+                    <button id="gerar-link-form">Gerar Link para o Paciente</button>
+
+                    <!-- Área para mostrar o link gerado -->
+                    <div id="link-gerado" style="display:none; margin-top:20px;">
+                        <p><strong>Link gerado:</strong></p>
+                        <input type="text" id="url-link-gerado" readonly style="width:100%; padding:8px;">
+                        <button id="copiar-link">Copiar Link</button>
+                        <p id="link-info" style="font-size:0.9em; color:#ccc; margin-top:10px;"></p>
+                    </div>
+
+                    <p id="form-error" class="error-message" style="display:none;">Por favor, preencha paciente e formulário.</p>
+                </div>
+            </section>
+            <section id="agenda-section" class="hidden-section">
+                <button id="back-to-clock-2" class="btn-back">Voltar ao Início</button>
+                <div class="agenda-container">
+                    <div class="agenda-form-wrapper">
+                        <h2>Agenda</h2>
+                        <button id="connect-google-calendar" class="btn-connect">Conectar com Google Calendar</button>
+                        <form id="agenda-form">
+                            <label for="paciente-agenda">Paciente:</label>
+                            <select id="paciente-agenda" required>
+                                <option value="">Selecione um paciente</option>
+                            </select>
+                            <label for="evento">Título da Consulta:</label>
+                            <input type="text" id="evento" required placeholder="Ex.: Consulta com João Silva">
+                            <label for="start-datetime">Data e Hora de Início:</label>
+                            <input type="datetime-local" id="start-datetime" required>
+                            <label for="end-datetime">Data e Hora de Término:</label>
+                            <input type="datetime-local" id="end-datetime" required>
+                            <label for="descricao">Descrição (Opcional):</label>
+                            <textarea id="descricao" placeholder="Notas sobre a consulta"></textarea>
+                            <button type="submit">Adicionar Evento</button>
+                            <p id="agenda-error" class="error-message">Por favor, preencha todos os campos obrigatórios.</p>
+                        </form>
+                    </div>
+                    <div class="daily-agenda">
+
+                        <h3>Agendamentos de Hoje</h3>
+                        <div id="daily-agenda-list"></div>
+                        <div class="agenda-container">
+                            <!-- Formulário de adicionar evento (mantém como está) -->
+                            <div class="agenda-form-wrapper">
+                                <h2>Agenda</h2>
+                                <button id="connect-google-calendar" class="btn-connect">Conectar com Google Calendar</button>
+                                <form id="agenda-form">
+                                    <!-- ... seus campos atuais ... -->
+                                </form>
+                            </div>
+
+                            <!-- Bloco rápido: Hoje + Seletor de data -->
+                            <div class="agenda-rapida">
+                                <div class="hoje-bloco">
+                                    <h3>Agendamentos de Hoje</h3>
+                                    <div id="daily-agenda-list"></div>
+                                </div>
+
+                                <div class="selecao-dia">
+                                    <label for="data-selecionada">Ver agenda de outro dia:</label>
+                                    <input type="date" id="data-selecionada">
+                                    <button id="btn-ver-dia">Atualizar</button>
+                                </div>
+
+                                <!-- Área principal: lista do dia selecionado (ou hoje por padrão) -->
+                                <div class="agenda-dia">
+                                    <h3 id="titulo-agenda-dia">Agendamentos do dia selecionado</h3>
+                                    <div id="lista-agenda-dia"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="evolucao-section" class="hidden-section">
+                <button id="back-to-clock-3" class="btn-back">Voltar ao Início</button>
+                <h2>Evolução do Paciente</h2>
+                <form id="evolucao-form">
+                    <label for="paciente">Paciente:</label>
+                    <select id="paciente" required>
+                        <option value="">Selecione um paciente</option>
+                    </select>
+                    <label for="data-evolucao">Data:</label>
+                    <input type="date" id="data-evolucao" required>
+                    <label for="evolucao">Evolução:</label>
+                    <textarea id="evolucao" required placeholder="Descreva a evolução do paciente"></textarea>
+                    <button type="submit">Salvar</button>
+                    <p id="evolucao-error" class="error-message">Por favor, preencha todos os campos.</p>
+                </form>
+                <div class="evolucao-historico">
+                    <h3>Histórico de Evolução</h3>
+                    <label for="paciente-historico">Selecionar Paciente:</label>
+                    <select id="paciente-historico">
+                        <option value="">Selecione um paciente</option>
+                    </select>
+                    <table id="evolucao-tabela" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Evolução</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <p id="evolucao-vazio" class="evolucao-vazio">Nenhuma evolução encontrada.</p>
+                </div>
+            </section>
+            <section id="inventarios-section" class="hidden-section">
+                <button id="back-to-clock-4" class="btn-back">Voltar ao Início</button>
+                <h2>Inventários</h2>
+                <div class="card-container">
+                    <a href="IventarioDeBeck.html" class="card" data-link-id="beck-1"><i class="fas fa-clipboard-check"></i> Inventário de Beck</a>
+                    <a href="indiceDeQualidadeDeSonoPittsburg.html" class="card" data-link-id="pittsburg-1"><i class="fas fa-clipboard-check"></i> Qualidade do Sono - Pittsburg</a>
+                    <a href="InventariodeTranstornosAlimentares(EDI-3).html" class="card" data-link-id="edi3-1"><i class="fas fa-clipboard-check"></i> Inventário de Transtornos Alimentares (EDI-3)</a>
+                    <a href="IventarioDeBeck.html" class="card" data-link-id="beck-2"><i class="fas fa-clipboard-check"></i> Inventário de Beck</a>
+                    <a href="InventariodeTranstornosAlimentares(EDI-3).html" class="card" data-link-id="edi3-2"><i class="fas fa-clipboard-check"></i> Inventário - TA - EDI-3</a>
+                </div>
+            </section>
+            <section id="escalas-section" class="hidden-section">
+                <button id="back-to-clock-5" class="btn-back">Voltar ao Início</button>
+                <h2>Escalas</h2>
+                <div class="card-container">
+                    <a href="escala(EVENT).html" class="card" data-link-id="event"><i class="fas fa-list-ol"></i> Escala (EVENT)</a>
+                    <a href="escalaASRH18.html" class="card" data-link-id="asrh18"><i class="fas fa-list-ol"></i> Escala ASRH18</a>
+                    <a href="escalaDas.html" class="card" data-link-id="das"><i class="fas fa-list-ol"></i> Escala Das</a>
+                    <a href="EscaladeAnsiedadedeHamilton.html" class="card" data-link-id="hamilton"><i class="fas fa-list-ol"></i> Escala de Ansiedade de Hamilton</a>
+                    <a href="EscaladeCompulsaoAlimentar(BES).html" class="card" data-link-id="bes"><i class="fas fa-list-ol"></i> Escala de Compulsão Alimentar (BES)</a>
+                    <a href="EscaladeCopingOcupacional(ECO).html" class="card" data-link-id="eco"><i class="fas fa-list-ol"></i> Escala de Coping Ocupacional (ECO)</a>
+                    <a href="EscaladeSonolenciadeEpworth(ESE).html" class="card" data-link-id="ese"><i class="fas fa-list-ol"></i> Escala de Sonolência de Epworth (ESE)</a>
+                    <a href="escalaECAP.html" class="card" data-link-id="ecap"><i class="fas fa-list-ol"></i> Escala ECAP</a>
+                    <a href="escalaEDE-A.html" class="card" data-link-id="ede-a"><i class="fas fa-list-ol"></i> Escala EDE-A</a>
+                    <a href="escalaEstresseNoTrabalho.html" class="card" data-link-id="estresse"><i class="fas fa-list-ol"></i> Escala Estresse No Trabalho</a>
+                    <a href="escalaMadrs.html" class="card" data-link-id="madrs"><i class="fas fa-list-ol"></i> Escala Madrs</a>
+                    <a href="EscalaPsicossocialdeAparenciaFacial(EPAF).html" class="card" data-link-id="epaf"><i class="fas fa-list-ol"></i> Escala Psicossocial de Aparência Facial (EPAF)</a>
+                    <a href="escalaSNAPIV.html" class="card" data-link-id="snapiv"><i class="fas fa-list-ol"></i> Escala SNAPIV</a>
+                </div>
+            </section>
+            <section id="questionarios-section" class="hidden-section">
+                <button id="back-to-clock-6" class="btn-back">Voltar ao Início</button>
+                <h2>Questionários</h2>
+                <div class="card-container">
+                    <a href="QuestionariodeFormatoCorporal(BSQ).html" class="card" data-link-id="bsq"><i class="fas fa-question-circle"></i> Questionário de Formato Corporal (BSQ)</a>
+                    <a href="QuestionarioSCOFF.html" class="card" data-link-id="scoff"><i class="fas fa-question-circle"></i> Questionário SCOFF</a>
+                    <a href="QuestionariosdeRiscosPsicossociais.html" class="card" data-link-id="riscos"><i class="fas fa-question-circle"></i> Questionários de Riscos Psicossociais</a>
+                </div>
+            </section>
+            <section id="cadastro-section" class="hidden-section">
+                <button id="back-to-clock-7" class="btn-back">Voltar ao Início</button>
+                <h2>Cadastro de Pacientes</h2>
+                <form id="cadastro-form">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" required>
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" required>
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" required>
+                    <label for="pagamento">Forma de Pagamento:</label>
+                    <select id="pagamento" required>
+                        <option value="">Selecione</option>
+                        <option value="dinheiro">Dinheiro</option>
+                        <option value="cartao">Cartão</option>
+                        <option value="pix">PIX</option>
+                    </select>
+                    <label for="data-inicio">Data de Início:</label>
+                    <input type="date" id="data-inicio" required>
+                    <label for="queixa">Queixa Principal:</label>
+                    <textarea id="queixa" required></textarea>
+                    <button type="submit">Cadastrar</button>
+                    <p id="cadastro-error" class="error-message">Por favor, preencha todos os campos.</p>
+                </form>
+            </section>
+            <section id="ferramentas-tcc-section" class="hidden-section">
+                <button id="back-to-clock-8" class="btn-back">Voltar ao Início</button>
+                <h2>Ferramentas TCC</h2>
+                <div class="card-container">
+                    <a href="tecnicaTomadaDeDecisao.html" class="card" data-link-id="tomada-decisao"><i class="fas fa-tools"></i> Técnica Tomada De Decisão</a>
+                    <a href="TecnicasPadroes.html" class="card" data-link-id="padroes-duplos"><i class="fas fa-tools"></i> Técnicas Padrões Duplos</a>
+                    <a href="tecnicaAgendaDeRelacionamentos.html" class="card" data-link-id="relacionamentos"><i class="fas fa-tools"></i> Técnica Agenda De Relacionamentos</a>
+                    <a href="reatribuicao.html" class="card" data-link-id="reatribuicao"><i class="fas fa-tools"></i> Reatribuição</a>
+                    <a href="ListaDeMerito.html" class="card" data-link-id="merito"><i class="fas fa-tools"></i> Lista De Mérito</a>
+                    <a href="descatastrofizacaoEreatribuicao.html" class="card" data-link-id="descatastrofizacao-reatribuicao"><i class="fas fa-tools"></i> Descatastrofização E Reatribuição</a>
+                    <a href="descatastrofizacao.html" class="card" data-link-id="descatastrofizacao"><i class="fas fa-tools"></i> Descatastrofização</a>
+                    <a href="CartoesLembrete.html" class="card" data-link-id="cartoes-lembrete"><i class="fas fa-tools"></i> Cartões Lembrete</a>
+                </div>
+            </section>
+            <section id="resultados-section" class="hidden-section">
+                <button id="back-to-clock-9" class="btn-back">Voltar ao Início</button>
+                <h2>Resultados</h2>
+                <div class="resultados-filtro">
+                    <label for="paciente-resultados">Selecionar Paciente:</label>
+                    <select id="paciente-resultados">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                </div>
+                <table id="resultados-tabela" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Formulário</th>
+                            <th>Data de Envio</th>
+                            <th>Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <p id="resultados-vazio" class="resultados-vazio">Nenhum resultado encontrado.</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="link-options-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Opções</h3>
+            <button id="open-link-btn">Abrir Link</button>
+            <button id="create-link-btn">Criar um Link</button>
+            <button class="modal-close">Fechar</button>
+        </div>
+    </div>
+    <div id="create-link-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Criar Link para Paciente</h3>
+            <form id="create-link-form">
+                <label for="paciente-link">Paciente:</label>
+                <select id="paciente-link" required>
+                    <option value="">Selecione um paciente</option>
+                </select>
+                <label for="password-link">Senha:</label>
+                <input type="password" id="password-link" required minlength="6">
+                <button type="submit">Gerar Link</button>
+                <p id="create-link-error" class="error-message">Por favor, preencha todos os campos.</p>
+            </form>
+            <div id="generated-link" style="display: none;">
+                <p>Link gerado:</p>
+                <input type="text" id="generated-link-url" readonly>
+                <button id="copy-link-btn">Copiar Link</button>
+            </div>
+            <button class="modal-close">Fechar</button>
+        </div>
+    </div>
+    <div id="password-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Inserir Senha</h3>
+            <form id="password-form">
+                <label for="password-input">Senha:</label>
+                <input type="password" id="password-input" required>
+                <button type="submit">Acessar</button>
+                <p id="password-error" class="error-message">Senha incorreta.</p>
+            </form>
+            <button class="modal-close">Fechar</button>
+        </div>
+    </div>
+    <div id="form-response-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Responder Formulário</h3>
+            <form id="form-response-form">
+                <label for="form-response">Resposta:</label>
+                <textarea id="form-response" required placeholder="Digite sua resposta ao formulário"></textarea>
+                <button type="submit">Enviar</button>
+                <p id="form-response-error" class="error-message">Por favor, preencha o campo.</p>
+            </form>
+            <button class="modal-close">Fechar</button>
+        </div>
+    </div>
+
+    <script defer src="PainelExclusivo.js"></script>
+</body>
+</html>

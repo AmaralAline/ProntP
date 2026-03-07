@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Depressão de Montgomery-Åsberg (MADRS) - ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                font-size: 14px;
+            }
+
+                .options label:hover {
+                    background-color: #1428a3;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #1428a3;
+                    font-weight: 600;
+                }
+
+        .calculate-btn, .reset-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover, .reset-btn:hover {
+                background-color: #4B5563;
+            }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>Escala de Depressão de Montgomery-Åsberg (MADRS)</h1>
+        <h2>Responda às perguntas abaixo com base na intensidade dos sintomas observados nos últimos 7 dias.</h2>
+
+        <div id="form">
+            <div id="questions" class="space-y-6"></div>
+            <div class="button-container">
+                <button class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+                <button class="reset-btn" onclick="resetForm()">Reiniciar</button>
+            </div>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Lista de perguntas da MADRS com opções detalhadas
+        const questions = [
+            {
+                text: "Tristeza aparente",
+                options: [
+                    { value: 0, label: "0 - Sem tristeza" },
+                    { value: 2, label: "2 - Parece desanimado mas reage se animando sem dificuldade" },
+                    { value: 4, label: "4 - Aparenta estar triste e desanimado a maior parte do tempo" },
+                    { value: 6, label: "6 - Aparenta estar o tempo todo arrasado, extremamente triste" }
+                ]
+            },
+            {
+                text: "Relatos de tristeza",
+                options: [
+                    { value: 0, label: "0 - Tristeza ocasional, adequada às circunstâncias" },
+                    { value: 2, label: "2 - Desanimado ou triste mas se anima sem dificuldade" },
+                    { value: 4, label: "4 - Sensação constante de tristeza ou melancolia, mas o humor ainda é influenciado pelas circunstâncias externas" },
+                    { value: 6, label: "6 - Sentimento contínuo de miséria, tristeza e desespero" }
+                ]
+            },
+            {
+                text: "Tensão interna",
+                options: [
+                    { value: 0, label: "0 - Plácido. Sente apenas tensão fugaz" },
+                    { value: 2, label: "2 - Sentimento ocasional de irritabilidade ou desconforto mal definido" },
+                    { value: 4, label: "4 - Sentimento contínuo de tensão interna ou pânico intermitente que o paciente só consegue controlar com alguma dificuldade" },
+                    { value: 6, label: "6 - Angústia ou pavor contínuo. Pânico opressivo" }
+                ]
+            },
+            {
+                text: "Sono prejudicado",
+                options: [
+                    { value: 0, label: "0 - Sono habitual" },
+                    { value: 2, label: "2 - Leve dificuldade em pegar no sono ou sono levemente reduzido, menos reparador e mais superficial" },
+                    { value: 4, label: "4 - Sono reduzido ou fragmentado em ao menos 2 horas" },
+                    { value: 6, label: "6 - Menos de 2 ou 3 horas de sono" }
+                ]
+            },
+            {
+                text: "Redução do apetite",
+                options: [
+                    { value: 0, label: "0 - Apetite normal ou aumentado" },
+                    { value: 2, label: "2 - Apetite levemente reduzido" },
+                    { value: 4, label: "4 - Sem apetite. A comida não tem mais sabor" },
+                    { value: 6, label: "6 - Alimenta-se apenas quando é persuadido" }
+                ]
+            },
+            {
+                text: "Dificuldade de concentração",
+                options: [
+                    { value: 0, label: "0 - Sem dificuldade de concentração" },
+                    { value: 2, label: "2 - Dificuldades eventuais para organizar o próprio pensamento" },
+                    { value: 4, label: "4 - Dificuldade de concentração ou raciocínio que reduz a capacidade de ler ou sustentar uma conversa" },
+                    { value: 6, label: "6 - Tem dificuldade incapacitante para ler ou conversar" }
+                ]
+            },
+            {
+                text: "Cansaço",
+                options: [
+                    { value: 0, label: "0 - Quase nenhuma dificuldade em iniciar atividades. Sem preguiça" },
+                    { value: 2, label: "2 - Dificuldade em iniciar atividades" },
+                    { value: 4, label: "4 - Dificuldade em iniciar atividades rotineiras, que são realizadas às custas de esforço" },
+                    { value: 6, label: "6 - Cansaço absoluto. Incapaz de fazer qualquer coisa sem auxílio" }
+                ]
+            },
+            {
+                text: "Incapacidade de sentir",
+                options: [
+                    { value: 0, label: "0 - Interesse normal no ambiente e nas pessoas" },
+                    { value: 2, label: "2 - Dificuldade em apreciar interesses habituais" },
+                    { value: 4, label: "4 - Perda de interesse no seu ambiente ou em amigos e conhecidos" },
+                    { value: 6, label: "6 - Sentimento de paralisia emocional com incapacidade de ter prazer, se enraivecer ou se magoar ou mesmo uma completa e até dolorosa ausência de sentimentos em relação a familiares ou amigos próximos" }
+                ]
+            },
+            {
+                text: "Pensamentos pessimistas",
+                options: [
+                    { value: 0, label: "0 - Sem pensamentos pessimistas" },
+                    { value: 2, label: "2 - Idéias flutuantes de fracasso, auto-censura, auto-depreciação" },
+                    { value: 4, label: "4 - Persistentemente se acusa ou tem idéias definidas mas ainda racionais de culpa ou pecado. Crescentemente pessimista em relação ao futuro" },
+                    { value: 6, label: "6 - Ilusões de ruína, remorso ou erro do qual não se pode redimir. Acusa-se de maneira absurda e ainda assim inabalável" }
+                ]
+            },
+            {
+                text: "Pensamentos suicidas",
+                options: [
+                    { value: 0, label: "0 - Aprecia a vida ou a aceita como ela é" },
+                    { value: 2, label: "2 - Cansado da vida. Com pensamentos passageiros de suicídio" },
+                    { value: 4, label: "4 - Sente que estaria melhor morto. Pensamentos suicidas são comuns e o suicídio é considerado como uma solução possível, mas não tem intenção ou planos específicos" },
+                    { value: 6, label: "6 - Planos explícitos para suicídio à espera de uma oportunidade. Ativamente se prepara para suicídio" }
+                ]
+            }
+        ];
+
+        // Função para renderizar as perguntas
+        function renderQuestions() {
+            const questionContainer = document.getElementById('questions');
+            questionContainer.innerHTML = '';
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+              <p>${index + 1}. ${question.text}</p>
+              <div class="options">
+                ${question.options.map(option => `
+                  <input type="radio" name="q${index}" value="${option.value}" id="q${index}-${option.value}" required>
+                  <label for="q${index}-${option.value}">${option.label}</label>
+                `).join('')}
+              </div>
+            `;
+                questionContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Função para calcular a pontuação
+        function calculateScore() {
+            const form = document.getElementById('form');
+
+            // Verificar se todas as perguntas foram respondidas
+            for (let i = 0; i < questions.length; i++) {
+                const selected = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+            }
+
+            let totalScore = 0;
+            questions.forEach((_, index) => {
+                const selected = form.querySelector(`input[name="q${index}"]:checked`);
+                totalScore += parseInt(selected.value);
+            });
+
+            const interpretation = getInterpretation(totalScore);
+            displayResult(totalScore, interpretation);
+        }
+
+        // Função para determinar a interpretação da pontuação
+        function getInterpretation(score) {
+            if (score <= 6) return "Sem depressão";
+            if (score <= 19) return "Depressão leve";
+            if (score <= 34) return "Depressão moderada";
+            return "Depressão grave";
+        }
+
+        // Função para exibir o resultado
+        function displayResult(score, interpretation) {
+            const resultDiv = document.getElementById('result');
+            let message = `Resultados:\n\n`;
+            message += `Pontuação Total: ${score} (de 0 a 60)\n`;
+            message += `Interpretação: ${interpretation}\n\n`;
+            message += `Consulte um profissional de saúde mental para uma avaliação completa.`;
+
+            resultDiv.textContent = message;
+            resultDiv.style.display = 'block';
+        }
+
+        // Função para reiniciar o formulário
+        function resetForm() {
+            renderQuestions();
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'none';
+        }
+
+        // Inicializar o formulário
+        renderQuestions();
+    </script>
+</body>
+</html>

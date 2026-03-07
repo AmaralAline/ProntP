@@ -1,0 +1,98 @@
+﻿
+body {
+    background: linear-gradient(135deg, #68a0cf, #1f3c88);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.logo {
+    font-size: 50px;
+    color: rgba(176, 171, 171, 0.9); /* Melhor prática: usar 'rgba' para opacidade */
+    -webkit-text-stroke: 1px rgba(114, 44, 134, 0.9);
+    font-family: 'Times New Roman';
+    display: flex; /* Define o contêiner como flexível */
+    align-items: center; /* Alinha os itens no centro verticalmente */
+    white-space: nowrap; /* Impede quebra de linha no texto */
+    margin-bottom: -20px;
+    margin: 0;
+    padding: 0;
+    margin-top: -20px;
+}
+
+.logo-img {
+    width: 100px; /* ajuste o tamanho conforme necessário */
+    display: block;
+    margin: 0 auto;
+    margin-left: 120px;
+}
+
+
+.cadastro-form {
+    background: #fff;
+    padding: 30px 35px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+    color: #1f3c88;
+}
+
+    .cadastro-form h1 {
+        margin-bottom: 8px;
+        font-weight: 700;
+        font-size: 28px;
+    }
+
+    .cadastro-form p {
+        margin-bottom: 25px;
+        font-weight: 500;
+        color: #555;
+    }
+
+    .cadastro-form input {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 20px;
+        border: 1.8px solid #68a0cf;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+        .cadastro-form input:focus {
+            border-color: #1f3c88;
+            outline: none;
+        }
+
+    .cadastro-form button {
+        background: #1f3c88;
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .cadastro-form button:hover {
+            background: #16306b;
+        }
+
+    .cadastro-form .voltar-login {
+        display: inline-block;
+        margin-top: 18px;
+        font-size: 14px;
+        color: #68a0cf;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .cadastro-form .voltar-login:hover {
+            color: #1f3c88;
+        }

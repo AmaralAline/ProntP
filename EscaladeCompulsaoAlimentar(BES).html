@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala BES - ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #2a3b4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+        h1 {
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+            .question p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .options label {
+                background-color: #6B7280;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                font-size: 14px;
+            }
+
+                .options label:hover {
+                    background-color: #1428a3;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #1428a3;
+                    font-weight: 600;
+                }
+
+        .calculate-btn, .reset-btn {
+            background-color: #6B7280;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: background-color 0.3s;
+        }
+
+            .calculate-btn:hover, .reset-btn:hover {
+                background-color: #4B5563;
+            }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1b2a38;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            display: none;
+            white-space: pre-line;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+                width: 100%;
+            }
+
+            .logo img {
+                max-width: 100px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            h2 {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+
+            .question p {
+                font-size: 14px;
+            }
+
+            .options {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+                .options label {
+                    font-size: 13px;
+                    padding: 10px;
+                    width: 100%;
+                    text-align: center;
+                }
+
+            .calculate-btn, .reset-btn {
+                width: 100%;
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #result {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366; /* cor verde WhatsApp */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-decoration: none;
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+            .whatsapp-button:hover {
+                transform: scale(1.1);
+            }
+
+            .whatsapp-button img {
+                width: 30px;
+                height: 30px;
+            }
+        .chat-toggle {
+            position: fixed;
+            bottom: 100px; /* Acima do WhatsApp */
+            right: 20px;
+            background: #1b2a38;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+            .whatsapp-float img {
+                width: 50px;
+                height: 50px;
+                background-color: #25D366;
+            }
+
+
+        footer {
+            text-align: center;
+            padding: 0,5rem;
+            background-color: #16222f;
+            color: #aaa;
+            font-size: 0.9rem;
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Substitua pelo caminho real do logo -->
+            <img src="logo.png" alt="ProntPsi Logo">
+        </div>
+        <h1>MODELO</h1>
+        <h1>Escala BES - Transtorno de Compulsão Alimentar</h1>
+        <h2>Responda às perguntas abaixo com base nos últimos 28 dias.</h2>
+
+        <div id="form">
+            <div id="questions" class="space-y-6"></div>
+            <div class="button-container">
+                <button class="calculate-btn" onclick="calculateScore()">Calcular Pontuação</button>
+                <button class="reset-btn" onclick="resetForm()">Reiniciar</button>
+            </div>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Lista de perguntas representativas do BES
+        const questions = [
+            { text: "Você já comeu grandes quantidades de comida de uma só vez, sentindo que perdeu o controle?" },
+            { text: "Você come mais rápido do que o normal durante episódios de comer excessivo?" },
+            { text: "Você sente culpa ou vergonha após comer muito?" },
+            { text: "Você come mesmo quando não está com fome?" },
+            { text: "Você se sente desconfortável ao comer em público?" },
+            { text: "Você esconde comida para comer sozinho(a)?" },
+            { text: "Você sente angústia após comer grandes quantidades?" },
+            { text: "Você já comeu até sentir desconforto físico?" }
+        ];
+
+        const options = [
+            { value: 0, label: "0 - Nunca" },
+            { value: 1, label: "1 - Raramente" },
+            { value: 2, label: "2 - Às vezes" },
+            { value: 3, label: "3 - Frequentemente" }
+        ];
+
+        // Função para renderizar as perguntas
+        function renderQuestions() {
+            const questionContainer = document.getElementById('questions');
+            questionContainer.innerHTML = '';
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                  <p>${index + 1}. ${question.text}</p>
+                  <div class="options">
+                    ${options.map(option => `
+                      <input type="radio" name="q${index}" value="${option.value}" id="q${index}-${option.value}" required>
+                      <label for="q${index}-${option.value}">${option.label}</label>
+                    `).join('')}
+                  </div>
+                `;
+                questionContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Função para calcular a pontuação
+        function calculateScore() {
+            const form = document.getElementById('form');
+            for (let i = 0; i < questions.length; i++) {
+                const selected = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    alert('Por favor, responda a todas as perguntas antes de calcular.');
+                    return;
+                }
+            }
+
+            let totalScore = 0;
+            questions.forEach((_, index) => {
+                const selected = form.querySelector(`input[name="q${index}"]:checked`);
+                totalScore += parseInt(selected.value);
+            });
+
+            const interpretation = totalScore >= 17 ? "Compulsão alimentar grave" :
+                totalScore >= 12 ? "Compulsão alimentar moderada" :
+                    totalScore >= 8 ? "Compulsão alimentar leve" : "Sem compulsão alimentar";
+
+            const resultDiv = document.getElementById('result');
+            let message = `Resultados:\n\n`;
+            message += `Pontuação Total: ${totalScore} (de 0 a 24)\n`;
+            message += `Interpretação: ${interpretation}\n\n`;
+            message += `Consulte um profissional de saúde mental para uma avaliação completa.`;
+
+            resultDiv.textContent = message;
+            resultDiv.style.display = 'block';
+        }
+
+        // Função para reiniciar o formulário
+        function resetForm() {
+            renderQuestions();
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'none';
+        }
+
+        // Inicializar o formulário
+        renderQuestions();
+    </script>
+    <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+    </a>
+    <footer>
+        © 2025 ProntPsi . Todos os direitos reservados.
+    </footer>
+
+</body>
+</html>

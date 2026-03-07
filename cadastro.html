@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadastro ProntPsi</title>
+    <link rel="stylesheet" href="cadastro.css" />
+</head>
+<body>
+    <form class="cadastro-form" id="cadastroForm">
+        <div class="logo">
+            <img src="logo.png" alt="logo-img" class="logo-img" />
+
+        </div>
+        <h1>Cadastro</h1>
+        <p>Crie sua conta para começar</p>
+
+        <input type="text" id="nome" placeholder="Nome completo" required />
+        <input type="email" id="email" placeholder="E-mail" required />
+        <input type="password" id="senha" placeholder="Senha" required />
+        <input type="password" id="confirmaSenha" placeholder="Confirme a senha" required />
+
+        <button type="submit">Cadastrar</button>
+
+        <a href="login.html" class="voltar-login">Já tem uma conta? Faça login</a>
+    </form>
+
+    <script src="cadastro.js"></script>
+</body>
+</html>
+
