@@ -3,7 +3,7 @@
 //  Cadastro de profissional conectado ao backend Node.js
 // ============================================================
 
-const API_URL = 'https://mainline.proxy.rlwy.net:31456';
+const API_URL = 'https://prontpsiback-production.up.railway.app';
 document.getElementById('cadastroForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 

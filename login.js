@@ -3,7 +3,7 @@
 //  Conectado ao backend Node.js (porta 5015)
 // ============================================================
 
-const API_URL = 'https://mainline.proxy.rlwy.net:31456';
+const API_URL = 'https://prontpsiback-production.up.railway.app';
 window.onload = function () {
     const btnLogin = document.getElementById('Login');
     const inputEmail = document.getElementById('email');
