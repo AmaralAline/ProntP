@@ -1,73 +1,106 @@
-window.onload = function (e) {
-    var login = document.getElementById("login")
-    var email = document.getElementById("email")
-    var senha = document.getElementById("password")
+// ============================================================
+//  ProntPsi - login.js
+//  Conectado ao backend Node.js (porta 5015)
+// ============================================================
 
-    if (email) email.focus();
+const API_URL = 'https://mainline.proxy.rlwy.net:31456';
+window.onload = function () {
+    const btnLogin = document.getElementById('Login');
+    const inputEmail = document.getElementById('email');
 
-    if (login) {
-        login.onclick = function (e) {
+    if (inputEmail) inputEmail.focus();
 
+    if (btnLogin) {
+        btnLogin.onclick = function (e) {
             e.preventDefault();
 
-            var email = email.value;
-            var senha = senha.value;
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('password').value.trim();
 
-            if (email == "" || senha == "") {
-                var mensagem = "Preencha todos os campos";
-                exibirMensagemErro(mensagem);
-
+            if (email === '' || senha === '') {
+                exibirMensagem('Preencha todos os campos.', 'erro');
+                return;
             }
 
-            else {
-
-                realizarLogin(email, senha);
-
-            }
-        }
+            realizarLogin(email, senha);
+        };
     }
-    function exibirMensagemErro(mensagem) {
-        var spnErro = document.getElementById("spnErro");   /*spn é um elemento existente,mas invisivel na tela*/
-        spnErro.innerText = mensagem; /*coloco o parametro  informe senha e informe email para "mensagem"*/
-        spnErro.style.display = "block"; /*Estou atribuindo estilo no js, antes estava invisivel agora fica visivel*/
-
-        setTimeout(function () { /*Estou passando uma função como parametro para outra função, no caso aqui para ExibirmensagemErro*/
-            spnErro.style.display = "none"; /*Aqui a função está pegando o display e colocando ele visivel*/
-        }, 10000);  /*10000´= 10 segundos, a tela será exibida em 5 segundos*/
-    }
-
-    function realizarLogin(email, senha) {
-
-        var data = JSON.stringify({
-            "email": email,
-            "senha": senha
-        });
-
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-
-                var loginResult = JSON.parse(this.responseText);
-
-                if (loginResult.sucesso) {
-
-                    localStorage.setItem("usuarioGuid", loginResult.usuarioGuid);
-                    window.location.href = 'dashboard.html';
-
-                }
-                else {
-                    exibirMensagemErro(loginResult.mensagem);
-                }
-            }
-        });
-
-        xhr.open("POST", "https://localhost:44304/api/usuario/login");
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.send(data);
-
-    }
-
 };
+
+// ------------------------------------------------------------
+//  Função principal de login
+// ------------------------------------------------------------
+async function realizarLogin(email, senha) {
+    const btnLogin = document.getElementById('Login');
+    btnLogin.disabled = true;
+    btnLogin.innerText = 'Entrando...';
+
+    try {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, senha })
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok) {
+            // Salva o token e dados do profissional no localStorage
+            localStorage.setItem('token', resultado.token);
+            localStorage.setItem('profissional', JSON.stringify(resultado.profissional));
+
+            exibirMensagem('Login realizado! Redirecionando...', 'sucesso');
+
+            // Redireciona para a home do sistema
+            setTimeout(() => {
+                window.location.href = 'PainelExclusivo.html';            }, 1000);
+
+        } else {
+            // Erro retornado pela API (senha errada, usuário não encontrado etc.)
+            exibirMensagem(resultado.erro || 'E-mail ou senha incorretos.', 'erro');
+        }
+
+    } catch (error) {
+        // Erro de conexão (backend fora do ar, CORS etc.)
+        exibirMensagem('Não foi possível conectar ao servidor. Verifique se o backend está rodando.', 'erro');
+        console.error('Erro de conexão:', error);
+    } finally {
+        btnLogin.disabled = false;
+        btnLogin.innerText = 'Entrar';
+    }
+}
+
+// ------------------------------------------------------------
+//  Exibe mensagem de erro ou sucesso na tela
+// ------------------------------------------------------------
+function exibirMensagem(mensagem, tipo) {
+    // Tenta usar o elemento spnErro se existir
+    let spnErro = document.getElementById('spnErro');
+
+    // Se não existir, cria um dinamicamente
+    if (!spnErro) {
+        spnErro = document.createElement('p');
+        spnErro.id = 'spnErro';
+        spnErro.style.cssText = `
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            display: block;
+        `;
+        const form = document.querySelector('.login-form');
+        if (form) form.appendChild(spnErro);
+    }
+
+    spnErro.innerText = mensagem;
+    spnErro.style.display = 'block';
+    spnErro.style.backgroundColor = tipo === 'sucesso' ? '#d4edda' : '#f8d7da';
+    spnErro.style.color = tipo === 'sucesso' ? '#155724' : '#721c24';
+
+    if (tipo === 'erro') {
+        setTimeout(() => {
+            spnErro.style.display = 'none';
+        }, 5000);
+    }
+}N

@@ -3,29 +3,39 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cadastro ProntPsi</title>
+    <title>Cadastro - ProntPsi</title>
     <link rel="stylesheet" href="cadastro.css" />
 </head>
 <body>
     <form class="cadastro-form" id="cadastroForm">
         <div class="logo">
             <img src="logo.png" alt="logo-img" class="logo-img" />
-
         </div>
         <h1>Cadastro</h1>
         <p>Crie sua conta para começar</p>
 
         <input type="text" id="nome" placeholder="Nome completo" required />
         <input type="email" id="email" placeholder="E-mail" required />
-        <input type="password" id="senha" placeholder="Senha" required />
+        <input type="tel" id="telefone" placeholder="Telefone (opcional)" />
+
+        <input type="text" id="crp_crm" placeholder="CRP ou CRM (ex: CRP-06/123456)" required />
+
+        <select id="especialidade" required>
+            <option value="">Selecione sua especialidade</option>
+            <option value="psicologia">Psicologia</option>
+            <option value="psiquiatria">Psiquiatria</option>
+            <option value="outro">Outro</option>
+        </select>
+
+        <input type="password" id="senha" placeholder="Senha (mín. 6 caracteres)" required />
         <input type="password" id="confirmaSenha" placeholder="Confirme a senha" required />
 
-        <button type="submit">Cadastrar</button>
+        <!-- Mensagem de erro/sucesso -->
+        <p id="spnErro" style="display:none;"></p>
 
+        <button type="submit" id="btnCadastrar">Cadastrar</button>
         <a href="login.html" class="voltar-login">Já tem uma conta? Faça login</a>
     </form>
-
     <script src="cadastro.js"></script>
 </body>
 </html>
-
