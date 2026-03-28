@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Esqueci minha senha - ProntPsi</title>
+    <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="logo.png" alt="logo-img" class="logo-img" />
+        </div>
+        <form class="login-form" id="esqueciForm">
+            <h1>Esqueci minha senha</h1>
+            <p>Digite seu e-mail cadastrado e enviaremos as instruções.</p>
+            <input type="email" id="email" placeholder="Seu e-mail" required />
+            <p id="spnErro" style="display:none;"></p>
+            <button type="submit" id="btnEnviar">Enviar instruções</button>
+            <a href="login.html">Voltar ao login</a>
+        </form>
+    </div>
+    <script>
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
+
+        document.getElementById('esqueciForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email     = document.getElementById('email').value.trim();
+            const btnEnviar = document.getElementById('btnEnviar');
+
+            btnEnviar.disabled  = true;
+            btnEnviar.innerText = 'Enviando...';
+
+            try {
+                const res = await fetch(`${API_URL}/api/auth/esqueci-senha`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+                exibirMensagem(data.mensagem || data.erro, res.ok ? 'sucesso' : 'erro');
+
+            } catch (err) {
+                exibirMensagem('Erro de conexão com o servidor.', 'erro');
+            } finally {
+                btnEnviar.disabled  = false;
+                btnEnviar.innerText = 'Enviar instruções';
+            }
+        });
+
+        function exibirMensagem(msg, tipo) {
+            const el = document.getElementById('spnErro');
+            el.innerText = msg;
+            el.style.display = 'block';
+            el.style.padding = '10px';
+            el.style.borderRadius = '6px';
+            el.style.marginTop = '10px';
+            el.style.textAlign = 'center';
+            el.style.backgroundColor = tipo === 'sucesso' ? '#d4edda' : '#f8d7da';
+            el.style.color = tipo === 'sucesso' ? '#155724' : '#721c24';
+        }
+    </script>
+</body>
+</html>
