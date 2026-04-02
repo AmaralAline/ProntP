@@ -3,7 +3,7 @@
 //  Versão corrigida — com JWT, rotas corretas e listagem
 // ============================================================
 
-const API_URL = 'http://localhost:5015';
+const API_URL = 'https://prontpsiback-production.up.railway.app';
 
 // ------------------------------------------------------------
 //  AUTENTICAÇÃO — pega token e dados do profissional logado

@@ -13,7 +13,7 @@ let sessaoAtiva = false;
 let consultaAtualId = null;
 let pacienteAtualId = null;
 let pacienteAtualNome = null;
-const API_URL = 'https://prontpsiback-production.up.railway.app';
+
 // ============================================================
 //  INJETA O MODAL DE SESSÃO NO HTML
 // ============================================================
