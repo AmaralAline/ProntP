@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responder Formul�rio - ProntPsi</title>
+    <link rel="stylesheet" href="PainelExclusivo.css"> <!-- reuse seu CSS ou crie um novo -->
+    <style>
+        body {
+            background: #0d001a;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #954ebf;
+        }
+
+        .form-pergunta {
+            margin: 20px 0;
+        }
+
+        .opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            background: #954ebf;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+            button:hover {
+                background: #b36be0;
+            }
+
+        #senha-verificacao {
+            margin: 40px auto;
+            max-width: 400px;
+        }
+
+        #form-conteudo {
+            display: none;
+        }
+
+        .mensagem {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .erro {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Responder Formul�rio</h1>
+
+        <!-- �rea de senha (se necess�rio) -->
+        <div id="senha-verificacao">
+            <p class="mensagem">Digite a senha fornecida pela sua psic�loga para acessar o formul�rio.</p>
+            <input type="password" id="senha-input" placeholder="Senha de acesso" style="width:100%; padding:12px; margin:10px 0;">
+            <button id="verificar-senha">Acessar Formul�rio</button>
+            <p id="erro-senha" class="erro" style="display:none;">Senha incorreta. Tente novamente.</p>
+        </div>
+
+        <!-- Conte�do do formul�rio (escondido at� validar senha) -->
+        <div id="form-conteudo">
+            <h2 id="titulo-form">Carregando formul�rio...</h2>
+            <form id="form-resposta">
+                <!-- As perguntas ser�o inseridas aqui via JS -->
+            </form>
+            <button id="enviar-respostas">Enviar Respostas</button>
+            <p id="mensagem-sucesso" class="mensagem" style="display:none; color:#90ee90;">Respostas enviadas com sucesso! Obrigada.</p>
+        </div>
+    </div>
+
+    <script>
+        // L� par�metros da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const linkId = urlParams.get('id');
+        const pacienteId = urlParams.get('pac');
+        const formTipo = urlParams.get('form');
+        const senhaCodificada = urlParams.get('s'); // base64 da senha
+
+        const senhaCorreta = senhaCodificada ? atob(senhaCodificada) : null;
+
+        // Simula��o de formul�rios (adicione mais conforme necess�rio)
+        const formularios = {
+            beck: {
+                titulo: "Invent�rio de Beck (Depress�o)",
+                perguntas: [
+                    { id: 1, texto: "Tristeza", opcoes: ["0 - N�o me sinto triste", "1 - Sinto-me triste boa parte do tempo", "2 - Sinto-me sempre triste", "3 - Estou t�o triste ou infeliz que n�o consigo suportar"] },
+                    { id: 2, texto: "Pessimismo", opcoes: ["0 - N�o estou desanimado quanto ao futuro", "1 - Estou mais desanimado quanto ao futuro do que costumava estar", "2 - N�o espero que as coisas melhorem", "3 - Sinto que o futuro � sem esperan�a e as coisas n�o podem melhorar"] },
+                    // Adicione as outras 19 perguntas do Beck aqui (ou crie um array completo)
+                ]
+            },
+            bes: {
+                titulo: "Escala de Compuls�o Alimentar (BES)",
+                perguntas: [
+                    { id: 1, texto: "Eu sinto que n�o consigo controlar o quanto como", opcoes: ["0 - Nunca", "1 - Raramente", "2 - �s vezes", "3 - Frequentemente", "4 - Sempre"] },
+                    // Adicione as outras perguntas da BES
+                ]
+            },
+            // Adicione outros: pittsburg, edi3, etc.
+        };
+
+        // Verifica senha
+        const verificarSenhaBtn = document.getElementById('verificar-senha');
+        if (verificarSenhaBtn) {
+            verificarSenhaBtn.addEventListener('click', () => {
+                const digitada = document.getElementById('senha-input').value;
+                if (!senhaCorreta || digitada === senhaCorreta) {
+                    document.getElementById('senha-verificacao').style.display = 'none';
+                    document.getElementById('form-conteudo').style.display = 'block';
+                    carregarFormulario();
+                } else {
+                    document.getElementById('erro-senha').style.display = 'block';
+                }
+            });
+        }
+
+        // Carrega o formul�rio escolhido
+        function carregarFormulario() {
+            if (!formTipo || !formularios[formTipo]) {
+                document.getElementById('titulo-form').textContent = "Formul�rio n�o encontrado";
+                return;
+            }
+
+            const form = formularios[formTipo];
+            document.getElementById('titulo-form').textContent = form.titulo;
+
+            const container = document.getElementById('form-resposta');
+            container.innerHTML = '';
+
+            form.perguntas.forEach(perg => {
+                const div = document.createElement('div');
+                div.className = 'form-pergunta';
+                div.innerHTML = `
+                    <p><strong>${perg.id}. ${perg.texto}</strong></p>
+                    <div class="opcoes">
+                        ${perg.opcoes.map((op, idx) => `
+                            <label>
+                                <input type="radio" name="perg-${perg.id}" value="${idx}">
+                                ${op}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Enviar respostas (simula��o por enquanto)
+        document.getElementById('enviar-respostas')?.addEventListener('click', () => {
+            // Aqui voc� pode coletar as respostas e salvar/enviar
+            alert('Respostas enviadas com sucesso! (Simula��o)');
+            document.getElementById('mensagem-sucesso').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
