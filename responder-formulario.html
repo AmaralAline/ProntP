@@ -1,180 +1,350 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responder Formul�rio - ProntPsi</title>
-    <link rel="stylesheet" href="PainelExclusivo.css"> <!-- reuse seu CSS ou crie um novo -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulário - ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background: #0d001a;
-            color: white;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1b2a38;
+            color: #ffffff;
             padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
-            background: rgba(255,255,255,0.05);
+            max-width: 700px;
+            width: 100%;
+            background-color: #2a3b4c;
             padding: 30px;
             border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        h1 {
+        .logo {
             text-align: center;
-            color: #954ebf;
+            margin-bottom: 24px;
         }
 
-        .form-pergunta {
-            margin: 20px 0;
-        }
-
-        .opcoes {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        button {
-            background: #954ebf;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1em;
-        }
-
-            button:hover {
-                background: #b36be0;
+            .logo img {
+                max-width: 120px;
             }
 
-        #senha-verificacao {
-            margin: 40px auto;
-            max-width: 400px;
-        }
-
-        #form-conteudo {
-            display: none;
-        }
-
-        .mensagem {
+        h1 {
+            font-size: 22px;
+            color: #ffffff;
             text-align: center;
-            font-size: 1.2em;
-            margin: 20px 0;
+            margin-bottom: 8px;
         }
 
-        .erro {
-            color: #ff6b6b;
+        .instrucoes {
+            color: #aaa;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .question {
+            margin-bottom: 28px;
+            padding: 16px;
+            background: #1b2a38;
+            border-radius: 8px;
+        }
+
+            .question p {
+                font-size: 15px;
+                font-weight: 600;
+                margin-bottom: 12px;
+                color: #e0e0e0;
+            }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+            .options label {
+                background-color: #3a4f63;
+                padding: 10px 15px;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                font-size: 14px;
+            }
+
+                .options label:hover {
+                    background-color: #1428a3;
+                }
+
+            .options input[type="radio"] {
+                display: none;
+            }
+
+                .options input[type="radio"]:checked + label {
+                    background-color: #1428a3;
+                    font-weight: 600;
+                }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            background: #3a4f63;
+            color: #fff;
+            border: 1px solid #4a6080;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+            textarea:focus {
+                outline: none;
+                border-color: #1428a3;
+            }
+
+        .btn-enviar {
+            width: 100%;
+            background: #4a90a4;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+            .btn-enviar:hover {
+                background: #357a8a;
+            }
+
+            .btn-enviar:disabled {
+                background: #555;
+                cursor: not-allowed;
+            }
+
+        #feedback {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Responder Formul�rio</h1>
-
-        <!-- �rea de senha (se necess�rio) -->
-        <div id="senha-verificacao">
-            <p class="mensagem">Digite a senha fornecida pela sua psic�loga para acessar o formul�rio.</p>
-            <input type="password" id="senha-input" placeholder="Senha de acesso" style="width:100%; padding:12px; margin:10px 0;">
-            <button id="verificar-senha">Acessar Formul�rio</button>
-            <p id="erro-senha" class="erro" style="display:none;">Senha incorreta. Tente novamente.</p>
+        <div class="logo">
+            <img src="logo.png" alt="ProntPsi" onerror="this.style.display='none'">
         </div>
 
-        <!-- Conte�do do formul�rio (escondido at� validar senha) -->
-        <div id="form-conteudo">
-            <h2 id="titulo-form">Carregando formul�rio...</h2>
-            <form id="form-resposta">
-                <!-- As perguntas ser�o inseridas aqui via JS -->
-            </form>
-            <button id="enviar-respostas">Enviar Respostas</button>
-            <p id="mensagem-sucesso" class="mensagem" style="display:none; color:#90ee90;">Respostas enviadas com sucesso! Obrigada.</p>
+        <div id="loading">
+            <p>⏳ Carregando formulário...</p>
         </div>
+
+        <div id="conteudo" style="display:none;">
+            <h1 id="titulo-escala"></h1>
+            <p class="instrucoes" id="instrucoes-escala"></p>
+            <div id="perguntas"></div>
+            <button class="btn-enviar" id="btn-enviar" onclick="enviarRespostas()">
+                Enviar Respostas
+            </button>
+        </div>
+
+        <div id="feedback"></div>
     </div>
 
     <script>
-        // L� par�metros da URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const linkId = urlParams.get('id');
-        const pacienteId = urlParams.get('pac');
-        const formTipo = urlParams.get('form');
-        const senhaCodificada = urlParams.get('s'); // base64 da senha
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
 
-        const senhaCorreta = senhaCodificada ? atob(senhaCodificada) : null;
+        // Pega o token da URL
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
 
-        // Simula��o de formul�rios (adicione mais conforme necess�rio)
-        const formularios = {
-            beck: {
-                titulo: "Invent�rio de Beck (Depress�o)",
-                perguntas: [
-                    { id: 1, texto: "Tristeza", opcoes: ["0 - N�o me sinto triste", "1 - Sinto-me triste boa parte do tempo", "2 - Sinto-me sempre triste", "3 - Estou t�o triste ou infeliz que n�o consigo suportar"] },
-                    { id: 2, texto: "Pessimismo", opcoes: ["0 - N�o estou desanimado quanto ao futuro", "1 - Estou mais desanimado quanto ao futuro do que costumava estar", "2 - N�o espero que as coisas melhorem", "3 - Sinto que o futuro � sem esperan�a e as coisas n�o podem melhorar"] },
-                    // Adicione as outras 19 perguntas do Beck aqui (ou crie um array completo)
-                ]
-            },
-            bes: {
-                titulo: "Escala de Compuls�o Alimentar (BES)",
-                perguntas: [
-                    { id: 1, texto: "Eu sinto que n�o consigo controlar o quanto como", opcoes: ["0 - Nunca", "1 - Raramente", "2 - �s vezes", "3 - Frequentemente", "4 - Sempre"] },
-                    // Adicione as outras perguntas da BES
-                ]
-            },
-            // Adicione outros: pittsburg, edi3, etc.
-        };
+        let dadosFormulario = null;
 
-        // Verifica senha
-        const verificarSenhaBtn = document.getElementById('verificar-senha');
-        if (verificarSenhaBtn) {
-            verificarSenhaBtn.addEventListener('click', () => {
-                const digitada = document.getElementById('senha-input').value;
-                if (!senhaCorreta || digitada === senhaCorreta) {
-                    document.getElementById('senha-verificacao').style.display = 'none';
-                    document.getElementById('form-conteudo').style.display = 'block';
-                    carregarFormulario();
-                } else {
-                    document.getElementById('erro-senha').style.display = 'block';
-                }
-            });
-        }
-
-        // Carrega o formul�rio escolhido
-        function carregarFormulario() {
-            if (!formTipo || !formularios[formTipo]) {
-                document.getElementById('titulo-form').textContent = "Formul�rio n�o encontrado";
+        // ============================================================
+        //  CARREGA O FORMULÁRIO
+        // ============================================================
+        async function carregarFormulario() {
+            if (!token) {
+                mostrarErro('Link inválido. Solicite um novo link ao seu profissional.');
                 return;
             }
 
-            const form = formularios[formTipo];
-            document.getElementById('titulo-form').textContent = form.titulo;
+            try {
+                const res = await fetch(`${API_URL}/api/questionario/${token}`);
+                const data = await res.json();
 
-            const container = document.getElementById('form-resposta');
-            container.innerHTML = '';
+                if (!res.ok) {
+                    mostrarErro(data.erro || 'Link inválido ou expirado.');
+                    return;
+                }
 
-            form.perguntas.forEach(perg => {
-                const div = document.createElement('div');
-                div.className = 'form-pergunta';
-                div.innerHTML = `
-                    <p><strong>${perg.id}. ${perg.texto}</strong></p>
-                    <div class="opcoes">
-                        ${perg.opcoes.map((op, idx) => `
-                            <label>
-                                <input type="radio" name="perg-${perg.id}" value="${idx}">
-                                ${op}
-                            </label>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(div);
-            });
+                dadosFormulario = data;
+                renderizarFormulario(data);
+
+            } catch (err) {
+                mostrarErro('Erro ao carregar o formulário. Tente novamente mais tarde.');
+            }
         }
 
-        // Enviar respostas (simula��o por enquanto)
-        document.getElementById('enviar-respostas')?.addEventListener('click', () => {
-            // Aqui voc� pode coletar as respostas e salvar/enviar
-            alert('Respostas enviadas com sucesso! (Simula��o)');
-            document.getElementById('mensagem-sucesso').style.display = 'block';
-        });
+        // ============================================================
+        //  RENDERIZA AS PERGUNTAS
+        // ============================================================
+        function renderizarFormulario(data) {
+            document.getElementById('titulo-escala').textContent = data.escala_nome;
+            document.getElementById('instrucoes-escala').textContent = data.instrucoes || '';
+
+            const container = document.getElementById('perguntas');
+            container.innerHTML = '';
+
+            data.perguntas.forEach((p, i) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+
+                if (p.tipo === 'multipla_escolha' && p.opcoes?.length) {
+                    div.innerHTML = `
+                            <p>${i + 1}. ${p.texto}</p>
+                            <div class="options">
+                                ${p.opcoes.map(o => `
+                                    <input type="radio" name="p${p.id}" id="p${p.id}-o${o.id}" value="${o.id}" data-valor="${o.valor}">
+                                    <label for="p${p.id}-o${o.id}">${o.texto}</label>
+                                `).join('')}
+                            </div>
+                        `;
+                } else {
+                    div.innerHTML = `
+                            <p>${i + 1}. ${p.texto}</p>
+                            <textarea name="p${p.id}" id="txt-p${p.id}" placeholder="Escreva sua resposta aqui..."></textarea>
+                        `;
+                }
+
+                container.appendChild(div);
+            });
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'block';
+        }
+
+        // ============================================================
+        //  ENVIA AS RESPOSTAS
+        // ============================================================
+        async function enviarRespostas() {
+            if (!dadosFormulario) return;
+
+            const respostas = [];
+
+            for (const p of dadosFormulario.perguntas) {
+                if (p.tipo === 'multipla_escolha' && p.opcoes?.length) {
+                    const selecionado = document.querySelector(`input[name="p${p.id}"]:checked`);
+                    if (!selecionado) {
+                        alert(`Por favor, responda a pergunta ${dadosFormulario.perguntas.indexOf(p) + 1}.`);
+                        return;
+                    }
+                    respostas.push({
+                        pergunta_id: p.id,
+                        opcao_id: parseInt(selecionado.value),
+                        resposta_texto: null
+                    });
+                } else {
+                    const textarea = document.getElementById(`txt-p${p.id}`);
+                    respostas.push({
+                        pergunta_id: p.id,
+                        opcao_id: null,
+                        resposta_texto: textarea?.value.trim() || ''
+                    });
+                }
+            }
+
+            const btn = document.getElementById('btn-enviar');
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            try {
+                const res = await fetch(`${API_URL}/api/questionario/${token}/responder`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ respostas })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById('conteudo').style.display = 'none';
+                    const feedback = document.getElementById('feedback');
+                    feedback.style.display = 'block';
+                    feedback.style.backgroundColor = '#1b4332';
+                    feedback.style.color = '#4caf80';
+                    feedback.innerHTML = `
+                            <h2>✅ Respostas enviadas com sucesso!</h2>
+                            <p style="margin-top:12px; color:#aaa;">
+                                Obrigado por responder. Seu profissional já pode visualizar suas respostas.
+                            </p>
+                        `;
+                } else {
+                    alert(data.erro || 'Erro ao enviar respostas.');
+                    btn.disabled = false;
+                    btn.textContent = 'Enviar Respostas';
+                }
+
+            } catch (err) {
+                alert('Erro de conexão. Tente novamente.');
+                btn.disabled = false;
+                btn.textContent = 'Enviar Respostas';
+            }
+        }
+
+        // ============================================================
+        //  MOSTRA ERRO
+        // ============================================================
+        function mostrarErro(msg) {
+            document.getElementById('loading').style.display = 'none';
+            const feedback = document.getElementById('feedback');
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#3b1a1a';
+            feedback.style.color = '#e57373';
+            feedback.innerHTML = `
+                    <h2>❌ Link inválido</h2>
+                    <p style="margin-top:12px; color:#aaa;">${msg}</p>
+                `;
+        }
+
+        // Inicia carregamento
+        carregarFormulario();
     </script>
 </body>
 </html>
