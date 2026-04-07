@@ -39,18 +39,69 @@
                  INÍCIO (RELÓGIO)
                  ================================================ -->
             <section id="clock-section" class="active-section">
-                <div id="clock-section" style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:70vh;">
-                    <div class="clock-wrapper">
-                        <h1 style="font-size:13px; color:#64748b; letter-spacing:2px; text-transform:uppercase; margin-bottom:32px; font-weight:400;">
-                            Bem-vindo ao ProntPsi
-                        </h1>
-                        <div class="clock">
+                <!-- HEADER DO DASHBOARD -->
+                <div class="dashboard-header">
+                    <div>
+                        <h2 class="dashboard-titulo">Bom dia, <span id="nome-profissional">Profissional</span> 👋</h2>
+                        <p class="dashboard-data" id="dashboard-data"></p>
+                    </div>
+                    <div class="clock-mini">
+                        <div class="clock" style="width:100px;height:100px;">
                             <div class="center-circle"></div>
                             <div id="hour-hand" class="hand hour"></div>
                             <div id="minute-hand" class="hand minute"></div>
                             <div id="second-hand" class="hand second"></div>
                         </div>
-                        <p id="nome-profissional" style="font-size:16px; color:#94a3b8; text-align:center; margin-top:20px;"></p>
+                    </div>
+                </div>
+
+                <!-- CARDS DE RESUMO -->
+                <div class="dashboard-cards">
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(139,92,246,0.15);">
+                            <i class="fas fa-users" style="color:#a78bfa;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Total de Pacientes</p>
+                            <p class="dash-card-value" id="dash-total-pacientes">—</p>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(96,165,250,0.15);">
+                            <i class="fas fa-calendar-check" style="color:#60a5fa;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Consultas Hoje</p>
+                            <p class="dash-card-value" id="dash-consultas-hoje">—</p>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(251,191,36,0.15);">
+                            <i class="fas fa-clock" style="color:#fbbf24;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Formulários Pendentes</p>
+                            <p class="dash-card-value" id="dash-pendentes">—</p>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(52,211,153,0.15);">
+                            <i class="fas fa-check-circle" style="color:#34d399;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Formulários Respondidos</p>
+                            <p class="dash-card-value" id="dash-respondidos">—</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRÓXIMAS CONSULTAS DO DIA -->
+                <div class="dashboard-section">
+                    <h3 class="dashboard-section-title">
+                        <i class="fas fa-calendar-alt"></i> Agenda de Hoje
+                    </h3>
+                    <div id="dashboard-agenda-hoje">
+                        <p style="color:#64748b; font-size:14px;">Carregando...</p>
                     </div>
                 </div>
             </section>

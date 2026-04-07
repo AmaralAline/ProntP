@@ -404,3 +404,115 @@ function mostrarFeedback(elementId, mensagem, tipo) {
         setTimeout(() => { el.style.display = 'none'; }, 5000);
     }
 }
+// ============================================================
+//  DASHBOARD
+// ============================================================
+async function carregarDashboard() {
+    // Data de hoje formatada
+    const agora = new Date();
+    const dataFormatada = agora.toLocaleDateString('pt-BR', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+    const dataEl = document.getElementById('dashboard-data');
+    if (dataEl) dataEl.textContent = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
+
+    // Saudação por horário
+    const hora = agora.getHours();
+    const saudacao = hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';
+    const tituloEl = document.querySelector('.dashboard-titulo');
+    if (tituloEl) {
+        const nomeSpan = document.getElementById('nome-profissional');
+        const nome = nomeSpan?.textContent || profissional.nome || 'Profissional';
+        tituloEl.innerHTML = `${saudacao}, <span id="nome-profissional">${nome}</span> 👋`;
+    }
+
+    // Total de pacientes
+    const totalEl = document.getElementById('dash-total-pacientes');
+    if (totalEl) totalEl.textContent = pacientes.length;
+
+    // Consultas de hoje
+    await carregarConsultasHojeDashboard();
+
+    // Formulários pendentes e respondidos
+    await carregarEstatisticasFormularios();
+}
+
+async function carregarConsultasHojeDashboard() {
+    const hoje = new Date();
+    const inicio = hoje.toISOString().split('T')[0] + ' 00:00:00';
+    const fim = hoje.toISOString().split('T')[0] + ' 23:59:59';
+
+    try {
+        const res = await fetch(`${API_URL}/api/agenda?inicio=${inicio}&fim=${fim}`, {
+            headers: headersAuth()
+        });
+
+        if (!res.ok) return;
+
+        const consultas = await res.json();
+        const container = document.getElementById('dashboard-agenda-hoje');
+        const countEl = document.getElementById('dash-consultas-hoje');
+
+        if (countEl) countEl.textContent = consultas.length;
+
+        if (!container) return;
+
+        if (!consultas.length) {
+            container.innerHTML = '<p class="dash-vazio">Nenhuma consulta agendada para hoje.</p>';
+            return;
+        }
+
+        container.innerHTML = consultas.map(c => `
+            <div class="dash-consulta-item">
+                <span class="dash-consulta-hora">
+                    🕐 ${new Date(c.data_hora_inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    — ${new Date(c.data_hora_fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                </span>
+                <span class="dash-consulta-nome">${c.paciente_nome || 'Sem paciente'}</span>
+                <span class="dash-consulta-status">${c.status || 'agendado'}</span>
+            </div>
+        `).join('');
+
+    } catch (err) {
+        console.error('Erro ao carregar agenda dashboard:', err);
+    }
+}
+
+async function carregarEstatisticasFormularios() {
+    try {
+        const res = await fetch(`${API_URL}/api/escalas/resultados`, {
+            headers: headersAuth()
+        });
+
+        if (!res.ok) return;
+
+        const respondidos = await res.json();
+        const respondidosEl = document.getElementById('dash-respondidos');
+        if (respondidosEl) respondidosEl.textContent = respondidos.length;
+
+        // Busca links pendentes
+        const resPendentes = await fetch(`${API_URL}/api/escalas/links-pendentes`, {
+            headers: headersAuth()
+        });
+
+        if (resPendentes.ok) {
+            const pendentes = await resPendentes.json();
+            const pendentesEl = document.getElementById('dash-pendentes');
+            if (pendentesEl) pendentesEl.textContent = pendentes.length;
+        }
+
+    } catch (err) {
+        console.error('Erro ao carregar estatísticas:', err);
+    }
+}
+
+// Carrega dashboard ao clicar em Início
+const btnClock = document.getElementById('btn-clock');
+if (btnClock) {
+    btnClock.addEventListener('click', () => carregarDashboard());
+}
+
+// Carrega dashboard na inicialização
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => carregarDashboard(), 500);
+});
