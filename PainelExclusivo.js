@@ -167,27 +167,38 @@ function renderizarListaPacientes() {
     if (!container) return;
 
     if (pacientes.length === 0) {
-        container.innerHTML = '<p style="color:#aaa;">Nenhum paciente cadastrado ainda.</p>';
+        container.innerHTML = '<p style="color:#64748b; font-size:14px;">Nenhum paciente cadastrado ainda.</p>';
         return;
     }
 
     container.innerHTML = `
         <table style="width:100%; border-collapse:collapse; margin-top:20px;">
             <thead>
-                <tr style="background:#2a2a2a; color:#fff;">
-                    <th style="padding:10px; text-align:left;">Nome</th>
-                    <th style="padding:10px; text-align:left;">Telefone</th>
-                    <th style="padding:10px; text-align:left;">E-mail</th>
-                    <th style="padding:10px; text-align:left;">Pagamento</th>
+                <tr style="background:#141d2b;">
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Nome</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Telefone</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">E-mail</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Pagamento</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Relatório</th>
                 </tr>
             </thead>
             <tbody>
                 ${pacientes.map(p => `
-                    <tr style="border-bottom:1px solid #333;">
-                        <td style="padding:10px;">${p.nome}</td>
-                        <td style="padding:10px;">${p.telefone || '-'}</td>
-                        <td style="padding:10px;">${p.email || '-'}</td>
-                        <td style="padding:10px;">${p.modo_pagamento || '-'}</td>
+                    <tr style="border-top:1px solid rgba(139,92,246,0.08);">
+                        <td style="padding:12px 16px; color:#e2e8f0; font-size:14px;">${p.nome}</td>
+                        <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.telefone || '-'}</td>
+                        <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.email || '-'}</td>
+                        <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.modo_pagamento || '-'}</td>
+                        <td style="padding:12px 16px;">
+                            <button onclick="gerarRelatorioPDF(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
+                                background:#7c3aed; color:#fff; border:none;
+                                border-radius:6px; padding:6px 14px; cursor:pointer;
+                                font-size:12px; font-family:'Roboto',sans-serif;
+                                transition:background 0.2s;
+                            ">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                        </td>
                     </tr>
                 `).join('')}
             </tbody>
@@ -195,6 +206,44 @@ function renderizarListaPacientes() {
     `;
 }
 
+async function gerarRelatorioPDF(pacienteId, nomePaciente) {
+    const btn = event.target.closest('button');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/relatorio-pdf`, {
+            headers: headersAuth()
+        });
+
+        if (!res.ok) {
+            alert('Erro ao gerar relatório.');
+            return;
+        }
+
+        // Faz o download do PDF
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `relatorio_${nomePaciente.replace(/\s+/g, '_')}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+    } catch (err) {
+        alert('Erro de conexão ao gerar relatório.');
+        console.error(err);
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-file-pdf"></i> PDF';
+        }
+    }
+}
 // ========== CADASTRO DE PACIENTE ==========
 const cadastroForm = document.getElementById('cadastro-form');
 if (cadastroForm) {
