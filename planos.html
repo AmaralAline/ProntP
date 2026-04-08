@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Planos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0f1621;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+            .header h1 {
+                font-size: 32px;
+                font-weight: 700;
+                color: #a78bfa;
+                margin-bottom: 8px;
+            }
+
+            .header p {
+                font-size: 16px;
+                color: #64748b;
+            }
+
+        .planos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .plano-card {
+            background: #1a2332;
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+            .plano-card.destaque {
+                border: 2px solid #8b5cf6;
+                position: relative;
+            }
+
+        .badge-destaque {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #7c3aed;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 16px;
+            border-radius: 20px;
+        }
+
+        .plano-nome {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .plano-preco {
+            font-size: 42px;
+            font-weight: 700;
+            color: #a78bfa;
+            margin: 20px 0 4px;
+        }
+
+            .plano-preco span {
+                font-size: 16px;
+                color: #64748b;
+                font-weight: 400;
+            }
+
+        .plano-descricao {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 28px;
+        }
+
+        .plano-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 28px;
+        }
+
+            .plano-features li {
+                font-size: 14px;
+                color: #94a3b8;
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(139,92,246,0.08);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+                .plano-features li::before {
+                    content: '✓';
+                    color: #34d399;
+                    font-weight: 700;
+                    flex-shrink: 0;
+                }
+
+        .btn-plano {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Roboto', sans-serif;
+            border: none;
+        }
+
+        .btn-gratis {
+            background: transparent;
+            border: 1px solid rgba(139,92,246,0.3);
+            color: #a78bfa;
+        }
+
+            .btn-gratis:hover {
+                background: rgba(139,92,246,0.1);
+            }
+
+        .btn-pago {
+            background: #7c3aed;
+            color: white;
+        }
+
+            .btn-pago:hover {
+                background: #6d28d9;
+            }
+
+            .btn-pago:disabled {
+                background: #374151;
+                cursor: not-allowed;
+            }
+
+        .status-box {
+            background: rgba(139,92,246,0.08);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 10px;
+            padding: 16px 24px;
+            margin-bottom: 32px;
+            text-align: center;
+            font-size: 14px;
+            color: #94a3b8;
+            max-width: 500px;
+            width: 100%;
+        }
+
+            .status-box strong {
+                color: #a78bfa;
+            }
+
+        .voltar {
+            margin-top: 32px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+            .voltar a {
+                color: #a78bfa;
+                text-decoration: none;
+            }
+
+                .voltar a:hover {
+                    text-decoration: underline;
+                }
+
+        #msg-sucesso {
+            display: none;
+            background: rgba(52,211,153,0.1);
+            border: 1px solid rgba(52,211,153,0.3);
+            border-radius: 10px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #6ee7b7;
+            font-size: 14px;
+            max-width: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ProntPsi</h1>
+        <p>Escolha o plano ideal para sua prática clínica</p>
+    </div>
+
+    <div id="msg-sucesso">
+        🎉 Pagamento confirmado! Seu plano Pro está ativo. Bem-vindo(a)!
+    </div>
+
+    <div class="status-box" id="status-box">
+        Carregando seu plano atual...
+    </div>
+
+    <div class="planos-grid">
+        <div class="plano-card">
+            <p class="plano-nome">Trial</p>
+            <p class="plano-preco">Grátis <span>/ 7 dias</span></p>
+            <p class="plano-descricao">Experimente todas as funcionalidades sem compromisso</p>
+            <ul class="plano-features">
+                <li>Pacientes ilimitados</li>
+                <li>Agenda completa</li>
+                <li>16 escalas clínicas</li>
+                <li>Prontuário eletrônico</li>
+                <li>Relatório PDF</li>
+                <li>Válido por 7 dias</li>
+            </ul>
+            <button class="btn-plano btn-gratis" disabled>Plano atual</button>
+        </div>
+
+        <div class="plano-card destaque">
+            <span class="badge-destaque">Mais popular</span>
+            <p class="plano-nome">Pro</p>
+            <p class="plano-preco">R$ 97 <span>/ mês</span></p>
+            <p class="plano-descricao">Acesso completo e ilimitado ao sistema</p>
+            <ul class="plano-features">
+                <li>Tudo do Trial</li>
+                <li>Acesso permanente</li>
+                <li>Suporte prioritário</li>
+                <li>Atualizações incluídas</li>
+                <li>Backup automático</li>
+                <li>Sem limite de pacientes</li>
+            </ul>
+            <button class="btn-plano btn-pago" id="btn-assinar" onclick="assinar()">
+                Assinar agora
+            </button>
+        </div>
+    </div>
+
+    <div class="voltar">
+        <a href="PainelExclusivo.html">← Voltar ao painel</a>
+    </div>
+
+    <script>
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
+        const token = localStorage.getItem('token');
+
+        if (!token) window.location.href = 'login.html';
+
+        // Verifica se voltou de pagamento bem sucedido
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('pagamento') === 'sucesso') {
+            document.getElementById('msg-sucesso').style.display = 'block';
+        }
+
+        // Carrega status do plano
+        async function carregarStatus() {
+            try {
+                const res = await fetch(`${API_URL}/api/pagamento/status`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const box = document.getElementById('status-box');
+                const btnAssinar = document.getElementById('btn-assinar');
+
+                if (data.plano === 'pago') {
+                    box.innerHTML = '✅ Seu plano atual: <strong>Pro</strong> — Acesso completo ativo!';
+                    btnAssinar.disabled = true;
+                    btnAssinar.textContent = 'Plano ativo ✓';
+                } else if (data.trial_expirado) {
+                    box.innerHTML = '⚠️ Seu trial <strong>expirou</strong>. Assine o plano Pro para continuar.';
+                    box.style.borderColor = 'rgba(248,113,113,0.3)';
+                    box.style.background = 'rgba(248,113,113,0.05)';
+                } else if (data.trial_expira_em) {
+                    const expira = new Date(data.trial_expira_em).toLocaleDateString('pt-BR');
+                    box.innerHTML = `🕐 Seu trial expira em <strong>${expira}</strong>. Assine para não perder o acesso.`;
+                }
+            } catch (err) {
+                console.error('Erro ao carregar status:', err);
+            }
+        }
+
+        async function assinar() {
+            const btn = document.getElementById('btn-assinar');
+            btn.disabled = true;
+            btn.textContent = 'Redirecionando...';
+
+            try {
+                const res = await fetch(`${API_URL}/api/pagamento/checkout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await res.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    alert('Erro ao iniciar pagamento. Tente novamente.');
+                    btn.disabled = false;
+                    btn.textContent = 'Assinar agora';
+                }
+            } catch (err) {
+                alert('Erro de conexão. Tente novamente.');
+                btn.disabled = false;
+                btn.textContent = 'Assinar agora';
+            }
+        }
+
+        carregarStatus();
+    </script>
+</body>
+</html>
