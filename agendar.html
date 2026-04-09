@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Agendar Consulta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0f1621;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container { max-width: 680px; width: 100%; }
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: #1a2332;
+            border-radius: 12px;
+            border: 1px solid rgba(139,92,246,0.15);
+        }
+        .header h1 { font-size: 13px; color: #a78bfa; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+        .header h2 { font-size: 22px; color: #f1f5f9; margin-bottom: 4px; }
+        .header p { font-size: 14px; color: #64748b; }
+        .step { display: none; }
+        .step.ativo { display: block; }
+        .card {
+            background: #1a2332;
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .card h3 { font-size: 15px; font-weight: 600; color: #e2e8f0; margin-bottom: 16px; }
+        .horarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .horario-btn {
+            padding: 12px 8px;
+            background: #0f1621;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 8px;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            font-family: 'Roboto', sans-serif;
+        }
+        .horario-btn:hover { border-color: #8b5cf6; color: #a78bfa; background: rgba(139,92,246,0.08); }
+        .horario-btn.selecionado { background: rgba(139,92,246,0.2); border-color: #8b5cf6; color: #c4b5fd; font-weight: 500; }
+        .horario-data { font-size: 11px; color: #64748b; margin-bottom: 4px; }
+        .horario-hora { font-size: 15px; font-weight: 600; }
+        .horario-valor { font-size: 12px; color: #34d399; margin-top: 4px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom:6px; font-weight: 500; }
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0f1621;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .form-group input:focus { outline: none; border-color: #8b5cf6; }
+        .politica-box {
+            background: rgba(139,92,246,0.05);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+        .politica-box strong { color: #e2e8f0; }
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .checkbox-row input { width: 18px; height: 18px; margin-top: 2px; accent-color: #7c3aed; flex-shrink: 0; }
+        .checkbox-row label { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            font-family: 'Roboto', sans-serif;
+            transition: background 0.2s;
+        }
+        .btn-primary { background: #7c3aed; color: #fff; }
+        .btn-primary:hover { background: #6d28d9; }
+        .btn-primary:disabled { background: #374151; cursor: not-allowed; }
+        .btn-secondary {
+            background: transparent;
+            color: #a78bfa;
+            border: 1px solid rgba(139,92,246,0.3);
+            margin-bottom: 12px;
+        }
+        .btn-secondary:hover { background: rgba(139,92,246,0.1); }
+        .resumo-box {
+            background: #0f1621;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .resumo-linha {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(139,92,246,0.08);
+            font-size: 14px;
+        }
+        .resumo-linha:last-child { border-bottom: none; }
+        .resumo-linha span:first-child { color: #64748b; }
+        .resumo-linha span:last-child { color: #e2e8f0; font-weight: 500; }
+        .resumo-total span:last-child { color: #a78bfa; font-size: 18px; }
+        #loading { text-align: center; padding: 40px; color: #64748b; }
+        .filtro-data {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .filtro-data button {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(139,92,246,0.2);
+            background: transparent;
+            color: #94a3b8;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.2s;
+        }
+        .filtro-data button.ativo { background: rgba(139,92,246,0.2); color: #a78bfa; border-color: #8b5cf6; }
+        .msg-erro { color: #f87171; font-size: 13px; margin-top: 8px; display: none; }
+        @media (max-width: 500px) {
+            .horarios-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loading"><p>⏳ Carregando...</p></div>
+        <div id="app" style="display:none;">
+            <div class="header">
+                <h1>ProntPsi</h1>
+                <h2 id="prof-nome">Carregando...</h2>
+                <p id="prof-info"></p>
+            </div>
+
+            <!-- STEP 1: Escolher horário -->
+            <div class="step ativo" id="step1">
+                <div class="card">
+                    <h3>📅 Escolha um horário disponível</h3>
+                    <div class="filtro-data" id="filtro-semana"></div>
+                    <div class="horarios-grid" id="horarios-grid">
+                        <p style="color:#64748b; font-size:14px;">Nenhum horário disponível.</p>
+                    </div>
+                    <p class="msg-erro" id="erro-step1">Selecione um horário para continuar.</p>
+                    <button class="btn btn-primary" onclick="irStep2()">Continuar →</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Dados do paciente -->
+            <div class="step" id="step2">
+                <div class="card">
+                    <h3>👤 Seus dados</h3>
+                    <div class="form-group">
+                        <label>Nome completo *</label>
+                        <input type="text" id="pac-nome" placeholder="Seu nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail *</label>
+                        <input type="email" id="pac-email" placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp</label>
+                        <input type="tel" id="pac-telefone" placeholder="(00) 00000-0000">
+                    </div>
+                    <p class="msg-erro" id="erro-step2">Preencha nome e e-mail.</p>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Política de cancelamento</h3>
+                    <div class="politica-box">
+                        <p><strong>Cancelamento gratuito:</strong> até 24 horas antes da consulta, com reembolso total.</p>
+                        <br>
+                        <p><strong>Cancelamento tardio:</strong> cancelamentos realizados com menos de 24 horas de antecedência terão reembolso de <strong>50%</strong> do valor pago.</p>
+                        <br>
+                        <p>Em caso de cancelamento, o contato para reembolso será realizado via WhatsApp em breve.</p>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="aceito-politica">
+                        <label for="aceito-politica">Li e aceito a política de cancelamento acima.</label>
+                    </div>
+                    <p class="msg-erro" id="erro-politica">Você precisa aceitar a política de cancelamento.</p>
+                </div>
+
+                <button class="btn btn-secondary" onclick="irStep1()">← Voltar</button>
+                <button class="btn btn-primary" onclick="irStep3()">Revisar e Pagar →</button>
+            </div>
+
+            <!-- STEP 3: Resumo e pagamento -->
+            <div class="step" id="step3">
+                <div class="card">
+                    <h3>✅ Resumo do agendamento</h3>
+                    <div class="resumo-box" id="resumo-box"></div>
+                    <button class="btn btn-secondary" onclick="irStep2()">← Voltar</button>
+                    <button class="btn btn-primary" id="btn-pagar" onclick="processarPagamento()">
+                        💳 Pagar e Confirmar Consulta
+                    </button>
+                    <p class="msg-erro" id="erro-step3"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="erro-geral" style="display:none; text-align:center; padding:40px; color:#f87171;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
+        const params  = new URLSearchParams(window.location.search);
+        const profId  = params.get('prof');
+
+        let horarioSelecionado = null;
+        let todosHorarios      = [];
+        let profissionalData   = null;
+
+        const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        const meses      = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+        async function iniciar() {
+            if (!profId) { mostrarErroGeral('Link inválido.'); return; }
+
+            if (params.get('cancelado')) {
+                mostrarErroGeral('Pagamento cancelado. Você pode tentar novamente.');
+                return;
+            }
+
+            try {
+                const res  = await fetch(`${API_URL}/api/agendar/${profId}/horarios`);
+                const data = await res.json();
+
+                if (!res.ok) { mostrarErroGeral(data.erro || 'Profissional não encontrado.'); return; }
+
+                profissionalData = data.profissional;
+                todosHorarios    = data.horarios;
+
+                document.getElementById('prof-nome').textContent = data.profissional.nome;
+                document.getElementById('prof-info').textContent =
+                    `${data.profissional.especialidade || ''} ${data.profissional.crp_crm ? '— ' + data.profissional.crp_crm : ''}`;
+
+                renderizarHorarios(todosHorarios);
+                renderizarFiltros();
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').style.display     = 'block';
+
+            } catch (err) {
+                mostrarErroGeral('Erro ao carregar horários. Tente novamente.');
+            }
+        }
+
+        function renderizarFiltros() {
+            const semanas = {};
+            todosHorarios.forEach(h => {
+                const data  = new Date(h.data + 'T00:00:00');
+                const chave = `Semana ${Math.ceil((data.getDate()) / 7)}`;
+                if (!semanas[h.data.substring(0, 7)]) semanas[h.data.substring(0, 7)] = true;
+            });
+
+            const filtro = document.getElementById('filtro-semana');
+            filtro.innerHTML = '<button class="ativo" onclick="filtrarHorarios(null, this)">Todos</button>';
+
+            const mesesUnicos = [...new Set(todosHorarios.map(h => h.data.substring(0, 7)))];
+            mesesUnicos.forEach(m => {
+                const [ano, mes] = m.split('-');
+                const btn = document.createElement('button');
+                btn.textContent = `${meses[parseInt(mes)-1]}/${ano}`;
+                btn.onclick     = function() { filtrarHorarios(m, this); };
+                filtro.appendChild(btn);
+            });
+        }
+
+        function filtrarHorarios(mesFiltro, btn) {
+            document.querySelectorAll('.filtro-data button').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            if (!mesFiltro) return renderizarHorarios(todosHorarios);
+            renderizarHorarios(todosHorarios.filter(h => h.data.startsWith(mesFiltro)));
+        }
+
+        function renderizarHorarios(horarios) {
+            const grid = document.getElementById('horarios-grid');
+            if (!horarios.length) {
+                grid.innerHTML = '<p style="color:#64748b; font-size:14px; grid-column:1/-1;">Nenhum horário disponível neste período.</p>';
+                return;
+            }
+
+            grid.innerHTML = horarios.map(h => {
+                const data = new Date(h.data + 'T00:00:00');
+                const dia  = diasSemana[data.getDay()];
+                const dataStr = `${dia}, ${data.getDate()} ${meses[data.getMonth()]}`;
+                const hora  = h.hora_inicio.substring(0, 5);
+                const valor = parseFloat(h.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                const id    = `${h.data}-${h.hora_inicio}`;
+
+                return `
+                    <div class="horario-btn ${horarioSelecionado?.data === h.data && horarioSelecionado?.hora_inicio === h.hora_inicio ? 'selecionado' : ''}"
+                         onclick="selecionarHorario(${JSON.stringify(h).replace(/"/g, '&quot;')}, this)">
+                        <div class="horario-data">${dataStr}</div>
+                        <div class="horario-hora">${hora}</div>
+                        <div class="horario-valor">${valor}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selecionarHorario(horario, el) {
+            horarioSelecionado = horario;
+            document.querySelectorAll('.horario-btn').forEach(b => b.classList.remove('selecionado'));
+            el.classList.add('selecionado');
+        }
+
+        function irStep1() {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('ativo'));
+            document.getElementById('step1').classList.add('ativo');
+        }
+
+        function irStep2() {
+            if (!horarioSelecionado) {
+                document.getElementById('erro-step1').style.display = 'block';
+                return;
+            }
+            document.getElementById('erro-step1').style.display = 'none';
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('ativo'));
+            document.getElementById('step2').classList.add('ativo');
+        }
+
+        function irStep3() {
+            const nome     = document.getElementById('pac-nome').value.trim();
+            const email    = document.getElementById('pac-email').value.trim();
+            const politica = document.getElementById('aceito-politica').checked;
+
+            if (!nome || !email) {
+                document.getElementById('erro-step2').style.display = 'block';
+                return;
+            }
+            if (!politica) {
+                document.getElementById('erro-politica').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('erro-step2').style.display   = 'none';
+            document.getElementById('erro-politica').style.display = 'none';
+
+            // Monta resumo
+            const data  = new Date(horarioSelecionado.data + 'T00:00:00');
+            const dia   = diasSemana[data.getDay()];
+            const dataStr = `${dia}, ${data.getDate()} de ${meses[data.getMonth()]}`;
+            const valor = parseFloat(horarioSelecionado.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            document.getElementById('resumo-box').innerHTML = `
+                <div class="resumo-linha"><span>Profissional</span><span>${profissionalData.nome}</span></div>
+                <div class="resumo-linha"><span>Data</span><span>${dataStr}</span></div>
+                <div class="resumo-linha"><span>Horário</span><span>${horarioSelecionado.hora_inicio.substring(0,5)}</span></div>
+                <div class="resumo-linha"><span>Duração</span><span>${horarioSelecionado.duracao_minutos} min</span></div>
+                <div class="resumo-linha"><span>Paciente</span><span>${nome}</span></div>
+                <div class="resumo-linha resumo-total"><span>Total</span><span>${valor}</span></div>
+            `;
+
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('ativo'));
+            document.getElementById('step3').classList.add('ativo');
+        }
+
+        async function processarPagamento() {
+            const btn   = document.getElementById('btn-pagar');
+            const erro  = document.getElementById('erro-step3');
+            const nome  = document.getElementById('pac-nome').value.trim();
+            const email = document.getElementById('pac-email').value.trim();
+            const tel   = document.getElementById('pac-telefone').value.trim();
+
+            btn.disabled    = true;
+            btn.textContent = 'Redirecionando para pagamento...';
+            erro.style.display = 'none';
+
+            try {
+                const res  = await fetch(`${API_URL}/api/agendar/${profId}/checkout`, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({
+                        disponibilidade_id: horarioSelecionado.disponibilidade_id,
+                        data_consulta:      horarioSelecionado.data,
+                        hora_inicio:        horarioSelecionado.hora_inicio,
+                        hora_fim:           horarioSelecionado.hora_fim,
+                        paciente_nome:      nome,
+                        paciente_email:     email,
+                        paciente_telefone:  tel,
+                        valor:              horarioSelecionado.valor
+                    })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.url) {
+                    window.location.href = data.url;
+                } else {
+                    erro.textContent   = data.erro || 'Erro ao processar. Tente novamente.';
+                    erro.style.display = 'block';
+                    btn.disabled       = false;
+                    btn.textContent    = '💳 Pagar e Confirmar Consulta';
+                }
+            } catch (err) {
+                erro.textContent   = 'Erro de conexão. Tente novamente.';
+                erro.style.display = 'block';
+                btn.disabled       = false;
+                btn.textContent    = '💳 Pagar e Confirmar Consulta';
+            }
+        }
+
+        function mostrarErroGeral(msg) {
+            document.getElementById('loading').style.display    = 'none';
+            document.getElementById('erro-geral').style.display = 'block';
+            document.getElementById('erro-geral').innerHTML     = `
+                <h2 style="color:#f87171; margin-bottom:12px;">❌ Ops!</h2>
+                <p style="color:#94a3b8;">${msg}</p>
+            `;
+        }
+
+        iniciar();
+    </script>
+</body>
+</html>

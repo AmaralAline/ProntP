@@ -939,3 +939,215 @@ function renderizarGrafico(canvasId, escalaNome, pontuacoes) {
         }
     });
 }
+// ============================================================
+//  AGENDA ONLINE
+// ============================================================
+const diasNomes = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+const btnAgendaOnline = document.getElementById('btn-agenda-online');
+if (btnAgendaOnline) {
+    btnAgendaOnline.addEventListener('click', () => {
+        carregarLinkAgendamento();
+        renderizarDiasConfig();
+        carregarDisponibilidade();
+        carregarAgendamentosOnline();
+    });
+}
+
+async function carregarLinkAgendamento() {
+    try {
+        const res = await fetch(`${API_URL}/api/meu-link-agendamento`, { headers: headersAuth() });
+        const data = await res.json();
+        const input = document.getElementById('link-agendamento');
+        if (input) input.value = data.link;
+    } catch (err) { console.error(err); }
+}
+
+function copiarLinkAgendamento() {
+    const input = document.getElementById('link-agendamento');
+    if (input) {
+        input.select();
+        document.execCommand('copy');
+        alert('Link copiado!');
+    }
+}
+
+function renderizarDiasConfig() {
+    const grid = document.getElementById('dias-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    // Dias úteis: Seg a Sex (1-5) + Sab (6)
+    [1, 2, 3, 4, 5, 6].forEach(dia => {
+        const div = document.createElement('div');
+        div.style.cssText = 'background:#0f1621; border-radius:8px; padding:16px; border:1px solid rgba(139,92,246,0.1);';
+        div.innerHTML = `
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                <span style="font-size:14px; font-weight:500; color:#e2e8f0;">${diasNomes[dia]}</span>
+                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#64748b;">
+                    <input type="checkbox" id="dia-ativo-${dia}" style="accent-color:#7c3aed; width:14px; height:14px;" onchange="toggleDia(${dia})">
+                    Ativo
+                </label>
+            </div>
+            <div id="horarios-dia-${dia}" style="display:none;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+                    <div>
+                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Início</label>
+                        <input type="time" id="inicio-${dia}" value="09:00" style="width:100%; padding:6px 8px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                    </div>
+                    <div>
+                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Fim</label>
+                        <input type="time" id="fim-${dia}" value="18:00" style="width:100%; padding:6px 8px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
+                    <select id="duracao-${dia}" style="width:100%; padding:6px 8px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                        <option value="50" selected>50 min</option>
+                        <option value="60">60 min</option>
+                        <option value="90">90 min</option>
+                    </select>
+                </div>
+            </div>
+        `;
+        grid.appendChild(div);
+    });
+}
+
+function toggleDia(dia) {
+    const checkbox = document.getElementById(`dia-ativo-${dia}`);
+    const horarios = document.getElementById(`horarios-dia-${dia}`);
+    if (horarios) horarios.style.display = checkbox.checked ? 'block' : 'none';
+}
+
+async function carregarDisponibilidade() {
+    try {
+        const res = await fetch(`${API_URL}/api/disponibilidade`, { headers: headersAuth() });
+        const data = await res.json();
+
+        data.forEach(d => {
+            const checkbox = document.getElementById(`dia-ativo-${d.dia_semana}`);
+            const horarios = document.getElementById(`horarios-dia-${d.dia_semana}`);
+            const inicio = document.getElementById(`inicio-${d.dia_semana}`);
+            const fim = document.getElementById(`fim-${d.dia_semana}`);
+            const duracao = document.getElementById(`duracao-${d.dia_semana}`);
+
+            if (checkbox) { checkbox.checked = true; }
+            if (horarios) horarios.style.display = 'block';
+            if (inicio) inicio.value = d.hora_inicio.substring(0, 5);
+            if (fim) fim.value = d.hora_fim.substring(0, 5);
+            if (duracao) duracao.value = d.duracao_minutos;
+
+            const valorInput = document.getElementById('valor-padrao');
+            if (valorInput && d.valor) valorInput.value = d.valor;
+        });
+    } catch (err) { console.error(err); }
+}
+
+async function salvarDisponibilidade() {
+    const valor = document.getElementById('valor-padrao')?.value;
+    const horarios = [];
+
+    [1, 2, 3, 4, 5, 6].forEach(dia => {
+        const checkbox = document.getElementById(`dia-ativo-${dia}`);
+        if (!checkbox?.checked) return;
+
+        const inicio = document.getElementById(`inicio-${dia}`)?.value;
+        const fim = document.getElementById(`fim-${dia}`)?.value;
+        const duracao = document.getElementById(`duracao-${dia}`)?.value;
+
+        if (inicio && fim) {
+            horarios.push({
+                dia_semana: dia,
+                hora_inicio: inicio,
+                hora_fim: fim,
+                duracao_minutos: parseInt(duracao) || 50,
+                valor: parseFloat(valor) || 0
+            });
+        }
+    });
+
+    const feedback = document.getElementById('disponibilidade-feedback');
+
+    try {
+        const res = await fetch(`${API_URL}/api/disponibilidade`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({ horarios })
+        });
+
+        if (res.ok) {
+            feedback.textContent = '✅ Disponibilidade salva com sucesso!';
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+        } else {
+            feedback.textContent = 'Erro ao salvar disponibilidade.';
+            feedback.style.color = '#f87171';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        feedback.textContent = 'Erro de conexão.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    }
+}
+
+async function carregarAgendamentosOnline() {
+    try {
+        const res = await fetch(`${API_URL}/api/agendamentos-online`, { headers: headersAuth() });
+        const data = await res.json();
+        const tbody = document.getElementById('agendamentos-online-tbody');
+        if (!tbody) return;
+
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Nenhum agendamento ainda.</td></tr>';
+            return;
+        }
+
+        const cores = {
+            confirmado: '#34d399', pendente: '#fbbf24',
+            cancelado: '#f87171', reembolsado: '#94a3b8'
+        };
+
+        tbody.innerHTML = data.map(a => `
+            <tr>
+                <td style="padding:12px 16px;">
+                    <div style="color:#e2e8f0; font-weight:500;">${a.paciente_nome}</div>
+                    <div style="color:#64748b; font-size:12px;">${a.paciente_email}</div>
+                </td>
+                <td style="padding:12px 16px; color:#94a3b8;">
+                    ${new Date(a.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR')}
+                </td>
+                <td style="padding:12px 16px; color:#94a3b8;">${a.hora_inicio.substring(0, 5)}</td>
+                <td style="padding:12px 16px; color:#34d399;">R$ ${parseFloat(a.valor).toFixed(2)}</td>
+                <td style="padding:12px 16px;">
+                    <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500;
+                        background:${cores[a.status]}22; color:${cores[a.status]};">
+                        ${a.status}
+                    </span>
+                </td>
+                <td style="padding:12px 16px;">
+                    ${a.status === 'confirmado' ? `
+                        <button onclick="cancelarAgendamentoOnline(${a.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">
+                            Cancelar
+                        </button>
+                    ` : '—'}
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) { console.error(err); }
+}
+
+async function cancelarAgendamentoOnline(id) {
+    if (!confirm('Cancelar este agendamento? O reembolso será processado conforme a política.')) return;
+    try {
+        const res = await fetch(`${API_URL}/api/agendamentos-online/${id}/cancelar`, {
+            method: 'POST', headers: headersAuth()
+        });
+        const data = await res.json();
+        alert(data.mensagem || 'Agendamento cancelado.');
+        carregarAgendamentosOnline();
+    } catch (err) { alert('Erro ao cancelar.'); }
+}

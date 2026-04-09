@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Consulta Confirmada!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0f1621;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: #1a2332;
+            border: 1px solid rgba(52,211,153,0.3);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        .icone { font-size: 64px; margin-bottom: 20px; }
+        h1 { font-size: 24px; color: #34d399; margin-bottom: 8px; }
+        p { font-size: 14px; color: #94a3b8; line-height: 1.6; margin-bottom: 16px; }
+        .info-box {
+            background: #0f1621;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .info-linha {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(139,92,246,0.08);
+            font-size: 13px;
+        }
+        .info-linha:last-child { border-bottom: none; }
+        .info-linha span:first-child { color: #64748b; }
+        .info-linha span:last-child { color: #e2e8f0; font-weight: 500; }
+        .aviso {
+            background: rgba(251,191,36,0.08);
+            border: 1px solid rgba(251,191,36,0.2);
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 13px;
+            color: #fbbf24;
+            margin-top: 16px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icone">🎉</div>
+        <h1>Consulta confirmada!</h1>
+        <p>Seu pagamento foi processado com sucesso. Você receberá um e-mail de confirmação em breve.</p>
+
+        <div class="info-box" id="info-box">
+            <p style="text-align:center; color:#64748b;">Carregando detalhes...</p>
+        </div>
+
+        <div class="aviso">
+            ⚠️ <strong>Política de cancelamento:</strong> cancelamentos com menos de 24h de antecedência terão reembolso de apenas 50% do valor pago.
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
+        const params  = new URLSearchParams(window.location.search);
+        const id      = params.get('id');
+
+        const diasSemana = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+
+        if (id) {
+            setTimeout(async () => {
+                try {
+                    const res  = await fetch(`${API_URL}/api/agendamento-confirmado/${id}`);
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        const data_consulta = new Date(data.data_consulta + 'T00:00:00');
+                        const dia = diasSemana[data_consulta.getDay()];
+                        const dataStr = `${dia}, ${data_consulta.toLocaleDateString('pt-BR')}`;
+
+                        document.getElementById('info-box').innerHTML = `
+                            <div class="info-linha"><span>Paciente</span><span>${data.paciente_nome}</span></div>
+                            <div class="info-linha"><span>Data</span><span>${dataStr}</span></div>
+                            <div class="info-linha"><span>Horário</span><span>${data.hora_inicio.substring(0,5)}</span></div>
+                            <div class="info-linha"><span>Valor pago</span><span>R$ ${parseFloat(data.valor).toFixed(2)}</span></div>
+                            <div class="info-linha"><span>Status</span><span style="color:#34d399;">✓ Confirmado</span></div>
+                        `;
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
