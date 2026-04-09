@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-questionarios', section: 'questionarios-section' },
         { btn: 'btn-ferramentas-tcc', section: 'ferramentas-tcc-section' },
         { btn: 'btn-resultados', section: 'resultados-section' },
+        { btn: 'btn-termos', section: 'termos-section' },
     ];
 
     botoes.forEach(({ btn, section }) => {
@@ -658,4 +659,134 @@ async function gerarRelatorioProducao() {
 const btnEvolucao = document.getElementById('btn-evolucao');
 if (btnEvolucao) {
     btnEvolucao.addEventListener('click', () => carregarConvenios());
+}
+// ============================================================
+//  TERMOS DE CONSENTIMENTO
+// ============================================================
+const btnTermos = document.getElementById('btn-termos');
+if (btnTermos) {
+    btnTermos.addEventListener('click', () => {
+        popularSelectTermos();
+        carregarTermos();
+    });
+}
+
+function popularSelectTermos() {
+    const select = document.getElementById('paciente-termo');
+    if (!select) return;
+    select.innerHTML = '<option value="">Escolha um paciente</option>';
+    pacientes.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.nome;
+        select.appendChild(opt);
+    });
+}
+
+async function gerarTermo() {
+    const pacienteId = document.getElementById('paciente-termo')?.value;
+    const feedback = document.getElementById('termo-feedback');
+    const btn = document.getElementById('btn-gerar-termo');
+
+    if (!pacienteId) {
+        feedback.textContent = 'Selecione um paciente.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+        const res = await fetch(`${API_URL}/api/termos/gerar`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({ paciente_id: pacienteId })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            feedback.textContent = '✅ Termo enviado por email com sucesso!';
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+            await carregarTermos();
+        } else {
+            feedback.textContent = data.erro || 'Erro ao gerar termo.';
+            feedback.style.color = '#f87171';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        feedback.textContent = 'Erro de conexão.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar Termo por Email';
+    }
+}
+
+async function carregarTermos() {
+    try {
+        const res = await fetch(`${API_URL}/api/termos`, { headers: headersAuth() });
+        if (!res.ok) return;
+        const termos = await res.json();
+        const tbody = document.getElementById('termos-tbody');
+        if (!tbody) return;
+
+        if (!termos.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhum termo enviado ainda.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = termos.map(t => `
+            <tr>
+                <td style="padding:12px 16px; color:#e2e8f0;">${t.paciente_nome}</td>
+                <td style="padding:12px 16px; color:#94a3b8;">${new Date(t.criado_em).toLocaleDateString('pt-BR')}</td>
+                <td style="padding:12px 16px;">
+                    <span style="
+                        padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500;
+                        background:${t.assinado ? 'rgba(52,211,153,0.15)' : 'rgba(251,191,36,0.15)'};
+                        color:${t.assinado ? '#34d399' : '#fbbf24'};
+                    ">
+                        ${t.assinado ? '✓ Assinado' : '⏳ Pendente'}
+                    </span>
+                </td>
+                <td style="padding:12px 16px; color:#94a3b8;">
+                    ${t.assinado_em ? new Date(t.assinado_em).toLocaleString('pt-BR') : '-'}
+                </td>
+                <td style="padding:12px 16px;">
+                    <button onclick="baixarTermoPDF('${t.token}', '${t.paciente_nome}')" style="
+                        background:#1a2332; color:#a78bfa; border:1px solid rgba(139,92,246,0.3);
+                        border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px;
+                        font-family:'Roboto',sans-serif;
+                    ">
+                        <i class="fas fa-download"></i> PDF
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) {
+        console.error('Erro ao carregar termos:', err);
+    }
+}
+
+async function baixarTermoPDF(token, nomePaciente) {
+    try {
+        const res = await fetch(`${API_URL}/api/termos/${token}/pdf`, {
+            headers: headersAuth()
+        });
+        if (!res.ok) { alert('Erro ao baixar PDF.'); return; }
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `termo_${nomePaciente.replace(/\s+/g, '_')}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        alert('Erro de conexão.');
+    }
 }

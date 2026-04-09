@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Termo de Consentimento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #1b2a38;
+            color: #fff;
+            min-height: 100vh;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #2a3b4c;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .logo { text-align: center; margin-bottom: 24px; }
+        .logo h1 { font-size: 22px; color: #a78bfa; font-weight: 700; }
+        .logo p { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .info-box {
+            background: #1b2a38;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .info-box strong { color: #e2e8f0; }
+        .termo-texto {
+            background: #1b2a38;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.8;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .assinatura-box { margin-bottom: 20px; }
+        .assinatura-box label {
+            display: block;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .assinatura-box input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1b2a38;
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 15px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .assinatura-box input:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+        .checkbox-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 14px;
+            background: rgba(139,92,246,0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+        .checkbox-box input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: #7c3aed;
+        }
+        .checkbox-box label {
+            font-size: 13px;
+            color: #94a3b8;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+        .btn-assinar {
+            width: 100%;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Roboto', sans-serif;
+        }
+        .btn-assinar:hover { background: #6d28d9; }
+        .btn-assinar:disabled { background: #374151; cursor: not-allowed; }
+        #feedback {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        #loading { text-align: center; padding: 40px; color: #64748b; }
+        .assinado-badge {
+            background: rgba(52,211,153,0.1);
+            border: 1px solid rgba(52,211,153,0.3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            color: #34d399;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>ProntPsi</h1>
+            <p>Termo de Consentimento Livre e Esclarecido</p>
+        </div>
+
+        <div id="loading"><p>⏳ Carregando termo...</p></div>
+
+        <div id="conteudo" style="display:none;">
+            <div class="info-box" id="info-box"></div>
+
+            <div id="badge-assinado" class="assinado-badge" style="display:none;">
+                ✅ Este termo já foi assinado digitalmente.
+            </div>
+
+            <div class="termo-texto" id="texto-termo"></div>
+
+            <div id="form-assinatura">
+                <div class="assinatura-box">
+                    <label>Digite seu nome completo para assinar digitalmente:</label>
+                    <input type="text" id="nome-assinatura" placeholder="Seu nome completo">
+                </div>
+
+                <div class="checkbox-box">
+                    <input type="checkbox" id="concordo">
+                    <label for="concordo">
+                        Li e compreendi todas as cláusulas do termo acima e concordo com os termos apresentados.
+                        Estou ciente de que esta assinatura digital tem validade legal.
+                    </label>
+                </div>
+
+                <button class="btn-assinar" id="btn-assinar" onclick="assinarTermo()">
+                    Assinar Digitalmente
+                </button>
+            </div>
+        </div>
+
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
+        const params  = new URLSearchParams(window.location.search);
+        const token   = params.get('token');
+
+        let termoData = null;
+
+        async function carregarTermo() {
+            if (!token) { mostrarErro('Link inválido.'); return; }
+
+            try {
+                const res  = await fetch(`${API_URL}/api/termos/${token}`);
+                const data = await res.json();
+
+                if (!res.ok) { mostrarErro(data.erro || 'Link inválido ou expirado.'); return; }
+
+                termoData = data;
+
+                document.getElementById('info-box').innerHTML = `
+                    <p><strong>Paciente:</strong> ${data.paciente_nome}</p>
+                    <p style="margin-top:6px;"><strong>Profissional:</strong> ${data.profissional_nome} ${data.crp_crm ? '— ' + data.crp_crm : ''}</p>
+                    <p style="margin-top:6px;"><strong>Especialidade:</strong> ${data.especialidade || '-'}</p>
+                `;
+
+                document.getElementById('texto-termo').textContent = data.texto_termo;
+
+                if (data.assinado) {
+                    document.getElementById('badge-assinado').style.display = 'block';
+                    document.getElementById('form-assinatura').style.display = 'none';
+                }
+
+                document.getElementById('loading').style.display  = 'none';
+                document.getElementById('conteudo').style.display = 'block';
+
+            } catch (err) {
+                mostrarErro('Erro ao carregar o termo. Tente novamente.');
+            }
+        }
+
+        async function assinarTermo() {
+            const nome     = document.getElementById('nome-assinatura').value.trim();
+            const concordo = document.getElementById('concordo').checked;
+
+            if (!nome) { alert('Por favor, digite seu nome completo.'); return; }
+            if (!concordo) { alert('Você precisa concordar com os termos para assinar.'); return; }
+
+            const btn = document.getElementById('btn-assinar');
+            btn.disabled    = true;
+            btn.textContent = 'Assinando...';
+
+            try {
+                const res  = await fetch(`${API_URL}/api/termos/${token}/assinar`, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ nome_assinatura: nome })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById('conteudo').style.display = 'none';
+                    const feedback = document.getElementById('feedback');
+                    feedback.style.display         = 'block';
+                    feedback.style.background       = 'rgba(52,211,153,0.1)';
+                    feedback.style.border           = '1px solid rgba(52,211,153,0.3)';
+                    feedback.style.color            = '#34d399';
+                    feedback.innerHTML = `
+                        <h2 style="margin-bottom:12px;">✅ Termo assinado com sucesso!</h2>
+                        <p style="color:#94a3b8; font-size:14px;">
+                            Obrigado, <strong style="color:#e2e8f0;">${nome}</strong>!<br>
+                            Seu termo foi registrado digitalmente com data e hora.<br>
+                            Seu profissional já pode visualizar a assinatura.
+                        </p>
+                    `;
+                } else {
+                    alert(data.erro || 'Erro ao assinar o termo.');
+                    btn.disabled    = false;
+                    btn.textContent = 'Assinar Digitalmente';
+                }
+            } catch (err) {
+                alert('Erro de conexão. Tente novamente.');
+                btn.disabled    = false;
+                btn.textContent = 'Assinar Digitalmente';
+            }
+        }
+
+        function mostrarErro(msg) {
+            document.getElementById('loading').style.display = 'none';
+            const feedback = document.getElementById('feedback');
+            feedback.style.display    = 'block';
+            feedback.style.background  = 'rgba(248,113,113,0.1)';
+            feedback.style.border      = '1px solid rgba(248,113,113,0.3)';
+            feedback.style.color       = '#f87171';
+            feedback.innerHTML = `<h2>❌ Link inválido</h2><p style="margin-top:12px;color:#94a3b8;">${msg}</p>`;
+        }
+
+        carregarTermo();
+    </script>
+</body>
+</html>
