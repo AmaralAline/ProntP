@@ -590,12 +590,46 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================
 //  RELATÓRIO DE PRODUÇÃO MENSAL
 // ============================================================
+// ============================================================
+//  RELATÓRIO DE PRODUÇÃO MENSAL
+// ============================================================
+async function carregarConvenios() {
+    try {
+        const res = await fetch(`${API_URL}/api/convenios`, {
+            headers: headersAuth()
+        });
+        if (!res.ok) return;
+        const convenios = await res.json();
+        const select = document.getElementById('rel-convenio');
+        if (!select) return;
+
+        // Mantém a opção "Todos"
+        select.innerHTML = '<option value="">Todos (Relatório Geral)</option>';
+        convenios.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.convenio;
+            opt.textContent = c.convenio;
+            select.appendChild(opt);
+        });
+    } catch (err) {
+        console.error('Erro ao carregar convênios:', err);
+    }
+}
+
 async function gerarRelatorioProducao() {
     const mes = document.getElementById('rel-mes')?.value;
     const ano = document.getElementById('rel-ano')?.value;
+    const convenio = document.getElementById('rel-convenio')?.value;
+
+    const params = new URLSearchParams({ mes, ano });
+    if (convenio) params.append('convenio', convenio);
+
+    const nomeArquivo = convenio
+        ? `producao_${convenio.replace(/\s+/g, '_')}_${mes}_${ano}.pdf`
+        : `producao_geral_${mes}_${ano}.pdf`;
 
     try {
-        const res = await fetch(`${API_URL}/api/relatorio-producao?mes=${mes}&ano=${ano}`, {
+        const res = await fetch(`${API_URL}/api/relatorio-producao?${params}`, {
             headers: headersAuth()
         });
 
@@ -605,10 +639,10 @@ async function gerarRelatorioProducao() {
         }
 
         const blob = await res.blob();
-        const url  = window.URL.createObjectURL(blob);
-        const a    = document.createElement('a');
-        a.href     = url;
-        a.download = `producao_${mes}_${ano}.pdf`;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nomeArquivo;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -618,4 +652,10 @@ async function gerarRelatorioProducao() {
         alert('Erro de conexão ao gerar relatório.');
         console.error(err);
     }
+}
+
+// Carrega convênios ao abrir prontuário
+const btnEvolucao = document.getElementById('btn-evolucao');
+if (btnEvolucao) {
+    btnEvolucao.addEventListener('click', () => carregarConvenios());
 }

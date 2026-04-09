@@ -320,14 +320,15 @@
                 </div>
                 <!-- RELATÓRIO DE PRODUÇÃO -->
                 <div style="margin-top:24px; background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px;">
-                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
                         <i class="fas fa-file-invoice" style="color:#8b5cf6; margin-right:8px;"></i>
                         Relatório de Produção para Convênio
                     </h3>
-                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
-                        Gere um relatório mensal com todos os atendimentos, CID, procedimentos e valores para apresentar ao convênio.
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Gere relatórios mensais para apresentar aos convênios.
                     </p>
-                    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+
+                    <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin-bottom:16px;">
                         <div>
                             <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
                             <select id="rel-mes" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
@@ -349,11 +350,21 @@
                             <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
                             <input type="number" id="rel-ano" value="2026" min="2024" max="2030" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:90px;">
                         </div>
-                        <div style="margin-top:18px;">
-                            <button onclick="gerarRelatorioProducao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                                <i class="fas fa-download" style="margin-right:6px;"></i>Gerar PDF
-                            </button>
+                        <div>
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Filtrar por Convênio</label>
+                            <select id="rel-convenio" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:180px;">
+                                <option value="">Todos (Relatório Geral)</option>
+                            </select>
                         </div>
+                    </div>
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button onclick="gerarRelatorioProducao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-download" style="margin-right:6px;"></i>Gerar PDF
+                        </button>
+                        <button onclick="carregarConvenios()" style="background:transparent; color:#a78bfa; border:1px solid rgba(139,92,246,0.3); padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-sync" style="margin-right:6px;"></i>Atualizar convênios
+                        </button>
                     </div>
                 </div>
             </section>
