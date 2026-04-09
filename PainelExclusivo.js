@@ -294,6 +294,11 @@ if (evolucaoForm) {
         const pacienteId = document.getElementById('paciente')?.value;
         const data_hora = document.getElementById('data-evolucao')?.value;
         const texto_evolucao = document.getElementById('evolucao')?.value.trim();
+        const duracao_minutos = document.getElementById('duracao-minutos')?.value;
+        const valor_sessao = document.getElementById('valor-sessao')?.value;
+        const cid10 = document.getElementById('cid10')?.value.trim();
+        const codigo_procedimento = document.getElementById('codigo-procedimento')?.value.trim();
+        const convenio = document.getElementById('convenio')?.value.trim();
 
         if (!pacienteId || !data_hora || !texto_evolucao) {
             document.getElementById('evolucao-error').style.display = 'block';
@@ -304,13 +309,21 @@ if (evolucaoForm) {
             const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/evolucoes`, {
                 method: 'POST',
                 headers: headersAuth(),
-                body: JSON.stringify({ texto_evolucao, data_hora })
+                body: JSON.stringify({
+                    texto_evolucao,
+                    data_hora,
+                    duracao_minutos: duracao_minutos || 50,
+                    valor_sessao: valor_sessao || null,
+                    cid10: cid10 || null,
+                    codigo_procedimento: codigo_procedimento || null,
+                    convenio: convenio || null
+                })
             });
 
             if (res.ok) {
                 mostrarFeedback('evolucao-error', '✅ Evolução salva com sucesso!', 'sucesso');
                 evolucaoForm.reset();
-                // Atualiza histórico se o paciente estiver selecionado
+                document.getElementById('duracao-minutos').value = 50;
                 const pacHist = document.getElementById('paciente-historico');
                 if (pacHist && pacHist.value === pacienteId) {
                     await carregarHistoricoEvolucao(pacienteId);
@@ -323,7 +336,6 @@ if (evolucaoForm) {
         }
     });
 }
-
 // Histórico de evolução
 const selectHistorico = document.getElementById('paciente-historico');
 if (selectHistorico) {
@@ -354,8 +366,18 @@ async function carregarHistoricoEvolucao(pacienteId) {
             if (tbody) {
                 tbody.innerHTML = evolucoes.map(ev => `
                     <tr>
-                        <td style="padding:8px;">${new Date(ev.data_hora).toLocaleDateString('pt-BR')}</td>
-                        <td style="padding:8px;">${ev.texto_evolucao}</td>
+                        <td style="padding:10px; white-space:nowrap;">
+                            ${new Date(ev.data_hora).toLocaleDateString('pt-BR')}
+                        </td>
+                        <td style="padding:10px;">${ev.convenio || '-'}</td>
+                        <td style="padding:10px;">${ev.cid10 || '-'}</td>
+                        <td style="padding:10px;">${ev.duracao_minutos || 50} min</td>
+                        <td style="padding:10px;">
+                            ${ev.valor_sessao ? `R$ ${parseFloat(ev.valor_sessao).toFixed(2)}` : '-'}
+                        </td>
+                        <td style="padding:10px; max-width:300px;">
+                            ${ev.texto_evolucao.substring(0, 80)}${ev.texto_evolucao.length > 80 ? '...' : ''}
+                        </td>
                     </tr>
                 `).join('');
             }
@@ -565,3 +587,35 @@ if (btnClock) {
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => carregarDashboard(), 500);
 });
+// ============================================================
+//  RELATÓRIO DE PRODUÇÃO MENSAL
+// ============================================================
+async function gerarRelatorioProducao() {
+    const mes = document.getElementById('rel-mes')?.value;
+    const ano = document.getElementById('rel-ano')?.value;
+
+    try {
+        const res = await fetch(`${API_URL}/api/relatorio-producao?mes=${mes}&ano=${ano}`, {
+            headers: headersAuth()
+        });
+
+        if (!res.ok) {
+            alert('Erro ao gerar relatório.');
+            return;
+        }
+
+        const blob = await res.blob();
+        const url  = window.URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `producao_${mes}_${ano}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+    } catch (err) {
+        alert('Erro de conexão ao gerar relatório.');
+        console.error(err);
+    }
+}

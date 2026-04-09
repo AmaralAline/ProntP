@@ -248,7 +248,6 @@
                     <h2>Prontuário</h2>
                     <p>Registre e consulte evoluções dos pacientes</p>
                 </div>
-
                 <div class="evolucao-layout">
                     <div class="form-card">
                         <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Nova Evolução</h3>
@@ -263,15 +262,38 @@
                                 <label for="data-evolucao">Data</label>
                                 <input type="date" id="data-evolucao" required>
                             </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div>
+                                    <label for="duracao-minutos">Duração (min)</label>
+                                    <input type="number" id="duracao-minutos" value="50" min="1" max="480">
+                                </div>
+                                <div>
+                                    <label for="valor-sessao">Valor (R$)</label>
+                                    <input type="number" id="valor-sessao" placeholder="0,00" step="0.01">
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div>
+                                    <label for="cid10">CID-10</label>
+                                    <input type="text" id="cid10" placeholder="Ex: F32.0">
+                                </div>
+                                <div>
+                                    <label for="codigo-procedimento">Cód. Procedimento</label>
+                                    <input type="text" id="codigo-procedimento" placeholder="Ex: 60000071">
+                                </div>
+                            </div>
                             <div>
-                                <label for="evolucao">Evolução</label>
+                                <label for="convenio">Convênio</label>
+                                <input type="text" id="convenio" placeholder="Ex: Unimed, Bradesco, Particular">
+                            </div>
+                            <div>
+                                <label for="evolucao">Evolução / Registro da Sessão</label>
                                 <textarea id="evolucao" required placeholder="Descreva a evolução do paciente nesta sessão..." style="min-height:140px;"></textarea>
                             </div>
                             <button type="submit">Salvar Evolução</button>
                             <p id="evolucao-error" class="error-message">Por favor, preencha todos os campos.</p>
                         </form>
                     </div>
-
                     <div class="evolucao-historico">
                         <h3>Histórico de Evoluções</h3>
                         <div style="margin-bottom:16px;">
@@ -284,12 +306,54 @@
                             <thead>
                                 <tr>
                                     <th>Data</th>
+                                    <th>Convênio</th>
+                                    <th>CID</th>
+                                    <th>Duração</th>
+                                    <th>Valor</th>
                                     <th>Evolução</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
                         <p id="evolucao-vazio" class="evolucao-vazio">Selecione um paciente para ver o histórico.</p>
+                    </div>
+                </div>
+                <!-- RELATÓRIO DE PRODUÇÃO -->
+                <div style="margin-top:24px; background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                        <i class="fas fa-file-invoice" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Relatório de Produção para Convênio
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                        Gere um relatório mensal com todos os atendimentos, CID, procedimentos e valores para apresentar ao convênio.
+                    </p>
+                    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                        <div>
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
+                            <select id="rel-mes" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
+                            <input type="number" id="rel-ano" value="2026" min="2024" max="2030" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:90px;">
+                        </div>
+                        <div style="margin-top:18px;">
+                            <button onclick="gerarRelatorioProducao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-download" style="margin-right:6px;"></i>Gerar PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
