@@ -52,13 +52,13 @@
         <button class="hamburger" aria-expanded="false" aria-label="Abrir menu">
             <i class="fas fa-bars"></i>
         </button>
-        
+
         <!-- MAIN -->
         <main class="main-content">
 
             <!-- ================================================
-     INÍCIO (RELÓGIO)
-     ================================================ -->
+            INÍCIO (RELÓGIO)
+            ================================================ -->
             <section id="clock-section" class="active-section">
                 <!-- HEADER DO DASHBOARD -->
                 <div class="dashboard-header">
@@ -128,8 +128,8 @@
             </section>
 
             <!-- ================================================
-     AGENDA
-     ================================================ -->
+            AGENDA
+            ================================================ -->
             <section id="agenda-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -186,8 +186,8 @@
             </section>
 
             <!-- ================================================
-     PACIENTES
-     ================================================ -->
+            PACIENTES
+            ================================================ -->
             <section id="cadastro-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -241,8 +241,8 @@
             </section>
 
             <!-- ================================================
-     PRONTUÁRIO / EVOLUÇÃO
-     ================================================ -->
+            PRONTUÁRIO / EVOLUÇÃO
+            ================================================ -->
             <section id="evolucao-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -371,8 +371,8 @@
             </section>
 
             <!-- ================================================
-     FORMULÁRIOS
-     ================================================ -->
+            FORMULÁRIOS
+            ================================================ -->
             <section id="form-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -412,22 +412,47 @@
             </section>
 
             <!-- ================================================
-     RESULTADOS
-     ================================================ -->
+            RESULTADOS
+            ================================================ -->
             <section id="resultados-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
                     <h2>Resultados</h2>
-                    <p>Visualize as respostas dos formulários enviados</p>
+                    <p>Visualize as respostas e evolução dos questionários</p>
                 </div>
 
+                <!-- GRÁFICO DE EVOLUÇÃO -->
+                <div style="background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                        <i class="fas fa-chart-line" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Evolução do Paciente
+                    </h3>
+                    <div style="display:flex; gap:12px; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap;">
+                        <div>
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Selecionar Paciente</label>
+                            <select id="paciente-grafico" style="padding:8px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:200px;">
+                                <option value="">Escolha um paciente</option>
+                            </select>
+                        </div>
+                        <button onclick="carregarGraficos()" style="background:#7c3aed; color:#fff; border:none; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-chart-bar" style="margin-right:6px;"></i>Ver Evolução
+                        </button>
+                    </div>
+                    <div id="graficos-container">
+                        <p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">
+                            Selecione um paciente para ver a evolução dos questionários ao longo do tempo.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- TABELA DE RESULTADOS -->
+                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Formulários Respondidos</h3>
                 <div class="resultados-filtro">
                     <label for="paciente-resultados">Filtrar por paciente:</label>
                     <select id="paciente-resultados">
                         <option value="">Todos os pacientes</option>
                     </select>
                 </div>
-
                 <div class="table-card">
                     <table id="resultados-tabela" style="display:none;">
                         <thead>
@@ -443,45 +468,6 @@
                 </div>
                 <p id="resultados-vazio" class="resultados-vazio">Nenhum resultado encontrado.</p>
             </section>
-            <section id="termos-section" class="hidden-section">
-                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-                <div class="page-header">
-                    <h2>Termos de Consentimento</h2>
-                    <p>Envie e gerencie termos de consentimento digital dos pacientes</p>
-                </div>
-
-                <div class="form-card" style="max-width:500px; margin-bottom:24px;">
-                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Enviar Termo para Paciente</h3>
-                    <div class="form-group">
-                        <label>Selecione o Paciente</label>
-                        <select id="paciente-termo">
-                            <option value="">Escolha um paciente</option>
-                        </select>
-                    </div>
-                    <button id="btn-gerar-termo" onclick="gerarTermo()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                        <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar Termo por Email
-                    </button>
-                    <p id="termo-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
-                </div>
-
-                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Termos Enviados</h3>
-                <div class="table-card">
-                    <table id="termos-tabela">
-                        <thead>
-                            <tr>
-                                <th>Paciente</th>
-                                <th>Enviado em</th>
-                                <th>Status</th>
-                                <th>Assinado em</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="termos-tbody">
-                            <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhum termo enviado ainda.</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
 
         </main>
     </div>
@@ -490,5 +476,6 @@
     <script defer src="agenda.js"></script>
     <script defer src="sessao.js"></script>
     <script defer src="formularios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </body>
 </html>

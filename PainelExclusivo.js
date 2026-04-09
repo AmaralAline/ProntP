@@ -90,8 +90,42 @@ function mostrarSecao(id) {
     document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
     const btnAtivo = document.querySelector(`[aria-controls="${id}"]`);
     if (btnAtivo) btnAtivo.classList.add('active');
-}
+} function mostrarSecao(id) {
+    document.querySelectorAll('.active-section, .hidden-section').forEach(s => {
+        s.classList.remove('active-section');
+        s.classList.add('hidden-section');
+    });
+    const alvo = document.getElementById(id);
+    if (alvo) {
+        alvo.classList.remove('hidden-section');
+        alvo.classList.add('active-section');
+    }
 
+    // Atualiza botão ativo no menu
+    document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
+    const btnAtivo = document.querySelector(`[aria-controls="${id}"]`);
+    if (btnAtivo) btnAtivo.classList.add('active');
+
+    // Carrega dados específicos de cada seção
+    if (id === 'termos-section') {
+        popularSelectTermos();
+        carregarTermos();
+    }
+    if (id === 'form-section') {
+        carregarEscalas();
+    }
+    if (id === 'resultados-section') {
+        carregarResultados();
+    }
+    if (id === 'evolucao-section') {
+        carregarConvenios();
+    }
+
+    if (id === 'resultados-section') {
+        carregarResultados();
+        popularSelectGrafico();
+    }
+}
 // ------------------------------------------------------------
 //  RELÓGIO
 // ------------------------------------------------------------
@@ -663,13 +697,11 @@ if (btnEvolucao) {
 // ============================================================
 //  TERMOS DE CONSENTIMENTO
 // ============================================================
-const btnTermos = document.getElementById('btn-termos');
-if (btnTermos) {
-    btnTermos.addEventListener('click', () => {
-        popularSelectTermos();
-        carregarTermos();
-    });
-}
+// Carrega termos ao clicar no menu
+document.getElementById('btn-termos')?.addEventListener('click', () => {
+    popularSelectTermos();
+    carregarTermos();
+});
 
 function popularSelectTermos() {
     const select = document.getElementById('paciente-termo');
@@ -789,4 +821,121 @@ async function baixarTermoPDF(token, nomePaciente) {
     } catch (err) {
         alert('Erro de conexão.');
     }
+}
+// ============================================================
+//  GRÁFICO DE EVOLUÇÃO DO PACIENTE
+// ============================================================
+function popularSelectGrafico() {
+    const select = document.getElementById('paciente-grafico');
+    if (!select) return;
+    select.innerHTML = '<option value="">Escolha um paciente</option>';
+    pacientes.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.nome;
+        select.appendChild(opt);
+    });
+}
+
+async function carregarGraficos() {
+    const pacienteId = document.getElementById('paciente-grafico')?.value;
+    const container = document.getElementById('graficos-container');
+
+    if (!pacienteId) {
+        container.innerHTML = '<p style="color:#f87171; font-size:14px; text-align:center;">Selecione um paciente.</p>';
+        return;
+    }
+
+    container.innerHTML = '<p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">⏳ Carregando...</p>';
+
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/evolucao-graficos`, {
+            headers: headersAuth()
+        });
+        const data = await res.json();
+
+        if (!Object.keys(data).length) {
+            container.innerHTML = '<p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">Nenhum questionário respondido ainda para este paciente.</p>';
+            return;
+        }
+
+        // Renderiza um gráfico para cada escala
+        container.innerHTML = '';
+        Object.entries(data).forEach(([escalaNome, pontuacoes]) => {
+            if (pontuacoes.length < 1) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'margin-bottom:24px;';
+
+            const titulo = document.createElement('p');
+            titulo.style.cssText = 'font-size:13px; font-weight:600; color:#a78bfa; margin-bottom:12px;';
+            titulo.textContent = escalaNome;
+            wrapper.appendChild(titulo);
+
+            const canvasWrapper = document.createElement('div');
+            canvasWrapper.style.cssText = 'background:#0f1621; border-radius:8px; padding:16px; position:relative; height:200px;';
+
+            const canvas = document.createElement('canvas');
+            canvas.id = `chart-${escalaNome.replace(/\s+/g, '-')}`;
+            canvasWrapper.appendChild(canvas);
+            wrapper.appendChild(canvasWrapper);
+            container.appendChild(wrapper);
+
+            // Renderiza com Chart.js
+            renderizarGrafico(canvas.id, escalaNome, pontuacoes);
+        });
+
+    } catch (err) {
+        container.innerHTML = '<p style="color:#f87171; font-size:14px; text-align:center;">Erro ao carregar dados.</p>';
+        console.error(err);
+    }
+}
+
+function renderizarGrafico(canvasId, escalaNome, pontuacoes) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    const labels = pontuacoes.map(p => p.data);
+    const valores = pontuacoes.map(p => p.pontuacao);
+
+    new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Pontuação',
+                data: valores,
+                borderColor: '#8b5cf6',
+                backgroundColor: 'rgba(139,92,246,0.1)',
+                borderWidth: 2,
+                pointBackgroundColor: '#a78bfa',
+                pointRadius: 5,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => `Pontuação: ${ctx.parsed.y}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748b', font: { size: 11 } },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                },
+                y: {
+                    ticks: { color: '#64748b', font: { size: 11 } },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
