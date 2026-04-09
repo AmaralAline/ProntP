@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', sans-serif; background: #0f1621; color: #e2e8f0; min-height: 100vh; }
+        .header {
+            background: #1a2332;
+            border-bottom: 1px solid rgba(139,92,246,0.2);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header h1 { font-size: 18px; font-weight: 700; color: #a78bfa; }
+        .header span { font-size: 13px; color: #64748b; }
+        .header a { color: #64748b; font-size: 13px; text-decoration: none; }
+        .header a:hover { color: #a78bfa; }
+        .main { padding: 32px; max-width: 1200px; margin: 0 auto; }
+        .metricas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .metrica-card {
+            background: #1a2332;
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .metrica-valor { font-size: 32px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+        .metrica-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metrica-receita { color: #34d399; }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        .table-card {
+            background: #1a2332;
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background: #141d2b;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 14px 16px;
+            border-top: 1px solid rgba(139,92,246,0.08);
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+        tr:hover td { background: rgba(139,92,246,0.04); }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .badge-pago { background: rgba(52,211,153,0.15); color: #34d399; }
+        .badge-trial { background: rgba(251,191,36,0.15); color: #fbbf24; }
+        .badge-ativo { background: rgba(52,211,153,0.15); color: #34d399; }
+        .badge-suspenso { background: rgba(248,113,113,0.15); color: #f87171; }
+        .btn-acao {
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.2s;
+            margin-right: 4px;
+        }
+        .btn-suspender { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+        .btn-suspender:hover { background: rgba(248,113,113,0.25); }
+        .btn-ativar { background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+        .btn-ativar:hover { background: rgba(52,211,153,0.25); }
+        .btn-pago { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+        .btn-pago:hover { background: rgba(139,92,246,0.25); }
+        .loading { text-align: center; padding: 40px; color: #64748b; }
+        .filtro {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .filtro button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(139,92,246,0.2);
+            background: transparent;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.2s;
+        }
+        .filtro button.ativo {
+            background: rgba(139,92,246,0.15);
+            color: #a78bfa;
+            border-color: rgba(139,92,246,0.4);
+        }
+        .filtro button:hover { background: rgba(139,92,246,0.1); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ ProntPsi Admin</h1>
+        <div style="display:flex; gap:20px; align-items:center;">
+            <span id="admin-nome"></span>
+            <a href="PainelExclusivo.html">← Voltar ao painel</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <!-- MÉTRICAS -->
+        <div class="metricas-grid" id="metricas-grid">
+            <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Total de profissionais</div></div>
+            <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Pagantes</div></div>
+            <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Em trial</div></div>
+            <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Total de pacientes</div></div>
+            <div class="metrica-card"><div class="metrica-valor metrica-receita">—</div><div class="metrica-label">Receita mensal</div></div>
+        </div>
+
+        <!-- TABELA DE PROFISSIONAIS -->
+        <p class="section-title">Profissionais cadastrados</p>
+
+        <div class="filtro">
+            <button class="ativo" onclick="filtrar('todos', this)">Todos</button>
+            <button onclick="filtrar('pago', this)">Pagantes</button>
+            <button onclick="filtrar('trial', this)">Em trial</button>
+            <button onclick="filtrar('suspenso', this)">Suspensos</button>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Especialidade</th>
+                        <th>Plano</th>
+                        <th>Status</th>
+                        <th>Pacientes</th>
+                        <th>Cadastro</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-profissionais">
+                    <tr><td colspan="8" class="loading">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
+        const token = localStorage.getItem('token');
+        const profissional = JSON.parse(localStorage.getItem('profissional') || '{}');
+
+        if (!token) window.location.href = 'login.html';
+
+        document.getElementById('admin-nome').textContent = profissional.nome || '';
+
+        let todosProfissionais = [];
+
+        async function carregarMetricas() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/metricas`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.status === 403) {
+                    alert('Acesso negado. Você não é administrador.');
+                    window.location.href = 'PainelExclusivo.html';
+                    return;
+                }
+
+                const data = await res.json();
+                const cards = document.getElementById('metricas-grid').querySelectorAll('.metrica-card');
+                cards[0].querySelector('.metrica-valor').textContent = data.total_profissionais;
+                cards[1].querySelector('.metrica-valor').textContent = data.pagantes;
+                cards[2].querySelector('.metrica-valor').textContent = data.em_trial;
+                cards[3].querySelector('.metrica-valor').textContent = data.total_pacientes;
+                cards[4].querySelector('.metrica-valor').textContent = `R$ ${data.receita_mensal}`;
+            } catch (err) {
+                console.error('Erro ao carregar métricas:', err);
+            }
+        }
+
+        async function carregarProfissionais() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/profissionais`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                todosProfissionais = await res.json();
+                renderizarTabela(todosProfissionais);
+            } catch (err) {
+                console.error('Erro ao carregar profissionais:', err);
+            }
+        }
+
+        function renderizarTabela(profissionais) {
+            const tbody = document.getElementById('tabela-profissionais');
+
+            if (!profissionais.length) {
+                tbody.innerHTML = '<tr><td colspan="8" class="loading">Nenhum profissional encontrado.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = profissionais.map(p => `
+                    <tr id="row-${p.id}">
+                        <td>
+                            <strong style="color:#f1f5f9;">${p.nome}</strong>
+                            ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
+                        </td>
+                        <td>${p.email}</td>
+                        <td>${p.especialidade || '-'}</td>
+                        <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
+                        <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
+                        <td>${p.total_pacientes}</td>
+                        <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
+                        <td>
+                            ${!p.is_admin ? `
+                                ${p.ativo
+                        ? `<button class="btn-acao btn-suspender" onclick="suspender(${p.id})">Suspender</button>`
+                        : `<button class="btn-acao btn-ativar" onclick="ativar(${p.id})">Ativar</button>`
+                    }
+                                ${p.plano !== 'pago'
+                        ? `<button class="btn-acao btn-pago" onclick="tornarPago(${p.id})">Tornar pago</button>`
+                        : ''
+                    }
+                            ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
+                        </td>
+                    </tr>
+                `).join('');
+        }
+
+        function filtrar(tipo, btn) {
+            document.querySelectorAll('.filtro button').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+
+            if (tipo === 'todos') return renderizarTabela(todosProfissionais);
+            if (tipo === 'suspenso') return renderizarTabela(todosProfissionais.filter(p => !p.ativo));
+            renderizarTabela(todosProfissionais.filter(p => p.plano === tipo && p.ativo));
+        }
+
+        async function suspender(id) {
+            if (!confirm('Tem certeza que deseja suspender este profissional?')) return;
+            const prof = todosProfissionais.find(p => p.id === id);
+            await atualizarProfissional(id, 0, prof.plano);
+        }
+
+        async function ativar(id) {
+            const prof = todosProfissionais.find(p => p.id === id);
+            await atualizarProfissional(id, 1, prof.plano);
+        }
+
+        async function tornarPago(id) {
+            if (!confirm('Marcar este profissional como pagante?')) return;
+            await atualizarProfissional(id, 1, 'pago');
+        }
+
+        async function atualizarProfissional(id, ativo, plano) {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/profissionais/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ ativo, plano })
+                });
+
+                if (res.ok) {
+                    await carregarProfissionais();
+                    await carregarMetricas();
+                } else {
+                    alert('Erro ao atualizar profissional.');
+                }
+            } catch (err) {
+                alert('Erro de conexão.');
+            }
+        }
+
+        carregarMetricas();
+        carregarProfissionais();
+    </script>
+    <a href="admin.html" style="
+    display: flex; align-items: center; gap: 10px;
+    color: #f87171; font-size: 13px; text-decoration: none;
+    padding: 8px 12px; border-radius: 8px; margin-top: 8px;
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.2);
+">
+        <i class="fas fa-shield-alt"></i> Painel Admin
+    </a>
+</body>
+</html>
