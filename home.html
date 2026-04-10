@@ -1,188 +1,1618 @@
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <title>Pront Psi</title>
-    <meta name="robots" content="noindex,nofollow" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, inicial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="logo.png" />
-    <link rel="stylesheet" href="home.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Sistema Clínico para Psicólogos e Psiquiatras</title>
+    <meta name="description" content="Prontuário eletrônico, agenda online, escalas clínicas e muito mais. Feito para psicólogos e psiquiatras brasileiros.">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <script src="geralpsi.js" defer></script>
+        :root {
+            --roxo: #7c3aed;
+            --roxo-light: #a78bfa;
+            --roxo-dark: #6d28d9;
+            --bg: #0f1621;
+            --bg2: #1a2332;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --green: #34d399;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(15,22,33,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139,92,246,0.15);
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--roxo-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+            .nav-links a {
+                color: var(--muted);
+                text-decoration: none;
+                font-size: 14px;
+                transition: color 0.2s;
+            }
+
+                .nav-links a:hover {
+                    color: var(--text);
+                }
+
+        .btn-nav {
+            background: var(--roxo);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+            .btn-nav:hover {
+                background: var(--roxo-dark);
+                color: #fff;
+            }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+            background: radial-gradient(ellipse at top, rgba(124,58,237,0.15) 0%, transparent 70%);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(139,92,246,0.15);
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 900;
+            color: #f1f5f9;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+            .hero h1 span {
+                color: var(--roxo-light);
+            }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 580px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--roxo);
+            color: #fff;
+            padding: 16px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .btn-primary:hover {
+                background: var(--roxo-dark);
+                transform: translateY(-2px);
+            }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,0.4);
+            padding: 16px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+            .btn-secondary:hover {
+                background: rgba(139,92,246,0.1);
+            }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            margin-top: 64px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-num {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--roxo-light);
+        }
+
+        .hero-stat-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* SECTION */
+        section {
+            padding: 80px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(139,92,246,0.1);
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,0.2);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+        }
+
+        .section-sub {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 560px;
+        }
+
+        /* PROBLEMAS */
+        .problemas {
+            background: var(--bg2);
+        }
+
+        .problemas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .problema-card {
+            background: var(--bg);
+            border: 1px solid rgba(139,92,246,0.1);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .problema-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .problema-card h3 {
+            font-size: 16px;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .problema-card p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        /* FUNCIONALIDADES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--bg2);
+            border: 1px solid rgba(139,92,246,0.1);
+            border-radius: 12px;
+            padding: 28px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+            .feature-card:hover {
+                border-color: rgba(139,92,246,0.4);
+                transform: translateY(-4px);
+            }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* PREÇO */
+        .preco {
+            background: var(--bg2);
+        }
+
+        .preco-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .preco-card {
+            background: var(--bg);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+
+            .preco-card.destaque {
+                border: 2px solid var(--roxo);
+                position: relative;
+            }
+
+        .preco-badge-top {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--roxo);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 16px;
+            border-radius: 20px;
+        }
+
+        .preco-nome {
+            font-size: 16px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 16px;
+        }
+
+        .preco-valor {
+            font-size: 48px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+            .preco-valor span {
+                font-size: 16px;
+                color: var(--muted);
+                font-weight: 400;
+            }
+
+        .preco-desc {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 12px 0 24px;
+        }
+
+        .preco-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 28px;
+        }
+
+            .preco-features li {
+                font-size: 14px;
+                color: #94a3b8;
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(139,92,246,0.06);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+                .preco-features li::before {
+                    content: '✓';
+                    color: var(--green);
+                    font-weight: 700;
+                }
+
+        .btn-preco {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--roxo);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Roboto', sans-serif;
+        }
+
+            .btn-preco:hover {
+                background: var(--roxo-dark);
+            }
+
+        .btn-preco-outline {
+            background: transparent;
+            border: 1px solid rgba(139,92,246,0.3);
+            color: var(--roxo-light);
+        }
+
+            .btn-preco-outline:hover {
+                background: rgba(139,92,246,0.1);
+            }
+
+        /* FAQ */
+        .faq-list {
+            margin-top: 48px;
+            max-width: 700px;
+        }
+
+        .faq-item {
+            background: var(--bg2);
+            border: 1px solid rgba(139,92,246,0.1);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-pergunta {
+            padding: 20px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+            .faq-pergunta:hover {
+                color: var(--roxo-light);
+            }
+
+        .faq-resposta {
+            padding: 0 24px;
+            font-size: 14px;
+            color: var(--muted);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+            line-height: 1.7;
+        }
+
+        .faq-item.aberto .faq-resposta {
+            max-height: 200px;
+            padding: 0 24px 20px;
+        }
+
+        .faq-item.aberto .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+            color: var(--muted);
+        }
+
+        /* CTA FINAL */
+        .cta-final {
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(124,58,237,0.2) 0%, transparent 70%);
+            padding: 100px 20px;
+        }
+
+            .cta-final h2 {
+                font-size: clamp(28px, 4vw, 44px);
+                font-weight: 700;
+                color: #f1f5f9;
+                margin-bottom: 16px;
+            }
+
+            .cta-final p {
+                font-size: 16px;
+                color: var(--muted);
+                margin-bottom: 40px;
+            }
+
+        /* FOOTER */
+        footer {
+            background: var(--bg2);
+            border-top: 1px solid rgba(139,92,246,0.1);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+            footer p {
+                font-size: 13px;
+                color: var(--muted);
+            }
+
+            footer a {
+                color: var(--roxo-light);
+                text-decoration: none;
+            }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 100px 20px 60px;
+            }
+
+            .hero-stats {
+                gap: 32px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <nav class="navBar">
-
-        <ul class="navBarLinkDekstop">
-
-            <li><a href="#home">Home</a></li>
-            <li><a href="#sobre">Sobre</a>  </li>
-            <li><a href="#contato">Contato</a></li>
-            <li><a href="login.html">Login</a></li>
-
-        </ul>
-
-        <div class="mobile-menu" id="MobileMenu">
-            <button class="close" id="closeButton">
-                <i class="fas fa-times"></i>
-            </button>
-            <ul class="navBarLinkMobile">
-
-                <li><a href="home.html">Home</a></li>
-                <li><a href="#sobre">Sobre</a>  </li>
-                <li><a href="Contato.html">Contato</a></li>
-                <li><a href="login.html">Login</a></li>
-
-            </ul>
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">ProntPsi</div>
+        <div class="nav-links">
+            <a href="#funcionalidades">Funcionalidades</a>
+            <a href="#preco">Preços</a>
+            <a href="#faq">FAQ</a>
+            <a href="cadastro.html" class="btn-nav">Começar grátis</a>
         </div>
-
-        <button class="Hamburger" id="HamburgerButton">
-            <i class="fas fa-bars"></i>
-        </button>
-
-
     </nav>
 
-    <section id="home" class="hero">
-
-        <div class="hero-text">
-            <div class="logo">
-                <img src="logo.png" alt="logo-img" class="logo-img" />
-
+    <!-- HERO -->
+    <section class="hero">
+        <div>
+            <div class="hero-badge">🧠 Feito para saúde mental brasileira</div>
+            <h1>O sistema clínico que <span>psicólogos e psiquiatras</span> precisavam</h1>
+            <p>Prontuário eletrônico, agenda online com pagamento, escalas clínicas validadas e relatórios para convênios. Tudo em um só lugar.</p>
+            <div class="hero-buttons">
+                <a href="cadastro.html" class="btn-primary">
+                    <i class="fas fa-rocket"></i> Testar grátis por 7 dias
+                </a>
+                <a href="#funcionalidades" class="btn-secondary">Ver funcionalidades</a>
             </div>
-            <h1 class="chamadaPPT">Psicólogos, Psiquiatras e Terapeutas</h1>
-            <h2>Transforme seu atendimento com um site que conecta e conquista seus pacientes</h2>
-            <div class="buttons">
-                <a href="#" target="_blank" aria-label="Acessar Escala de Compulsão">
-                    <i class="fas fa-notes-medical"></i> Link para agendamento
-                </a>
-                <a href="EscaladeCompulsaoAlimentar(BES).html" target="_blank" aria-label="Acessar Escala de Depressão">
-                    <i class="fas fa-heart-broken"></i> Escalas e Formulários
-                </a>
-                <a href="#" target="_blank" aria-label="Agendar Consulta">
-                    <i class="fas fa-calendar-check"></i> Agenda
-                </a>
-                <a href="InventarioDeBeck.html" target="_blank" aria-label="Agendar Consulta">
-                    <i class="fas fa-calendar-check"></i> Inventários
-                </a>
-
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-num">16+</div>
+                    <div class="hero-stat-label">Escalas clínicas validadas</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">100%</div>
+                    <div class="hero-stat-label">Online, sem instalação</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">R$97</div>
+                    <div class="hero-stat-label">Por mês, tudo incluído</div>
+                </div>
             </div>
         </div>
-        <img src="AlineChamada.png" alt="Aline Amaral Psicóloga">
-
     </section>
 
-    <div class="container">
-
-        <h1>Seu nome na internet com estilo, confiança e um valor que você pode pagar</h1>
-
-        <p>Transforme sua presença online com um site bonito, profissional e que atrai mais pacientes.</p>
-
-        <div class="benefits">
-            <div class="benefit">
-                <h3>Design Profissional</h3>
-                <p>Transmita confiança e acolhimento aos seus pacientes.</p>
-            </div>
-            <div class="benefit">
-                <h3>Responsivo</h3>
-                <p>Seu site perfeito em qualquer dispositivo, do celular ao computador.</p>
-            </div>
-            <div class="benefit">
-                <h3>Sua empresa no Google</h3>
-                <p>Apareça nas pesquisas com o google Meu Negócio de forma profissional</p>
-            </div>
-            <div class="benefit">
-                <h3>Formulários, Escalas e Inventários</h3>
-                <p>Tenha acesso a diversos formulários, escalas e inventários para te auxiliar nas suas sessões.</p>
-
-            </div>
-        </div>
-        <a href="https://wa.me/5511947454936" class="button">Quero um orçamento</a>
-    </div>
-
-    <section id="sobre">
+    <!-- PROBLEMAS -->
+    <section class="problemas">
         <div class="container">
-            <h1>Quem Somos</h1>
-            <h2>Especialistas em Criar Sites Modernos para Psicólogos e Psicoterapeutas</h2>
-            <img src="alineamaral.jpg" alt="Nossa equipe" class="photo">
-            <p>Nosso propósito é ajudar profissionais da psicologia a conquistar uma presença online de destaque. Criamos sites bonitos, profissionais e pensados para atrair mais pacientes e facilitar a gestão do seu consultório.</p>
-            <p>Com design acolhedor e tecnologia de ponta, garantimos que sua nova página transmita toda a confiança e profissionalismo que seus pacientes procuram.</p>
-
-            <div class="benefits">
-                <div class="benefit">
-                    <h3>Design Personalizado</h3>
-                    <p>Cada site é único e feito sob medida para refletir sua identidade profissional.</p>
+            <div class="section-badge">O problema</div>
+            <h2 class="section-title">Sua rotina clínica não deveria ser assim</h2>
+            <p class="section-sub">Muitos profissionais ainda perdem horas com processos manuais que poderiam ser automatizados.</p>
+            <div class="problemas-grid">
+                <div class="problema-card">
+                    <div class="problema-icon">📋</div>
+                    <h3>Prontuários em papel ou Word</h3>
+                    <p>Difíceis de organizar, buscar e compartilhar. Risco de perda e falta de segurança.</p>
                 </div>
-                <div class="benefit">
-                    <h3>Mobile Responsivo</h3>
-                    <p>Seu site perfeito em qualquer tela, seja no celular ou computador.</p>
+                <div class="problema-card">
+                    <div class="problema-icon">📅</div>
+                    <h3>Agenda pelo WhatsApp</h3>
+                    <p>Sem controle de horários, sem lembretes automáticos e sem pagamento integrado.</p>
                 </div>
-                <div class="benefit">
-                    <h3>Solicite Atualização</h3>
-                    <p>Você pode solicitar atualização dos seus dados sempre que precisar</p>
+                <div class="problema-card">
+                    <div class="problema-icon">📊</div>
+                    <h3>Escalas aplicadas no papel</h3>
+                    <p>Sem histórico, sem gráficos de evolução e sem como enviar digitalmente ao paciente.</p>
+                </div>
+                <div class="problema-card">
+                    <div class="problema-icon">🏥</div>
+                    <h3>Relatórios para convênios manuais</h3>
+                    <p>Horas planilhando atendimentos para enviar ao convênio todo mês.</p>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
-                <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
+    <!-- FUNCIONALIDADES -->
+    <section id="funcionalidades">
+        <div class="container">
+            <div class="section-badge">Solução</div>
+            <h2 class="section-title">Tudo que você precisa na clínica</h2>
+            <p class="section-sub">Desenvolvido pensando na realidade do profissional de saúde mental brasileiro.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(139,92,246,0.15);">
+                        <i class="fas fa-file-medical" style="color:#a78bfa;"></i>
+                    </div>
+                    <h3>Prontuário Eletrônico</h3>
+                    <p>Registre evoluções com CID-10, convênio, duração e valor de cada sessão. Histórico completo por paciente com geração de PDF.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(96,165,250,0.15);">
+                        <i class="fas fa-calendar-alt" style="color:#60a5fa;"></i>
+                    </div>
+                    <h3>Agenda Online com Pagamento</h3>
+                    <p>Seus pacientes agendam e pagam online diretamente pelo seu link. Cancelamentos com reembolso automático conforme sua política.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(52,211,153,0.15);">
+                        <i class="fas fa-clipboard-list" style="color:#34d399;"></i>
+                    </div>
+                    <h3>16 Escalas Clínicas Validadas</h3>
+                    <p>Beck, Hamilton, MADRS, Pittsburgh, Epworth e muito mais. Envie por link, o paciente responde e você vê o resultado instantaneamente.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(251,191,36,0.15);">
+                        <i class="fas fa-chart-line" style="color:#fbbf24;"></i>
+                    </div>
+                    <h3>Gráficos de Evolução</h3>
+                    <p>Visualize a evolução da pontuação dos questionários ao longo do tratamento. Mostre ao paciente o progresso com clareza.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(248,113,113,0.15);">
+                        <i class="fas fa-file-invoice" style="color:#f87171;"></i>
+                    </div>
+                    <h3>Relatório para Convênios</h3>
+                    <p>Gere relatórios mensais de produção por convênio em PDF com um clique. Nunca mais passe horas planilhando atendimentos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(167,139,250,0.15);">
+                        <i class="fas fa-file-signature" style="color:#a78bfa;"></i>
+                    </div>
+                    <h3>Termo de Consentimento Digital</h3>
+                    <p>Envie o TCLE por link, o paciente assina digitalmente. Documento com validade legal, data, hora e IP registrados.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(52,211,153,0.15);">
+                        <i class="fas fa-bell" style="color:#34d399;"></i>
+                    </div>
+                    <h3>Lembrete Automático de Consultas</h3>
+                    <p>Seu paciente recebe um email automático 24h antes da consulta. Reduza faltas sem nenhum esforço da sua parte.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(96,165,250,0.15);">
+                        <i class="fas fa-tools" style="color:#60a5fa;"></i>
+                    </div>
+                    <h3>Ferramentas de TCC</h3>
+                    <p>Fichas de descatastrofização, padrões duplos, tomada de decisão e agenda de atividades prazerosas integradas ao sistema.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREÇO -->
+    <section class="preco" id="preco">
+        <div class="container" style="text-align:center;">
+            <div class="section-badge">Preços</div>
+            <h2 class="section-title">Simples e transparente</h2>
+            <p class="section-sub" style="margin:0 auto;">Sem taxas escondidas. Cancele quando quiser.</p>
+            <div class="preco-cards">
+                <div class="preco-card">
+                    <p class="preco-nome">Trial</p>
+                    <div class="preco-valor">Grátis <span>/ 7 dias</span></div>
+                    <p class="preco-desc">Experimente sem compromisso</p>
+                    <ul class="preco-features">
+                        <li>Acesso completo ao sistema</li>
+                        <li>Pacientes ilimitados</li>
+                        <li>Todas as escalas clínicas</li>
+                        <li>Agenda online com pagamento</li>
+                        <li>Suporte por email</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-preco btn-preco-outline">Começar grátis</a>
+                </div>
+                <div class="preco-card destaque">
+                    <span class="preco-badge-top">Mais popular</span>
+                    <p class="preco-nome">Pro</p>
+                    <div class="preco-valor">R$ 97 <span>/ mês</span></div>
+                    <p class="preco-desc">Acesso completo e permanente</p>
+                    <ul class="preco-features">
+                        <li>Tudo do Trial</li>
+                        <li>Acesso permanente</li>
+                        <li>Relatórios para convênios</li>
+                        <li>Termo de consentimento digital</li>
+                        <li>Atualizações incluídas</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-preco">Assinar agora</a>
+                </div>
+            </div>
+            <p style="font-size:13px; color:var(--muted); margin-top:24px;">
+                💳 Pagamento seguro via cartão de crédito. Cancele quando quiser.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-badge">Dúvidas</div>
+            <h2 class="section-title">Perguntas frequentes</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Preciso instalar algum programa? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Não! O ProntPsi é 100% online. Funciona direto no navegador do computador, tablet ou celular. Sem instalação, sem configuração.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Os dados dos meus pacientes são seguros? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim. Todos os dados são criptografados e armazenados com segurança. Cada profissional acessa apenas os dados dos seus próprios pacientes. O sistema segue as boas práticas de segurança e privacidade.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Posso cancelar a qualquer momento? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim, sem burocracia. Você pode cancelar sua assinatura quando quiser, sem multa ou fidelidade.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        As escalas são validadas cientificamente? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim. Todas as 16 escalas disponíveis no ProntPsi são instrumentos validados e amplamente utilizados na prática clínica, como Beck BDI, Hamilton HAM-A, MADRS, Pittsburgh PSQI, Epworth e outras.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Funciona para quem atende por convênio? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim! O ProntPsi permite registrar convênio, CID-10 e código de procedimento em cada sessão e gera relatórios mensais de produção por convênio em PDF, facilitando o faturamento.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Como funciona a agenda online com pagamento? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Você configura seus horários disponíveis e valor da consulta. O sistema gera um link público que você compartilha com seus pacientes ou coloca no seu site. O paciente escolhe o horário, paga online e a consulta já aparece na sua agenda automaticamente.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-final">
+        <div class="container">
+            <h2>Comece a usar hoje, grátis por 7 dias</h2>
+            <p>Sem cartão de crédito para o trial. Configure em menos de 5 minutos.</p>
+            <a href="cadastro.html" class="btn-primary" style="display:inline-flex;">
+                <i class="fas fa-rocket"></i> Criar minha conta grátis
             </a>
-
-
         </div>
-
-
     </section>
 
-    <section id="contato">
-        <h1>Contato</h1>
-        <h2>Como funciona o seu contato:</h2>
-
-        <div class="benefits">
-            <div class="benefit">
-                <h3>Chame no Whatsapp</h3>
-                <p>Ao entrar em contato conosco iremos conversar sobre o que você procura em uma página Web</p>
-            </div>
-            <div class="benefit">
-                <h3>Escolha o estilo da sua Landing Page</h3>
-                <p>Vamos escolher o melhor estilo para você</p>
-            </div>
-            <div class="benefit">
-                <h3>Finalização</h3>
-                <p>Você receberá o orçamento sem compromisso para análise</p>
-            </div>
-        </div>
-        <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
-        </a>
-        <a href="https://wa.me/5511947454936" class="buttonB">Solicite seu Site Agora</a>
-
-    </section>
-
-
-    <a href="https://wa.me/5511947454936" class="whatsapp-button" target="_blank">
-        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp">
-    </a>
-    <div class="chat-container" id="chatBox">
-        <div class="chat-header" onclick="toggleChat()">ProntPsi</div>
-        <div class="chat-body" id="chatBody">
-            <div class="message bot">Olá! Como posso ajudar?</div>
-        </div>
-        <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Digite sua mensagem..." />
-            <button onclick="sendMessage()">Enviar</button>
-        </div>
-    </div>
-
-    <button class="chat-toggle" onclick="toggleChat()">💬</button>
-
+    <!-- FOOTER -->
     <footer>
-        © 2025 ProntPsi . Todos os direitos reservados.
+        <p style="margin-bottom:8px;">
+            <strong style="color:var(--roxo-light);">ProntPsi</strong> — Sistema Clínico para Psicólogos e Psiquiatras
+        </p>
+        <p>
+            <a href="login.html">Entrar</a> &nbsp;·&nbsp;
+            <a href="cadastro.html">Cadastrar</a> &nbsp;·&nbsp;
+            <a href="planos.html">Planos</a>
+        </p>
+        <p style="margin-top:16px;">© 2026 ProntPsi. Todos os direitos reservados.</p>
     </footer>
-    <script src="geralpsi.js" defer></script>
+
+    <script>
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            item.classList.toggle('aberto');
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Sistema Clínico para Psicólogos e Psiquiatras</title>
+    <meta name="description" content="Prontuário eletrônico, agenda online, escalas clínicas e muito mais. Feito para psicólogos e psiquiatras brasileiros.">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --roxo: #7c3aed;
+            --roxo-light: #a78bfa;
+            --roxo-dark: #6d28d9;
+            --bg: #0f1621;
+            --bg2: #1a2332;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --green: #34d399;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(15,22,33,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139,92,246,0.15);
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--roxo-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+            .nav-links a {
+                color: var(--muted);
+                text-decoration: none;
+                font-size: 14px;
+                transition: color 0.2s;
+            }
+
+                .nav-links a:hover {
+                    color: var(--text);
+                }
+
+        .btn-nav {
+            background: var(--roxo);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+            .btn-nav:hover {
+                background: var(--roxo-dark);
+                color: #fff;
+            }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+            background: radial-gradient(ellipse at top, rgba(124,58,237,0.15) 0%, transparent 70%);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(139,92,246,0.15);
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 900;
+            color: #f1f5f9;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+            .hero h1 span {
+                color: var(--roxo-light);
+            }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 580px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--roxo);
+            color: #fff;
+            padding: 16px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .btn-primary:hover {
+                background: var(--roxo-dark);
+                transform: translateY(-2px);
+            }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,0.4);
+            padding: 16px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+            .btn-secondary:hover {
+                background: rgba(139,92,246,0.1);
+            }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            margin-top: 64px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-num {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--roxo-light);
+        }
+
+        .hero-stat-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* SECTION */
+        section {
+            padding: 80px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(139,92,246,0.1);
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,0.2);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+        }
+
+        .section-sub {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 560px;
+        }
+
+        /* PROBLEMAS */
+        .problemas {
+            background: var(--bg2);
+        }
+
+        .problemas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .problema-card {
+            background: var(--bg);
+            border: 1px solid rgba(139,92,246,0.1);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .problema-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .problema-card h3 {
+            font-size: 16px;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .problema-card p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        /* FUNCIONALIDADES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--bg2);
+            border: 1px solid rgba(139,92,246,0.1);
+            border-radius: 12px;
+            padding: 28px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+            .feature-card:hover {
+                border-color: rgba(139,92,246,0.4);
+                transform: translateY(-4px);
+            }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* PREÇO */
+        .preco {
+            background: var(--bg2);
+        }
+
+        .preco-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .preco-card {
+            background: var(--bg);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+
+            .preco-card.destaque {
+                border: 2px solid var(--roxo);
+                position: relative;
+            }
+
+        .preco-badge-top {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--roxo);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 16px;
+            border-radius: 20px;
+        }
+
+        .preco-nome {
+            font-size: 16px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 16px;
+        }
+
+        .preco-valor {
+            font-size: 48px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+            .preco-valor span {
+                font-size: 16px;
+                color: var(--muted);
+                font-weight: 400;
+            }
+
+        .preco-desc {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 12px 0 24px;
+        }
+
+        .preco-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 28px;
+        }
+
+            .preco-features li {
+                font-size: 14px;
+                color: #94a3b8;
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(139,92,246,0.06);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+                .preco-features li::before {
+                    content: '✓';
+                    color: var(--green);
+                    font-weight: 700;
+                }
+
+        .btn-preco {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--roxo);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Roboto', sans-serif;
+        }
+
+            .btn-preco:hover {
+                background: var(--roxo-dark);
+            }
+
+        .btn-preco-outline {
+            background: transparent;
+            border: 1px solid rgba(139,92,246,0.3);
+            color: var(--roxo-light);
+        }
+
+            .btn-preco-outline:hover {
+                background: rgba(139,92,246,0.1);
+            }
+
+        /* FAQ */
+        .faq-list {
+            margin-top: 48px;
+            max-width: 700px;
+        }
+
+        .faq-item {
+            background: var(--bg2);
+            border: 1px solid rgba(139,92,246,0.1);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-pergunta {
+            padding: 20px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+            .faq-pergunta:hover {
+                color: var(--roxo-light);
+            }
+
+        .faq-resposta {
+            padding: 0 24px;
+            font-size: 14px;
+            color: var(--muted);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+            line-height: 1.7;
+        }
+
+        .faq-item.aberto .faq-resposta {
+            max-height: 200px;
+            padding: 0 24px 20px;
+        }
+
+        .faq-item.aberto .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+            color: var(--muted);
+        }
+
+        /* CTA FINAL */
+        .cta-final {
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(124,58,237,0.2) 0%, transparent 70%);
+            padding: 100px 20px;
+        }
+
+            .cta-final h2 {
+                font-size: clamp(28px, 4vw, 44px);
+                font-weight: 700;
+                color: #f1f5f9;
+                margin-bottom: 16px;
+            }
+
+            .cta-final p {
+                font-size: 16px;
+                color: var(--muted);
+                margin-bottom: 40px;
+            }
+
+        /* FOOTER */
+        footer {
+            background: var(--bg2);
+            border-top: 1px solid rgba(139,92,246,0.1);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+            footer p {
+                font-size: 13px;
+                color: var(--muted);
+            }
+
+            footer a {
+                color: var(--roxo-light);
+                text-decoration: none;
+            }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 100px 20px 60px;
+            }
+
+            .hero-stats {
+                gap: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">ProntPsi</div>
+        <div class="nav-links">
+            <a href="#funcionalidades">Funcionalidades</a>
+            <a href="#preco">Preços</a>
+            <a href="#faq">FAQ</a>
+            <a href="cadastro.html" class="btn-nav">Começar grátis</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div>
+            <div class="hero-badge">🧠 Feito para saúde mental brasileira</div>
+            <h1>O sistema clínico que <span>psicólogos e psiquiatras</span> precisavam</h1>
+            <p>Prontuário eletrônico, agenda online com pagamento, escalas clínicas validadas e relatórios para convênios. Tudo em um só lugar.</p>
+            <div class="hero-buttons">
+                <a href="cadastro.html" class="btn-primary">
+                    <i class="fas fa-rocket"></i> Testar grátis por 7 dias
+                </a>
+                <a href="#funcionalidades" class="btn-secondary">Ver funcionalidades</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-num">16+</div>
+                    <div class="hero-stat-label">Escalas clínicas validadas</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">100%</div>
+                    <div class="hero-stat-label">Online, sem instalação</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">R$97</div>
+                    <div class="hero-stat-label">Por mês, tudo incluído</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEMAS -->
+    <section class="problemas">
+        <div class="container">
+            <div class="section-badge">O problema</div>
+            <h2 class="section-title">Sua rotina clínica não deveria ser assim</h2>
+            <p class="section-sub">Muitos profissionais ainda perdem horas com processos manuais que poderiam ser automatizados.</p>
+            <div class="problemas-grid">
+                <div class="problema-card">
+                    <div class="problema-icon">📋</div>
+                    <h3>Prontuários em papel ou Word</h3>
+                    <p>Difíceis de organizar, buscar e compartilhar. Risco de perda e falta de segurança.</p>
+                </div>
+                <div class="problema-card">
+                    <div class="problema-icon">📅</div>
+                    <h3>Agenda pelo WhatsApp</h3>
+                    <p>Sem controle de horários, sem lembretes automáticos e sem pagamento integrado.</p>
+                </div>
+                <div class="problema-card">
+                    <div class="problema-icon">📊</div>
+                    <h3>Escalas aplicadas no papel</h3>
+                    <p>Sem histórico, sem gráficos de evolução e sem como enviar digitalmente ao paciente.</p>
+                </div>
+                <div class="problema-card">
+                    <div class="problema-icon">🏥</div>
+                    <h3>Relatórios para convênios manuais</h3>
+                    <p>Horas planilhando atendimentos para enviar ao convênio todo mês.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FUNCIONALIDADES -->
+    <section id="funcionalidades">
+        <div class="container">
+            <div class="section-badge">Solução</div>
+            <h2 class="section-title">Tudo que você precisa na clínica</h2>
+            <p class="section-sub">Desenvolvido pensando na realidade do profissional de saúde mental brasileiro.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(139,92,246,0.15);">
+                        <i class="fas fa-file-medical" style="color:#a78bfa;"></i>
+                    </div>
+                    <h3>Prontuário Eletrônico</h3>
+                    <p>Registre evoluções com CID-10, convênio, duração e valor de cada sessão. Histórico completo por paciente com geração de PDF.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(96,165,250,0.15);">
+                        <i class="fas fa-calendar-alt" style="color:#60a5fa;"></i>
+                    </div>
+                    <h3>Agenda Online com Pagamento</h3>
+                    <p>Seus pacientes agendam e pagam online diretamente pelo seu link. Cancelamentos com reembolso automático conforme sua política.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(52,211,153,0.15);">
+                        <i class="fas fa-clipboard-list" style="color:#34d399;"></i>
+                    </div>
+                    <h3>16 Escalas Clínicas Validadas</h3>
+                    <p>Beck, Hamilton, MADRS, Pittsburgh, Epworth e muito mais. Envie por link, o paciente responde e você vê o resultado instantaneamente.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(251,191,36,0.15);">
+                        <i class="fas fa-chart-line" style="color:#fbbf24;"></i>
+                    </div>
+                    <h3>Gráficos de Evolução</h3>
+                    <p>Visualize a evolução da pontuação dos questionários ao longo do tratamento. Mostre ao paciente o progresso com clareza.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(248,113,113,0.15);">
+                        <i class="fas fa-file-invoice" style="color:#f87171;"></i>
+                    </div>
+                    <h3>Relatório para Convênios</h3>
+                    <p>Gere relatórios mensais de produção por convênio em PDF com um clique. Nunca mais passe horas planilhando atendimentos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(167,139,250,0.15);">
+                        <i class="fas fa-file-signature" style="color:#a78bfa;"></i>
+                    </div>
+                    <h3>Termo de Consentimento Digital</h3>
+                    <p>Envie o TCLE por link, o paciente assina digitalmente. Documento com validade legal, data, hora e IP registrados.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(52,211,153,0.15);">
+                        <i class="fas fa-bell" style="color:#34d399;"></i>
+                    </div>
+                    <h3>Lembrete Automático de Consultas</h3>
+                    <p>Seu paciente recebe um email automático 24h antes da consulta. Reduza faltas sem nenhum esforço da sua parte.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(96,165,250,0.15);">
+                        <i class="fas fa-tools" style="color:#60a5fa;"></i>
+                    </div>
+                    <h3>Ferramentas de TCC</h3>
+                    <p>Fichas de descatastrofização, padrões duplos, tomada de decisão e agenda de atividades prazerosas integradas ao sistema.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREÇO -->
+    <section class="preco" id="preco">
+        <div class="container" style="text-align:center;">
+            <div class="section-badge">Preços</div>
+            <h2 class="section-title">Simples e transparente</h2>
+            <p class="section-sub" style="margin:0 auto;">Sem taxas escondidas. Cancele quando quiser.</p>
+            <div class="preco-cards">
+                <div class="preco-card">
+                    <p class="preco-nome">Trial</p>
+                    <div class="preco-valor">Grátis <span>/ 7 dias</span></div>
+                    <p class="preco-desc">Experimente sem compromisso</p>
+                    <ul class="preco-features">
+                        <li>Acesso completo ao sistema</li>
+                        <li>Pacientes ilimitados</li>
+                        <li>Todas as escalas clínicas</li>
+                        <li>Agenda online com pagamento</li>
+                        <li>Suporte por email</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-preco btn-preco-outline">Começar grátis</a>
+                </div>
+                <div class="preco-card destaque">
+                    <span class="preco-badge-top">Mais popular</span>
+                    <p class="preco-nome">Pro</p>
+                    <div class="preco-valor">R$ 97 <span>/ mês</span></div>
+                    <p class="preco-desc">Acesso completo e permanente</p>
+                    <ul class="preco-features">
+                        <li>Tudo do Trial</li>
+                        <li>Acesso permanente</li>
+                        <li>Relatórios para convênios</li>
+                        <li>Termo de consentimento digital</li>
+                        <li>Atualizações incluídas</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-preco">Assinar agora</a>
+                </div>
+            </div>
+            <p style="font-size:13px; color:var(--muted); margin-top:24px;">
+                💳 Pagamento seguro via cartão de crédito. Cancele quando quiser.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-badge">Dúvidas</div>
+            <h2 class="section-title">Perguntas frequentes</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Preciso instalar algum programa? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Não! O ProntPsi é 100% online. Funciona direto no navegador do computador, tablet ou celular. Sem instalação, sem configuração.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Os dados dos meus pacientes são seguros? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim. Todos os dados são criptografados e armazenados com segurança. Cada profissional acessa apenas os dados dos seus próprios pacientes. O sistema segue as boas práticas de segurança e privacidade.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Posso cancelar a qualquer momento? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim, sem burocracia. Você pode cancelar sua assinatura quando quiser, sem multa ou fidelidade.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        As escalas são validadas cientificamente? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim. Todas as 16 escalas disponíveis no ProntPsi são instrumentos validados e amplamente utilizados na prática clínica, como Beck BDI, Hamilton HAM-A, MADRS, Pittsburgh PSQI, Epworth e outras.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Funciona para quem atende por convênio? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim! O ProntPsi permite registrar convênio, CID-10 e código de procedimento em cada sessão e gera relatórios mensais de produção por convênio em PDF, facilitando o faturamento.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Como funciona a agenda online com pagamento? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Você configura seus horários disponíveis e valor da consulta. O sistema gera um link público que você compartilha com seus pacientes ou coloca no seu site. O paciente escolhe o horário, paga online e a consulta já aparece na sua agenda automaticamente.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-final">
+        <div class="container">
+            <h2>Comece a usar hoje, grátis por 7 dias</h2>
+            <p>Sem cartão de crédito para o trial. Configure em menos de 5 minutos.</p>
+            <a href="cadastro.html" class="btn-primary" style="display:inline-flex;">
+                <i class="fas fa-rocket"></i> Criar minha conta grátis
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p style="margin-bottom:8px;">
+            <strong style="color:var(--roxo-light);">ProntPsi</strong> — Sistema Clínico para Psicólogos e Psiquiatras
+        </p>
+        <p>
+            <a href="login.html">Entrar</a> &nbsp;·&nbsp;
+            <a href="cadastro.html">Cadastrar</a> &nbsp;·&nbsp;
+            <a href="planos.html">Planos</a>
+        </p>
+        <p style="margin-top:16px;">© 2026 ProntPsi. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            item.classList.toggle('aberto');
+        }
+    </script>
 </body>
 </html>
