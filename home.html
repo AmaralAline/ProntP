@@ -1732,38 +1732,39 @@
             const item = el.parentElement;
             item.classList.toggle('aberto');
         }
+        // Carrega vagas de fundador
+        async function carregarVagas() {
+            try {
+                const res = await fetch('https://prontpsiback-production.up.railway.app/api/fundador/vagas');
+                const data = await res.json();
+                const restantes = data.vagas_restantes;
+                const usadas = data.vagas_usadas;
+
+                document.getElementById('vagas-restantes').textContent = restantes;
+                const pct = (usadas / 20) * 100;
+                document.getElementById('barra-vagas').style.width = pct + '%';
+
+                if (restantes === 0) {
+                    document.getElementById('vagas-msg').textContent = '🚫 Vagas esgotadas!';
+                    document.getElementById('vagas-msg').style.color = '#f87171';
+                    document.getElementById('btn-fundador').textContent = 'Vagas esgotadas';
+                    document.getElementById('btn-fundador').style.background = '#374151';
+                    document.getElementById('btn-fundador').style.pointerEvents = 'none';
+                } else if (restantes <= 5) {
+                    document.getElementById('vagas-msg').textContent = `🔥 Apenas ${restantes} vagas restantes!`;
+                    document.getElementById('vagas-msg').style.color = '#f87171';
+                } else {
+                    document.getElementById('vagas-msg').textContent = `✅ ${restantes} vagas disponíveis`;
+                    document.getElementById('vagas-msg').style.color = '#34d399';
+                }
+            } catch (err) {
+                document.getElementById('vagas-msg').textContent = 'Vagas disponíveis — cadastre-se!';
+                document.getElementById('vagas-msg').style.color = '#34d399';
+            }
+        }
+
+        carregarVagas();
     </script>
-    // Carrega vagas de fundador
-    async function carregarVagas() {
-    try {
-    const res  = await fetch('https://prontpsiback-production.up.railway.app/api/fundador/vagas');
-    const data = await res.json();
-    const restantes = data.vagas_restantes;
-    const usadas    = data.vagas_usadas;
-
-    document.getElementById('vagas-restantes').textContent = restantes;
-    const pct = (usadas / 20) * 100;
-    document.getElementById('barra-vagas').style.width = pct + '%';
-
-    if (restantes === 0) {
-    document.getElementById('vagas-msg').textContent = '🚫 Vagas esgotadas!';
-    document.getElementById('vagas-msg').style.color = '#f87171';
-    document.getElementById('btn-fundador').textContent = 'Vagas esgotadas';
-    document.getElementById('btn-fundador').style.background = '#374151';
-    document.getElementById('btn-fundador').style.pointerEvents = 'none';
-    } else if (restantes <= 5) {
-    document.getElementById('vagas-msg').textContent = `🔥 Apenas ${restantes} vagas restantes!`;
-    document.getElementById('vagas-msg').style.color = '#f87171';
-    } else {
-    document.getElementById('vagas-msg').textContent = `✅ ${restantes} vagas disponíveis`;
-    document.getElementById('vagas-msg').style.color = '#34d399';
-    }
-    } catch (err) {
-    document.getElementById('vagas-msg').textContent = 'Vagas disponíveis — cadastre-se!';
-    document.getElementById('vagas-msg').style.color = '#34d399';
-    }
-    }
-
-    carregarVagas();
+    
 </body>
 </html>
