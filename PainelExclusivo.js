@@ -46,8 +46,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-ferramentas-tcc', section: 'ferramentas-tcc-section' },
         { btn: 'btn-resultados', section: 'resultados-section' },
         { btn: 'btn-termos', section: 'termos-section' },
+        { btn: 'btn-agenda-online', section: 'agenda-online-section' },
     ];
+    function mostrarSecao(id) {
+        document.querySelectorAll('section').forEach(s => {
+            s.style.display = 'none';
+        });
+        const alvo = document.getElementById(id);
+        if (alvo) alvo.style.display = 'block';
 
+        if (id === 'termos-section') {
+            popularSelectTermos();
+            carregarTermos();
+        }
+        if (id === 'resultados-section') {
+            carregarResultados();
+            popularSelectGrafico();
+        }
+        if (id === 'evolucao-section') {
+            carregarConvenios();
+        }
+        if (id === 'agenda-online-section') {
+            carregarLinkAgendamento();
+            renderizarDiasConfig();
+            carregarDisponibilidade();
+            carregarAgendamentosOnline();
+        }
+    }
     botoes.forEach(({ btn, section }) => {
         const el = document.getElementById(btn);
         if (el) {
