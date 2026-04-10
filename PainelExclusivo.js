@@ -967,17 +967,10 @@ function renderizarGrafico(canvasId, escalaNome, pontuacoes) {
 // ============================================================
 //  AGENDA ONLINE
 // ============================================================
+// ============================================================
+//  AGENDA ONLINE
+// ============================================================
 const diasNomes = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-
-const btnAgendaOnline = document.getElementById('btn-agenda-online');
-if (btnAgendaOnline) {
-    btnAgendaOnline.addEventListener('click', () => {
-        carregarLinkAgendamento();
-        renderizarDiasConfig();
-        carregarDisponibilidade();
-        carregarAgendamentosOnline();
-    });
-}
 
 async function carregarLinkAgendamento() {
     try {
@@ -990,11 +983,10 @@ async function carregarLinkAgendamento() {
 
 function copiarLinkAgendamento() {
     const input = document.getElementById('link-agendamento');
-    if (input) {
-        input.select();
-        document.execCommand('copy');
-        alert('Link copiado!');
-    }
+    if (!input) return;
+    input.select();
+    document.execCommand('copy');
+    alert('Link copiado!');
 }
 
 function renderizarDiasConfig() {
@@ -1002,49 +994,61 @@ function renderizarDiasConfig() {
     if (!grid) return;
     grid.innerHTML = '';
 
-    // Dias úteis: Seg a Sex (1-5) + Sab (6)
-    [1, 2, 3, 4, 5, 6].forEach(dia => {
+    [0, 1, 2, 3, 4, 5, 6].forEach(dia => {
         const div = document.createElement('div');
-        div.style.cssText = 'background:#0f1621; border-radius:8px; padding:16px; border:1px solid rgba(139,92,246,0.1);';
+        div.style.cssText = 'background:#0f1621; border-radius:8px; padding:16px; margin-bottom:12px; border:1px solid rgba(139,92,246,0.1);';
+        div.id = `dia-container-${dia}`;
         div.innerHTML = `
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-                <span style="font-size:14px; font-weight:500; color:#e2e8f0;">${diasNomes[dia]}</span>
-                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#64748b;">
-                    <input type="checkbox" id="dia-ativo-${dia}" style="accent-color:#7c3aed; width:14px; height:14px;" onchange="toggleDia(${dia})">
-                    Ativo
-                </label>
+                <span style="font-size:14px; font-weight:600; color:#e2e8f0;">${diasNomes[dia]}</span>
+                <button onclick="adicionarBloco(${dia})" style="background:rgba(139,92,246,0.15); color:#a78bfa; border:1px solid rgba(139,92,246,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">
+                    + Adicionar horário
+                </button>
             </div>
-            <div id="horarios-dia-${dia}" style="display:none;">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
-                    <div>
-                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Início</label>
-                        <input type="time" id="inicio-${dia}" value="09:00" style="width:100%; padding:6px 8px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                    </div>
-                    <div>
-                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Fim</label>
-                        <input type="time" id="fim-${dia}" value="18:00" style="width:100%; padding:6px 8px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                    </div>
-                </div>
-                <div>
-                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
-                    <select id="duracao-${dia}" style="width:100%; padding:6px 8px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                        <option value="30">30 min</option>
-                        <option value="45">45 min</option>
-                        <option value="50" selected>50 min</option>
-                        <option value="60">60 min</option>
-                        <option value="90">90 min</option>
-                    </select>
-                </div>
-            </div>
+            <div id="blocos-${dia}"></div>
         `;
         grid.appendChild(div);
     });
 }
 
-function toggleDia(dia) {
-    const checkbox = document.getElementById(`dia-ativo-${dia}`);
-    const horarios = document.getElementById(`horarios-dia-${dia}`);
-    if (horarios) horarios.style.display = checkbox.checked ? 'block' : 'none';
+function adicionarBloco(dia, inicio = '09:00', fim = '18:00', duracao = null, valor = null) {
+    const container = document.getElementById(`blocos-${dia}`);
+    if (!container) return;
+
+    const duracaoPadrao = document.getElementById('duracao-padrao')?.value || '50';
+    const valorPadrao = document.getElementById('valor-padrao')?.value || '';
+    const id = Date.now();
+
+    const bloco = document.createElement('div');
+    bloco.id = `bloco-${id}`;
+    bloco.style.cssText = 'display:grid; grid-template-columns:1fr 1fr 1fr 1fr auto; gap:8px; align-items:center; margin-bottom:8px; background:#1a2332; padding:10px; border-radius:8px;';
+    bloco.innerHTML = `
+        <div>
+            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Início</label>
+            <input type="time" value="${inicio}" style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-inicio">
+        </div>
+        <div>
+            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Fim</label>
+            <input type="time" value="${fim}" style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-fim">
+        </div>
+        <div>
+            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Duração (min)</label>
+            <select style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-duracao">
+                <option value="30" ${(duracao || duracaoPadrao) === '30' ? 'selected' : ''}>30 min</option>
+                <option value="45" ${(duracao || duracaoPadrao) === '45' ? 'selected' : ''}>45 min</option>
+                <option value="50" ${(duracao || duracaoPadrao) === '50' || !duracao ? 'selected' : ''}>50 min</option>
+                <option value="60" ${(duracao || duracaoPadrao) === '60' ? 'selected' : ''}>60 min</option>
+                <option value="90" ${(duracao || duracaoPadrao) === '90' ? 'selected' : ''}>90 min</option>
+                <option value="120" ${(duracao || duracaoPadrao) === '120' ? 'selected' : ''}>120 min</option>
+            </select>
+        </div>
+        <div>
+            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Valor (R$)</label>
+            <input type="number" value="${valor || valorPadrao}" placeholder="150.00" step="0.01" style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-valor">
+        </div>
+        <button onclick="document.getElementById('bloco-${id}').remove()" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:6px 10px; cursor:pointer; font-size:13px; margin-top:16px;">✕</button>
+    `;
+    container.appendChild(bloco);
 }
 
 async function carregarDisponibilidade() {
@@ -1052,63 +1056,72 @@ async function carregarDisponibilidade() {
         const res = await fetch(`${API_URL}/api/disponibilidade`, { headers: headersAuth() });
         const data = await res.json();
 
+        if (!data.length) return;
+
+        // Agrupa por dia
+        const porDia = {};
         data.forEach(d => {
-            const checkbox = document.getElementById(`dia-ativo-${d.dia_semana}`);
-            const horarios = document.getElementById(`horarios-dia-${d.dia_semana}`);
-            const inicio = document.getElementById(`inicio-${d.dia_semana}`);
-            const fim = document.getElementById(`fim-${d.dia_semana}`);
-            const duracao = document.getElementById(`duracao-${d.dia_semana}`);
-
-            if (checkbox) { checkbox.checked = true; }
-            if (horarios) horarios.style.display = 'block';
-            if (inicio) inicio.value = d.hora_inicio.substring(0, 5);
-            if (fim) fim.value = d.hora_fim.substring(0, 5);
-            if (duracao) duracao.value = d.duracao_minutos;
-
-            const valorInput = document.getElementById('valor-padrao');
-            if (valorInput && d.valor) valorInput.value = d.valor;
+            if (!porDia[d.dia_semana]) porDia[d.dia_semana] = [];
+            porDia[d.dia_semana].push(d);
         });
+
+        // Preenche os blocos
+        Object.entries(porDia).forEach(([dia, blocos]) => {
+            blocos.forEach(b => {
+                adicionarBloco(parseInt(dia), b.hora_inicio.substring(0, 5), b.hora_fim.substring(0, 5), String(b.duracao_minutos), String(b.valor));
+            });
+        });
+
+        // Preenche valor padrão com o primeiro encontrado
+        const primeiro = data[0];
+        if (primeiro) {
+            const valorInput = document.getElementById('valor-padrao');
+            const duracaoInput = document.getElementById('duracao-padrao');
+            if (valorInput) valorInput.value = primeiro.valor;
+            if (duracaoInput) duracaoInput.value = String(primeiro.duracao_minutos);
+        }
     } catch (err) { console.error(err); }
 }
 
 async function salvarDisponibilidade() {
-    const valor = document.getElementById('valor-padrao')?.value;
     const horarios = [];
 
-    [1, 2, 3, 4, 5, 6].forEach(dia => {
-        const checkbox = document.getElementById(`dia-ativo-${dia}`);
-        if (!checkbox?.checked) return;
+    [0, 1, 2, 3, 4, 5, 6].forEach(dia => {
+        const container = document.getElementById(`blocos-${dia}`);
+        if (!container) return;
 
-        const inicio = document.getElementById(`inicio-${dia}`)?.value;
-        const fim = document.getElementById(`fim-${dia}`)?.value;
-        const duracao = document.getElementById(`duracao-${dia}`)?.value;
+        const blocos = container.querySelectorAll('[id^="bloco-"]');
+        blocos.forEach(bloco => {
+            const inicio = bloco.querySelector('.bloco-inicio')?.value;
+            const fim = bloco.querySelector('.bloco-fim')?.value;
+            const duracao = bloco.querySelector('.bloco-duracao')?.value;
+            const valor = bloco.querySelector('.bloco-valor')?.value;
 
-        if (inicio && fim) {
-            horarios.push({
-                dia_semana: dia,
-                hora_inicio: inicio,
-                hora_fim: fim,
-                duracao_minutos: parseInt(duracao) || 50,
-                valor: parseFloat(valor) || 0
-            });
-        }
+            if (inicio && fim) {
+                horarios.push({
+                    dia_semana: dia,
+                    hora_inicio: inicio,
+                    hora_fim: fim,
+                    duracao_minutos: parseInt(duracao) || 50,
+                    valor: parseFloat(valor) || 0
+                });
+            }
+        });
     });
 
     const feedback = document.getElementById('disponibilidade-feedback');
-
     try {
         const res = await fetch(`${API_URL}/api/disponibilidade`, {
             method: 'POST',
             headers: headersAuth(),
             body: JSON.stringify({ horarios })
         });
-
         if (res.ok) {
             feedback.textContent = '✅ Disponibilidade salva com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
         } else {
-            feedback.textContent = 'Erro ao salvar disponibilidade.';
+            feedback.textContent = 'Erro ao salvar.';
             feedback.style.color = '#f87171';
             feedback.style.display = 'block';
         }
@@ -1131,34 +1144,21 @@ async function carregarAgendamentosOnline() {
             return;
         }
 
-        const cores = {
-            confirmado: '#34d399', pendente: '#fbbf24',
-            cancelado: '#f87171', reembolsado: '#94a3b8'
-        };
-
+        const cores = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171', reembolsado: '#94a3b8' };
         tbody.innerHTML = data.map(a => `
             <tr>
                 <td style="padding:12px 16px;">
                     <div style="color:#e2e8f0; font-weight:500;">${a.paciente_nome}</div>
                     <div style="color:#64748b; font-size:12px;">${a.paciente_email}</div>
                 </td>
-                <td style="padding:12px 16px; color:#94a3b8;">
-                    ${new Date(a.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR')}
-                </td>
+                <td style="padding:12px 16px; color:#94a3b8;">${new Date(a.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
                 <td style="padding:12px 16px; color:#94a3b8;">${a.hora_inicio.substring(0, 5)}</td>
                 <td style="padding:12px 16px; color:#34d399;">R$ ${parseFloat(a.valor).toFixed(2)}</td>
                 <td style="padding:12px 16px;">
-                    <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500;
-                        background:${cores[a.status]}22; color:${cores[a.status]};">
-                        ${a.status}
-                    </span>
+                    <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500; background:${cores[a.status]}22; color:${cores[a.status]};">${a.status}</span>
                 </td>
                 <td style="padding:12px 16px;">
-                    ${a.status === 'confirmado' ? `
-                        <button onclick="cancelarAgendamentoOnline(${a.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">
-                            Cancelar
-                        </button>
-                    ` : '—'}
+                    ${a.status === 'confirmado' ? `<button onclick="cancelarAgendamentoOnline(${a.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">Cancelar</button>` : '—'}
                 </td>
             </tr>
         `).join('');
@@ -1168,11 +1168,9 @@ async function carregarAgendamentosOnline() {
 async function cancelarAgendamentoOnline(id) {
     if (!confirm('Cancelar este agendamento? O reembolso será processado conforme a política.')) return;
     try {
-        const res = await fetch(`${API_URL}/api/agendamentos-online/${id}/cancelar`, {
-            method: 'POST', headers: headersAuth()
-        });
+        const res = await fetch(`${API_URL}/api/agendamentos-online/${id}/cancelar`, { method: 'POST', headers: headersAuth() });
         const data = await res.json();
-        alert(data.mensagem || 'Agendamento cancelado.');
+        alert(data.mensagem || 'Cancelado.');
         carregarAgendamentosOnline();
     } catch (err) { alert('Erro ao cancelar.'); }
 }
