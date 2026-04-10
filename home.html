@@ -547,6 +547,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- NAV -->
@@ -727,8 +728,82 @@
                 💳 Pagamento seguro via cartão de crédito. Cancele quando quiser.
             </p>
         </div>
-    </section>
+    </section><!-- PREÇO -->
+    <section class="preco" id="preco">
+        <div class="container" style="text-align:center;">
+            <div class="section-badge">Oferta de Lançamento</div>
+            <h2 class="section-title">20 vagas especiais de fundador</h2>
+            <p class="section-sub" style="margin:0 auto;">Os primeiros 20 assinantes pagam R$67/mês para sempre — enquanto mantiverem a assinatura ativa.</p>
 
+            <!-- CONTADOR DE VAGAS -->
+            <div style="margin:32px auto; max-width:400px; background:#1a2332; border:1px solid rgba(139,92,246,0.3); border-radius:12px; padding:24px;">
+                <p style="font-size:13px; color:#64748b; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">Vagas restantes</p>
+                <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:12px;">
+                    <span id="vagas-restantes" style="font-size:48px; font-weight:700; color:#a78bfa;">—</span>
+                    <span style="font-size:20px; color:#64748b;">/ 20</span>
+                </div>
+                <div style="background:#0f1621; border-radius:8px; height:8px; overflow:hidden;">
+                    <div id="barra-vagas" style="background:linear-gradient(90deg,#7c3aed,#a78bfa); height:100%; width:0%; transition:width 0.5s; border-radius:8px;"></div>
+                </div>
+                <p id="vagas-msg" style="font-size:13px; color:#fbbf24; margin-top:12px;">⏳ Carregando vagas...</p>
+            </div>
+
+            <div class="preco-cards">
+                <div class="preco-card">
+                    <p class="preco-nome">Trial</p>
+                    <div class="preco-valor">Grátis <span>/ 7 dias</span></div>
+                    <p class="preco-desc">Experimente sem compromisso</p>
+                    <ul class="preco-features">
+                        <li>Acesso completo ao sistema</li>
+                        <li>Pacientes ilimitados</li>
+                        <li>Todas as escalas clínicas</li>
+                        <li>Agenda online com pagamento</li>
+                        <li>Suporte por email</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-preco btn-preco-outline">Começar grátis</a>
+                </div>
+
+                <div class="preco-card destaque">
+                    <span class="preco-badge-top">🔥 Oferta Fundador</span>
+                    <p class="preco-nome">Pro — Fundador</p>
+                    <div style="margin-bottom:4px;">
+                        <span style="font-size:16px; color:#64748b; text-decoration:line-through;">R$ 97/mês</span>
+                    </div>
+                    <div class="preco-valor">R$ 67 <span>/ mês</span></div>
+                    <p class="preco-desc">Para sempre, enquanto manter ativa</p>
+                    <ul class="preco-features">
+                        <li>Tudo do Trial</li>
+                        <li>Acesso permanente</li>
+                        <li>Preço travado para sempre</li>
+                        <li>Relatórios para convênios</li>
+                        <li>Termo de consentimento digital</li>
+                        <li>Atualizações incluídas</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    <a href="cadastro.html" id="btn-fundador" class="btn-preco">Garantir minha vaga</a>
+                </div>
+
+                <div class="preco-card">
+                    <p class="preco-nome">Pro</p>
+                    <div class="preco-valor">R$ 97 <span>/ mês</span></div>
+                    <p class="preco-desc">Após esgotar as vagas fundador</p>
+                    <ul class="preco-features">
+                        <li>Tudo do Trial</li>
+                        <li>Acesso permanente</li>
+                        <li>Relatórios para convênios</li>
+                        <li>Termo de consentimento digital</li>
+                        <li>Atualizações incluídas</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-preco btn-preco-outline">Assinar por R$97</a>
+                </div>
+            </div>
+
+            <p style="font-size:13px; color:var(--muted); margin-top:24px;">
+                💳 Pagamento seguro via cartão de crédito. Cancele quando quiser.
+            </p>
+        </div>
+    </section>
     <!-- FAQ -->
     <section id="faq">
         <div class="container">
@@ -1658,5 +1733,37 @@
             item.classList.toggle('aberto');
         }
     </script>
+    // Carrega vagas de fundador
+    async function carregarVagas() {
+    try {
+    const res  = await fetch('https://prontpsiback-production.up.railway.app/api/fundador/vagas');
+    const data = await res.json();
+    const restantes = data.vagas_restantes;
+    const usadas    = data.vagas_usadas;
+
+    document.getElementById('vagas-restantes').textContent = restantes;
+    const pct = (usadas / 20) * 100;
+    document.getElementById('barra-vagas').style.width = pct + '%';
+
+    if (restantes === 0) {
+    document.getElementById('vagas-msg').textContent = '🚫 Vagas esgotadas!';
+    document.getElementById('vagas-msg').style.color = '#f87171';
+    document.getElementById('btn-fundador').textContent = 'Vagas esgotadas';
+    document.getElementById('btn-fundador').style.background = '#374151';
+    document.getElementById('btn-fundador').style.pointerEvents = 'none';
+    } else if (restantes <= 5) {
+    document.getElementById('vagas-msg').textContent = `🔥 Apenas ${restantes} vagas restantes!`;
+    document.getElementById('vagas-msg').style.color = '#f87171';
+    } else {
+    document.getElementById('vagas-msg').textContent = `✅ ${restantes} vagas disponíveis`;
+    document.getElementById('vagas-msg').style.color = '#34d399';
+    }
+    } catch (err) {
+    document.getElementById('vagas-msg').textContent = 'Vagas disponíveis — cadastre-se!';
+    document.getElementById('vagas-msg').style.color = '#34d399';
+    }
+    }
+
+    carregarVagas();
 </body>
 </html>
