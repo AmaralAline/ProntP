@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-resultados', section: 'resultados-section' },
         { btn: 'btn-termos', section: 'termos-section' },
         { btn: 'btn-agenda-online', section: 'agenda-online-section' },
+        { btn: 'btn-recibos', section: 'recibos-section' },
     ];
     function mostrarSecao(id) {
         document.querySelectorAll('section').forEach(s => {
@@ -1173,4 +1174,130 @@ async function cancelarAgendamentoOnline(id) {
         alert(data.mensagem || 'Cancelado.');
         carregarAgendamentosOnline();
     } catch (err) { alert('Erro ao cancelar.'); }
+}
+// ============================================================
+//  RECIBOS
+// ============================================================
+function popularSelectRecibos() {
+    const select = document.getElementById('recibo-paciente');
+    if (!select) return;
+    select.innerHTML = '<option value="">Selecione um paciente</option>';
+    pacientes.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.nome;
+        select.appendChild(opt);
+    });
+}
+
+async function gerarRecibo() {
+    const pacienteId = document.getElementById('recibo-paciente')?.value;
+    const data = document.getElementById('recibo-data')?.value;
+    const valor = document.getElementById('recibo-valor')?.value;
+    const descricao = document.getElementById('recibo-descricao')?.value;
+    const pagamento = document.getElementById('recibo-pagamento')?.value;
+    const enviarEmail = document.getElementById('recibo-enviar-email')?.checked;
+    const feedback = document.getElementById('recibo-feedback');
+
+    if (!pacienteId || !data || !valor) {
+        feedback.textContent = 'Preencha paciente, data e valor.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/recibos`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                paciente_id: pacienteId,
+                data_consulta: data,
+                valor: valor,
+                descricao: descricao,
+                forma_pagamento: pagamento,
+                enviar_email: enviarEmail
+            })
+        });
+        const data2 = await res.json();
+
+        if (res.ok) {
+            feedback.textContent = `✅ Recibo ${data2.numero} gerado com sucesso!${enviarEmail ? ' Email enviado!' : ''}`;
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+            document.getElementById('recibo-paciente').value = '';
+            document.getElementById('recibo-data').value = '';
+            document.getElementById('recibo-valor').value = '';
+            document.getElementById('recibo-enviar-email').checked = false;
+            await carregarRecibos();
+        } else {
+            feedback.textContent = data2.erro || 'Erro ao gerar recibo.';
+            feedback.style.color = '#f87171';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        feedback.textContent = 'Erro de conexão.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    }
+}
+
+async function carregarRecibos() {
+    try {
+        const res = await fetch(`${API_URL}/api/recibos`, { headers: headersAuth() });
+        const data = await res.json();
+        const tbody = document.getElementById('recibos-tbody');
+        if (!tbody) return;
+
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#64748b; padding:20px;">Nenhum recibo emitido ainda.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map(r => `
+            <tr>
+                <td style="padding:12px 16px; color:#a78bfa; font-weight:600;">${r.numero_recibo}</td>
+                <td style="padding:12px 16px; color:#e2e8f0;">${r.paciente_nome}</td>
+                <td style="padding:12px 16px; color:#94a3b8;">${new Date(r.data_consulta).toLocaleDateString('pt-BR')}</td>
+                <td style="padding:12px 16px; color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</td>
+                <td style="padding:12px 16px; color:#94a3b8;">${r.forma_pagamento}</td>
+                <td style="padding:12px 16px;">
+                    <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500;
+                        background:${r.enviado_email ? 'rgba(52,211,153,0.15)' : 'rgba(100,116,139,0.15)'};
+                        color:${r.enviado_email ? '#34d399' : '#64748b'};">
+                        ${r.enviado_email ? '✓ Enviado' : 'Não enviado'}
+                    </span>
+                </td>
+                <td style="padding:12px 16px; display:flex; gap:8px;">
+                    <button onclick="baixarReciboPDF(${r.id}, '${r.numero_recibo}')" style="background:#1a2332; color:#a78bfa; border:1px solid rgba(139,92,246,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">
+                        <i class="fas fa-download"></i> PDF
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) {
+        console.error('Erro ao carregar recibos:', err);
+    }
+}
+
+async function baixarReciboPDF(id, numero) {
+    try {
+        const res = await fetch(`${API_URL}/api/recibos/${id}/pdf`, { headers: headersAuth() });
+        if (!res.ok) { alert('Erro ao baixar PDF.'); return; }
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `recibo_${numero}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        alert('Erro de conexão.');
+    }
+}
+if (id === 'recibos-section') {
+    popularSelectRecibos();
+    carregarRecibos();
 }
