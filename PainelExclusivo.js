@@ -70,7 +70,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (id === 'agenda-online-section') {
             carregarLinkAgendamento();
-            renderizarDiasConfig();
+            const grid = document.getElementById('dias-grid');
+            if (!grid || grid.children.length === 0) {
+                renderizarDiasConfig();
+            }
             carregarDisponibilidade();
             carregarAgendamentosOnline();
         }
