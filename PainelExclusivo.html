@@ -26,6 +26,7 @@
                 <li><button id="btn-form" aria-controls="form-section"><i class="fas fa-paper-plane"></i> Formulários</button></li>
                 <li><button id="btn-resultados" aria-controls="resultados-section"><i class="fas fa-chart-bar"></i> Resultados</button></li>
                 <li><button id="btn-recibos" aria-controls="recibos-section"><i class="fas fa-receipt"></i> Recibos</button></li>
+                <li><button id="btn-perfil" aria-controls="perfil-section"><i class="fas fa-user-cog"></i> Meu Perfil</button></li>
                 <li><button id="btn-termos" aria-controls="termos-section"><i class="fas fa-file-signature"></i> Termos</button></li>
                 <li><button id="btn-agenda-online" aria-controls="agenda-online-section"><i class="fas fa-link"></i> Agenda Online</button></li>
                 <div style="padding: 16px; margin-top: auto; border-top: 1px solid rgba(139,92,246,0.15);">
@@ -380,6 +381,77 @@
                             <i class="fas fa-sync" style="margin-right:6px;"></i>Atualizar convênios
                         </button>
                     </div>
+                </div>
+            </section>
+
+            <section id="perfil-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Meu Perfil</h2>
+                    <p>Configure seus dados e assinatura digital</p>
+                </div>
+
+                <!-- ASSINATURA DIGITAL -->
+                <div class="form-card" style="max-width:600px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-signature" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Assinatura Digital
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                        Desenhe sua assinatura abaixo. Ela será aplicada automaticamente em todos os recibos e relatórios gerados.
+                    </p>
+
+                    <div style="position:relative; margin-bottom:16px;">
+                        <canvas id="canvas-assinatura" width="500" height="160" style="
+                background:#0f1621; border:1px solid rgba(139,92,246,0.3);
+                border-radius:8px; cursor:crosshair; display:block;
+                touch-action:none;
+            "></canvas>
+                        <p style="font-size:11px; color:#64748b; margin-top:6px; text-align:center;">
+                            Desenhe sua assinatura acima usando o mouse ou dedo
+                        </p>
+                    </div>
+
+                    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+                        <button onclick="limparAssinatura()" style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-eraser" style="margin-right:6px;"></i>Limpar
+                        </button>
+                        <button onclick="salvarAssinatura()" style="background:#7c3aed; color:#fff; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Assinatura
+                        </button>
+                    </div>
+
+                    <!-- PRÉVIA DA ASSINATURA SALVA -->
+                    <div id="assinatura-salva-box" style="display:none;">
+                        <p style="font-size:13px; color:#34d399; margin-bottom:8px;">✅ Assinatura salva:</p>
+                        <img id="assinatura-preview" style="max-width:300px; border:1px solid rgba(139,92,246,0.2); border-radius:8px; background:#0f1621; padding:8px;">
+                    </div>
+                    <p id="assinatura-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
+                </div>
+
+                <!-- PRÉVIA DO CARIMBO -->
+                <div class="form-card" style="max-width:600px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-stamp" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Carimbo Digital
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                        Seu carimbo é gerado automaticamente com seus dados cadastrados.
+                    </p>
+                    <div id="carimbo-preview" style="
+            display:inline-block; border:3px solid rgba(124,58,237,0.6);
+            border-radius:50%; padding:16px 24px; text-align:center;
+            min-width:180px;
+        ">
+                        <p style="font-size:13px; font-weight:700; color:#a78bfa;" id="carimbo-nome">Aline Amaral</p>
+                        <p style="font-size:10px; color:#64748b; margin:2px 0;" id="carimbo-crp">CRP 06/000001</p>
+                        <p style="font-size:10px; color:#64748b;" id="carimbo-especialidade">Psicóloga</p>
+                        <div style="border-top:1px solid rgba(124,58,237,0.3); margin:6px 0;"></div>
+                        <p style="font-size:9px; color:#64748b;">ProntPsi</p>
+                    </div>
+                    <p style="font-size:12px; color:#64748b; margin-top:12px;">
+                        Para alterar os dados do carimbo, atualize seu cadastro de profissional.
+                    </p>
                 </div>
             </section>
 

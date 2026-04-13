@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-termos', section: 'termos-section' },
         { btn: 'btn-agenda-online', section: 'agenda-online-section' },
         { btn: 'btn-recibos', section: 'recibos-section' },
+        { btn: 'btn-perfil', section: 'perfil-section' },
     ];
     function mostrarSecao(id) {
         document.querySelectorAll('section').forEach(s => {
@@ -77,6 +78,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             popularSelectRecibos();
             carregarRecibos();
         }
+        if (id === 'perfil-section') {
+            inicializarCanvas();
+            carregarAssinaturaSalva();
+        }
+        
     }
     botoes.forEach(({ btn, section }) => {
         const el = document.getElementById(btn);
@@ -1300,4 +1306,96 @@ async function baixarReciboPDF(id, numero) {
     } catch (err) {
         alert('Erro de conexão.');
     }
+}
+// ============================================================
+//  ASSINATURA DIGITAL
+// ============================================================
+let canvasAssinatura, ctxAssinatura, desenhando = false;
+
+function inicializarCanvas() {
+    canvasAssinatura = document.getElementById('canvas-assinatura');
+    if (!canvasAssinatura) return;
+    ctxAssinatura = canvasAssinatura.getContext('2d');
+    ctxAssinatura.strokeStyle = '#a78bfa';
+    ctxAssinatura.lineWidth = 2.5;
+    ctxAssinatura.lineCap = 'round';
+    ctxAssinatura.lineJoin = 'round';
+
+    // Mouse
+    canvasAssinatura.addEventListener('mousedown', e => { desenhando = true; ctxAssinatura.beginPath(); ctxAssinatura.moveTo(e.offsetX, e.offsetY); });
+    canvasAssinatura.addEventListener('mousemove', e => { if (!desenhando) return; ctxAssinatura.lineTo(e.offsetX, e.offsetY); ctxAssinatura.stroke(); });
+    canvasAssinatura.addEventListener('mouseup', () => desenhando = false);
+    canvasAssinatura.addEventListener('mouseleave', () => desenhando = false);
+
+    // Touch (celular)
+    canvasAssinatura.addEventListener('touchstart', e => {
+        e.preventDefault();
+        desenhando = true;
+        const t = e.touches[0];
+        const r = canvasAssinatura.getBoundingClientRect();
+        ctxAssinatura.beginPath();
+        ctxAssinatura.moveTo(t.clientX - r.left, t.clientY - r.top);
+    });
+    canvasAssinatura.addEventListener('touchmove', e => {
+        e.preventDefault();
+        if (!desenhando) return;
+        const t = e.touches[0];
+        const r = canvasAssinatura.getBoundingClientRect();
+        ctxAssinatura.lineTo(t.clientX - r.left, t.clientY - r.top);
+        ctxAssinatura.stroke();
+    });
+    canvasAssinatura.addEventListener('touchend', () => desenhando = false);
+}
+
+function limparAssinatura() {
+    if (!ctxAssinatura) return;
+    ctxAssinatura.clearRect(0, 0, canvasAssinatura.width, canvasAssinatura.height);
+}
+
+async function salvarAssinatura() {
+    if (!canvasAssinatura) return;
+    const base64 = canvasAssinatura.toDataURL('image/png');
+    const feedback = document.getElementById('assinatura-feedback');
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/assinatura`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({ assinatura_base64: base64 })
+        });
+
+        if (res.ok) {
+            feedback.textContent = '✅ Assinatura salva com sucesso!';
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+            document.getElementById('assinatura-preview').src = base64;
+            document.getElementById('assinatura-salva-box').style.display = 'block';
+        } else {
+            feedback.textContent = 'Erro ao salvar assinatura.';
+            feedback.style.color = '#f87171';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        feedback.textContent = 'Erro de conexão.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    }
+}
+
+async function carregarAssinaturaSalva() {
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/assinatura`, { headers: headersAuth() });
+        const data = await res.json();
+        if (data.assinatura) {
+            document.getElementById('assinatura-preview').src = data.assinatura;
+            document.getElementById('assinatura-salva-box').style.display = 'block';
+        }
+
+        // Preenche carimbo com dados do profissional
+        const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
+        if (prof.nome) document.getElementById('carimbo-nome').textContent = prof.nome;
+        if (prof.crp_crm) document.getElementById('carimbo-crp').textContent = prof.crp_crm;
+        if (prof.especialidade) document.getElementById('carimbo-especialidade').textContent = prof.especialidade;
+
+    } catch (err) { console.error(err); }
 }
