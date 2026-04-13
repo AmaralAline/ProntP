@@ -73,6 +73,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             carregarDisponibilidade();
             carregarAgendamentosOnline();
         }
+        if (id === 'recibos-section') {
+            popularSelectRecibos();
+            carregarRecibos();
+        }
     }
     botoes.forEach(({ btn, section }) => {
         const el = document.getElementById(btn);
@@ -1296,8 +1300,4 @@ async function baixarReciboPDF(id, numero) {
     } catch (err) {
         alert('Erro de conexão.');
     }
-}
-if (id === 'recibos-section') {
-    popularSelectRecibos();
-    carregarRecibos();
 }
