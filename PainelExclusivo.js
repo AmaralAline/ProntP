@@ -688,9 +688,13 @@ async function carregarConvenios() {
 }
 
 async function gerarRelatorioProducao() {
-    const mes = document.getElementById('rel-mes')?.value;
-    const ano = document.getElementById('rel-ano')?.value;
-    const convenio = document.getElementById('rel-convenio')?.value;
+    const mesEl = document.querySelector('[id="rel-mes"]');
+    const anoEl = document.querySelector('[id="rel-ano"]');
+    const convenioEl = document.querySelector('[id="rel-convenio"]');
+
+    const mes = mesEl?.value;
+    const ano = anoEl?.value;
+    const convenio = convenioEl?.value;
 
     const params = new URLSearchParams({ mes, ano });
     if (convenio) params.append('convenio', convenio);
