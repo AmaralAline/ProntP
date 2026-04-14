@@ -1463,6 +1463,10 @@ async function salvarRecorrente() {
     const valor = document.getElementById('recorrente-valor')?.value;
     const dataInicio = document.getElementById('recorrente-data-inicio')?.value;
     const feedback = document.getElementById('recorrente-feedback');
+    // Calcula hora fim automaticamente baseado na duração
+    const [h, m] = horaInicio.split(':').map(Number);
+    const totalMin = h * 60 + m + (parseInt(duracao) || 50);
+    const horaFimCalc = `${String(Math.floor(totalMin / 60)).padStart(2, '0')}:${String(totalMin % 60).padStart(2, '0')}`;
 
     if (!pacienteId || diaSemana === '' || !horaInicio || !horaFim || !dataInicio) {
         feedback.textContent = 'Preencha paciente, dia, horários e data de início.';
@@ -1479,7 +1483,7 @@ async function salvarRecorrente() {
                 paciente_id: pacienteId,
                 dia_semana: parseInt(diaSemana),
                 hora_inicio: horaInicio,
-                hora_fim: horaFim,
+                hora_fim: horaFimCalc,
                 duracao_minutos: parseInt(duracao) || 50,
                 valor: parseFloat(valor) || 0,
                 data_inicio: dataInicio
