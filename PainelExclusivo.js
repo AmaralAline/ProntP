@@ -85,6 +85,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             inicializarCanvas();
             carregarAssinaturaSalva();
         }
+        if (id === 'agenda-section') {
+            carregarRecorrentes();
+        }
         
     }
     botoes.forEach(({ btn, section }) => {
@@ -1417,42 +1420,42 @@ async function carregarAssinaturaSalva() {
         if (prof.especialidade) document.getElementById('carimbo-especialidade').textContent = prof.especialidade;
 
     } catch (err) { console.error(err); }
-}// ============================================================
-//  AGENDAMENTOS RECORRENTES
-// ============================================================
+} function toggleRecorrente() {
+    const campos = document.getElementById('campos-recorrente');
+    const checked = document.getElementById('toggle-recorrente').checked;
+    campos.style.display = checked ? 'block' : 'none';
+}
 
 async function carregarRecorrentes() {
+    const lista = document.getElementById('recorrentes-lista');
+    if (!lista) return;
     try {
         const res = await fetch(`${API_URL}/api/recorrentes`, { headers: headersAuth() });
         const data = await res.json();
-        const tbody = document.getElementById('recorrentes-tbody');
-        if (!tbody) return;
-
-        const diasNomes = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-
+        const diasNomes = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
         if (!data.length) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhuma recorrência ativa.</td></tr>';
+            lista.innerHTML = '<span style="color:#64748b;">Nenhuma recorrência ativa.</span>';
             return;
         }
-
-        tbody.innerHTML = data.map(r => `
-            <tr>
-                <td style="padding:12px 16px; color:#e2e8f0; font-weight:500;">${r.paciente_nome}</td>
-                <td style="padding:12px 16px; color:#a78bfa;">${diasNomes[r.dia_semana]}</td>
-                <td style="padding:12px 16px; color:#94a3b8;">${r.hora_inicio.substring(0, 5)} — ${r.hora_fim.substring(0, 5)}</td>
-                <td style="padding:12px 16px; color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</td>
-                <td style="padding:12px 16px;">
-                    <button onclick="encerrarRecorrente(${r.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">
-                        Encerrar
-                    </button>
-                </td>
-            </tr>
+        lista.innerHTML = data.map(r => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 10px; background:#0f1621; border-radius:6px; margin-bottom:6px;">
+                <div>
+                    <span style="color:#e2e8f0; font-weight:500;">${r.paciente_nome}</span>
+                    <span style="color:#64748b; margin:0 6px;">—</span>
+                    <span style="color:#a78bfa;">${diasNomes[r.dia_semana]}</span>
+                    <span style="color:#64748b; margin:0 4px;">${r.hora_inicio.substring(0, 5)}</span>
+                    <span style="color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</span>
+                </div>
+                <button onclick="encerrarRecorrente(${r.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px; font-family:'Roboto',sans-serif;">
+                    Encerrar
+                </button>
+            </div>
         `).join('');
-    } catch (err) { console.error(err); }
+    } catch (err) { if (lista) lista.innerHTML = '<span style="color:#f87171;">Erro ao carregar.</span>'; }
 }
 
 async function salvarRecorrente() {
-    const pacienteId = document.getElementById('recorrente-paciente')?.value;
+    const pacienteId = document.getElementById('paciente-agenda')?.value;
     const diaSemana = document.getElementById('recorrente-dia')?.value;
     const horaInicio = document.getElementById('recorrente-inicio')?.value;
     const horaFim = document.getElementById('recorrente-fim')?.value;
@@ -1462,7 +1465,7 @@ async function salvarRecorrente() {
     const feedback = document.getElementById('recorrente-feedback');
 
     if (!pacienteId || diaSemana === '' || !horaInicio || !horaFim || !dataInicio) {
-        feedback.textContent = 'Preencha todos os campos obrigatórios.';
+        feedback.textContent = 'Preencha paciente, dia, horários e data de início.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
@@ -1488,12 +1491,8 @@ async function salvarRecorrente() {
             feedback.textContent = '✅ Recorrência criada com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
-            document.getElementById('recorrente-paciente').value = '';
-            document.getElementById('recorrente-dia').value = '';
-            document.getElementById('recorrente-inicio').value = '';
-            document.getElementById('recorrente-fim').value = '';
-            document.getElementById('recorrente-valor').value = '';
-            document.getElementById('recorrente-data-inicio').value = '';
+            document.getElementById('toggle-recorrente').checked = false;
+            document.getElementById('campos-recorrente').style.display = 'none';
             await carregarRecorrentes();
         } else {
             feedback.textContent = data.erro || 'Erro ao criar recorrência.';
