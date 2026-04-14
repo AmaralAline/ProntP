@@ -72,8 +72,8 @@
         <main class="main-content">
 
             <!-- ================================================
-            INÍCIO (RELÓGIO)
-            ================================================ -->
+    INÍCIO (RELÓGIO)
+    ================================================ -->
             <section id="clock-section" class="active-section">
                 <!-- HEADER DO DASHBOARD -->
                 <div class="dashboard-header">
@@ -143,8 +143,8 @@
             </section>
 
             <!-- ================================================
-            AGENDA
-            ================================================ -->
+    AGENDA
+    ================================================ -->
             <section id="agenda-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -166,12 +166,71 @@
                             </div>
                             <div>
                                 <label for="start-datetime">Data e Hora de Início</label>
-                                <input type="datetime-local" id="start-datetime" required>
+                                <input type="datetime-local" id="start-datetime">
                             </div>
                             <div>
                                 <label for="end-datetime">Data e Hora de Término</label>
-                                <input type="datetime-local" id="end-datetime" required>
+                                <input type="datetime-local" id="end-datetime">
                             </div>
+
+                            <!-- TOGGLE RECORRENTE -->
+                            <div style="display:flex; align-items:center; gap:10px; margin:8px 0;">
+                                <input type="checkbox" id="toggle-recorrente" onchange="toggleRecorrente()" style="width:16px; height:16px; accent-color:#7c3aed; cursor:pointer;">
+                                <label for="toggle-recorrente" style="font-size:13px; color:#a78bfa; cursor:pointer; margin:0;">
+                                    <i class="fas fa-repeat" style="margin-right:4px;"></i> Agendamento recorrente (semanal)
+                                </label>
+                            </div>
+
+                            <!-- CAMPOS RECORRENTE (ocultos por padrão) -->
+                            <div id="campos-recorrente" style="display:none; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; padding:12px; margin-bottom:8px;">
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Dia da semana *</label>
+                                        <select id="recorrente-dia" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                            <option value="">Selecione...</option>
+                                            <option value="0">Domingo</option>
+                                            <option value="1">Segunda-feira</option>
+                                            <option value="2">Terça-feira</option>
+                                            <option value="3">Quarta-feira</option>
+                                            <option value="4">Quinta-feira</option>
+                                            <option value="5">Sexta-feira</option>
+                                            <option value="6">Sábado</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Data de início *</label>
+                                        <input type="date" id="recorrente-data-inicio" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
+                                        <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário fim *</label>
+                                        <input type="time" id="recorrente-fim" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
+                                        <select id="recorrente-duracao" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                            <option value="30">30 min</option>
+                                            <option value="45">45 min</option>
+                                            <option value="50" selected>50 min</option>
+                                            <option value="60">60 min</option>
+                                            <option value="90">90 min</option>
+                                            <option value="120">120 min</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Valor (R$)</label>
+                                        <input type="number" id="recorrente-valor" placeholder="150.00" step="0.01" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                </div>
+                                <button type="button" onclick="salvarRecorrente()" style="margin-top:12px; background:#7c3aed; color:#fff; border:none; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-plus" style="margin-right:6px;"></i>Criar Recorrência
+                                </button>
+                                <p id="recorrente-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
+                            </div>
+
                             <div>
                                 <label for="descricao">Observações (opcional)</label>
                                 <textarea id="descricao" placeholder="Notas sobre a consulta"></textarea>
@@ -179,6 +238,14 @@
                             <button type="submit">Agendar Consulta</button>
                             <p id="agenda-error" class="error-message">Por favor, preencha todos os campos obrigatórios.</p>
                         </form>
+
+                        <!-- RECORRÊNCIAS ATIVAS -->
+                        <div style="margin-top:20px; border-top:1px solid rgba(139,92,246,0.1); padding-top:16px;">
+                            <h4 style="font-size:13px; font-weight:600; color:#a78bfa; margin-bottom:10px;">
+                                <i class="fas fa-repeat" style="margin-right:6px;"></i>Recorrências Ativas
+                            </h4>
+                            <div id="recorrentes-lista" style="font-size:13px; color:#64748b;">Carregando...</div>
+                        </div>
                     </div>
 
                     <!-- Lado direito -->
@@ -199,727 +266,639 @@
                         </div>
                     </div>
                 </div>
-    </div>
+            </section>
 
-    <!-- AGENDAMENTO RECORRENTE -->
-    <div class="form-card" style="margin-top:24px;">
-        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-            <i class="fas fa-repeat" style="color:#8b5cf6; margin-right:8px;"></i>
-            Agendamento Recorrente
-        </h3>
-        <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
-            Cadastre pacientes com horário fixo semanal. As consultas são geradas automaticamente.
-        </p>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
-            <div>
-                <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Paciente *</label>
-                <select id="recorrente-paciente" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                    <option value="">Selecione...</option>
-                </select>
-            </div>
-            <div>
-                <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Dia da semana *</label>
-                <select id="recorrente-dia" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                    <option value="">Selecione...</option>
-                    <option value="0">Domingo</option>
-                    <option value="1">Segunda-feira</option>
-                    <option value="2">Terça-feira</option>
-                    <option value="3">Quarta-feira</option>
-                    <option value="4">Quinta-feira</option>
-                    <option value="5">Sexta-feira</option>
-                    <option value="6">Sábado</option>
-                </select>
-            </div>
-            <div>
-                <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Data de início *</label>
-                <input type="date" id="recorrente-data-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-            </div>
-            <div>
-                <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
-                <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-            </div>
-            <div>
-                <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário fim *</label>
-                <input type="time" id="recorrente-fim" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-            </div>
-            <div>
-                <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
-                <select id="recorrente-duracao" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                    <option value="30">30 min</option>
-                    <option value="45">45 min</option>
-                    <option value="50" selected>50 min</option>
-                    <option value="60">60 min</option>
-                    <option value="90">90 min</option>
-                    <option value="120">120 min</option>
-                </select>
-            </div>
-        </div>
-
-        <div style="display:flex; align-items:flex-end; gap:12px; margin-bottom:16px;">
-            <div>
-                <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Valor (R$)</label>
-                <input type="number" id="recorrente-valor" placeholder="150.00" step="0.01" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; width:160px;">
-            </div>
-            <button onclick="salvarRecorrente()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                <i class="fas fa-plus" style="margin-right:6px;"></i>Criar Recorrência
-            </button>
-        </div>
-        <p id="recorrente-feedback" style="font-size:13px; margin-top:4px; display:none;"></p>
-
-        <h4 style="font-size:14px; font-weight:600; color:#e2e8f0; margin:20px 0 12px;">Recorrências Ativas</h4>
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Paciente</th>
-                        <th>Dia</th>
-                        <th>Horário</th>
-                        <th>Valor</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="recorrentes-tbody">
-                    <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhuma recorrência ativa.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    </section>
-    </section>
-
-    <!-- ================================================
+            <!-- ================================================
     PACIENTES
     ================================================ -->
-    <section id="cadastro-section" class="hidden-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Pacientes</h2>
-            <p>Cadastre e gerencie seus pacientes</p>
-        </div>
+            <section id="cadastro-section" class="hidden-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Pacientes</h2>
+                    <p>Cadastre e gerencie seus pacientes</p>
+                </div>
 
-        <div class="cadastro-layout">
-            <div class="form-card">
-                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Novo Paciente</h3>
-                <form id="cadastro-form">
-                    <div>
-                        <label for="nome">Nome completo</label>
-                        <input type="text" id="nome" required placeholder="Nome do paciente">
+                <div class="cadastro-layout">
+                    <div class="form-card">
+                        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Novo Paciente</h3>
+                        <form id="cadastro-form">
+                            <div>
+                                <label for="nome">Nome completo</label>
+                                <input type="text" id="nome" required placeholder="Nome do paciente">
+                            </div>
+                            <div>
+                                <label for="telefone">Telefone</label>
+                                <input type="tel" id="telefone" required placeholder="(00) 00000-0000">
+                            </div>
+                            <div>
+                                <label for="email">E-mail</label>
+                                <input type="email" id="email" required placeholder="email@exemplo.com">
+                            </div>
+                            <div>
+                                <label for="pagamento">Forma de Pagamento</label>
+                                <select id="pagamento" required>
+                                    <option value="">Selecione</option>
+                                    <option value="dinheiro">Dinheiro</option>
+                                    <option value="cartao">Cartão</option>
+                                    <option value="pix">PIX</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="data-inicio">Data de Nascimento</label>
+                                <input type="date" id="data-inicio" required>
+                            </div>
+                            <div>
+                                <label for="queixa">Queixa Principal</label>
+                                <textarea id="queixa" required placeholder="Descreva a queixa inicial do paciente"></textarea>
+                            </div>
+                            <button type="submit">Cadastrar Paciente</button>
+                            <p id="cadastro-error" class="error-message">Por favor, preencha todos os campos.</p>
+                        </form>
                     </div>
-                    <div>
-                        <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" required placeholder="(00) 00000-0000">
-                    </div>
-                    <div>
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" required placeholder="email@exemplo.com">
-                    </div>
-                    <div>
-                        <label for="pagamento">Forma de Pagamento</label>
-                        <select id="pagamento" required>
-                            <option value="">Selecione</option>
-                            <option value="dinheiro">Dinheiro</option>
-                            <option value="cartao">Cartão</option>
-                            <option value="pix">PIX</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="data-inicio">Data de Nascimento</label>
-                        <input type="date" id="data-inicio" required>
-                    </div>
-                    <div>
-                        <label for="queixa">Queixa Principal</label>
-                        <textarea id="queixa" required placeholder="Descreva a queixa inicial do paciente"></textarea>
-                    </div>
-                    <button type="submit">Cadastrar Paciente</button>
-                    <p id="cadastro-error" class="error-message">Por favor, preencha todos os campos.</p>
-                </form>
-            </div>
 
-            <div>
-                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Pacientes Cadastrados</h3>
-                <div id="lista-pacientes"></div>
-            </div>
-        </div>
-    </section>
+                    <div>
+                        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Pacientes Cadastrados</h3>
+                        <div id="lista-pacientes"></div>
+                    </div>
+                </div>
+            </section>
 
-    <!-- ================================================
+            <!-- ================================================
     PRONTUÁRIO / EVOLUÇÃO
     ================================================ -->
-    <section id="evolucao-section" class="hidden-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Prontuário</h2>
-            <p>Registre e consulte evoluções dos pacientes</p>
-        </div>
-        <div class="evolucao-layout">
-            <div class="form-card">
-                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Nova Evolução</h3>
-                <form id="evolucao-form">
-                    <div>
-                        <label for="paciente">Paciente</label>
-                        <select id="paciente" required>
-                            <option value="">Selecione um paciente</option>
-                        </select>
+            <section id="evolucao-section" class="hidden-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Prontuário</h2>
+                    <p>Registre e consulte evoluções dos pacientes</p>
+                </div>
+                <div class="evolucao-layout">
+                    <div class="form-card">
+                        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Nova Evolução</h3>
+                        <form id="evolucao-form">
+                            <div>
+                                <label for="paciente">Paciente</label>
+                                <select id="paciente" required>
+                                    <option value="">Selecione um paciente</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="data-evolucao">Data</label>
+                                <input type="date" id="data-evolucao" required>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div>
+                                    <label for="duracao-minutos">Duração (min)</label>
+                                    <input type="number" id="duracao-minutos" value="50" min="1" max="480">
+                                </div>
+                                <div>
+                                    <label for="valor-sessao">Valor (R$)</label>
+                                    <input type="number" id="valor-sessao" placeholder="0,00" step="0.01">
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div>
+                                    <label for="cid10">CID-10</label>
+                                    <input type="text" id="cid10" placeholder="Ex: F32.0">
+                                </div>
+                                <div>
+                                    <label for="codigo-procedimento">Cód. Procedimento</label>
+                                    <input type="text" id="codigo-procedimento" placeholder="Ex: 60000071">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="convenio">Convênio</label>
+                                <input type="text" id="convenio" placeholder="Ex: Unimed, Bradesco, Particular">
+                            </div>
+                            <div>
+                                <label for="evolucao">Evolução / Registro da Sessão</label>
+                                <textarea id="evolucao" required placeholder="Descreva a evolução do paciente nesta sessão..." style="min-height:140px;"></textarea>
+                            </div>
+                            <button type="submit">Salvar Evolução</button>
+                            <p id="evolucao-error" class="error-message">Por favor, preencha todos os campos.</p>
+                        </form>
                     </div>
-                    <div>
-                        <label for="data-evolucao">Data</label>
-                        <input type="date" id="data-evolucao" required>
+                    <div class="evolucao-historico">
+                        <h3>Histórico de Evoluções</h3>
+                        <div style="margin-bottom:16px;">
+                            <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:8px;">Selecionar Paciente</label>
+                            <select id="paciente-historico" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <option value="">Selecione um paciente</option>
+                            </select>
+                        </div>
+                        <table id="evolucao-tabela" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Convênio</th>
+                                    <th>CID</th>
+                                    <th>Duração</th>
+                                    <th>Valor</th>
+                                    <th>Evolução</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <p id="evolucao-vazio" class="evolucao-vazio">Selecione um paciente para ver o histórico.</p>
                     </div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                </div>
+                <!-- RELATÓRIO DE PRODUÇÃO -->
+                <div style="margin-top:24px; background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-file-invoice" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Relatório de Produção para Convênio
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Gere relatórios mensais para apresentar aos convênios.
+                    </p>
+
+                    <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin-bottom:16px;">
                         <div>
-                            <label for="duracao-minutos">Duração (min)</label>
-                            <input type="number" id="duracao-minutos" value="50" min="1" max="480">
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
+                            <select id="rel-mes" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
                         </div>
                         <div>
-                            <label for="valor-sessao">Valor (R$)</label>
-                            <input type="number" id="valor-sessao" placeholder="0,00" step="0.01">
-                        </div>
-                    </div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                        <div>
-                            <label for="cid10">CID-10</label>
-                            <input type="text" id="cid10" placeholder="Ex: F32.0">
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
+                            <input type="number" id="rel-ano" value="2026" min="2024" max="2030" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:90px;">
                         </div>
                         <div>
-                            <label for="codigo-procedimento">Cód. Procedimento</label>
-                            <input type="text" id="codigo-procedimento" placeholder="Ex: 60000071">
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Filtrar por Convênio</label>
+                            <select id="rel-convenio" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:180px;">
+                                <option value="">Todos (Relatório Geral)</option>
+                            </select>
                         </div>
                     </div>
-                    <div>
-                        <label for="convenio">Convênio</label>
-                        <input type="text" id="convenio" placeholder="Ex: Unimed, Bradesco, Particular">
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button onclick="gerarRelatorioProducao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-download" style="margin-right:6px;"></i>Gerar PDF
+                        </button>
+                        <button onclick="carregarConvenios()" style="background:transparent; color:#a78bfa; border:1px solid rgba(139,92,246,0.3); padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-sync" style="margin-right:6px;"></i>Atualizar convênios
+                        </button>
                     </div>
-                    <div>
-                        <label for="evolucao">Evolução / Registro da Sessão</label>
-                        <textarea id="evolucao" required placeholder="Descreva a evolução do paciente nesta sessão..." style="min-height:140px;"></textarea>
-                    </div>
-                    <button type="submit">Salvar Evolução</button>
-                    <p id="evolucao-error" class="error-message">Por favor, preencha todos os campos.</p>
-                </form>
-            </div>
-            <div class="evolucao-historico">
-                <h3>Histórico de Evoluções</h3>
-                <div style="margin-bottom:16px;">
-                    <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:8px;">Selecionar Paciente</label>
-                    <select id="paciente-historico" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
-                        <option value="">Selecione um paciente</option>
-                    </select>
                 </div>
-                <table id="evolucao-tabela" style="display:none;">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Convênio</th>
-                            <th>CID</th>
-                            <th>Duração</th>
-                            <th>Valor</th>
-                            <th>Evolução</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <p id="evolucao-vazio" class="evolucao-vazio">Selecione um paciente para ver o histórico.</p>
-            </div>
-        </div>
-        <!-- RELATÓRIO DE PRODUÇÃO -->
-        <div style="margin-top:24px; background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-                <i class="fas fa-file-invoice" style="color:#8b5cf6; margin-right:8px;"></i>
-                Relatório de Produção para Convênio
-            </h3>
-            <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
-                Gere relatórios mensais para apresentar aos convênios.
-            </p>
+            </section>
 
-            <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin-bottom:16px;">
-                <div>
-                    <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
-                    <select id="rel-mes" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
-                        <option value="1">Janeiro</option>
-                        <option value="2">Fevereiro</option>
-                        <option value="3">Março</option>
-                        <option value="4">Abril</option>
-                        <option value="5">Maio</option>
-                        <option value="6">Junho</option>
-                        <option value="7">Julho</option>
-                        <option value="8">Agosto</option>
-                        <option value="9">Setembro</option>
-                        <option value="10">Outubro</option>
-                        <option value="11">Novembro</option>
-                        <option value="12">Dezembro</option>
-                    </select>
+            <section id="perfil-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Meu Perfil</h2>
+                    <p>Configure seus dados e assinatura digital</p>
                 </div>
-                <div>
-                    <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
-                    <input type="number" id="rel-ano" value="2026" min="2024" max="2030" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:90px;">
-                </div>
-                <div>
-                    <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Filtrar por Convênio</label>
-                    <select id="rel-convenio" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:180px;">
-                        <option value="">Todos (Relatório Geral)</option>
-                    </select>
-                </div>
-            </div>
 
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <button onclick="gerarRelatorioProducao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                    <i class="fas fa-download" style="margin-right:6px;"></i>Gerar PDF
-                </button>
-                <button onclick="carregarConvenios()" style="background:transparent; color:#a78bfa; border:1px solid rgba(139,92,246,0.3); padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                    <i class="fas fa-sync" style="margin-right:6px;"></i>Atualizar convênios
-                </button>
-            </div>
-        </div>
-    </section>
+                <!-- ASSINATURA DIGITAL -->
+                <div class="form-card" style="max-width:600px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-signature" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Assinatura Digital
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                        Desenhe sua assinatura abaixo. Ela será aplicada automaticamente em todos os recibos e relatórios gerados.
+                    </p>
 
-    <section id="perfil-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Meu Perfil</h2>
-            <p>Configure seus dados e assinatura digital</p>
-        </div>
-
-        <!-- ASSINATURA DIGITAL -->
-        <div class="form-card" style="max-width:600px; margin-bottom:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-                <i class="fas fa-signature" style="color:#8b5cf6; margin-right:8px;"></i>
-                Assinatura Digital
-            </h3>
-            <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
-                Desenhe sua assinatura abaixo. Ela será aplicada automaticamente em todos os recibos e relatórios gerados.
-            </p>
-
-            <div style="position:relative; margin-bottom:16px;">
-                <canvas id="canvas-assinatura" width="500" height="160" style="
+                    <div style="position:relative; margin-bottom:16px;">
+                        <canvas id="canvas-assinatura" width="500" height="160" style="
                 background:#0f1621; border:1px solid rgba(139,92,246,0.3);
                 border-radius:8px; cursor:crosshair; display:block;
                 touch-action:none;
             "></canvas>
-                <p style="font-size:11px; color:#64748b; margin-top:6px; text-align:center;">
-                    Desenhe sua assinatura acima usando o mouse ou dedo
-                </p>
-            </div>
+                        <p style="font-size:11px; color:#64748b; margin-top:6px; text-align:center;">
+                            Desenhe sua assinatura acima usando o mouse ou dedo
+                        </p>
+                    </div>
 
-            <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-                <button onclick="limparAssinatura()" style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
-                    <i class="fas fa-eraser" style="margin-right:6px;"></i>Limpar
-                </button>
-                <button onclick="salvarAssinatura()" style="background:#7c3aed; color:#fff; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
-                    <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Assinatura
-                </button>
-            </div>
+                    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+                        <button onclick="limparAssinatura()" style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-eraser" style="margin-right:6px;"></i>Limpar
+                        </button>
+                        <button onclick="salvarAssinatura()" style="background:#7c3aed; color:#fff; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Assinatura
+                        </button>
+                    </div>
 
-            <!-- PRÉVIA DA ASSINATURA SALVA -->
-            <div id="assinatura-salva-box" style="display:none;">
-                <p style="font-size:13px; color:#34d399; margin-bottom:8px;">✅ Assinatura salva:</p>
-                <img id="assinatura-preview" style="max-width:300px; border:1px solid rgba(139,92,246,0.2); border-radius:8px; background:#0f1621; padding:8px;">
-            </div>
-            <p id="assinatura-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
-        </div>
+                    <!-- PRÉVIA DA ASSINATURA SALVA -->
+                    <div id="assinatura-salva-box" style="display:none;">
+                        <p style="font-size:13px; color:#34d399; margin-bottom:8px;">✅ Assinatura salva:</p>
+                        <img id="assinatura-preview" style="max-width:300px; border:1px solid rgba(139,92,246,0.2); border-radius:8px; background:#0f1621; padding:8px;">
+                    </div>
+                    <p id="assinatura-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
+                </div>
 
-        <!-- PRÉVIA DO CARIMBO -->
-        <div class="form-card" style="max-width:600px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-                <i class="fas fa-stamp" style="color:#8b5cf6; margin-right:8px;"></i>
-                Carimbo Digital
-            </h3>
-            <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
-                Seu carimbo é gerado automaticamente com seus dados cadastrados.
-            </p>
-            <div id="carimbo-preview" style="
+                <!-- PRÉVIA DO CARIMBO -->
+                <div class="form-card" style="max-width:600px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-stamp" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Carimbo Digital
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                        Seu carimbo é gerado automaticamente com seus dados cadastrados.
+                    </p>
+                    <div id="carimbo-preview" style="
             display:inline-block; border:3px solid rgba(124,58,237,0.6);
             border-radius:50%; padding:16px 24px; text-align:center;
             min-width:180px;
         ">
-                <p style="font-size:13px; font-weight:700; color:#a78bfa;" id="carimbo-nome">Aline Amaral</p>
-                <p style="font-size:10px; color:#64748b; margin:2px 0;" id="carimbo-crp">CRP 06/000001</p>
-                <p style="font-size:10px; color:#64748b;" id="carimbo-especialidade">Psicóloga</p>
-                <div style="border-top:1px solid rgba(124,58,237,0.3); margin:6px 0;"></div>
-                <p style="font-size:9px; color:#64748b;">ProntPsi</p>
-            </div>
-            <p style="font-size:12px; color:#64748b; margin-top:12px;">
-                Para alterar os dados do carimbo, atualize seu cadastro de profissional.
-            </p>
-        </div>
-    </section>
+                        <p style="font-size:13px; font-weight:700; color:#a78bfa;" id="carimbo-nome">Aline Amaral</p>
+                        <p style="font-size:10px; color:#64748b; margin:2px 0;" id="carimbo-crp">CRP 06/000001</p>
+                        <p style="font-size:10px; color:#64748b;" id="carimbo-especialidade">Psicóloga</p>
+                        <div style="border-top:1px solid rgba(124,58,237,0.3); margin:6px 0;"></div>
+                        <p style="font-size:9px; color:#64748b;">ProntPsi</p>
+                    </div>
+                    <p style="font-size:12px; color:#64748b; margin-top:12px;">
+                        Para alterar os dados do carimbo, atualize seu cadastro de profissional.
+                    </p>
+                </div>
+            </section>
 
-    <!-- ================================================
+            <!-- ================================================
     FORMULÁRIOS
     ================================================ -->
-    <section id="form-section" class="hidden-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Formulários</h2>
-            <p>Envie escalas e questionários para seus pacientes por e-mail</p>
-        </div>
-
-        <div class="formularios-container">
-            <div class="form-card">
-                <div class="form-group">
-                    <label for="paciente-form">Paciente</label>
-                    <select id="paciente-form" required>
-                        <option value="">Escolha um paciente</option>
-                    </select>
+            <section id="form-section" class="hidden-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Formulários</h2>
+                    <p>Envie escalas e questionários para seus pacientes por e-mail</p>
                 </div>
-                <div class="form-group">
-                    <label for="tipo-formulario">Formulário / Escala</label>
-                    <select id="tipo-formulario" required>
-                        <option value="">Carregando escalas...</option>
-                    </select>
-                </div>
-                <button id="gerar-link-form">
-                    <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Gerar Link para o Paciente
-                </button>
-                <p id="form-error" class="error-message">Por favor, selecione paciente e formulário.</p>
 
-                <div id="link-gerado" style="display:none; margin-top:20px;">
-                    <p style="font-size:13px; color:#94a3b8; margin-bottom:8px;">Link gerado:</p>
-                    <input type="text" id="url-link-gerado" readonly>
-                    <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
-                        <button id="copiar-link"><i class="fas fa-copy" style="margin-right:6px;"></i>Copiar Link</button>
-                        <p id="link-info" style="font-size:12px; color:#6ee7b7; margin:0;"></p>
+                <div class="formularios-container">
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="paciente-form">Paciente</label>
+                            <select id="paciente-form" required>
+                                <option value="">Escolha um paciente</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo-formulario">Formulário / Escala</label>
+                            <select id="tipo-formulario" required>
+                                <option value="">Carregando escalas...</option>
+                            </select>
+                        </div>
+                        <button id="gerar-link-form">
+                            <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Gerar Link para o Paciente
+                        </button>
+                        <p id="form-error" class="error-message">Por favor, selecione paciente e formulário.</p>
+
+                        <div id="link-gerado" style="display:none; margin-top:20px;">
+                            <p style="font-size:13px; color:#94a3b8; margin-bottom:8px;">Link gerado:</p>
+                            <input type="text" id="url-link-gerado" readonly>
+                            <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
+                                <button id="copiar-link"><i class="fas fa-copy" style="margin-right:6px;"></i>Copiar Link</button>
+                                <p id="link-info" style="font-size:12px; color:#6ee7b7; margin:0;"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- ================================================
+            <!-- ================================================
     RESULTADOS
     ================================================ -->
-    <section id="resultados-section" class="hidden-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Resultados</h2>
-            <p>Visualize as respostas e evolução dos questionários</p>
-        </div>
+            <section id="resultados-section" class="hidden-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Resultados</h2>
+                    <p>Visualize as respostas e evolução dos questionários</p>
+                </div>
 
-        <!-- GRÁFICO DE EVOLUÇÃO -->
-        <div style="background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px; margin-bottom:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
-                <i class="fas fa-chart-line" style="color:#8b5cf6; margin-right:8px;"></i>
-                Evolução do Paciente
-            </h3>
-            <div style="display:flex; gap:12px; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap;">
-                <div>
-                    <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Selecionar Paciente</label>
-                    <select id="paciente-grafico" style="padding:8px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:200px;">
-                        <option value="">Escolha um paciente</option>
+                <!-- GRÁFICO DE EVOLUÇÃO -->
+                <div style="background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                        <i class="fas fa-chart-line" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Evolução do Paciente
+                    </h3>
+                    <div style="display:flex; gap:12px; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap;">
+                        <div>
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Selecionar Paciente</label>
+                            <select id="paciente-grafico" style="padding:8px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:200px;">
+                                <option value="">Escolha um paciente</option>
+                            </select>
+                        </div>
+                        <button onclick="carregarGraficos()" style="background:#7c3aed; color:#fff; border:none; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-chart-bar" style="margin-right:6px;"></i>Ver Evolução
+                        </button>
+                    </div>
+                    <div id="graficos-container">
+                        <p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">
+                            Selecione um paciente para ver a evolução dos questionários ao longo do tempo.
+                        </p>
+                    </div>
+                </div>
+
+
+                <!-- TABELA DE RESULTADOS -->
+                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Formulários Respondidos</h3>
+                <div class="resultados-filtro">
+                    <label for="paciente-resultados">Filtrar por paciente:</label>
+                    <select id="paciente-resultados">
+                        <option value="">Todos os pacientes</option>
                     </select>
                 </div>
-                <button onclick="carregarGraficos()" style="background:#7c3aed; color:#fff; border:none; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                    <i class="fas fa-chart-bar" style="margin-right:6px;"></i>Ver Evolução
-                </button>
-            </div>
-            <div id="graficos-container">
-                <p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">
-                    Selecione um paciente para ver a evolução dos questionários ao longo do tempo.
-                </p>
-            </div>
-        </div>
-
-
-        <!-- TABELA DE RESULTADOS -->
-        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Formulários Respondidos</h3>
-        <div class="resultados-filtro">
-            <label for="paciente-resultados">Filtrar por paciente:</label>
-            <select id="paciente-resultados">
-                <option value="">Todos os pacientes</option>
-            </select>
-        </div>
-        <div class="table-card">
-            <table id="resultados-tabela" style="display:none;">
-                <thead>
-                    <tr>
-                        <th>Paciente</th>
-                        <th>Formulário</th>
-                        <th>Respondido em</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <p id="resultados-vazio" class="resultados-vazio">Nenhum resultado encontrado.</p>
-    </section>
-    <section id="agenda-online-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Agenda Online</h2>
-            <p>Configure seus horários disponíveis e compartilhe o link de agendamento</p>
-        </div>
-
-        <!-- LINK DE AGENDAMENTO -->
-        <div class="form-card" style="margin-bottom:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
-                <i class="fas fa-link" style="color:#8b5cf6; margin-right:8px;"></i>
-                Seu Link de Agendamento
-            </h3>
-            <p style="font-size:13px; color:#64748b; margin-bottom:12px;">
-                Compartilhe este link com seus pacientes ou coloque no seu site/WhatsApp:
-            </p>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <input type="text" id="link-agendamento" readonly style="flex:1; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#a78bfa; font-size:13px; font-family:'Roboto',sans-serif;">
-                <button onclick="copiarLinkAgendamento()" style="background:#7c3aed; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; white-space:nowrap;">
-                    <i class="fas fa-copy"></i> Copiar
-                </button>
-            </div>
-        </div>
-
-        <!-- CONFIGURAR DISPONIBILIDADE -->
-        <div class="form-card" style="margin-bottom:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-                <i class="fas fa-calendar-check" style="color:#8b5cf6; margin-right:8px;"></i>
-                Configurar Horários Disponíveis
-            </h3>
-            <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
-                Adicione quantos blocos de horário quiser por dia. Funciona 24h!
-            </p>
-
-            <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.1);">
-                <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Valor padrão da consulta (R$)</label>
-                <input type="number" id="valor-padrao" placeholder="150.00" step="0.01" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:200px;">
-                <span style="font-size:12px; color:#64748b; margin-left:8px;">Duração padrão (min):</span>
-                <select id="duracao-padrao" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; margin-left:4px;">
-                    <option value="30">30 min</option>
-                    <option value="45">45 min</option>
-                    <option value="50" selected>50 min</option>
-                    <option value="60">60 min</option>
-                    <option value="90">90 min</option>
-                    <option value="120">120 min</option>
-                </select>
-            </div>
-
-            <div id="dias-grid"></div>
-
-            <button onclick="salvarDisponibilidade()" style="background:#7c3aed; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif; margin-top:20px;">
-                <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Disponibilidade
-            </button>
-            <p id="disponibilidade-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
-        </div>
-        <!-- AGENDAMENTOS RECORRENTES -->
-        <div class="form-card" style="margin-bottom:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-                <i class="fas fa-repeat" style="color:#8b5cf6; margin-right:8px;"></i>
-                Agendamento Recorrente
-            </h3>
-            <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
-                Cadastre pacientes com horário fixo semanal. As consultas são geradas automaticamente.
-            </p>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
-                <div>
-                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Paciente *</label>
-                    <select id="recorrente-paciente" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                        <option value="">Selecione...</option>
-                    </select>
+                <div class="table-card">
+                    <table id="resultados-tabela" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Formulário</th>
+                                <th>Respondido em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
-                <div>
-                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Dia da semana *</label>
-                    <select id="recorrente-dia" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                        <option value="">Selecione...</option>
-                        <option value="0">Domingo</option>
-                        <option value="1">Segunda-feira</option>
-                        <option value="2">Terça-feira</option>
-                        <option value="3">Quarta-feira</option>
-                        <option value="4">Quinta-feira</option>
-                        <option value="5">Sexta-feira</option>
-                        <option value="6">Sábado</option>
-                    </select>
+                <p id="resultados-vazio" class="resultados-vazio">Nenhum resultado encontrado.</p>
+            </section>
+            <section id="agenda-online-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Agenda Online</h2>
+                    <p>Configure seus horários disponíveis e compartilhe o link de agendamento</p>
                 </div>
-                <div>
-                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Data de início *</label>
-                    <input type="date" id="recorrente-data-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                </div>
-                <div>
-                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
-                    <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                </div>
-                <div>
-                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário fim *</label>
-                    <input type="time" id="recorrente-fim" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                </div>
-                <div>
-                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
-                    <select id="recorrente-duracao" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                        <option value="30">30 min</option>
-                        <option value="45">45 min</option>
-                        <option value="50" selected>50 min</option>
-                        <option value="60">60 min</option>
-                        <option value="90">90 min</option>
-                        <option value="120">120 min</option>
-                    </select>
-                </div>
-            </div>
 
-            <div style="display:flex; align-items:flex-end; gap:12px; margin-bottom:16px;">
-                <div>
-                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Valor (R$)</label>
-                    <input type="number" id="recorrente-valor" placeholder="150.00" step="0.01" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; width:160px;">
+                <!-- LINK DE AGENDAMENTO -->
+                <div class="form-card" style="margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                        <i class="fas fa-link" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Seu Link de Agendamento
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:12px;">
+                        Compartilhe este link com seus pacientes ou coloque no seu site/WhatsApp:
+                    </p>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="text" id="link-agendamento" readonly style="flex:1; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#a78bfa; font-size:13px; font-family:'Roboto',sans-serif;">
+                        <button onclick="copiarLinkAgendamento()" style="background:#7c3aed; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; white-space:nowrap;">
+                            <i class="fas fa-copy"></i> Copiar
+                        </button>
+                    </div>
                 </div>
-                <button onclick="salvarRecorrente()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                    <i class="fas fa-plus" style="margin-right:6px;"></i>Criar Recorrência
-                </button>
-            </div>
-            <p id="recorrente-feedback" style="font-size:13px; margin-top:4px; display:none;"></p>
 
-            <h4 style="font-size:14px; font-weight:600; color:#e2e8f0; margin:20px 0 12px;">Recorrências Ativas</h4>
-            <div class="table-card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Paciente</th>
-                            <th>Dia</th>
-                            <th>Horário</th>
-                            <th>Valor</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recorrentes-tbody">
-                        <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhuma recorrência ativa.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                <!-- CONFIGURAR DISPONIBILIDADE -->
+                <div class="form-card" style="margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-calendar-check" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Configurar Horários Disponíveis
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Adicione quantos blocos de horário quiser por dia. Funciona 24h!
+                    </p>
 
-        <!-- AGENDAMENTOS RECEBIDOS -->
-        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Agendamentos Recebidos</h3>
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Paciente</th>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Valor</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="agendamentos-online-tbody">
-                    <tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Nenhum agendamento ainda.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    <section id="termos-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Termos de Consentimento</h2>
-            <p>Envie e gerencie termos de consentimento digital dos pacientes</p>
-        </div>
-        <div class="form-card" style="max-width:500px; margin-bottom:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Enviar Termo para Paciente</h3>
-            <div class="form-group">
-                <label>Selecione o Paciente</label>
-                <select id="paciente-termo">
-                    <option value="">Escolha um paciente</option>
-                </select>
-            </div>
-            <button id="btn-gerar-termo" onclick="gerarTermo()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar Termo por Email
-            </button>
-            <p id="termo-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
-        </div>
-        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Termos Enviados</h3>
-        <div class="table-card">
-            <table id="termos-tabela">
-                <thead>
-                    <tr>
-                        <th>Paciente</th>
-                        <th>Enviado em</th>
-                        <th>Status</th>
-                        <th>Assinado em</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="termos-tbody">
-                    <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhum termo enviado ainda.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    <section id="recibos-section">
-        <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
-        <div class="page-header">
-            <h2>Recibos</h2>
-            <p>Gere e envie recibos de consulta por email para seus pacientes</p>
-        </div>
+                    <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.1);">
+                        <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Valor padrão da consulta (R$)</label>
+                        <input type="number" id="valor-padrao" placeholder="150.00" step="0.01" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:200px;">
+                        <span style="font-size:12px; color:#64748b; margin-left:8px;">Duração padrão (min):</span>
+                        <select id="duracao-padrao" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; margin-left:4px;">
+                            <option value="30">30 min</option>
+                            <option value="45">45 min</option>
+                            <option value="50" selected>50 min</option>
+                            <option value="60">60 min</option>
+                            <option value="90">90 min</option>
+                            <option value="120">120 min</option>
+                        </select>
+                    </div>
 
-        <!-- GERAR RECIBO -->
-        <div class="form-card" style="max-width:560px; margin-bottom:24px;">
-            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
-                <i class="fas fa-plus-circle" style="color:#8b5cf6; margin-right:8px;"></i>
-                Gerar Novo Recibo
-            </h3>
-            <div class="form-group">
-                <label>Paciente</label>
-                <select id="recibo-paciente">
-                    <option value="">Selecione um paciente</option>
-                </select>
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                <div class="form-group">
-                    <label>Data da consulta</label>
-                    <input type="date" id="recibo-data">
+                    <div id="dias-grid"></div>
+
+                    <button onclick="salvarDisponibilidade()" style="background:#7c3aed; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif; margin-top:20px;">
+                        <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Disponibilidade
+                    </button>
+                    <p id="disponibilidade-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
                 </div>
-                <div class="form-group">
-                    <label>Valor (R$)</label>
-                    <input type="number" id="recibo-valor" placeholder="150.00" step="0.01">
+                <!-- AGENDAMENTOS RECORRENTES -->
+                <div class="form-card" style="margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-repeat" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Agendamento Recorrente
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Cadastre pacientes com horário fixo semanal. As consultas são geradas automaticamente.
+                    </p>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Paciente *</label>
+                            <select id="recorrente-paciente" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Dia da semana *</label>
+                            <select id="recorrente-dia" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <option value="">Selecione...</option>
+                                <option value="0">Domingo</option>
+                                <option value="1">Segunda-feira</option>
+                                <option value="2">Terça-feira</option>
+                                <option value="3">Quarta-feira</option>
+                                <option value="4">Quinta-feira</option>
+                                <option value="5">Sexta-feira</option>
+                                <option value="6">Sábado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Data de início *</label>
+                            <input type="date" id="recorrente-data-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
+                            <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário fim *</label>
+                            <input type="time" id="recorrente-fim" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
+                            <select id="recorrente-duracao" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <option value="30">30 min</option>
+                                <option value="45">45 min</option>
+                                <option value="50" selected>50 min</option>
+                                <option value="60">60 min</option>
+                                <option value="90">90 min</option>
+                                <option value="120">120 min</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; align-items:flex-end; gap:12px; margin-bottom:16px;">
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Valor (R$)</label>
+                            <input type="number" id="recorrente-valor" placeholder="150.00" step="0.01" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; width:160px;">
+                        </div>
+                        <button onclick="salvarRecorrente()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-plus" style="margin-right:6px;"></i>Criar Recorrência
+                        </button>
+                    </div>
+                    <p id="recorrente-feedback" style="font-size:13px; margin-top:4px; display:none;"></p>
+
+                    <h4 style="font-size:14px; font-weight:600; color:#e2e8f0; margin:20px 0 12px;">Recorrências Ativas</h4>
+                    <div class="table-card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Dia</th>
+                                    <th>Horário</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recorrentes-tbody">
+                                <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhuma recorrência ativa.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>Descrição</label>
-                <input type="text" id="recibo-descricao" placeholder="Consulta psicológica" value="Consulta psicológica">
-            </div>
-            <div class="form-group">
-                <label>Forma de pagamento</label>
-                <select id="recibo-pagamento">
-                    <option value="Particular">Particular</option>
-                    <option value="PIX">PIX</option>
-                    <option value="Cartão de crédito">Cartão de crédito</option>
-                    <option value="Cartão de débito">Cartão de débito</option>
-                    <option value="Transferência bancária">Transferência bancária</option>
-                    <option value="Dinheiro">Dinheiro</option>
-                </select>
-            </div>
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                <input type="checkbox" id="recibo-enviar-email" style="width:18px; height:18px; accent-color:#7c3aed;">
-                <label for="recibo-enviar-email" style="font-size:14px; color:#94a3b8; cursor:pointer;">
-                    Enviar recibo por email para o paciente
-                </label>
-            </div>
-            <button onclick="gerarRecibo()" style="background:#7c3aed; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                <i class="fas fa-file-invoice" style="margin-right:6px;"></i>Gerar Recibo
-            </button>
-            <p id="recibo-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
-        </div>
 
-        <!-- LISTA DE RECIBOS -->
-        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Recibos Emitidos</h3>
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Número</th>
-                        <th>Paciente</th>
-                        <th>Data</th>
-                        <th>Valor</th>
-                        <th>Pagamento</th>
-                        <th>Email</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="recibos-tbody">
-                    <tr><td colspan="7" style="text-align:center; color:#64748b; padding:20px;">Nenhum recibo emitido ainda.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+                <!-- AGENDAMENTOS RECEBIDOS -->
+                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Agendamentos Recebidos</h3>
+                <div class="table-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="agendamentos-online-tbody">
+                            <tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Nenhum agendamento ainda.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="termos-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Termos de Consentimento</h2>
+                    <p>Envie e gerencie termos de consentimento digital dos pacientes</p>
+                </div>
+                <div class="form-card" style="max-width:500px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Enviar Termo para Paciente</h3>
+                    <div class="form-group">
+                        <label>Selecione o Paciente</label>
+                        <select id="paciente-termo">
+                            <option value="">Escolha um paciente</option>
+                        </select>
+                    </div>
+                    <button id="btn-gerar-termo" onclick="gerarTermo()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                        <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar Termo por Email
+                    </button>
+                    <p id="termo-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
+                </div>
+                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Termos Enviados</h3>
+                <div class="table-card">
+                    <table id="termos-tabela">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Enviado em</th>
+                                <th>Status</th>
+                                <th>Assinado em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="termos-tbody">
+                            <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhum termo enviado ainda.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="recibos-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Recibos</h2>
+                    <p>Gere e envie recibos de consulta por email para seus pacientes</p>
+                </div>
 
-    </main>
+                <!-- GERAR RECIBO -->
+                <div class="form-card" style="max-width:560px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                        <i class="fas fa-plus-circle" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Gerar Novo Recibo
+                    </h3>
+                    <div class="form-group">
+                        <label>Paciente</label>
+                        <select id="recibo-paciente">
+                            <option value="">Selecione um paciente</option>
+                        </select>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group">
+                            <label>Data da consulta</label>
+                            <input type="date" id="recibo-data">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor (R$)</label>
+                            <input type="number" id="recibo-valor" placeholder="150.00" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <input type="text" id="recibo-descricao" placeholder="Consulta psicológica" value="Consulta psicológica">
+                    </div>
+                    <div class="form-group">
+                        <label>Forma de pagamento</label>
+                        <select id="recibo-pagamento">
+                            <option value="Particular">Particular</option>
+                            <option value="PIX">PIX</option>
+                            <option value="Cartão de crédito">Cartão de crédito</option>
+                            <option value="Cartão de débito">Cartão de débito</option>
+                            <option value="Transferência bancária">Transferência bancária</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                        <input type="checkbox" id="recibo-enviar-email" style="width:18px; height:18px; accent-color:#7c3aed;">
+                        <label for="recibo-enviar-email" style="font-size:14px; color:#94a3b8; cursor:pointer;">
+                            Enviar recibo por email para o paciente
+                        </label>
+                    </div>
+                    <button onclick="gerarRecibo()" style="background:#7c3aed; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                        <i class="fas fa-file-invoice" style="margin-right:6px;"></i>Gerar Recibo
+                    </button>
+                    <p id="recibo-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
+                </div>
+
+                <!-- LISTA DE RECIBOS -->
+                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Recibos Emitidos</h3>
+                <div class="table-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Paciente</th>
+                                <th>Data</th>
+                                <th>Valor</th>
+                                <th>Pagamento</th>
+                                <th>Email</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recibos-tbody">
+                            <tr><td colspan="7" style="text-align:center; color:#64748b; padding:20px;">Nenhum recibo emitido ainda.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
     </div>
 
     <script defer src="PainelExclusivo.js"></script>
