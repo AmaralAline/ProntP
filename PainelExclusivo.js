@@ -1458,7 +1458,7 @@ async function salvarRecorrente() {
     const pacienteId = document.getElementById('paciente-agenda')?.value;
     const diaSemana = document.getElementById('recorrente-dia')?.value;
     const horaInicio = document.getElementById('recorrente-inicio')?.value;
-    const horaFim = document.getElementById('recorrente-fim')?.value;
+    
     const duracao = document.getElementById('recorrente-duracao')?.value;
     const valor = document.getElementById('recorrente-valor')?.value;
     const dataInicio = document.getElementById('recorrente-data-inicio')?.value;
@@ -1468,7 +1468,7 @@ async function salvarRecorrente() {
     const totalMin = h * 60 + m + (parseInt(duracao) || 50);
     const horaFimCalc = `${String(Math.floor(totalMin / 60)).padStart(2, '0')}:${String(totalMin % 60).padStart(2, '0')}`;
 
-    if (!pacienteId || diaSemana === '' || !horaInicio || !horaFim || !dataInicio) {
+    if (!pacienteId || diaSemana === '' || !horaInicio || !dataInicio) {
         feedback.textContent = 'Preencha paciente, dia, horários e data de início.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
