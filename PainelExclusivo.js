@@ -462,7 +462,7 @@ async function carregarHistoricoEvolucao(pacienteId) {
     } catch (err) {
         console.error('Erro ao carregar histórico:', err);
     }
-}
+};
 
 // ============================================================
 //  AGENDA
@@ -1035,11 +1035,13 @@ function adicionarBloco(dia, inicio = '09:00', fim = '18:00', duracao = null, va
 
     const duracaoPadrao = document.getElementById('duracao-padrao')?.value || '50';
     const valorPadrao = document.getElementById('valor-padrao')?.value || '';
-    const id = Date.now();
+    const duracaoEfetiva = duracao || duracaoPadrao;
+    const id = crypto.randomUUID();
 
     const bloco = document.createElement('div');
     bloco.id = `bloco-${id}`;
     bloco.style.cssText = 'display:grid; grid-template-columns:1fr 1fr 1fr 1fr auto; gap:8px; align-items:center; margin-bottom:8px; background:#1a2332; padding:10px; border-radius:8px;';
+
     bloco.innerHTML = `
         <div>
             <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Início</label>
@@ -1052,12 +1054,12 @@ function adicionarBloco(dia, inicio = '09:00', fim = '18:00', duracao = null, va
         <div>
             <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Duração (min)</label>
             <select style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-duracao">
-                <option value="30" ${(duracao || duracaoPadrao) === '30' ? 'selected' : ''}>30 min</option>
-                <option value="45" ${(duracao || duracaoPadrao) === '45' ? 'selected' : ''}>45 min</option>
-                <option value="50" ${(duracao || duracaoPadrao) === '50' || !duracao ? 'selected' : ''}>50 min</option>
-                <option value="60" ${(duracao || duracaoPadrao) === '60' ? 'selected' : ''}>60 min</option>
-                <option value="90" ${(duracao || duracaoPadrao) === '90' ? 'selected' : ''}>90 min</option>
-                <option value="120" ${(duracao || duracaoPadrao) === '120' ? 'selected' : ''}>120 min</option>
+                <option value="30"  ${duracaoEfetiva === '30' ? 'selected' : ''}>30 min</option>
+                <option value="45"  ${duracaoEfetiva === '45' ? 'selected' : ''}>45 min</option>
+                <option value="50"  ${duracaoEfetiva === '50' ? 'selected' : ''}>50 min</option>
+                <option value="60"  ${duracaoEfetiva === '60' ? 'selected' : ''}>60 min</option>
+                <option value="90"  ${duracaoEfetiva === '90' ? 'selected' : ''}>90 min</option>
+                <option value="120" ${duracaoEfetiva === '120' ? 'selected' : ''}>120 min</option>
             </select>
         </div>
         <div>
@@ -1066,6 +1068,7 @@ function adicionarBloco(dia, inicio = '09:00', fim = '18:00', duracao = null, va
         </div>
         <button onclick="document.getElementById('bloco-${id}').remove()" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:6px 10px; cursor:pointer; font-size:13px; margin-top:16px;">✕</button>
     `;
+
     container.appendChild(bloco);
 }
 
