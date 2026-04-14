@@ -534,14 +534,21 @@ async function carregarAgendaHoje() {
                 return;
             }
 
-            lista.innerHTML = consultas.map(c => `
-                <div style="padding:10px; border-bottom:1px solid #333;">
-                    <strong>${c.paciente_nome || 'Sem paciente'}</strong><br>
-                    🕐 ${new Date(c.data_hora_inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                    — ${new Date(c.data_hora_fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                    <span style="margin-left:10px; font-size:12px; color:#aaa;">${c.status}</span>
-                </div>
-            `).join('');
+            lista.innerHTML = consultas.map(c => {
+                const origemCor = c.origem === 'recorrente' ? '#a78bfa' : c.origem === 'online' ? '#60a5fa' : '#34d399';
+                const origemLabel = c.origem === 'recorrente' ? '🔁' : c.origem === 'online' ? '🌐' : '📅';
+                return `
+        <div style="padding:10px; border-bottom:1px solid #1a2332;">
+            <strong style="color:#e2e8f0;">${c.paciente_nome || 'Sem paciente'}</strong>
+            <span style="margin-left:6px; font-size:11px; color:${origemCor};">${origemLabel} ${c.origem}</span><br>
+            <span style="color:#a78bfa; font-size:13px;">
+                🕐 ${new Date(c.data_hora_inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                — ${new Date(c.data_hora_fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+            </span>
+            <span style="margin-left:8px; font-size:11px; color:#64748b;">${c.status}</span>
+        </div>
+    `;
+            }).join('');
         }
     } catch (err) {
         console.error('Erro ao carregar agenda:', err);
@@ -1420,11 +1427,17 @@ async function carregarAssinaturaSalva() {
         if (prof.especialidade) document.getElementById('carimbo-especialidade').textContent = prof.especialidade;
 
     } catch (err) { console.error(err); }
-} function toggleRecorrente() {
-    const campos = document.getElementById('campos-recorrente');
-    const checked = document.getElementById('toggle-recorrente').checked;
-    campos.style.display = checked ? 'block' : 'none';
-}
+    function toggleRecorrente() {
+        const campos = document.getElementById('campos-recorrente');
+        const checked = document.getElementById('toggle-recorrente').checked;
+        campos.style.display = checked ? 'block' : 'none';
+
+        // Esconde/mostra campos de data do formulário principal
+        const startDiv = document.getElementById('start-datetime')?.closest('div');
+        const endDiv = document.getElementById('end-datetime')?.closest('div');
+        if (startDiv) startDiv.style.display = checked ? 'none' : 'block';
+        if (endDiv) endDiv.style.display = checked ? 'none' : 'block';
+    }
 
 async function carregarRecorrentes() {
     const lista = document.getElementById('recorrentes-lista');
