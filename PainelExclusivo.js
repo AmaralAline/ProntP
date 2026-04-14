@@ -159,6 +159,9 @@ function mostrarSecao(id) {
     if (id === 'evolucao-section') {
         carregarConvenios();
     }
+    if (id === 'agenda-online-section') {
+        carregarRecorrentes();
+    }
 
     if (id === 'resultados-section') {
         carregarResultados();
@@ -210,6 +213,12 @@ async function carregarPacientes() {
             renderizarListaPacientes();
         } else {
             console.error('Erro ao carregar pacientes:', res.status);
+        }
+        // Popular select de recorrentes
+        const selectRecorrente = document.getElementById('recorrente-paciente');
+        if (selectRecorrente) {
+            selectRecorrente.innerHTML = '<option value="">Selecione...</option>' +
+                pacientes.map(p => `<option value="${p.id}">${p.nome}</option>`).join('');
         }
     } catch (err) {
         console.error('Erro de conexão:', err);
@@ -1408,4 +1417,105 @@ async function carregarAssinaturaSalva() {
         if (prof.especialidade) document.getElementById('carimbo-especialidade').textContent = prof.especialidade;
 
     } catch (err) { console.error(err); }
+}// ============================================================
+//  AGENDAMENTOS RECORRENTES
+// ============================================================
+
+async function carregarRecorrentes() {
+    try {
+        const res = await fetch(`${API_URL}/api/recorrentes`, { headers: headersAuth() });
+        const data = await res.json();
+        const tbody = document.getElementById('recorrentes-tbody');
+        if (!tbody) return;
+
+        const diasNomes = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhuma recorrência ativa.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map(r => `
+            <tr>
+                <td style="padding:12px 16px; color:#e2e8f0; font-weight:500;">${r.paciente_nome}</td>
+                <td style="padding:12px 16px; color:#a78bfa;">${diasNomes[r.dia_semana]}</td>
+                <td style="padding:12px 16px; color:#94a3b8;">${r.hora_inicio.substring(0, 5)} — ${r.hora_fim.substring(0, 5)}</td>
+                <td style="padding:12px 16px; color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</td>
+                <td style="padding:12px 16px;">
+                    <button onclick="encerrarRecorrente(${r.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">
+                        Encerrar
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) { console.error(err); }
+}
+
+async function salvarRecorrente() {
+    const pacienteId = document.getElementById('recorrente-paciente')?.value;
+    const diaSemana = document.getElementById('recorrente-dia')?.value;
+    const horaInicio = document.getElementById('recorrente-inicio')?.value;
+    const horaFim = document.getElementById('recorrente-fim')?.value;
+    const duracao = document.getElementById('recorrente-duracao')?.value;
+    const valor = document.getElementById('recorrente-valor')?.value;
+    const dataInicio = document.getElementById('recorrente-data-inicio')?.value;
+    const feedback = document.getElementById('recorrente-feedback');
+
+    if (!pacienteId || diaSemana === '' || !horaInicio || !horaFim || !dataInicio) {
+        feedback.textContent = 'Preencha todos os campos obrigatórios.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/recorrentes`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                paciente_id: pacienteId,
+                dia_semana: parseInt(diaSemana),
+                hora_inicio: horaInicio,
+                hora_fim: horaFim,
+                duracao_minutos: parseInt(duracao) || 50,
+                valor: parseFloat(valor) || 0,
+                data_inicio: dataInicio
+            })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            feedback.textContent = '✅ Recorrência criada com sucesso!';
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+            document.getElementById('recorrente-paciente').value = '';
+            document.getElementById('recorrente-dia').value = '';
+            document.getElementById('recorrente-inicio').value = '';
+            document.getElementById('recorrente-fim').value = '';
+            document.getElementById('recorrente-valor').value = '';
+            document.getElementById('recorrente-data-inicio').value = '';
+            await carregarRecorrentes();
+        } else {
+            feedback.textContent = data.erro || 'Erro ao criar recorrência.';
+            feedback.style.color = '#f87171';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        feedback.textContent = 'Erro de conexão.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    }
+}
+
+async function encerrarRecorrente(id) {
+    if (!confirm('Encerrar esta recorrência? As consultas futuras serão canceladas.')) return;
+    try {
+        const res = await fetch(`${API_URL}/api/recorrentes/${id}/encerrar`, {
+            method: 'POST',
+            headers: headersAuth()
+        });
+        const data = await res.json();
+        alert(data.mensagem || 'Encerrado.');
+        carregarRecorrentes();
+    } catch (err) { alert('Erro ao encerrar.'); }
 }

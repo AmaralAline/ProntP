@@ -609,6 +609,90 @@
                     </button>
                     <p id="disponibilidade-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
                 </div>
+                <!-- AGENDAMENTOS RECORRENTES -->
+                <div class="form-card" style="margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-repeat" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Agendamento Recorrente
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Cadastre pacientes com horário fixo semanal. As consultas são geradas automaticamente.
+                    </p>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Paciente *</label>
+                            <select id="recorrente-paciente" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Dia da semana *</label>
+                            <select id="recorrente-dia" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <option value="">Selecione...</option>
+                                <option value="0">Domingo</option>
+                                <option value="1">Segunda-feira</option>
+                                <option value="2">Terça-feira</option>
+                                <option value="3">Quarta-feira</option>
+                                <option value="4">Quinta-feira</option>
+                                <option value="5">Sexta-feira</option>
+                                <option value="6">Sábado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Data de início *</label>
+                            <input type="date" id="recorrente-data-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
+                            <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário fim *</label>
+                            <input type="time" id="recorrente-fim" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
+                            <select id="recorrente-duracao" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <option value="30">30 min</option>
+                                <option value="45">45 min</option>
+                                <option value="50" selected>50 min</option>
+                                <option value="60">60 min</option>
+                                <option value="90">90 min</option>
+                                <option value="120">120 min</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; align-items:flex-end; gap:12px; margin-bottom:16px;">
+                        <div>
+                            <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Valor (R$)</label>
+                            <input type="number" id="recorrente-valor" placeholder="150.00" step="0.01" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; width:160px;">
+                        </div>
+                        <button onclick="salvarRecorrente()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-plus" style="margin-right:6px;"></i>Criar Recorrência
+                        </button>
+                    </div>
+                    <p id="recorrente-feedback" style="font-size:13px; margin-top:4px; display:none;"></p>
+
+                    <h4 style="font-size:14px; font-weight:600; color:#e2e8f0; margin:20px 0 12px;">Recorrências Ativas</h4>
+                    <div class="table-card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Dia</th>
+                                    <th>Horário</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recorrentes-tbody">
+                                <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhuma recorrência ativa.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
 
                 <!-- AGENDAMENTOS RECEBIDOS -->
                 <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Agendamentos Recebidos</h3>
