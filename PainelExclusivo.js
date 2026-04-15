@@ -65,15 +65,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const btnAtivo = document.querySelector(`[aria-controls="${id}"]`);
         if (btnAtivo) btnAtivo.classList.add('active');
 
-        // Modo sidebar lateral: aparece quando NÃO está no início
-        const mainContent = document.querySelector('.main-content');
-        if (id === 'clock-section') {
-            mainContent.classList.remove('com-dashboard-lateral');
-        } else {
-            mainContent.classList.add('com-dashboard-lateral');
-            sincronizarDashboardLateral();
-        }
-
         if (id === 'agenda-section') {
             carregarAgendaHoje();
             carregarRecorrentes();
@@ -108,47 +99,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             carregarAssinaturaSalva();
         }
     }
-
-    // ------------------------------------------------------------
-    //  SINCRONIZA DADOS DO DASHBOARD LATERAL
-    // ------------------------------------------------------------
-    function sincronizarDashboardLateral() {
-        // Nome do profissional
-        const nomeEl = document.getElementById('dash-lateral-nome');
-        if (nomeEl) nomeEl.textContent = profissional.nome || 'Profissional';
-
-        // Espelha os valores dos cards principais
-        const espelhar = (origemId, destinoId) => {
-            const origem = document.getElementById(origemId);
-            const destino = document.getElementById(destinoId);
-            if (origem && destino) destino.textContent = origem.textContent;
-        };
-        espelhar('dash-total-pacientes', 'dash-mini-pacientes');
-        espelhar('dash-consultas-hoje', 'dash-mini-hoje');
-        espelhar('dash-pendentes', 'dash-mini-pendentes');
-        espelhar('dash-respondidos', 'dash-mini-respondidos');
-
-        // Espelha agenda de hoje
-        const agendaOrigem = document.getElementById('dashboard-agenda-hoje');
-        const agendaDestino = document.getElementById('dash-lateral-agenda');
-        if (agendaOrigem && agendaDestino) {
-            const itens = agendaOrigem.querySelectorAll('.dash-consulta-item');
-            if (itens.length === 0) {
-                agendaDestino.innerHTML = '<p style="color:#475569; font-size:12px; font-style:italic;">Nenhuma consulta hoje.</p>';
-            } else {
-                agendaDestino.innerHTML = '';
-                itens.forEach((item, i) => {
-                    if (i >= 4) return; // mostra até 4 no mini
-                    const hora = item.querySelector('.dash-consulta-hora')?.textContent || '';
-                    const nome = item.querySelector('.dash-consulta-nome')?.textContent || '';
-                    const div = document.createElement('div');
-                    div.className = 'dash-lateral-consulta';
-                    div.innerHTML = `<span class="dash-lateral-hora">${hora}</span><span class="dash-lateral-paciente">${nome}</span>`;
-                    agendaDestino.appendChild(div);
-                });
-            }
-        }
-    }
     botoes.forEach(({ btn, section }) => {
         const el = document.getElementById(btn);
         if (el) {
@@ -176,60 +126,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     iniciarRelogio();
 });
 
-function mostrarSecao(id) {
-    document.querySelectorAll('.active-section, .hidden-section').forEach(s => {
-        s.classList.remove('active-section');
-        s.classList.add('hidden-section');
-    });
-    const alvo = document.getElementById(id);
-    if (alvo) {
-        alvo.classList.remove('hidden-section');
-        alvo.classList.add('active-section');
-    }
-
-    // Atualiza botão ativo no menu
-    document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
-    const btnAtivo = document.querySelector(`[aria-controls="${id}"]`);
-    if (btnAtivo) btnAtivo.classList.add('active');
-} function mostrarSecao(id) {
-    document.querySelectorAll('.active-section, .hidden-section').forEach(s => {
-        s.classList.remove('active-section');
-        s.classList.add('hidden-section');
-    });
-    const alvo = document.getElementById(id);
-    if (alvo) {
-        alvo.classList.remove('hidden-section');
-        alvo.classList.add('active-section');
-    }
-
-    // Atualiza botão ativo no menu
-    document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
-    const btnAtivo = document.querySelector(`[aria-controls="${id}"]`);
-    if (btnAtivo) btnAtivo.classList.add('active');
-
-    // Carrega dados específicos de cada seção
-    if (id === 'termos-section') {
-        popularSelectTermos();
-        carregarTermos();
-    }
-    if (id === 'form-section') {
-        carregarEscalas();
-    }
-    if (id === 'resultados-section') {
-        carregarResultados();
-    }
-    if (id === 'evolucao-section') {
-        carregarConvenios();
-    }
-    if (id === 'agenda-online-section') {
-        carregarRecorrentes();
-    }
-
-    if (id === 'resultados-section') {
-        carregarResultados();
-        popularSelectGrafico();
-    }
-}
 // ------------------------------------------------------------
 //  RELÓGIO
 // ------------------------------------------------------------
@@ -240,25 +136,13 @@ function iniciarRelogio() {
         const minutos = now.getMinutes();
         const segundos = now.getSeconds();
 
-        const hourDeg = (horas * 30) + (minutos * 0.5);
-        const minuteDeg = minutos * 6;
-        const secondDeg = segundos * 6;
-
-        // Relógio principal
         const hourHand = document.getElementById('hour-hand');
         const minuteHand = document.getElementById('minute-hand');
         const secondHand = document.getElementById('second-hand');
-        if (hourHand) hourHand.style.transform = `rotate(${hourDeg}deg)`;
-        if (minuteHand) minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
-        if (secondHand) secondHand.style.transform = `rotate(${secondDeg}deg)`;
 
-        // Relógio mini lateral
-        const hourMini = document.getElementById('hour-hand-mini');
-        const minuteMini = document.getElementById('minute-hand-mini');
-        const secondMini = document.getElementById('second-hand-mini');
-        if (hourMini) hourMini.style.transform = `rotate(${hourDeg}deg)`;
-        if (minuteMini) minuteMini.style.transform = `rotate(${minuteDeg}deg)`;
-        if (secondMini) secondMini.style.transform = `rotate(${secondDeg}deg)`;
+        if (hourHand) hourHand.style.transform = `rotate(${(horas * 30) + (minutos * 0.5)}deg)`;
+        if (minuteHand) minuteHand.style.transform = `rotate(${minutos * 6}deg)`;
+        if (secondHand) secondHand.style.transform = `rotate(${segundos * 6}deg)`;
     }
     atualizar();
     setInterval(atualizar, 1000);
