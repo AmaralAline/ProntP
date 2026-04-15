@@ -1,379 +1,615 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memória das Emoções — ProntPsi</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memória das Emoções — ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  background: #0a0f1a;
-  color: #e2e8f0;
-  min-height: 100vh;
-  padding: 20px;
-  user-select: none;
-}
+        html, body {
+            height: 100%;
+            width: 100%;
+            font-family: 'Nunito', sans-serif;
+            background: #0a0f1a;
+            color: #e2e8f0;
+            overflow: hidden;
+        }
 
-.topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+        body {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 14px;
+            gap: 7px;
+        }
 
-.topo-titulo h2 {
-  font-size: 20px;
-  font-weight: 900;
-  color: #c4b5fd;
-}
-.topo-titulo p { font-size: 12px; color: #475569; margin-top: 2px; }
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
 
-.badge-verde {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.3);
-  color: #34d399; border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 700;
-}
+        .topo-titulo {
+            font-size: 15px;
+            font-weight: 900;
+            color: #c4b5fd;
+        }
 
-.stats { display: flex; gap: 10px; }
-.stat-pill {
-  background: #1a2332; border: 1px solid rgba(139,92,246,0.25);
-  border-radius: 20px; padding: 6px 14px;
-  font-size: 13px; font-weight: 800; color: #c4b5fd;
-  display: flex; align-items: center; gap: 5px;
-}
-.stat-pill span { color: #475569; font-weight: 400; font-size: 11px; }
+        .topo-sub {
+            font-size: 10px;
+            color: #334155;
+            margin-top: 1px;
+        }
 
-.nivel-bar {
-  display: flex; gap: 6px; margin-bottom: 14px;
-  align-items: center; flex-wrap: wrap;
-}
-.nivel-label { font-size: 11px; color: #475569; }
-.nivel-btn {
-  background: #1a2332; border: 1px solid rgba(139,92,246,0.2);
-  border-radius: 8px; padding: 5px 13px; font-size: 12px; font-weight: 700;
-  color: #64748b; cursor: pointer; transition: all 0.2s;
-  font-family: 'Nunito', sans-serif;
-}
-.nivel-btn.ativo {
-  background: #3b1f8c; border-color: #7c3aed; color: #ddd6fe;
-}
-.nivel-btn:hover:not(.ativo) { border-color: rgba(139,92,246,0.4); color: #94a3b8; }
+        .stats {
+            display: flex;
+            gap: 6px;
+        }
 
-/* BANNER */
-.banner {
-  text-align: center; padding: 10px 16px; border-radius: 10px;
-  font-size: 15px; font-weight: 800; margin-bottom: 14px; display: none;
-  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: #34d399;
-}
+        .stat-pill {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 20px;
+            padding: 3px 11px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #c4b5fd;
+        }
 
-/* TABULEIRO */
-.tabuleiro {
-  display: grid; gap: 10px; margin-bottom: 18px;
-}
-.grid-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-4 { grid-template-columns: repeat(4, 1fr); }
-.grid-5 { grid-template-columns: repeat(5, 1fr); }
+            .stat-pill span {
+                color: #475569;
+                font-weight: 400;
+                font-size: 10px;
+            }
 
-.carta-wrap { aspect-ratio: 1; perspective: 600px; cursor: pointer; }
+        .nivel-bar {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
 
-.carta-inner {
-  width: 100%; height: 100%; position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.38s cubic-bezier(.4,0,.2,1);
-  border-radius: 12px;
-}
-.carta-inner.virada, .carta-inner.par { transform: rotateY(180deg); }
+        .nivel-label {
+            font-size: 10px;
+            color: #475569;
+        }
 
-.carta-face {
-  position: absolute; width: 100%; height: 100%;
-  backface-visibility: hidden; border-radius: 12px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  border: 2px solid transparent;
-}
+        .nivel-btn {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Nunito', sans-serif;
+        }
 
-.carta-verso {
-  background: linear-gradient(135deg, #1e2a3a 0%, #2d1d5e 100%);
-  border-color: rgba(124,58,237,0.4);
-}
-.carta-verso::after {
-  content: '✦';
-  font-size: 26px; color: rgba(139,92,246,0.35);
-}
+            .nivel-btn.ativo {
+                background: #3b1f8c;
+                border-color: #7c3aed;
+                color: #ddd6fe;
+            }
 
-.carta-frente {
-  transform: rotateY(180deg);
-  gap: 5px; padding: 6px;
-}
-.carta-frente.par-encontrado {
-  border-color: #34d399 !important;
-  box-shadow: 0 0 16px rgba(52,211,153,0.22);
-}
-.carta-emoji { font-size: 34px; line-height: 1; }
-.carta-nome {
-  font-size: 10px; font-weight: 800; text-align: center;
-  color: rgba(255,255,255,0.88); line-height: 1.2; max-width: 90%;
-}
+            .nivel-btn:hover:not(.ativo) {
+                color: #94a3b8;
+            }
 
-/* PAINEL EMOÇÃO */
-.painel-emocao {
-  background: #141d2b; border: 1px solid rgba(139,92,246,0.18);
-  border-radius: 12px; padding: 14px; margin-bottom: 16px;
-}
-.painel-emocao h3 { font-size: 12px; color: #7c3aed; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
-.placeholder { font-size: 13px; color: #334155; text-align: center; padding: 6px 0; }
+        .banner {
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 800;
+            display: none;
+            flex-shrink: 0;
+            background: rgba(52,211,153,0.1);
+            border: 1px solid rgba(52,211,153,0.3);
+            color: #34d399;
+        }
 
-.detalhe { display: none; flex-direction: column; gap: 7px; }
-.detalhe.visivel { display: flex; }
-.emocao-nome { font-size: 24px; font-weight: 900; color: #fff; }
-.emocao-desc { font-size: 12px; color: #64748b; line-height: 1.55; }
-.emocao-pergunta {
-  font-size: 12px; color: #c4b5fd; font-weight: 700;
-  background: #1a2332; padding: 8px 10px; border-radius: 8px; line-height: 1.55;
-  border-left: 3px solid #7c3aed;
-}
+        /* CORPO */
+        .corpo {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
 
-/* BOTÕES */
-.controles { display: flex; gap: 8px; flex-wrap: wrap; }
-.btn-primario {
-  background: #7c3aed; border: none; border-radius: 10px;
-  padding: 9px 20px; font-size: 13px; font-weight: 800;
-  color: #fff; cursor: pointer; font-family: 'Nunito', sans-serif;
-  transition: all 0.2s;
-}
-.btn-primario:hover { background: #6d28d9; transform: translateY(-1px); }
-.btn-secundario {
-  background: transparent; border: 1px solid rgba(139,92,246,0.25);
-  border-radius: 10px; padding: 9px 16px; font-size: 12px; font-weight: 700;
-  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif;
-  transition: all 0.2s;
-}
-.btn-secundario:hover { border-color: rgba(139,92,246,0.5); color: #a78bfa; }
+        .tabuleiro-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
 
-/* WIN */
-.win { display: none; text-align: center; padding: 28px 16px; flex-direction: column; align-items: center; gap: 14px; }
-.win.visivel { display: flex; }
-.win-trofeu { font-size: 60px; }
-.win-titulo { font-size: 26px; font-weight: 900; color: #c4b5fd; }
-.win-sub { font-size: 13px; color: #475569; }
-.win-stats { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.win-stat { background: #1a2332; border: 1px solid rgba(139,92,246,0.2); border-radius: 10px; padding: 10px 22px; text-align: center; }
-.win-stat-val { font-size: 26px; font-weight: 900; color: #c4b5fd; }
-.win-stat-lab { font-size: 11px; color: #475569; }
-</style>
+        .tabuleiro {
+            display: grid;
+            gap: 6px;
+            /* colunas definidas pelo JS */
+            width: 100%;
+            height: 100%;
+        }
+
+        .carta-wrap {
+            aspect-ratio: 0.78;
+            perspective: 500px;
+            cursor: pointer;
+        }
+
+            .carta-wrap:hover .carta-inner:not(.virada):not(.par) {
+                transform: scale(1.05);
+            }
+
+        .carta-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.36s cubic-bezier(.4,0,.2,1);
+            border-radius: 10px;
+        }
+
+            .carta-inner.virada, .carta-inner.par {
+                transform: rotateY(180deg);
+            }
+
+        .carta-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+        }
+
+        /* VERSO — número grande e visível */
+        .carta-verso {
+            background: linear-gradient(145deg, #1a2540 0%, #221852 100%);
+            border-color: rgba(124,58,237,0.5);
+        }
+
+        .carta-numero {
+            font-size: clamp(16px, 3.2vw, 30px);
+            font-weight: 900;
+            color: #a78bfa;
+            line-height: 1;
+        }
+
+        .carta-verso-dica {
+            font-size: clamp(7px, 1vw, 9px);
+            color: rgba(139,92,246,0.4);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+
+        /* FRENTE — emoção */
+        .carta-frente {
+            transform: rotateY(180deg);
+            gap: 3px;
+            padding: 4px;
+        }
+
+            .carta-frente.par-encontrado {
+                border-color: #34d399 !important;
+                box-shadow: 0 0 12px rgba(52,211,153,0.3);
+            }
+
+        .carta-emoji {
+            font-size: clamp(18px, 3.5vw, 32px);
+            line-height: 1;
+        }
+
+        .carta-nome {
+            font-size: clamp(7px, 1.1vw, 11px);
+            font-weight: 800;
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.2;
+            max-width: 92%;
+        }
+
+        /* PAINEL */
+        .painel {
+            width: 196px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow: hidden;
+        }
+
+        .painel-emocao {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 10px;
+            padding: 10px;
+            flex: 1;
+            overflow: auto;
+        }
+
+        .painel-titulo {
+            font-size: 9px;
+            color: #7c3aed;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .placeholder {
+            font-size: 11px;
+            color: #334155;
+            text-align: center;
+            padding: 8px 0;
+            line-height: 1.5;
+        }
+
+        .detalhe {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+            .detalhe.visivel {
+                display: flex;
+            }
+
+        .em-nome {
+            font-size: 17px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .em-desc {
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .em-pergunta {
+            font-size: 11px;
+            color: #c4b5fd;
+            font-weight: 700;
+            background: #1a2332;
+            padding: 7px 9px;
+            border-radius: 7px;
+            border-left: 3px solid #7c3aed;
+            line-height: 1.55;
+        }
+
+        .controles {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        .btn-p {
+            flex: 1;
+            background: #7c3aed;
+            border: none;
+            border-radius: 8px;
+            padding: 7px 5px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: background 0.15s;
+        }
+
+            .btn-p:hover {
+                background: #6d28d9;
+            }
+
+        .btn-s {
+            background: transparent;
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 8px;
+            padding: 7px 9px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748b;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+            .btn-s:hover {
+                border-color: rgba(139,92,246,0.5);
+                color: #a78bfa;
+            }
+
+        /* WIN */
+        #win {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,15,26,0.97);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            text-align: center;
+            padding: 24px;
+            z-index: 30;
+        }
+
+            #win.visivel {
+                display: flex;
+            }
+
+        .win-trofeu {
+            font-size: 56px;
+        }
+
+        .win-titulo {
+            font-size: 24px;
+            font-weight: 900;
+            color: #c4b5fd;
+        }
+
+        .win-sub {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .win-stats {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .win-stat {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+
+        .win-stat-val {
+            font-size: 24px;
+            font-weight: 900;
+            color: #c4b5fd;
+        }
+
+        .win-stat-lab {
+            font-size: 10px;
+            color: #475569;
+        }
+    </style>
 </head>
 <body>
 
-<div class="topo">
-  <div class="topo-titulo">
-    <h2>🎴 Memória das Emoções</h2>
-    <p>Encontre os pares e converse sobre cada emoção</p>
-  </div>
-  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-    <div class="stats">
-      <div class="stat-pill" id="stat-pares">0 <span>pares</span></div>
-      <div class="stat-pill" id="stat-jogadas">0 <span>jogadas</span></div>
-    </div>
-  </div>
-</div>
-
-<div class="nivel-bar">
-  <span class="nivel-label">Nível:</span>
-  <button class="nivel-btn ativo" onclick="setNivel('facil',this)">Fácil (6 cartas)</button>
-  <button class="nivel-btn" onclick="setNivel('medio',this)">Médio (12 cartas)</button>
-  <button class="nivel-btn" onclick="setNivel('dificil',this)">Difícil (16 cartas)</button>
-</div>
-
-<div id="banner" class="banner"></div>
-
-<div id="conteudo">
-  <div id="tabuleiro" class="tabuleiro grid-3"></div>
-
-  <div class="painel-emocao">
-    <h3>💬 Emoção Descoberta — Pergunta Terapêutica</h3>
-    <div class="placeholder" id="placeholder">Encontre um par para ver a pergunta terapêutica</div>
-    <div class="detalhe" id="detalhe">
-      <div class="emocao-nome" id="det-nome"></div>
-      <div class="emocao-desc" id="det-desc"></div>
-      <div class="emocao-pergunta" id="det-pergunta"></div>
-    </div>
-  </div>
-
-  <div class="controles">
-    <button class="btn-primario" onclick="novoJogo()">🔀 Novo jogo</button>
-    <button class="btn-secundario" onclick="revelarTodas()">👁 Revelar todas</button>
-  </div>
-</div>
-
-<div class="win" id="win">
-  <div class="win-trofeu">🏆</div>
-  <div class="win-titulo">Muito bem!</div>
-  <div class="win-sub">Todas as emoções foram encontradas!</div>
-  <div class="win-stats">
-    <div class="win-stat"><div class="win-stat-val" id="win-jogadas">-</div><div class="win-stat-lab">jogadas</div></div>
-    <div class="win-stat"><div class="win-stat-val" id="win-pares">-</div><div class="win-stat-lab">pares</div></div>
-  </div>
-  <button class="btn-primario" onclick="novoJogo()">🔀 Jogar novamente</button>
-</div>
-
-<script>
-const EMOCOES = [
-  { emoji:'😊', nome:'Alegria',    cor:'#fde68a', bg:'#1c1600',
-    desc:'Sentir-se feliz e satisfeito com o que está acontecendo.',
-    pergunta:'Quando você se sentiu assim hoje? O que te deixou alegre?' },
-  { emoji:'😢', nome:'Tristeza',   cor:'#bfdbfe', bg:'#001433',
-    desc:'Uma sensação de perda ou mágoa. É normal e importante sentir.',
-    pergunta:'O que costuma te deixar triste? Como você se cuida quando está triste?' },
-  { emoji:'😠', nome:'Raiva',      cor:'#fca5a5', bg:'#200000',
-    desc:'Sentir-se irritado. A raiva tem uma mensagem importante pra nos dar.',
-    pergunta:'O que te faz sentir raiva? O que ajuda a acalmar esse sentimento?' },
-  { emoji:'😨', nome:'Medo',       cor:'#c4b5fd', bg:'#12003a',
-    desc:'Uma sensação de insegurança. O medo existe para nos proteger.',
-    pergunta:'De que você tem medo? Quem te ajuda quando você está com medo?' },
-  { emoji:'😮', nome:'Surpresa',   cor:'#fdba74', bg:'#1a0f00',
-    desc:'Algo inesperado aconteceu! Pode ser boa ou ruim.',
-    pergunta:'Qual foi a última surpresa que você teve? Foi boa ou ruim?' },
-  { emoji:'🥰', nome:'Amor',       cor:'#fbcfe8', bg:'#200010',
-    desc:'Um sentimento quentinho de carinho por alguém especial.',
-    pergunta:'Quem ou o que você ama muito? Como você demonstra esse amor?' },
-  { emoji:'😌', nome:'Calma',      cor:'#6ee7b7', bg:'#001a10',
-    desc:'Sentir-se tranquilo, seguro e em paz.',
-    pergunta:'O que te deixa calmo? Como você cria esses momentos?' },
-  { emoji:'🤩', nome:'Empolgação', cor:'#fef08a', bg:'#181200',
-    desc:'Uma energia animada quando algo emocionante vai acontecer!',
-    pergunta:'O que te deixa empolgado? O que você está animado para fazer?' },
-];
-
-const NIVEIS = { facil:3, medio:4, dificil:4 };
-const COLUNAS = { facil:'grid-3', medio:'grid-4', dificil:'grid-4' };
-const QTD = { facil:3, medio:6, dificil:8 };
-
-let nivel = 'facil';
-let cartas = [], viradas = [], pares = [], jogadas = 0, totalPares = 0, travado = false;
-
-function embaralhar(arr) {
-  for (let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
-}
-
-function setNivel(n, btn) {
-  nivel = n;
-  document.querySelectorAll('.nivel-btn').forEach(b => b.classList.remove('ativo'));
-  btn.classList.add('ativo');
-  novoJogo();
-}
-
-function novoJogo() {
-  const qtd = QTD[nivel];
-  const escolhidas = embaralhar([...EMOCOES]).slice(0, qtd);
-  cartas = embaralhar([...escolhidas, ...escolhidas].map((e,i) => ({ ...e, id: i })));
-  viradas = []; pares = []; jogadas = 0; totalPares = qtd; travado = false;
-
-  document.getElementById('stat-pares').innerHTML = `0 <span>pares</span>`;
-  document.getElementById('stat-jogadas').innerHTML = `0 <span>jogadas</span>`;
-  document.getElementById('banner').style.display = 'none';
-  document.getElementById('placeholder').style.display = 'block';
-  document.getElementById('detalhe').classList.remove('visivel');
-  document.getElementById('win').classList.remove('visivel');
-  document.getElementById('conteudo').style.display = 'block';
-
-  const tab = document.getElementById('tabuleiro');
-  tab.className = `tabuleiro ${COLUNAS[nivel]}`;
-  tab.innerHTML = '';
-
-  cartas.forEach((carta, idx) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'carta-wrap';
-    wrap.dataset.idx = idx;
-    wrap.innerHTML = `
-      <div class="carta-inner" id="ci-${idx}">
-        <div class="carta-face carta-verso"></div>
-        <div class="carta-face carta-frente" style="background:${carta.bg}; border-color:${carta.cor}40;">
-          <div class="carta-emoji">${carta.emoji}</div>
-          <div class="carta-nome">${carta.nome}</div>
+    <div class="topo">
+        <div>
+            <div class="topo-titulo">🎴 Memória das Emoções</div>
+            <div class="topo-sub">Diga um número — o terapeuta vira a carta para você</div>
         </div>
-      </div>`;
-    wrap.addEventListener('click', () => clicarCarta(idx));
-    tab.appendChild(wrap);
-  });
-}
+        <div class="stats">
+            <div class="stat-pill" id="stat-pares">0 <span>pares</span></div>
+            <div class="stat-pill" id="stat-jogadas">0 <span>jogadas</span></div>
+        </div>
+    </div>
 
-function clicarCarta(idx) {
-  if (travado) return;
-  if (viradas.includes(idx)) return;
-  if (pares.includes(idx)) return;
+    <div class="nivel-bar">
+        <span class="nivel-label">Nível:</span>
+        <button class="nivel-btn ativo" onclick="setNivel('facil',this)">Fácil — 6 cartas</button>
+        <button class="nivel-btn" onclick="setNivel('medio',this)">Médio — 12 cartas</button>
+        <button class="nivel-btn" onclick="setNivel('dificil',this)">Difícil — 16 cartas</button>
+    </div>
 
-  const ci = document.getElementById(`ci-${idx}`);
-  ci.classList.add('virada');
-  viradas.push(idx);
+    <div class="banner" id="banner"></div>
 
-  if (viradas.length === 2) {
-    jogadas++;
-    document.getElementById('stat-jogadas').innerHTML = `${jogadas} <span>jogadas</span>`;
-    travado = true;
+    <div class="corpo">
+        <div class="tabuleiro-wrap">
+            <div class="tabuleiro" id="tabuleiro"></div>
+        </div>
 
-    const [a, b] = viradas;
-    if (cartas[a].nome === cartas[b].nome) {
-      // PAR!
-      setTimeout(() => {
-        [a,b].forEach(i => {
-          document.getElementById(`ci-${i}`).querySelector('.carta-frente').classList.add('par-encontrado');
-          pares.push(i);
-        });
-        const par = cartas[a];
-        mostrarEmocao(par);
-        viradas = [];
-        travado = false;
-        document.getElementById('stat-pares').innerHTML = `${pares.length/2} <span>pares</span>`;
+        <div class="painel">
+            <div class="painel-emocao">
+                <div class="painel-titulo">💬 Emoção descoberta</div>
+                <div class="placeholder" id="placeholder">Vire um par de cartas para ver a pergunta terapêutica</div>
+                <div class="detalhe" id="detalhe">
+                    <div class="em-nome" id="det-nome"></div>
+                    <div class="em-desc" id="det-desc"></div>
+                    <div class="em-pergunta" id="det-pergunta"></div>
+                </div>
+            </div>
+            <div class="controles">
+                <button class="btn-p" onclick="novoJogo()">🔀 Novo</button>
+                <button class="btn-s" onclick="revelarTodas()">👁 Ver todas</button>
+            </div>
+        </div>
+    </div>
 
-        const banner = document.getElementById('banner');
-        banner.textContent = `✅ Par encontrado! ${par.emoji} ${par.nome}`;
-        banner.style.display = 'block';
-        setTimeout(() => { banner.style.display = 'none'; }, 2000);
+    <div id="win">
+        <div class="win-trofeu">🏆</div>
+        <div class="win-titulo">Muito bem!</div>
+        <div class="win-sub">Todas as emoções foram descobertas!</div>
+        <div class="win-stats">
+            <div class="win-stat"><div class="win-stat-val" id="win-j">-</div><div class="win-stat-lab">jogadas</div></div>
+            <div class="win-stat"><div class="win-stat-val" id="win-p">-</div><div class="win-stat-lab">pares</div></div>
+        </div>
+        <button class="btn-p" style="width:160px;padding:10px;" onclick="novoJogo()">🔀 Jogar novamente</button>
+    </div>
 
-        if (pares.length === cartas.length) setTimeout(mostrarVitoria, 600);
-      }, 350);
-    } else {
-      setTimeout(() => {
-        viradas.forEach(i => document.getElementById(`ci-${i}`).classList.remove('virada'));
-        viradas = [];
-        travado = false;
-      }, 900);
-    }
-  }
-}
+    <script>
+        const EMOCOES = [
+            {
+                emoji: '😊', nome: 'Alegria', cor: '#fde68a', bg: '#1c1600',
+                desc: 'Sentir-se feliz e satisfeito.',
+                pergunta: 'Quando você se sentiu assim hoje? O que te deixou alegre?'
+            },
+            {
+                emoji: '😢', nome: 'Tristeza', cor: '#bfdbfe', bg: '#001433',
+                desc: 'Uma sensação de perda ou mágoa. É normal sentir tristeza.',
+                pergunta: 'O que costuma te deixar triste? Como você se cuida quando está triste?'
+            },
+            {
+                emoji: '😠', nome: 'Raiva', cor: '#fca5a5', bg: '#200000',
+                desc: 'Sentir-se irritado. A raiva tem uma mensagem importante.',
+                pergunta: 'O que te faz sentir raiva? O que ajuda a acalmar esse sentimento?'
+            },
+            {
+                emoji: '😨', nome: 'Medo', cor: '#c4b5fd', bg: '#12003a',
+                desc: 'Uma sensação de insegurança. O medo existe para nos proteger.',
+                pergunta: 'De que você tem medo? Quem te ajuda quando você está com medo?'
+            },
+            {
+                emoji: '😮', nome: 'Surpresa', cor: '#fdba74', bg: '#1a0f00',
+                desc: 'Algo inesperado aconteceu! Pode ser boa ou ruim.',
+                pergunta: 'Qual foi a última surpresa? Foi boa ou ruim?'
+            },
+            {
+                emoji: '🥰', nome: 'Amor', cor: '#fbcfe8', bg: '#200010',
+                desc: 'Um sentimento quentinho de carinho por alguém especial.',
+                pergunta: 'Quem ou o que você ama muito? Como você demonstra esse amor?'
+            },
+            {
+                emoji: '😌', nome: 'Calma', cor: '#6ee7b7', bg: '#001a10',
+                desc: 'Sentir-se tranquilo, seguro e em paz.',
+                pergunta: 'O que te deixa calmo? Como você cria esses momentos?'
+            },
+            {
+                emoji: '🤩', nome: 'Empolgação', cor: '#fef08a', bg: '#181200',
+                desc: 'Uma energia animada quando algo emocionante vai acontecer!',
+                pergunta: 'O que te deixa empolgado? O que você está animado para fazer?'
+            },
+        ];
 
-function mostrarEmocao(e) {
-  document.getElementById('placeholder').style.display = 'none';
-  document.getElementById('det-nome').textContent = `${e.emoji} ${e.nome}`;
-  document.getElementById('det-desc').textContent = e.desc;
-  document.getElementById('det-pergunta').textContent = `💬 ${e.pergunta}`;
-  document.getElementById('detalhe').classList.add('visivel');
-}
+        const CFG = {
+            facil: { qtd: 3, cols: 3 },
+            medio: { qtd: 6, cols: 4 },
+            dificil: { qtd: 8, cols: 4 },
+        };
 
-function mostrarVitoria() {
-  document.getElementById('win-jogadas').textContent = jogadas;
-  document.getElementById('win-pares').textContent = totalPares;
-  document.getElementById('conteudo').style.display = 'none';
-  document.getElementById('win').classList.add('visivel');
-}
+        let nivel = 'facil', cartas = [], viradas = [], pares = [], jogadas = 0, travado = false;
 
-function revelarTodas() {
-  cartas.forEach((_, idx) => {
-    document.getElementById(`ci-${idx}`).classList.add('virada');
-  });
-  travado = true;
-}
+        function embaralhar(a) {
+            const r = [...a];
+            for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[r[i], r[j]] = [r[j], r[i]]; }
+            return r;
+        }
 
-novoJogo();
-</script>
+        function setNivel(n, btn) {
+            nivel = n;
+            document.querySelectorAll('.nivel-btn').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            novoJogo();
+        }
+
+        function novoJogo() {
+            const cfg = CFG[nivel];
+            const esc = embaralhar([...EMOCOES]).slice(0, cfg.qtd);
+            cartas = embaralhar([...esc, ...esc].map((e, i) => ({ ...e, uid: i })));
+            viradas = []; pares = []; jogadas = 0; travado = false;
+
+            atualizarStats();
+            document.getElementById('banner').style.display = 'none';
+            document.getElementById('placeholder').style.display = 'block';
+            document.getElementById('detalhe').classList.remove('visivel');
+            document.getElementById('win').classList.remove('visivel');
+
+            const tab = document.getElementById('tabuleiro');
+            tab.style.gridTemplateColumns = `repeat(${cfg.cols},1fr)`;
+            tab.innerHTML = '';
+
+            cartas.forEach((carta, idx) => {
+                const wrap = document.createElement('div');
+                wrap.className = 'carta-wrap';
+                wrap.innerHTML = `
+          <div class="carta-inner" id="ci-${idx}">
+            <div class="carta-face carta-verso">
+              <div class="carta-numero">${idx + 1}</div>
+              <div class="carta-verso-dica">VIRAR</div>
+            </div>
+            <div class="carta-face carta-frente" style="background:${carta.bg};border-color:${carta.cor}55;">
+              <div class="carta-emoji">${carta.emoji}</div>
+              <div class="carta-nome">${carta.nome}</div>
+            </div>
+          </div>`;
+                wrap.addEventListener('click', () => clicar(idx));
+                tab.appendChild(wrap);
+            });
+        }
+
+        function clicar(idx) {
+            if (travado || viradas.includes(idx) || pares.includes(idx)) return;
+            document.getElementById(`ci-${idx}`).classList.add('virada');
+            viradas.push(idx);
+            if (viradas.length === 2) {
+                jogadas++; travado = true; atualizarStats();
+                const [a, b] = viradas;
+                if (cartas[a].nome === cartas[b].nome) {
+                    setTimeout(() => {
+                        [a, b].forEach(i => {
+                            document.getElementById(`ci-${i}`).querySelector('.carta-frente').classList.add('par-encontrado');
+                            pares.push(i);
+                        });
+                        mostrarEmocao(cartas[a]);
+                        viradas = []; travado = false; atualizarStats();
+                        mostrarBanner(`✅ Par encontrado! ${cartas[a].emoji} ${cartas[a].nome}`);
+                        if (pares.length === cartas.length) setTimeout(vitoria, 700);
+                    }, 350);
+                } else {
+                    setTimeout(() => {
+                        viradas.forEach(i => document.getElementById(`ci-${i}`).classList.remove('virada'));
+                        viradas = []; travado = false;
+                    }, 1000);
+                }
+            }
+        }
+
+        function mostrarEmocao(e) {
+            document.getElementById('placeholder').style.display = 'none';
+            document.getElementById('det-nome').textContent = `${e.emoji} ${e.nome}`;
+            document.getElementById('det-desc').textContent = e.desc;
+            document.getElementById('det-pergunta').textContent = `💬 ${e.pergunta}`;
+            document.getElementById('detalhe').classList.add('visivel');
+        }
+
+        function atualizarStats() {
+            document.getElementById('stat-pares').innerHTML = `${pares.length / 2} <span>pares</span>`;
+            document.getElementById('stat-jogadas').innerHTML = `${jogadas} <span>jogadas</span>`;
+        }
+
+        function mostrarBanner(txt) {
+            const b = document.getElementById('banner');
+            b.textContent = txt; b.style.display = 'block';
+            clearTimeout(b._t); b._t = setTimeout(() => { b.style.display = 'none'; }, 2200);
+        }
+
+        function revelarTodas() {
+            cartas.forEach((_, idx) => document.getElementById(`ci-${idx}`).classList.add('virada'));
+            travado = true;
+        }
+
+        function vitoria() {
+            document.getElementById('win-j').textContent = jogadas;
+            document.getElementById('win-p').textContent = cartas.length / 2;
+            document.getElementById('win').classList.add('visivel');
+        }
+
+        novoJogo();
+    </script>
 </body>
 </html>
