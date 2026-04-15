@@ -1161,6 +1161,84 @@
         </main>
     </div>
 
+    <!-- OVERLAY DE BLOQUEIO -->
+    <div id="overlay-bloqueio"></div>
+
+    <!-- FAIXA DE POLÍTICA -->
+    <div id="faixa-politica" style="display:none;">
+        <div class="faixa-texto">
+            <div class="faixa-titulo">
+                <i class="fas fa-shield-alt"></i>
+                Política de Privacidade e Termos de Uso — ProntPsi
+            </div>
+            <div class="faixa-subtitulo">
+                Para continuar usando o sistema, você precisa aceitar nossa política.
+                <a onclick="abrirModalPolitica()">Ler a Política de Privacidade completa</a>
+            </div>
+        </div>
+        <div class="faixa-aceite">
+            <label class="faixa-checkbox-label">
+                <input type="checkbox" id="check-politica" onchange="toggleBtnAceitar()">
+                Li e aceito a Política de Privacidade e os Termos de Uso
+            </label>
+            <button id="btn-aceitar-politica" onclick="aceitarPolitica()">
+                <i class="fas fa-check" style="margin-right:6px;"></i>Confirmar e continuar
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DA POLÍTICA COMPLETA -->
+    <div id="modal-politica">
+        <div class="modal-politica-content">
+            <h2><i class="fas fa-shield-alt" style="color:#8b5cf6; margin-right:10px;"></i>Política de Privacidade</h2>
+            <p class="modal-politica-subtitulo">ProntPsi — Sistema Clínico Digital · Última atualização: abril de 2026</p>
+
+            <div class="politica-secao">
+                <h3>1. Quem somos</h3>
+                <p>O ProntPsi é um sistema clínico digital destinado exclusivamente a profissionais de saúde habilitados. A responsável pela plataforma é a desenvolvedora e operadora do sistema, que atua como controladora dos dados nos termos da Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+            </div>
+
+            <div class="politica-secao">
+                <h3>2. Dados que coletamos</h3>
+                <p>Coletamos dados fornecidos diretamente por você: nome, e-mail, CRP/CRM, CPF, especialidade, telefone e endereço profissional. Também armazenamos dados clínicos inseridos por você sobre seus pacientes, como evoluções, agendamentos e formulários.</p>
+            </div>
+
+            <div class="politica-secao">
+                <h3>3. Como usamos seus dados</h3>
+                <p>Seus dados são utilizados exclusivamente para operação do sistema: autenticação, geração de documentos (recibos, relatórios, termos), envio de e-mails clínicos e funcionalidades do painel. Não compartilhamos seus dados com terceiros para fins comerciais.</p>
+            </div>
+
+            <div class="politica-secao">
+                <h3>4. Dados dos seus pacientes</h3>
+                <p>Você, como profissional, é o responsável pelos dados clínicos de seus pacientes inseridos no sistema. O ProntPsi atua como operador desses dados. É sua responsabilidade obter o consentimento dos pacientes para uso de prontuário eletrônico, o que pode ser feito pelo recurso de Termos de Consentimento disponível no sistema.</p>
+            </div>
+
+            <div class="politica-secao">
+                <h3>5. Segurança</h3>
+                <p>Utilizamos autenticação com token JWT, comunicação criptografada (HTTPS) e acesso restrito por credenciais. Os dados são armazenados em servidores protegidos. Nenhum acesso externo é permitido sem autenticação.</p>
+            </div>
+
+            <div class="politica-secao">
+                <h3>6. Seus direitos</h3>
+                <p>Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento entrando em contato conosco. Dados de pacientes podem ser exportados em PDF pelo próprio sistema.</p>
+            </div>
+
+            <div class="politica-secao">
+                <h3>7. Retenção de dados</h3>
+                <p>Seus dados são mantidos enquanto sua conta estiver ativa. Em caso de encerramento, os dados são mantidos por até 5 anos conforme exigência do CFP para prontuários eletrônicos, após o que são anonimizados ou excluídos.</p>
+            </div>
+
+            <div class="politica-secao">
+                <h3>8. Contato</h3>
+                <p>Dúvidas sobre esta política? Entre em contato pelo e-mail disponível no painel ou pelo suporte da plataforma.</p>
+            </div>
+
+            <button class="btn-fechar-politica" onclick="fecharModalPolitica()">
+                <i class="fas fa-times" style="margin-right:6px;"></i>Fechar
+            </button>
+        </div>
+    </div>
+
     <script defer src="PainelExclusivo.js"></script>
     <script defer src="agenda.js"></script>
     <script defer src="sessao.js"></script>

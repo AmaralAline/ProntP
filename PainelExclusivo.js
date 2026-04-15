@@ -129,7 +129,80 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Carrega dados iniciais
     await carregarPacientes();
     iniciarRelogio();
+
+    // Verifica política de privacidade
+    await verificarPolitica();
 });
+
+// ============================================================
+//  POLÍTICA DE PRIVACIDADE
+// ============================================================
+async function verificarPolitica() {
+    try {
+        const res = await fetch(`${API_URL}/api/perfil`, { headers: headersAuth() });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (!data.politica_aceita) {
+            // Bloqueia o sistema
+            document.body.classList.add('politica-pendente');
+            document.getElementById('faixa-politica').style.display = 'flex';
+            // Adiciona padding no bottom do main para não esconder conteúdo
+            document.querySelector('.main-content').style.paddingBottom = '100px';
+        }
+    } catch (err) {
+        // Se API não retornar o campo, não bloqueia (compatibilidade)
+        console.log('Verificação de política ignorada:', err.message);
+    }
+}
+
+function toggleBtnAceitar() {
+    const check = document.getElementById('check-politica');
+    const btn = document.getElementById('btn-aceitar-politica');
+    if (check.checked) {
+        btn.classList.add('ativo');
+    } else {
+        btn.classList.remove('ativo');
+    }
+}
+
+async function aceitarPolitica() {
+    const btn = document.getElementById('btn-aceitar-politica');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Salvando...';
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/aceitar-politica`, {
+            method: 'POST',
+            headers: headersAuth()
+        });
+
+        if (res.ok) {
+            // Remove bloqueio
+            document.body.classList.remove('politica-pendente');
+            document.getElementById('faixa-politica').style.display = 'none';
+            document.querySelector('.main-content').style.paddingBottom = '';
+            document.getElementById('overlay-bloqueio').style.display = 'none';
+        } else {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check" style="margin-right:6px;"></i>Confirmar e continuar';
+        }
+    } catch (err) {
+        // Se API não tiver o endpoint ainda, aceita localmente
+        document.body.classList.remove('politica-pendente');
+        document.getElementById('faixa-politica').style.display = 'none';
+        document.querySelector('.main-content').style.paddingBottom = '';
+        console.log('Política aceita localmente');
+    }
+}
+
+function abrirModalPolitica() {
+    document.getElementById('modal-politica').classList.add('aberto');
+}
+
+function fecharModalPolitica() {
+    document.getElementById('modal-politica').classList.remove('aberto');
+}
 
 // ------------------------------------------------------------
 //  RELÓGIO
