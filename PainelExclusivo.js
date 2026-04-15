@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (id === 'perfil-section') {
             inicializarCanvas();
             carregarAssinaturaSalva();
+            carregarDadosProfissionais();
         }
     }
     botoes.forEach(({ btn, section }) => {
@@ -1393,6 +1394,90 @@ async function carregarAssinaturaSalva() {
         if (prof.especialidade) document.getElementById('carimbo-especialidade').textContent = prof.especialidade;
 
     } catch (err) { console.error(err); }
+}
+
+// ============================================================
+//  DADOS PROFISSIONAIS
+// ============================================================
+async function carregarDadosProfissionais() {
+    // Preenche com dados do localStorage primeiro (resposta imediata)
+    const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
+    if (prof.nome) document.getElementById('perfil-nome').value = prof.nome || '';
+    if (prof.crp_crm) document.getElementById('perfil-crp').value = prof.crp_crm || '';
+    if (prof.especialidade) document.getElementById('perfil-especialidade').value = prof.especialidade || '';
+    if (prof.email) document.getElementById('perfil-email').value = prof.email || '';
+    if (prof.telefone) document.getElementById('perfil-telefone').value = prof.telefone || '';
+    if (prof.endereco) document.getElementById('perfil-endereco').value = prof.endereco || '';
+
+    // Tenta buscar dados atualizados da API
+    try {
+        const res = await fetch(`${API_URL}/api/perfil`, { headers: headersAuth() });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.nome) document.getElementById('perfil-nome').value = data.nome || '';
+        if (data.crp_crm) document.getElementById('perfil-crp').value = data.crp_crm || '';
+        if (data.especialidade) document.getElementById('perfil-especialidade').value = data.especialidade || '';
+        if (data.email) document.getElementById('perfil-email').value = data.email || '';
+        if (data.telefone) document.getElementById('perfil-telefone').value = data.telefone || '';
+        if (data.endereco) document.getElementById('perfil-endereco').value = data.endereco || '';
+    } catch (err) {
+        // silencioso — já exibiu os dados do localStorage
+    }
+}
+
+async function salvarDadosProfissionais() {
+    const nome = document.getElementById('perfil-nome')?.value.trim();
+    const crp_crm = document.getElementById('perfil-crp')?.value.trim();
+    const especialidade = document.getElementById('perfil-especialidade')?.value.trim();
+    const email = document.getElementById('perfil-email')?.value.trim();
+    const telefone = document.getElementById('perfil-telefone')?.value.trim();
+    const endereco = document.getElementById('perfil-endereco')?.value.trim();
+    const feedback = document.getElementById('perfil-dados-feedback');
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil`, {
+            method: 'PUT',
+            headers: headersAuth(),
+            body: JSON.stringify({ nome, crp_crm, especialidade, email, telefone, endereco })
+        });
+
+        if (res.ok) {
+            // Atualiza localStorage com novos dados
+            const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
+            const atualizado = { ...prof, nome, crp_crm, especialidade, email, telefone, endereco };
+            localStorage.setItem('profissional', JSON.stringify(atualizado));
+
+            // Atualiza carimbo e nome no painel
+            if (document.getElementById('carimbo-nome')) document.getElementById('carimbo-nome').textContent = nome;
+            if (document.getElementById('carimbo-crp')) document.getElementById('carimbo-crp').textContent = crp_crm;
+            if (document.getElementById('carimbo-especialidade')) document.getElementById('carimbo-especialidade').textContent = especialidade;
+            const nomeEl = document.getElementById('nome-profissional');
+            if (nomeEl) nomeEl.textContent = nome;
+
+            feedback.textContent = '✅ Dados salvos com sucesso!';
+            feedback.style.color = '#34d399';
+        } else {
+            feedback.textContent = '⚠️ Erro ao salvar. Verifique os dados.';
+            feedback.style.color = '#f87171';
+        }
+    } catch (err) {
+        // Se API não tiver o endpoint, salva só no localStorage
+        const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
+        const atualizado = { ...prof, nome, crp_crm, especialidade, email, telefone, endereco };
+        localStorage.setItem('profissional', JSON.stringify(atualizado));
+
+        if (document.getElementById('carimbo-nome')) document.getElementById('carimbo-nome').textContent = nome;
+        if (document.getElementById('carimbo-crp')) document.getElementById('carimbo-crp').textContent = crp_crm;
+        if (document.getElementById('carimbo-especialidade')) document.getElementById('carimbo-especialidade').textContent = especialidade;
+        const nomeEl = document.getElementById('nome-profissional');
+        if (nomeEl) nomeEl.textContent = nome;
+
+        feedback.textContent = '✅ Dados salvos localmente!';
+        feedback.style.color = '#34d399';
+    }
+
+    feedback.style.display = 'block';
+    setTimeout(() => { feedback.style.display = 'none'; }, 4000);
 }
 
 function toggleRecorrente() {

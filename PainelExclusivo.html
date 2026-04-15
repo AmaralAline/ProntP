@@ -494,7 +494,58 @@
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
                     <h2>Meu Perfil</h2>
-                    <p>Configure seus dados e assinatura digital</p>
+                    <p>Seus dados profissionais, assinatura e carimbo digital</p>
+                </div>
+
+                <!-- DADOS PROFISSIONAIS -->
+                <div class="form-card" style="max-width:600px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                        <i class="fas fa-id-card" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Dados Profissionais
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Esses dados aparecem nos recibos, termos e relatórios gerados pelo sistema.
+                    </p>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                        <div class="form-group">
+                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Nome completo</label>
+                            <input type="text" id="perfil-nome" placeholder="Seu nome completo"
+                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">CRP / CRM</label>
+                            <input type="text" id="perfil-crp" placeholder="Ex: CRP 06/000001"
+                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Especialidade</label>
+                            <input type="text" id="perfil-especialidade" placeholder="Ex: Psicóloga Clínica"
+                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">E-mail profissional</label>
+                            <input type="email" id="perfil-email" placeholder="seu@email.com"
+                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Telefone</label>
+                            <input type="text" id="perfil-telefone" placeholder="(00) 00000-0000"
+                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Endereço do consultório</label>
+                            <input type="text" id="perfil-endereco" placeholder="Rua, número, cidade"
+                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                        </div>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button onclick="salvarDadosProfissionais()" style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Dados
+                        </button>
+                        <p id="perfil-dados-feedback" style="font-size:13px; display:none;"></p>
+                    </div>
                 </div>
 
                 <!-- ASSINATURA DIGITAL -->
