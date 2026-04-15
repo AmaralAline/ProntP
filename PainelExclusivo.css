@@ -1004,3 +1004,188 @@ table {
         display: none;
     }
 }
+
+/* ============================================================
+   SIDEBAR SCROLLBAR OCULTA
+   ============================================================ */
+.sidebar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+    .sidebar::-webkit-scrollbar {
+        display: none;
+    }
+
+/* ============================================================
+   DASHBOARD LATERAL DIREITA
+   ============================================================ */
+.main-content.com-dashboard-lateral {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    align-items: stretch;
+}
+
+    .main-content.com-dashboard-lateral > section.active-section {
+        flex: 1;
+        padding: 32px;
+        min-width: 0;
+    }
+
+.dashboard-lateral {
+    display: none;
+    width: 220px;
+    min-width: 220px;
+    background: #111927;
+    border-left: 1px solid rgba(139, 92, 246, 0.15);
+    padding: 20px 14px;
+    flex-direction: column;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+    .dashboard-lateral::-webkit-scrollbar {
+        display: none;
+    }
+
+.main-content.com-dashboard-lateral .dashboard-lateral {
+    display: flex;
+}
+
+.dashboard-lateral-titulo {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #475569;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.dash-mini-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #1a2332;
+    border: 1px solid rgba(139, 92, 246, 0.12);
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.dash-mini-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.dash-mini-label {
+    font-size: 9px;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.dash-mini-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f1f5f9;
+    line-height: 1;
+}
+
+.dash-lateral-relogio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 0 10px;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.dash-lateral-saudacao {
+    font-size: 11px;
+    color: #64748b;
+    text-align: center;
+}
+
+.dash-lateral-nome {
+    font-size: 12px;
+    font-weight: 600;
+    color: #c4b5fd;
+    text-align: center;
+}
+
+.dash-lateral-agenda-titulo {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #475569;
+    font-weight: 600;
+}
+
+.dash-lateral-consulta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: #0f1621;
+    border-radius: 8px;
+    padding: 8px 10px;
+    border-left: 2px solid #8b5cf6;
+}
+
+.dash-lateral-hora {
+    font-size: 10px;
+    font-weight: 600;
+    color: #a78bfa;
+}
+
+.dash-lateral-paciente {
+    font-size: 11px;
+    color: #cbd5e1;
+}
+
+/* ============================================================
+   MENU GRUPOS
+   ============================================================ */
+.menu-group-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #475569;
+    font-weight: 600;
+    padding: 12px 10px 4px;
+    list-style: none;
+}
+
+@media (max-width: 1100px) {
+    .dashboard-lateral {
+        width: 190px;
+        min-width: 190px;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-lateral {
+        display: none !important;
+    }
+
+    .main-content.com-dashboard-lateral {
+        display: block;
+        padding: 20px 16px;
+    }
+
+        .main-content.com-dashboard-lateral > section.active-section {
+            padding: 0;
+        }
+}
