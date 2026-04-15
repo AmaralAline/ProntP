@@ -548,6 +548,7 @@ async function carregarAgendaHoje() {
             <span style="margin-left:8px; font-size:11px; color:#64748b;">${c.status}</span>
         </div>
     `;
+            
             }).join('');
         }
     } catch (err) {
@@ -1427,17 +1428,18 @@ async function carregarAssinaturaSalva() {
         if (prof.especialidade) document.getElementById('carimbo-especialidade').textContent = prof.especialidade;
 
     } catch (err) { console.error(err); }
-    function toggleRecorrente() {
-        const campos = document.getElementById('campos-recorrente');
-        const checked = document.getElementById('toggle-recorrente').checked;
-        campos.style.display = checked ? 'block' : 'none';
+}
 
-        // Esconde/mostra campos de data do formulário principal
-        const startDiv = document.getElementById('start-datetime')?.closest('div');
-        const endDiv = document.getElementById('end-datetime')?.closest('div');
-        if (startDiv) startDiv.style.display = checked ? 'none' : 'block';
-        if (endDiv) endDiv.style.display = checked ? 'none' : 'block';
-    }
+function toggleRecorrente() {
+    const campos = document.getElementById('campos-recorrente');
+    const checked = document.getElementById('toggle-recorrente').checked;
+    campos.style.display = checked ? 'block' : 'none';
+
+    const startDiv = document.getElementById('start-datetime')?.closest('div');
+    const endDiv = document.getElementById('end-datetime')?.closest('div');
+    if (startDiv) startDiv.style.display = checked ? 'none' : 'block';
+    if (endDiv) endDiv.style.display = checked ? 'none' : 'block';
+}
 
 async function carregarRecorrentes() {
     const lista = document.getElementById('recorrentes-lista');
@@ -1471,12 +1473,11 @@ async function salvarRecorrente() {
     const pacienteId = document.getElementById('paciente-agenda')?.value;
     const diaSemana = document.getElementById('recorrente-dia')?.value;
     const horaInicio = document.getElementById('recorrente-inicio')?.value;
-    
     const duracao = document.getElementById('recorrente-duracao')?.value;
     const valor = document.getElementById('recorrente-valor')?.value;
     const dataInicio = document.getElementById('recorrente-data-inicio')?.value;
     const feedback = document.getElementById('recorrente-feedback');
-    // Calcula hora fim automaticamente baseado na duração
+
     const [h, m] = horaInicio.split(':').map(Number);
     const totalMin = h * 60 + m + (parseInt(duracao) || 50);
     const horaFimCalc = `${String(Math.floor(totalMin / 60)).padStart(2, '0')}:${String(totalMin % 60).padStart(2, '0')}`;
