@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quem Sou Eu — ProntPsi</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0a0f1a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+/* ── TOPO ── */
+.topo {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px; flex-shrink: 0;
+}
+.topo-titulo { font-size: 15px; font-weight: 900; color: #c4b5fd; }
+.topo-sub    { font-size: 10px; color: #334155; margin-top: 1px; }
+
+/* ── ABAS DE MODO ── */
+.abas {
+  display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap;
+}
+.aba-btn {
+  background: #141d2b; border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 8px; padding: 5px 14px; font-size: 12px; font-weight: 800;
+  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif;
+  transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+}
+.aba-btn .aba-idade {
+  font-size: 9px; font-weight: 700; padding: 1px 5px;
+  border-radius: 4px; background: rgba(139,92,246,0.15); color: #a78bfa;
+}
+.aba-btn.ativo { background: #3b1f8c; border-color: #7c3aed; color: #e0d5ff; }
+.aba-btn.ativo .aba-idade { background: rgba(196,181,253,0.2); color: #c4b5fd; }
+.aba-btn:hover:not(.ativo) { color: #94a3b8; border-color: rgba(139,92,246,0.35); }
+
+/* ── MODOS ── */
+.modo { display: none; }
+.modo.ativo { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+/* ══════════════════════════════════════════
+   MODO 1 — REVELAÇÃO PROGRESSIVA
+══════════════════════════════════════════ */
+.m1-layout { display: flex; gap: 12px; align-items: flex-start; flex: 1; }
+
+.m1-personagem-wrap {
+  width: 260px; flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
+}
+
+.m1-cena {
+  position: relative; width: 260px; height: 300px;
+  border-radius: 14px; overflow: hidden;
+  border: 2px solid rgba(139,92,246,0.3);
+  background: #0f1825;
+}
+
+.m1-personagem {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 160px; line-height: 1;
+  filter: brightness(0.15); /* começa escuro */
+  transition: filter 1s ease;
+}
+.m1-personagem.revelado { filter: brightness(1); }
+
+/* Peças que cobrem — grade 3x3 */
+.m1-pecas {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: repeat(3,1fr);
+  grid-template-rows: repeat(3,1fr);
+}
+.m1-peca {
+  background: #1a2535;
+  border: 1px solid #0a0f1a;
+  transition: all 0.5s ease;
+  cursor: default;
+  display: flex; align-items: center; justify-content: center;
+}
+.m1-peca.removida {
+  opacity: 0; pointer-events: none;
+  transform: scale(0.8);
+}
+.m1-peca-num { font-size: 14px; font-weight: 900; color: rgba(139,92,246,0.4); }
+
+/* Seletor de personagem */
+.m1-personagens {
+  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+}
+.m1-p-btn {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: #141d2b; border: 2px solid rgba(139,92,246,0.2);
+  font-size: 22px; cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.m1-p-btn:hover { border-color: rgba(139,92,246,0.6); background: #1e2a44; }
+.m1-p-btn.ativo { border-color: #7c3aed; background: #3b1f8c; }
+
+/* Painel direito modo 1 */
+.m1-painel {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.m1-pergunta-card {
+  background: #141d2b; border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 12px; padding: 14px;
+}
+.m1-pergunta-num {
+  font-size: 9px; color: #7c3aed; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+}
+.m1-pergunta-txt {
+  font-size: 16px; font-weight: 800; color: #e2e8f0;
+  line-height: 1.5; margin-bottom: 10px; min-height: 52px;
+}
+.m1-instrucao {
+  font-size: 11px; color: #475569; line-height: 1.5;
+  background: #0f1825; padding: 7px 9px; border-radius: 7px;
+  border-left: 2px solid rgba(139,92,246,0.3);
+}
+
+.m1-progresso {
+  display: flex; gap: 4px; flex-wrap: wrap;
+}
+.m1-prog-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #1a2535; border: 1px solid rgba(139,92,246,0.2);
+  transition: all 0.3s;
+}
+.m1-prog-dot.feito { background: #7c3aed; border-color: #a78bfa; }
+
+.m1-controles { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.m1-resposta-list {
+  flex: 1; background: #0f1825; border: 1px solid rgba(139,92,246,0.1);
+  border-radius: 10px; padding: 10px; overflow-y: auto; max-height: 180px;
+}
+.m1-resposta-titulo { font-size: 9px; color: #334155; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 7px; }
+.m1-resp-item {
+  font-size: 11px; color: #64748b; padding: 4px 0;
+  border-bottom: 1px solid rgba(139,92,246,0.07); line-height: 1.4;
+}
+.m1-resp-item:last-child { border-bottom: none; }
+.m1-resp-item strong { color: #a78bfa; }
+
+/* ══════════════════════════════════════════
+   MODO 2 — BARALHO DE PERGUNTAS
+══════════════════════════════════════════ */
+.m2-layout { display: flex; gap: 14px; align-items: flex-start; flex: 1; }
+
+.m2-baralho-wrap {
+  width: 280px; flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
+}
+
+.m2-carta {
+  width: 260px; height: 320px;
+  perspective: 800px; cursor: pointer;
+}
+.m2-carta-inner {
+  width: 100%; height: 100%;
+  position: relative; transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  border-radius: 18px;
+}
+.m2-carta-inner.virada { transform: rotateY(180deg); }
+
+.m2-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: 18px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.m2-verso {
+  background: linear-gradient(145deg, #1a1040 0%, #2d1060 100%);
+  border: 2px solid rgba(124,58,237,0.5);
+  gap: 10px;
+}
+.m2-verso-icon { font-size: 60px; }
+.m2-verso-txt  { font-size: 16px; font-weight: 900; color: #c4b5fd; }
+.m2-verso-sub  { font-size: 11px; color: #7c3aed; }
+
+.m2-frente {
+  transform: rotateY(180deg);
+  border: 2px solid transparent;
+  gap: 12px;
+}
+.m2-carta-categoria {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; padding: 3px 10px; border-radius: 20px;
+}
+.m2-carta-pergunta {
+  font-size: 18px; font-weight: 800; text-align: center;
+  line-height: 1.45; flex: 1; display: flex; align-items: center;
+}
+.m2-carta-dica {
+  font-size: 10px; text-align: center; line-height: 1.5; opacity: 0.7;
+}
+
+/* Categorias de carta */
+.cat-eu       { background: #1a1040; border-color: #7c3aed; }
+.cat-eu .m2-carta-categoria       { background: rgba(124,58,237,0.2); color: #c4b5fd; }
+.cat-eu .m2-carta-pergunta        { color: #e0d5ff; }
+
+.cat-familia  { background: #1a0f30; border-color: #ec4899; }
+.cat-familia .m2-carta-categoria  { background: rgba(236,72,153,0.2); color: #f9a8d4; }
+.cat-familia .m2-carta-pergunta   { color: #fce7f3; }
+
+.cat-sonhos   { background: #001a30; border-color: #60a5fa; }
+.cat-sonhos .m2-carta-categoria   { background: rgba(96,165,250,0.2); color: #93c5fd; }
+.cat-sonhos .m2-carta-pergunta    { color: #dbeafe; }
+
+.cat-emocoes  { background: #1a1000; border-color: #fbbf24; }
+.cat-emocoes .m2-carta-categoria  { background: rgba(251,191,36,0.2); color: #fde68a; }
+.cat-emocoes .m2-carta-pergunta   { color: #fef9c3; }
+
+.cat-superpoder { background: #001a10; border-color: #4ade80; }
+.cat-superpoder .m2-carta-categoria { background: rgba(74,222,128,0.2); color: #86efac; }
+.cat-superpoder .m2-carta-pergunta  { color: #dcfce7; }
+
+/* Pilha decorativa */
+.m2-pilha {
+  position: relative; width: 260px; height: 8px; margin-top: -4px;
+}
+.m2-pilha::before, .m2-pilha::after {
+  content:''; position:absolute;
+  width: 250px; height: 100%; border-radius: 0 0 18px 18px;
+  background: #1a1040; border: 2px solid rgba(124,58,237,0.3);
+  left: 50%; transform: translateX(-50%);
+}
+.m2-pilha::after { width: 240px; background: #141030; }
+
+.m2-contador {
+  font-size: 12px; color: #475569; font-weight: 700;
+  text-align: center;
+}
+
+/* Painel direito modo 2 */
+.m2-painel { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.m2-cat-filtros {
+  display: flex; gap: 5px; flex-wrap: wrap;
+}
+.m2-cat-btn {
+  background: #141d2b; border: 1px solid rgba(139,92,246,0.15);
+  border-radius: 6px; padding: 3px 10px; font-size: 10px; font-weight: 800;
+  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s;
+}
+.m2-cat-btn.ativo { background: #3b1f8c; border-color: #7c3aed; color: #ddd6fe; }
+.m2-cat-btn:hover:not(.ativo) { color: #94a3b8; }
+
+.m2-historico {
+  flex: 1; background: #0f1825; border: 1px solid rgba(139,92,246,0.1);
+  border-radius: 10px; padding: 10px; overflow-y: auto; max-height: 280px;
+}
+.m2-hist-titulo { font-size: 9px; color: #334155; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.m2-hist-item {
+  padding: 7px 8px; border-radius: 7px; margin-bottom: 5px;
+  border: 1px solid rgba(139,92,246,0.1); background: #141d2b;
+  font-size: 11px; color: #64748b; line-height: 1.4;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; } }
+.m2-hist-item strong { color: #a78bfa; display: block; margin-bottom: 2px; }
+
+/* ══════════════════════════════════════════
+   MODO 3 — MONTE SEU AVATAR
+══════════════════════════════════════════ */
+.m3-layout { display: flex; gap: 14px; align-items: flex-start; flex: 1; }
+
+.m3-avatar-wrap {
+  width: 220px; flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
+}
+
+.m3-avatar-preview {
+  width: 200px; height: 240px;
+  background: #141d2b; border: 2px solid rgba(139,92,246,0.3);
+  border-radius: 14px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px; padding: 12px;
+  position: relative;
+}
+.m3-avatar-emoji { font-size: 70px; line-height: 1; }
+.m3-avatar-nome  { font-size: 14px; font-weight: 900; color: #c4b5fd; text-align: center; }
+.m3-avatar-tags  { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; margin-top: 4px; }
+.m3-tag {
+  font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 10px;
+  background: rgba(139,92,246,0.15); color: #a78bfa;
+}
+
+.m3-avatar-nome-edit {
+  width: 100%; padding: 6px 10px; background: #0f1825;
+  border: 1px solid rgba(139,92,246,0.25); border-radius: 8px;
+  color: #e2e8f0; font-size: 13px; font-weight: 700;
+  font-family: 'Nunito', sans-serif; text-align: center;
+}
+.m3-avatar-nome-edit:focus { outline: none; border-color: #7c3aed; }
+
+/* Painel direito modo 3 */
+.m3-painel { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.m3-secao {
+  background: #141d2b; border: 1px solid rgba(139,92,246,0.15);
+  border-radius: 10px; padding: 10px;
+}
+.m3-secao-titulo {
+  font-size: 9px; color: #7c3aed; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+}
+.m3-opcoes { display: flex; gap: 5px; flex-wrap: wrap; }
+.m3-opt {
+  background: #0f1825; border: 2px solid rgba(139,92,246,0.15);
+  border-radius: 8px; padding: 5px 10px; font-size: 12px; font-weight: 700;
+  color: #64748b; cursor: pointer; transition: all 0.15s;
+  font-family: 'Nunito', sans-serif;
+}
+.m3-opt:hover { border-color: rgba(139,92,246,0.4); color: #94a3b8; }
+.m3-opt.selecionado { background: #3b1f8c; border-color: #7c3aed; color: #e0d5ff; }
+
+/* ── BOTÕES GERAIS ── */
+.btn-p {
+  background: #7c3aed; border: none; border-radius: 8px;
+  padding: 8px 16px; font-size: 12px; font-weight: 800;
+  color: #fff; cursor: pointer; font-family: 'Nunito', sans-serif; transition: background 0.15s;
+}
+.btn-p:hover { background: #6d28d9; }
+.btn-s {
+  background: transparent; border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 8px; padding: 8px 14px; font-size: 11px; font-weight: 800;
+  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s;
+}
+.btn-s:hover { border-color: rgba(139,92,246,0.5); color: #a78bfa; }
+.btn-verde {
+  background: #16a34a; border: none; border-radius: 8px;
+  padding: 8px 16px; font-size: 12px; font-weight: 800;
+  color: #fff; cursor: pointer; font-family: 'Nunito', sans-serif; transition: background 0.15s;
+}
+.btn-verde:hover { background: #15803d; }
+</style>
+</head>
+<body>
+
+<!-- TOPO -->
+<div class="topo">
+  <div>
+    <div class="topo-titulo">🪞 Quem Sou Eu?</div>
+    <div class="topo-sub">Escolha o modo conforme a idade e momento da sessão</div>
+  </div>
+</div>
+
+<!-- ABAS -->
+<div class="abas">
+  <button class="aba-btn ativo" onclick="setModo(1,this)">
+    🧩 Revelação Progressiva <span class="aba-idade">4–7 anos</span>
+  </button>
+  <button class="aba-btn" onclick="setModo(2,this)">
+    🃏 Baralho de Perguntas <span class="aba-idade">8–11 anos</span>
+  </button>
+  <button class="aba-btn" onclick="setModo(3,this)">
+    🎨 Monte seu Avatar <span class="aba-idade">12+ anos</span>
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODO 1 — REVELAÇÃO PROGRESSIVA
+══════════════════════════════════════════ -->
+<div class="modo ativo" id="modo-1">
+  <div class="m1-layout">
+
+    <!-- PERSONAGEM -->
+    <div class="m1-personagem-wrap">
+      <div class="m1-cena">
+        <div class="m1-personagem" id="m1-personagem">🦁</div>
+        <div class="m1-pecas" id="m1-pecas"></div>
+      </div>
+      <!-- Escolher personagem -->
+      <div class="m1-personagens" id="m1-personagens"></div>
+      <button class="btn-s" style="width:100%;" onclick="m1Reiniciar()">🔀 Recomeçar</button>
+    </div>
+
+    <!-- PAINEL -->
+    <div class="m1-painel">
+      <div class="m1-pergunta-card">
+        <div class="m1-pergunta-num" id="m1-perg-num">Pergunta 1 de 9</div>
+        <div class="m1-pergunta-txt" id="m1-perg-txt">Pronto! Vamos descobrir quem você é?</div>
+        <div class="m1-instrucao"   id="m1-instrucao">Clique em "Próxima pergunta" para começar. A cada resposta, uma peça do personagem é revelada!</div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <span style="font-size:10px;color:#334155;">Progresso:</span>
+        <div class="m1-progresso" id="m1-progresso"></div>
+      </div>
+
+      <div class="m1-controles">
+        <button class="btn-p" onclick="m1Avancar()">▶ Próxima pergunta</button>
+        <button class="btn-verde" onclick="m1Revelar()">✨ Revelar personagem!</button>
+      </div>
+
+      <div class="m1-resposta-list">
+        <div class="m1-resposta-titulo">💬 Respostas da sessão</div>
+        <div id="m1-respostas"><div class="m1-resp-item" style="color:#1a2535;">Ainda sem respostas...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODO 2 — BARALHO DE PERGUNTAS
+══════════════════════════════════════════ -->
+<div class="modo" id="modo-2">
+  <div class="m2-layout">
+
+    <!-- CARTA -->
+    <div class="m2-baralho-wrap">
+      <div class="m2-carta" id="m2-carta" onclick="m2VirarCarta()">
+        <div class="m2-carta-inner" id="m2-inner">
+          <div class="m2-face m2-verso">
+            <div class="m2-verso-icon">🃏</div>
+            <div class="m2-verso-txt">Quem Sou Eu?</div>
+            <div class="m2-verso-sub">Clique para revelar</div>
+          </div>
+          <div class="m2-face m2-frente cat-eu" id="m2-frente">
+            <div class="m2-carta-categoria" id="m2-cat">Sobre mim</div>
+            <div class="m2-carta-pergunta"  id="m2-perg">Qual é a sua cor favorita e por quê?</div>
+            <div class="m2-carta-dica"      id="m2-dica">Não existe resposta certa ou errada!</div>
+          </div>
+        </div>
+      </div>
+      <div class="m2-pilha"></div>
+      <div class="m2-contador" id="m2-contador">Carta 1 de 30</div>
+    </div>
+
+    <!-- PAINEL -->
+    <div class="m2-painel">
+      <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+        <span style="font-size:10px;color:#475569;">Filtrar:</span>
+        <div class="m2-cat-filtros" id="m2-filtros"></div>
+      </div>
+
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <button class="btn-p" onclick="m2Proxima()">▶ Próxima carta</button>
+        <button class="btn-s" onclick="m2Embaralhar()">🔀 Embaralhar</button>
+        <button class="btn-s" onclick="m2VirarCarta()">🔄 Virar</button>
+      </div>
+
+      <div class="m2-historico">
+        <div class="m2-hist-titulo">📋 Perguntas já usadas</div>
+        <div id="m2-historico-lista"><div style="font-size:11px;color:#1a2535;padding:4px;">Nenhuma ainda...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODO 3 — MONTE SEU AVATAR
+══════════════════════════════════════════ -->
+<div class="modo" id="modo-3">
+  <div class="m3-layout">
+
+    <!-- AVATAR PREVIEW -->
+    <div class="m3-avatar-wrap">
+      <div class="m3-avatar-preview">
+        <div class="m3-avatar-emoji" id="m3-emoji">🐺</div>
+        <div class="m3-avatar-nome"  id="m3-nome-preview">Meu personagem</div>
+        <div class="m3-avatar-tags"  id="m3-tags"></div>
+      </div>
+      <input class="m3-avatar-nome-edit" id="m3-nome-edit"
+             placeholder="Como se chama seu personagem?" value=""
+             oninput="document.getElementById('m3-nome-preview').textContent=this.value||'Meu personagem'">
+      <button class="btn-verde" style="width:100%;" onclick="m3Salvar()">💾 Salvar resumo</button>
+      <button class="btn-s" style="width:100%;margin-top:2px;" onclick="m3Reiniciar()">🔀 Recomeçar</button>
+    </div>
+
+    <!-- OPÇÕES -->
+    <div class="m3-painel">
+
+      <div class="m3-secao">
+        <div class="m3-secao-titulo">🐾 Qual animal te representa hoje?</div>
+        <div class="m3-opcoes" id="m3-animal"></div>
+      </div>
+
+      <div class="m3-secao">
+        <div class="m3-secao-titulo">⚡ Qual é o seu superpoder?</div>
+        <div class="m3-opcoes" id="m3-superpoder"></div>
+      </div>
+
+      <div class="m3-secao">
+        <div class="m3-secao-titulo">🌈 Como está sua energia agora?</div>
+        <div class="m3-opcoes" id="m3-energia"></div>
+      </div>
+
+      <div class="m3-secao">
+        <div class="m3-secao-titulo">🌍 Onde você prefere estar?</div>
+        <div class="m3-opcoes" id="m3-lugar"></div>
+      </div>
+
+      <div class="m3-secao">
+        <div class="m3-secao-titulo">💭 O que mais te importa?</div>
+        <div class="m3-opcoes" id="m3-valor"></div>
+      </div>
+
+      <!-- Resumo -->
+      <div id="m3-resumo" style="display:none; background:#0f1825; border:1px solid rgba(139,92,246,0.2); border-radius:10px; padding:12px;">
+        <div style="font-size:9px;color:#7c3aed;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">📋 Resumo do personagem</div>
+        <div id="m3-resumo-txt" style="font-size:12px;color:#94a3b8;line-height:1.7;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  NAVEGAÇÃO ENTRE MODOS
+// ════════════════════════════════════════
+function setModo(n, btn) {
+  document.querySelectorAll('.modo').forEach(m=>m.classList.remove('ativo'));
+  document.querySelectorAll('.aba-btn').forEach(b=>b.classList.remove('ativo'));
+  document.getElementById(`modo-${n}`).classList.add('ativo');
+  btn.classList.add('ativo');
+}
+
+// ════════════════════════════════════════
+//  MODO 1 — REVELAÇÃO PROGRESSIVA
+// ════════════════════════════════════════
+const M1_PERSONAGENS = [
+  '🦁','🐯','🐻','🦊','🐺','🦋','🦄','🐬','🦅','🐙','🦝','🐸'
+];
+
+const M1_PERGUNTAS = [
+  { txt:'Do que você mais gosta de fazer quando está em casa?',        instrucao:'Aguarde a criança responder. Cada resposta revela uma peça!' },
+  { txt:'Qual é a sua comida favorita?',                               instrucao:'Explore por que ela gosta dessa comida.' },
+  { txt:'Quem é a pessoa mais especial para você? Por quê?',          instrucao:'Observe com carinho quem ela menciona.' },
+  { txt:'Se você pudesse ter um superpoder, qual seria?',              instrucao:'O superpoder escolhido diz muito sobre os desejos da criança.' },
+  { txt:'O que te deixa muito feliz?',                                 instrucao:'Anote mentalmente os recursos positivos mencionados.' },
+  { txt:'O que te deixa triste ou chateado?',                         instrucao:'Escuta com atenção. Não minimize o sentimento.' },
+  { txt:'Se você fosse um animal, qual você seria e por quê?',        instrucao:'A escolha do animal revela como ela se vê.' },
+  { txt:'Qual é o seu maior sonho?',                                   instrucao:'Valorize o sonho, independente do tamanho.' },
+  { txt:'O que você gostaria que as pessoas soubessem sobre você?',   instrucao:'Última peça — a mais importante. Dê espaço para a resposta.' },
+];
+
+let m1PergAtual = -1;
+let m1PersonagemAtual = '🦁';
+let m1RespostasSessao = [];
+
+function m1Init() {
+  // Personagens
+  const wrap = document.getElementById('m1-personagens');
+  wrap.innerHTML = '';
+  M1_PERSONAGENS.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'm1-p-btn' + (p === m1PersonagemAtual ? ' ativo' : '');
+    btn.textContent = p;
+    btn.onclick = () => {
+      document.querySelectorAll('.m1-p-btn').forEach(b=>b.classList.remove('ativo'));
+      btn.classList.add('ativo');
+      m1PersonagemAtual = p;
+      document.getElementById('m1-personagem').textContent = p;
+    };
+    wrap.appendChild(btn);
+  });
+
+  // Progresso
+  const prog = document.getElementById('m1-progresso');
+  prog.innerHTML = '';
+  M1_PERGUNTAS.forEach(() => {
+    const d = document.createElement('div');
+    d.className = 'm1-prog-dot';
+    prog.appendChild(d);
+  });
+
+  m1Reiniciar();
+}
+
+function m1Reiniciar() {
+  m1PergAtual = -1;
+  m1RespostasSessao = [];
+  document.getElementById('m1-personagem').textContent = m1PersonagemAtual;
+  document.getElementById('m1-personagem').classList.remove('revelado');
+  document.getElementById('m1-perg-num').textContent = `Pergunta 1 de ${M1_PERGUNTAS.length}`;
+  document.getElementById('m1-perg-txt').textContent = 'Pronto! Vamos descobrir quem você é?';
+  document.getElementById('m1-instrucao').textContent = 'Clique em "Próxima pergunta" para começar. A cada resposta, uma peça do personagem é revelada!';
+  document.querySelectorAll('.m1-prog-dot').forEach(d=>d.classList.remove('feito'));
+  document.getElementById('m1-respostas').innerHTML = '<div class="m1-resp-item" style="color:#1a2535;">Ainda sem respostas...</div>';
+
+  // Recria peças
+  const pecas = document.getElementById('m1-pecas');
+  pecas.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const p = document.createElement('div');
+    p.className = 'm1-peca';
+    p.id = `m1-peca-${i}`;
+    p.innerHTML = `<span class="m1-peca-num">${i+1}</span>`;
+    pecas.appendChild(p);
+  }
+}
+
+function m1Avancar() {
+  if (m1PergAtual >= M1_PERGUNTAS.length - 1) return;
+  m1PergAtual++;
+
+  const perg = M1_PERGUNTAS[m1PergAtual];
+  document.getElementById('m1-perg-num').textContent = `Pergunta ${m1PergAtual+1} de ${M1_PERGUNTAS.length}`;
+  document.getElementById('m1-perg-txt').textContent = perg.txt;
+  document.getElementById('m1-instrucao').textContent = perg.instrucao;
+
+  // Remove a peça correspondente
+  const peca = document.getElementById(`m1-peca-${m1PergAtual}`);
+  if (peca) peca.classList.add('removida');
+
+  // Atualiza progresso
+  document.querySelectorAll('.m1-prog-dot')[m1PergAtual].classList.add('feito');
+
+  // Adiciona na lista de perguntas usadas
+  const lista = document.getElementById('m1-respostas');
+  if (m1PergAtual === 0) lista.innerHTML = '';
+  const item = document.createElement('div');
+  item.className = 'm1-resp-item';
+  item.innerHTML = `<strong>P${m1PergAtual+1}:</strong> ${perg.txt}`;
+  lista.appendChild(item);
+  lista.scrollTop = lista.scrollHeight;
+
+  // Última pergunta — revela personagem automaticamente
+  if (m1PergAtual === M1_PERGUNTAS.length - 1) {
+    setTimeout(m1Revelar, 1200);
+  }
+}
+
+function m1Revelar() {
+  document.getElementById('m1-personagem').classList.add('revelado');
+  document.querySelectorAll('.m1-peca').forEach(p=>p.classList.add('removida'));
+  document.querySelectorAll('.m1-prog-dot').forEach(d=>d.classList.add('feito'));
+}
+
+// ════════════════════════════════════════
+//  MODO 2 — BARALHO DE PERGUNTAS
+// ════════════════════════════════════════
+const M2_CARTAS = [
+  // Sobre mim (cat-eu)
+  { cat:'Sobre mim',    classe:'cat-eu',       perg:'Qual é a sua cor favorita e por quê?',                    dica:'Não existe resposta certa!' },
+  { cat:'Sobre mim',    classe:'cat-eu',       perg:'Se você fosse um personagem de filme, quem seria?',       dica:'Explore o porquê da escolha.' },
+  { cat:'Sobre mim',    classe:'cat-eu',       perg:'O que você faz muito bem?',                               dica:'Reforce as qualidades mencionadas.' },
+  { cat:'Sobre mim',    classe:'cat-eu',       perg:'O que as pessoas falam de você que você mais gosta?',     dica:'Trabalha autoimagem positiva.' },
+  { cat:'Sobre mim',    classe:'cat-eu',       perg:'Se você fosse um animal, qual seria? Por quê?',           dica:'A escolha revela como se vê.' },
+  { cat:'Sobre mim',    classe:'cat-eu',       perg:'Qual é a coisa mais corajosa que você já fez?',           dica:'Valorize qualquer resposta.' },
+  // Família e amigos (cat-familia)
+  { cat:'Família',      classe:'cat-familia',  perg:'Quem é a pessoa que mais te faz rir?',                   dica:'Observe os vínculos afetivos.' },
+  { cat:'Família',      classe:'cat-familia',  perg:'O que você mais gosta de fazer com sua família?',        dica:'Explore momentos positivos.' },
+  { cat:'Família',      classe:'cat-familia',  perg:'Como você mostra que gosta de alguém?',                  dica:'Trabalha linguagem do amor.' },
+  { cat:'Família',      classe:'cat-familia',  perg:'Se você pudesse passar um dia com qualquer pessoa, quem seria?', dica:'Observe a escolha com atenção.' },
+  { cat:'Família',      classe:'cat-familia',  perg:'Quem você chama quando está triste?',                    dica:'Mapeia a rede de apoio.' },
+  { cat:'Família',      classe:'cat-familia',  perg:'O que você mais admira na sua melhor amizade?',          dica:'Revela valores importantes.' },
+  // Sonhos (cat-sonhos)
+  { cat:'Sonhos',       classe:'cat-sonhos',   perg:'O que você quer ser quando crescer? E por quê?',         dica:'Acolha qualquer resposta.' },
+  { cat:'Sonhos',       classe:'cat-sonhos',   perg:'Se você tivesse uma varinha mágica, o que mudaria no mundo?', dica:'Revela valores e medos.' },
+  { cat:'Sonhos',       classe:'cat-sonhos',   perg:'Qual lugar no mundo você mais quer conhecer?',           dica:'Explore a curiosidade sobre o mundo.' },
+  { cat:'Sonhos',       classe:'cat-sonhos',   perg:'Se você pudesse aprender qualquer coisa agora, o que seria?', dica:'Mapeia interesses e motivações.' },
+  { cat:'Sonhos',       classe:'cat-sonhos',   perg:'Como seria seu dia perfeito?',                           dica:'Observe o que traz bem-estar.' },
+  { cat:'Sonhos',       classe:'cat-sonhos',   perg:'Se você fosse inventor(a), o que criaria?',              dica:'Estimula criatividade e autoeficácia.' },
+  // Emoções (cat-emocoes)
+  { cat:'Emoções',      classe:'cat-emocoes',  perg:'O que te deixa muito feliz? Dá um exemplo.',             dica:'Fortaleça recursos positivos.' },
+  { cat:'Emoções',      classe:'cat-emocoes',  perg:'Quando você fica com raiva, o que costuma fazer?',       dica:'Trabalha regulação emocional.' },
+  { cat:'Emoções',      classe:'cat-emocoes',  perg:'Qual situação te deixa com mais vergonha?',              dica:'Aborde com leveza e normalização.' },
+  { cat:'Emoções',      classe:'cat-emocoes',  perg:'O que você faz quando está triste para se sentir melhor?', dica:'Mapeia recursos de autocuidado.' },
+  { cat:'Emoções',      classe:'cat-emocoes',  perg:'Como você sabe quando alguém está triste?',              dica:'Trabalha empatia e leitura social.' },
+  { cat:'Emoções',      classe:'cat-emocoes',  perg:'Qual sentimento é mais difícil de lidar para você?',     dica:'Escuta com atenção especial.' },
+  // Superpoderes (cat-superpoder)
+  { cat:'Superpoderes', classe:'cat-superpoder', perg:'Se você tivesse um superpoder, qual seria e para que usaria?', dica:'Revela desejos e valores.' },
+  { cat:'Superpoderes', classe:'cat-superpoder', perg:'Qual é o seu ponto mais forte — sua superpotência?',   dica:'Reforce a autoestima.' },
+  { cat:'Superpoderes', classe:'cat-superpoder', perg:'O que você consegue fazer que as pessoas ao seu redor não conseguem tão bem?', dica:'Trabalha unicidade e valor pessoal.' },
+  { cat:'Superpoderes', classe:'cat-superpoder', perg:'Se você fosse um herói, qual seria seu maior inimigo a vencer?', dica:'Pode revelar medos ou desafios.' },
+  { cat:'Superpoderes', classe:'cat-superpoder', perg:'Qual é a coisa mais importante que você já ensinou para alguém?', dica:'Fortalece o senso de competência.' },
+  { cat:'Superpoderes', classe:'cat-superpoder', perg:'O que você faz que deixa as pessoas ao seu redor mais felizes?', dica:'Reforça o impacto positivo que tem.' },
+];
+
+const M2_TODAS_CATS = ['Todas', 'Sobre mim', 'Família', 'Sonhos', 'Emoções', 'Superpoderes'];
+let m2Deck = [], m2Idx = 0, m2Virada = false, m2CatFiltro = 'Todas', m2Historico = [];
+
+function m2Init() {
+  // Filtros
+  const filtros = document.getElementById('m2-filtros');
+  filtros.innerHTML = '';
+  M2_TODAS_CATS.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'm2-cat-btn' + (cat === 'Todas' ? ' ativo' : '');
+    btn.textContent = cat;
+    btn.onclick = () => {
+      document.querySelectorAll('.m2-cat-btn').forEach(b=>b.classList.remove('ativo'));
+      btn.classList.add('ativo');
+      m2CatFiltro = cat;
+      m2Embaralhar();
+    };
+    filtros.appendChild(btn);
+  });
+  m2Embaralhar();
+}
+
+function m2Embaralhar() {
+  const base = m2CatFiltro === 'Todas' ? M2_CARTAS : M2_CARTAS.filter(c=>c.cat===m2CatFiltro);
+  m2Deck = [...base].sort(() => Math.random() - 0.5);
+  m2Idx = 0; m2Virada = false; m2Historico = [];
+  document.getElementById('m2-historico-lista').innerHTML = '<div style="font-size:11px;color:#1a2535;padding:4px;">Nenhuma ainda...</div>';
+  m2MostrarCarta();
+  document.getElementById('m2-inner').classList.remove('virada');
+  m2Virada = false;
+}
+
+function m2MostrarCarta() {
+  if (m2Deck.length === 0) return;
+  const c = m2Deck[m2Idx % m2Deck.length];
+  const frente = document.getElementById('m2-frente');
+  frente.className = `m2-face m2-frente ${c.classe}`;
+  document.getElementById('m2-cat').textContent  = c.cat;
+  document.getElementById('m2-perg').textContent = c.perg;
+  document.getElementById('m2-dica').textContent = c.dica;
+  document.getElementById('m2-contador').textContent = `Carta ${(m2Idx % m2Deck.length)+1} de ${m2Deck.length}`;
+}
+
+function m2VirarCarta() {
+  const inner = document.getElementById('m2-inner');
+  m2Virada = !m2Virada;
+  if (m2Virada) inner.classList.add('virada');
+  else inner.classList.remove('virada');
+}
+
+function m2Proxima() {
+  const c = m2Deck[m2Idx % m2Deck.length];
+  // Adiciona ao histórico
+  const lista = document.getElementById('m2-historico-lista');
+  if (m2Historico.length === 0) lista.innerHTML = '';
+  m2Historico.push(c);
+  const item = document.createElement('div');
+  item.className = 'm2-hist-item';
+  item.innerHTML = `<strong>${c.cat}</strong>${c.perg}`;
+  lista.prepend(item);
+
+  m2Idx++;
+  m2Virada = false;
+  document.getElementById('m2-inner').classList.remove('virada');
+  setTimeout(m2MostrarCarta, 50);
+}
+
+// ════════════════════════════════════════
+//  MODO 3 — MONTE SEU AVATAR
+// ════════════════════════════════════════
+const M3_OPCOES = {
+  animal: [
+    {v:'🦁',l:'Leão — corajoso'},    {v:'🦋',l:'Borboleta — livre'},
+    {v:'🐺',l:'Lobo — leal'},         {v:'🦊',l:'Raposa — esperta'},
+    {v:'🐬',l:'Golfinho — alegre'},   {v:'🦅',l:'Águia — independente'},
+    {v:'🐻',l:'Urso — protetor'},     {v:'🐙',l:'Polvo — criativo'},
+    {v:'🦄',l:'Unicórnio — único'},   {v:'🐸',l:'Sapo — adaptável'},
+  ],
+  superpoder: [
+    {v:'💪',l:'Força'},      {v:'🧠',l:'Inteligência'},
+    {v:'❤️',l:'Empatia'},    {v:'⚡',l:'Velocidade'},
+    {v:'🌊',l:'Calma'},      {v:'🎨',l:'Criatividade'},
+    {v:'🔮',l:'Intuição'},   {v:'🛡️',l:'Proteção'},
+    {v:'🌟',l:'Inspirar'},   {v:'🤝',l:'Amizade'},
+  ],
+  energia: [
+    {v:'🔋',l:'Carregado(a)'},  {v:'😴',l:'Cansado(a)'},
+    {v:'🌪️',l:'Agitado(a)'},   {v:'🌊',l:'Tranquilo(a)'},
+    {v:'🌈',l:'Animado(a)'},    {v:'🌑',l:'Recolhido(a)'},
+    {v:'✨',l:'Esperançoso(a)'},{v:'😤',l:'Frustrado(a)'},
+  ],
+  lugar: [
+    {v:'🏠',l:'Em casa'},       {v:'🌳',l:'Na natureza'},
+    {v:'🏖️',l:'Na praia'},     {v:'🌌',l:'No espaço'},
+    {v:'🏔️',l:'Nas montanhas'},{v:'🎡',l:'Parque de diversões'},
+    {v:'📚',l:'Biblioteca'},    {v:'🎮',l:'No videogame'},
+  ],
+  valor: [
+    {v:'👨‍👩‍👧',l:'Família'},      {v:'👯',l:'Amizade'},
+    {v:'🎯',l:'Conquistas'},    {v:'🎨',l:'Criatividade'},
+    {v:'😄',l:'Diversão'},      {v:'❤️',l:'Amor'},
+    {v:'🏆',l:'Superação'},     {v:'🌍',l:'Justiça'},
+  ],
+};
+
+let m3Selecionado = { animal:null, superpoder:null, energia:null, lugar:null, valor:null };
+
+function m3Init() {
+  Object.entries(M3_OPCOES).forEach(([chave, opts]) => {
+    const wrap = document.getElementById(`m3-${chave}`);
+    wrap.innerHTML = '';
+    opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'm3-opt';
+      btn.textContent = `${opt.v} ${opt.l}`;
+      btn.onclick = () => {
+        wrap.querySelectorAll('.m3-opt').forEach(b=>b.classList.remove('selecionado'));
+        btn.classList.add('selecionado');
+        m3Selecionado[chave] = opt;
+        m3AtualizarAvatar();
+      };
+      wrap.appendChild(btn);
+    });
+  });
+}
+
+function m3AtualizarAvatar() {
+  const s = m3Selecionado;
+  // Emoji = animal escolhido
+  if (s.animal) document.getElementById('m3-emoji').textContent = s.animal.v;
+
+  // Tags
+  const tags = document.getElementById('m3-tags');
+  tags.innerHTML = '';
+  Object.values(s).filter(Boolean).forEach(opt => {
+    const tag = document.createElement('div');
+    tag.className = 'm3-tag';
+    tag.textContent = `${opt.v} ${opt.l}`;
+    tags.appendChild(tag);
+  });
+}
+
+function m3Salvar() {
+  const s = m3Selecionado;
+  const nome = document.getElementById('m3-nome-edit').value || 'Meu personagem';
+  const linhas = [
+    `👤 Nome: ${nome}`,
+    s.animal     ? `🐾 Animal: ${s.animal.v} ${s.animal.l}` : '',
+    s.superpoder ? `⚡ Superpoder: ${s.superpoder.v} ${s.superpoder.l}` : '',
+    s.energia    ? `🔋 Energia hoje: ${s.energia.v} ${s.energia.l}` : '',
+    s.lugar      ? `🌍 Lugar favorito: ${s.lugar.v} ${s.lugar.l}` : '',
+    s.valor      ? `💎 O que mais importa: ${s.valor.v} ${s.valor.l}` : '',
+  ].filter(Boolean);
+
+  document.getElementById('m3-resumo-txt').innerHTML = linhas.join('<br>');
+  document.getElementById('m3-resumo').style.display = 'block';
+}
+
+function m3Reiniciar() {
+  m3Selecionado = { animal:null, superpoder:null, energia:null, lugar:null, valor:null };
+  document.getElementById('m3-emoji').textContent = '🐺';
+  document.getElementById('m3-nome-preview').textContent = 'Meu personagem';
+  document.getElementById('m3-nome-edit').value = '';
+  document.getElementById('m3-tags').innerHTML = '';
+  document.getElementById('m3-resumo').style.display = 'none';
+  document.querySelectorAll('.m3-opt').forEach(b=>b.classList.remove('selecionado'));
+}
+
+// ════════ INICIALIZAR ════════
+m1Init();
+m2Init();
+m3Init();
+</script>
+</body>
+</html>
