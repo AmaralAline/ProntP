@@ -168,9 +168,16 @@
                                 <label for="start-datetime">Data e Hora de Início</label>
                                 <input type="datetime-local" id="start-datetime">
                             </div>
-                            <div>
-                                <label for="end-datetime">Data e Hora de Término</label>
-                                <input type="datetime-local" id="end-datetime">
+                            <div id="agenda-duracao-div">
+                                <label for="agenda-duracao">Duração da sessão</label>
+                                <select id="agenda-duracao" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    <option value="30">30 min</option>
+                                    <option value="45">45 min</option>
+                                    <option value="50" selected>50 min</option>
+                                    <option value="60">60 min</option>
+                                    <option value="90">90 min</option>
+                                    <option value="120">120 min</option>
+                                </select>
                             </div>
 
                             <!-- TOGGLE RECORRENTE -->

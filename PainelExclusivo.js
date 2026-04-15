@@ -486,13 +486,18 @@ if (agendaForm) {
 
         const paciente_id = document.getElementById('paciente-agenda')?.value;
         const data_hora_inicio = document.getElementById('start-datetime')?.value;
-        const data_hora_fim = document.getElementById('end-datetime')?.value;
+        const duracao = document.getElementById('agenda-duracao')?.value || '50';
         const observacoes = document.getElementById('descricao')?.value.trim();
 
-        if (!data_hora_inicio || !data_hora_fim) {
+        if (!data_hora_inicio) {
             document.getElementById('agenda-error').style.display = 'block';
             return;
         }
+
+        // Calcula fim automaticamente
+        const inicio = new Date(data_hora_inicio);
+        const fim = new Date(inicio.getTime() + parseInt(duracao) * 60000);
+        const data_hora_fim = fim.toISOString().slice(0, 16);
 
         try {
             const res = await fetch(`${API_URL}/api/agenda`, {
@@ -505,6 +510,7 @@ if (agendaForm) {
                 mostrarFeedback('agenda-error', '✅ Consulta agendada com sucesso!', 'sucesso');
                 agendaForm.reset();
                 await carregarAgendaHoje();
+                await carregarRecorrentes();
             } else {
                 mostrarFeedback('agenda-error', 'Erro ao agendar consulta.', 'erro');
             }
