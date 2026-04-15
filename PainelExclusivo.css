@@ -36,7 +36,13 @@ body {
     overflow-y: auto;
     z-index: 100;
     transition: transform 0.3s ease;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
 }
+
+    .sidebar::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
 
     .sidebar h2 {
         font-size: 16px;
@@ -339,15 +345,12 @@ select option {
    CLOCK
    ============================================================ */
 #clock-section {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 70vh;
 }
-
-    #clock-section.active-section {
-        display: flex;
-    }
 
 .clock-wrapper {
     text-align: center;
@@ -850,175 +853,6 @@ table {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
 }
-/* ============================================================
-   DASHBOARD SIDEBAR DIREITA (modo mini — quando outra aba está ativa)
-   ============================================================ */
-
-/* Quando há outra seção ativa, o main vira flex com sidebar direita */
-.main-content.com-dashboard-lateral {
-    display: flex;
-    gap: 0;
-    padding: 0;
-    align-items: stretch;
-}
-
-    /* Área de conteúdo principal quando sidebar direita está ativa */
-    .main-content.com-dashboard-lateral > section.active-section {
-        flex: 1;
-        padding: 32px;
-        min-width: 0;
-    }
-
-/* Sidebar direita — painel resumido */
-.dashboard-lateral {
-    display: none;
-    width: 240px;
-    min-width: 240px;
-    background: #111927;
-    border-left: 1px solid rgba(139, 92, 246, 0.15);
-    padding: 24px 16px;
-    flex-direction: column;
-    gap: 16px;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-}
-
-.main-content.com-dashboard-lateral .dashboard-lateral {
-    display: flex;
-}
-
-.dashboard-lateral-titulo {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #475569;
-    font-weight: 600;
-    margin-bottom: 4px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-}
-
-/* Cards mini na sidebar direita */
-.dash-mini-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #1a2332;
-    border: 1px solid rgba(139, 92, 246, 0.12);
-    border-radius: 10px;
-    padding: 12px 14px;
-    transition: border-color 0.2s;
-}
-
-    .dash-mini-card:hover {
-        border-color: rgba(139, 92, 246, 0.3);
-    }
-
-.dash-mini-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 15px;
-}
-
-.dash-mini-label {
-    font-size: 10px;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
-}
-
-.dash-mini-value {
-    font-size: 20px;
-    font-weight: 700;
-    color: #f1f5f9;
-    line-height: 1;
-}
-
-/* Relógio mini na sidebar direita */
-.dash-lateral-relogio {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding: 16px 0 12px;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-    margin-bottom: 4px;
-}
-
-.dash-lateral-saudacao {
-    font-size: 12px;
-    color: #64748b;
-    text-align: center;
-}
-
-.dash-lateral-nome {
-    font-size: 13px;
-    font-weight: 600;
-    color: #c4b5fd;
-    text-align: center;
-}
-
-/* Próximas consultas mini */
-.dash-lateral-agenda-titulo {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #475569;
-    font-weight: 600;
-    margin-top: 4px;
-}
-
-.dash-lateral-consulta {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    background: #0f1621;
-    border-radius: 8px;
-    padding: 10px 12px;
-    border-left: 2px solid #8b5cf6;
-}
-
-.dash-lateral-hora {
-    font-size: 11px;
-    font-weight: 600;
-    color: #a78bfa;
-}
-
-.dash-lateral-paciente {
-    font-size: 12px;
-    color: #cbd5e1;
-}
-
-@media (max-width: 1100px) {
-    .dashboard-lateral {
-        width: 200px;
-        min-width: 200px;
-    }
-}
-
-@media (max-width: 900px) {
-    .dashboard-lateral {
-        display: none !important;
-    }
-
-    .main-content.com-dashboard-lateral {
-        display: block;
-        padding: 20px 16px;
-    }
-
-        .main-content.com-dashboard-lateral > section.active-section {
-            padding: 0;
-        }
-}
-
 /* ============================================================
    DASHBOARD
    ============================================================ */
