@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-recibos', section: 'recibos-section' },
         { btn: 'btn-perfil', section: 'perfil-section' },
         { btn: 'btn-relatorio-convenio', section: 'relatorio-convenio-section' },
+        { btn: 'btn-recursos-terapeuticos', section: 'recursos-terapeuticos-section' },
     ];
     function mostrarSecao(id) {
         document.querySelectorAll('.active-section, .hidden-section').forEach(s => {
@@ -1786,3 +1787,57 @@ async function encerrarRecorrente(id) {
         carregarRecorrentes();
     } catch (err) { alert('Erro ao encerrar.'); }
 }
+// ---- JOGOS ---- //
+// Mapa de jogos disponíveis
+const JOGOS = {
+    'memoria-emocoes': {
+        titulo: '🎴 Memória das Emoções',
+        arquivo: 'jogo-memoria-emocoes.html'
+    },
+    'quem-sou-eu': {
+        titulo: '🪞 Quem Sou Eu?',
+        arquivo: 'jogo-quem-sou-eu.html'
+    },
+    'termometro': {
+        titulo: '🌡️ Termômetro das Emoções',
+        arquivo: 'jogo-termometro.html'
+    },
+    'memoria-comidas': {
+        titulo: '🥦 Memória Saudável',
+        arquivo: 'jogo-memoria-comidas.html'
+    },
+    'sete-erros': {
+        titulo: '🔍 Jogo dos 7 Erros',
+        arquivo: 'jogo-sete-erros.html'
+    },
+    'respiracao': {
+        titulo: '🫧 Bolha da Respiração',
+        arquivo: 'jogo-respiracao.html'
+    }
+};
+
+function abrirJogo(id) {
+    const jogo = JOGOS[id];
+    if (!jogo) return;
+    const modal = document.getElementById('jogo-modal');
+    const iframe = document.getElementById('jogo-iframe');
+    const titulo = document.getElementById('jogo-titulo-modal');
+    if (!modal || !iframe || !titulo) return;
+    titulo.textContent = jogo.titulo;
+    iframe.src = jogo.arquivo;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharJogo() {
+    const modal = document.getElementById('jogo-modal');
+    const iframe = document.getElementById('jogo-iframe');
+    if (modal) modal.style.display = 'none';
+    if (iframe) iframe.src = '';
+    document.body.style.overflow = '';
+}
+
+// Fecha com ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharJogo();
+});

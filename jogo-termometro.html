@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termômetro das Emoções — ProntPsi</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin:0; padding:0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0a0f1a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 24px 20px;
+}
+
+h2 { font-size: 21px; font-weight: 900; color: #c4b5fd; margin-bottom: 4px; }
+.sub { font-size: 13px; color: #475569; margin-bottom: 24px; }
+
+.layout {
+  display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start;
+}
+
+/* TERMÔMETRO */
+.termometro-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  flex-shrink: 0;
+}
+
+.term-label-topo { font-size: 12px; color: #f87171; font-weight: 800; }
+.term-label-base { font-size: 12px; color: #34d399; font-weight: 800; }
+
+.term-container {
+  position: relative;
+  width: 56px;
+  height: 300px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.term-trilho {
+  position: absolute;
+  width: 24px;
+  height: 100%;
+  background: #141d2b;
+  border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.term-fill {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  border-radius: 12px;
+  transition: height 0.15s, background 0.3s;
+}
+
+.term-thumb {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(139,92,246,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  cursor: grab;
+  background: #1a2332;
+  transition: bottom 0.15s, background 0.3s, border-color 0.3s;
+  z-index: 10;
+}
+.term-thumb:active { cursor: grabbing; transform: translate(-50%, 50%) scale(1.12); }
+
+.term-marcas {
+  position: absolute; right: -28px; top: 0; bottom: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  font-size: 10px; color: #334155; font-weight: 700;
+}
+
+/* PAINEL DIREITO */
+.painel {
+  flex: 1; min-width: 220px;
+}
+
+.emocao-card {
+  background: #141d2b;
+  border: 2px solid rgba(139,92,246,0.2);
+  border-radius: 14px; padding: 18px;
+  margin-bottom: 16px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.emocao-emoji { font-size: 48px; line-height: 1; margin-bottom: 8px; display: block; }
+.emocao-nome { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+.emocao-intensidade { font-size: 13px; color: #64748b; margin-bottom: 10px; }
+.emocao-desc { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; }
+.emocao-pergunta {
+  font-size: 13px; color: #c4b5fd; font-weight: 700;
+  background: #1a2332; padding: 10px 12px; border-radius: 8px;
+  border-left: 3px solid #7c3aed; line-height: 1.6;
+}
+
+.escala-visual {
+  display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.escala-btn {
+  flex: 1; min-width: 36px; padding: 8px 4px;
+  border-radius: 8px; border: 1px solid rgba(139,92,246,0.15);
+  cursor: pointer; font-size: 11px; font-weight: 800;
+  color: #475569; background: #141d2b;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.15s; text-align: center;
+}
+.escala-btn:hover { border-color: rgba(139,92,246,0.4); color: #94a3b8; }
+.escala-btn.selecionado { color: #fff; border-color: transparent; }
+
+.instrucao {
+  font-size: 13px; color: #334155; text-align: center;
+  padding: 8px 0;
+}
+</style>
+</head>
+<body>
+
+<h2>🌡️ Termômetro das Emoções</h2>
+<p class="sub">Arraste o termômetro para mostrar como você está se sentindo agora</p>
+
+<div class="layout">
+
+  <!-- TERMÔMETRO -->
+  <div class="termometro-wrap">
+    <span class="term-label-topo">🔴 Muito intenso</span>
+    <div class="term-container" id="term-container">
+      <div class="term-trilho" id="term-trilho">
+        <div class="term-fill" id="term-fill" style="height:40%; background:linear-gradient(to top,#34d399,#fbbf24);"></div>
+      </div>
+      <div class="term-thumb" id="term-thumb" style="bottom:40%; font-size:20px;">😐</div>
+      <div class="term-marcas">
+        <span>100</span>
+        <span>80</span>
+        <span>60</span>
+        <span>40</span>
+        <span>20</span>
+        <span>0</span>
+      </div>
+    </div>
+    <span class="term-label-base">🟢 Tranquilo</span>
+  </div>
+
+  <!-- PAINEL -->
+  <div class="painel">
+    <div class="escala-visual" id="escala-visual"></div>
+
+    <div class="emocao-card" id="emocao-card">
+      <span class="emocao-emoji" id="em-emoji">😐</span>
+      <div class="emocao-nome" id="em-nome">Neutro</div>
+      <div class="emocao-intensidade" id="em-int">Nível: 40%</div>
+      <div class="emocao-desc" id="em-desc">Movimente o termômetro para cima ou para baixo.</div>
+      <div class="emocao-pergunta" id="em-pergunta">💬 Como você está se sentindo agora?</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NIVEIS = [
+  { min:0,  max:10,  emoji:'😴', nome:'Calmo',         cor:'#34d399', bg:'rgba(52,211,153,0.08)',  border:'rgba(52,211,153,0.35)',  fill:'linear-gradient(to top,#059669,#34d399)',
+    desc:'Você está muito tranquilo e relaxado. Isso é ótimo!', pergunta:'O que está te deixando tão calmo? Você gosta de se sentir assim?' },
+  { min:11, max:25,  emoji:'😊', nome:'Bem',           cor:'#6ee7b7', bg:'rgba(110,231,183,0.07)', border:'rgba(110,231,183,0.3)',  fill:'linear-gradient(to top,#059669,#6ee7b7)',
+    desc:'Você está se sentindo bem! É um estado agradável.',   pergunta:'O que aconteceu hoje que te deixou assim?' },
+  { min:26, max:45,  emoji:'🙂', nome:'Ok',            cor:'#a78bfa', bg:'rgba(167,139,250,0.07)', border:'rgba(167,139,250,0.3)',  fill:'linear-gradient(to top,#7c3aed,#a78bfa)',
+    desc:'Você está ok, nem mal nem muito bem.',                pergunta:'Tem alguma coisa que poderia te fazer sentir melhor agora?' },
+  { min:46, max:60,  emoji:'😐', nome:'Neutro',        cor:'#94a3b8', bg:'rgba(148,163,184,0.07)', border:'rgba(148,163,184,0.25)', fill:'linear-gradient(to top,#475569,#94a3b8)',
+    desc:'Você está em um estado neutro no momento.',          pergunta:'Como você preferiria estar se sentindo agora?' },
+  { min:61, max:75,  emoji:'😟', nome:'Preocupado',    cor:'#fbbf24', bg:'rgba(251,191,36,0.07)',  border:'rgba(251,191,36,0.3)',   fill:'linear-gradient(to top,#d97706,#fbbf24)',
+    desc:'Você está um pouco ansioso ou preocupado.',           pergunta:'O que está te preocupando? Quer conversar sobre isso?' },
+  { min:76, max:88,  emoji:'😰', nome:'Muito ansioso', cor:'#fb923c', bg:'rgba(251,146,60,0.08)',  border:'rgba(251,146,60,0.35)',  fill:'linear-gradient(to top,#ea580c,#fb923c)',
+    desc:'Você está sentindo bastante ansiedade ou estresse.',  pergunta:'O que está acontecendo? Como eu posso te ajudar agora?' },
+  { min:89, max:100, emoji:'😱', nome:'Sobrecarregado',cor:'#f87171', bg:'rgba(248,113,113,0.1)',  border:'rgba(248,113,113,0.4)',  fill:'linear-gradient(to top,#dc2626,#f87171)',
+    desc:'Você está se sentindo muito intensamente agora.',     pergunta:'Vamos respirar juntos? Me conta o que está sentindo.' },
+];
+
+let valor = 40;
+let arrastando = false;
+
+const thumb = document.getElementById('term-thumb');
+const fill = document.getElementById('term-fill');
+const trilho = document.getElementById('term-trilho');
+
+function getNivel(v) { return NIVEIS.find(n => v >= n.min && v <= n.max) || NIVEIS[3]; }
+
+function atualizar(v) {
+  valor = Math.max(0, Math.min(100, Math.round(v)));
+  const n = getNivel(valor);
+
+  fill.style.height = valor + '%';
+  fill.style.background = n.fill;
+  thumb.style.bottom = valor + '%';
+  thumb.textContent = n.emoji;
+  thumb.style.background = n.bg.replace('0.0', '0.3');
+  thumb.style.borderColor = n.border;
+
+  document.getElementById('em-emoji').textContent = n.emoji;
+  document.getElementById('em-nome').textContent = n.nome;
+  document.getElementById('em-int').textContent = `Nível: ${valor}%`;
+  document.getElementById('em-desc').textContent = n.desc;
+  document.getElementById('em-pergunta').textContent = `💬 ${n.pergunta}`;
+
+  const card = document.getElementById('emocao-card');
+  card.style.background = n.bg;
+  card.style.borderColor = n.border;
+
+  // escala
+  document.querySelectorAll('.escala-btn').forEach((btn, i) => {
+    const ativo = NIVEIS[i] === n;
+    btn.classList.toggle('selecionado', ativo);
+    btn.style.background = ativo ? n.bg.replace('0.0','0.4') : '#141d2b';
+    btn.style.borderColor = ativo ? n.border : 'rgba(139,92,246,0.15)';
+    btn.style.color = ativo ? '#fff' : '#475569';
+  });
+}
+
+// Renderiza botões de escala
+const escalaDiv = document.getElementById('escala-visual');
+NIVEIS.forEach((n, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'escala-btn';
+  btn.textContent = n.emoji;
+  btn.title = n.nome;
+  btn.onclick = () => atualizar((n.min + n.max) / 2);
+  escalaDiv.appendChild(btn);
+});
+
+// Eventos de arrastar no trilho
+function posParaValor(clientY) {
+  const rect = trilho.getBoundingClientRect();
+  const y = clientY - rect.top;
+  const pct = 1 - (y / rect.height);
+  return Math.round(pct * 100);
+}
+
+trilho.addEventListener('mousedown', e => { arrastando = true; atualizar(posParaValor(e.clientY)); });
+thumb.addEventListener('mousedown', e => { arrastando = true; e.preventDefault(); });
+document.addEventListener('mousemove', e => { if (arrastando) atualizar(posParaValor(e.clientY)); });
+document.addEventListener('mouseup', () => { arrastando = false; });
+
+trilho.addEventListener('touchstart', e => { arrastando = true; atualizar(posParaValor(e.touches[0].clientY)); }, {passive:true});
+thumb.addEventListener('touchstart', e => { arrastando = true; }, {passive:true});
+document.addEventListener('touchmove', e => { if (arrastando) atualizar(posParaValor(e.touches[0].clientY)); }, {passive:true});
+document.addEventListener('touchend', () => { arrastando = false; });
+
+atualizar(40);
+</script>
+</body>
+</html>
