@@ -17,10 +17,10 @@
             background: #0a0f1a;
             color: #e2e8f0;
             min-height: 100vh;
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 7px;
         }
 
         .topo {
@@ -111,31 +111,32 @@
             color: #34d399;
         }
 
-        /* CORPO */
+        /* ── CORPO: tabuleiro grande + painel pequeno ── */
         .corpo {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: flex-start;
         }
 
-        /* TABULEIRO — cartas com tamanho FIXO */
+        /* TABULEIRO — ocupa o máximo */
         .tabuleiro {
             display: grid;
             gap: 8px;
-            flex-shrink: 0;
+            flex: 1; /* cresce */
+            min-width: 0;
         }
 
-        /* Carta com tamanho fixo em px */
+        /* Carta tamanho fixo */
         .carta-wrap {
-            width: 88px;
-            height: 108px;
+            width: 96px;
+            height: 116px;
             perspective: 600px;
             cursor: pointer;
             flex-shrink: 0;
         }
 
             .carta-wrap:hover .carta-inner:not(.virada):not(.par) {
-                filter: brightness(1.15);
+                filter: brightness(1.18);
             }
 
         .carta-inner {
@@ -143,8 +144,8 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.38s cubic-bezier(.4,0,.2,1);
-            border-radius: 10px;
+            transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+            border-radius: 12px;
         }
 
             .carta-inner.virada, .carta-inner.par {
@@ -155,7 +156,7 @@
             position: absolute;
             inset: 0;
             backface-visibility: hidden;
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -165,12 +166,12 @@
 
         .carta-verso {
             background: linear-gradient(145deg, #1a2540 0%, #221852 100%);
-            border-color: rgba(124,58,237,0.5);
+            border-color: rgba(124,58,237,0.55);
             gap: 4px;
         }
 
         .carta-numero {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 900;
             color: #a78bfa;
             line-height: 1;
@@ -178,50 +179,50 @@
 
         .carta-verso-dica {
             font-size: 9px;
-            color: rgba(139,92,246,0.45);
+            color: rgba(139,92,246,0.5);
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
         .carta-frente {
             transform: rotateY(180deg);
-            gap: 4px;
+            gap: 6px;
             padding: 6px;
         }
 
             .carta-frente.par-encontrado {
                 border-color: #34d399 !important;
-                box-shadow: 0 0 14px rgba(52,211,153,0.3);
+                box-shadow: 0 0 16px rgba(52,211,153,0.3);
             }
-
+        /* Emoji GRANDE na frente */
         .carta-emoji {
-            font-size: 30px;
+            font-size: 38px;
             line-height: 1;
         }
 
         .carta-nome {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 800;
             text-align: center;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.92);
             line-height: 1.2;
             max-width: 90%;
         }
 
-        /* PAINEL */
+        /* ── PAINEL LATERAL — compacto ── */
         .painel {
-            flex: 1;
-            min-width: 0;
+            width: 170px;
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 7px;
         }
 
         .painel-emocao {
             background: #141d2b;
             border: 1px solid rgba(139,92,246,0.2);
             border-radius: 10px;
-            padding: 12px;
+            padding: 10px;
         }
 
         .painel-titulo {
@@ -230,21 +231,21 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .placeholder {
-            font-size: 11px;
+            font-size: 10px;
             color: #334155;
             text-align: center;
-            padding: 8px 0;
+            padding: 6px 0;
             line-height: 1.5;
         }
 
         .detalhe {
             display: none;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
             .detalhe.visivel {
@@ -252,23 +253,23 @@
             }
 
         .em-nome {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 900;
             color: #fff;
         }
 
         .em-desc {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748b;
             line-height: 1.5;
         }
 
         .em-pergunta {
-            font-size: 11px;
+            font-size: 10px;
             color: #c4b5fd;
             font-weight: 700;
             background: #1a2332;
-            padding: 8px 10px;
+            padding: 7px 8px;
             border-radius: 7px;
             border-left: 3px solid #7c3aed;
             line-height: 1.6;
@@ -284,8 +285,8 @@
             background: #7c3aed;
             border: none;
             border-radius: 8px;
-            padding: 9px 6px;
-            font-size: 12px;
+            padding: 9px 5px;
+            font-size: 11px;
             font-weight: 800;
             color: #fff;
             cursor: pointer;
@@ -301,8 +302,8 @@
             background: transparent;
             border: 1px solid rgba(139,92,246,0.25);
             border-radius: 8px;
-            padding: 9px 12px;
-            font-size: 11px;
+            padding: 9px 10px;
+            font-size: 10px;
             font-weight: 800;
             color: #64748b;
             cursor: pointer;
@@ -392,6 +393,7 @@
         <button class="nivel-btn ativo" onclick="setNivel('facil',this)">Fácil — 6 cartas</button>
         <button class="nivel-btn" onclick="setNivel('medio',this)">Médio — 12 cartas</button>
         <button class="nivel-btn" onclick="setNivel('dificil',this)">Difícil — 16 cartas</button>
+        <button class="nivel-btn" onclick="setNivel('expert',this)">Expert — 20 cartas</button>
     </div>
 
     <div class="banner" id="banner"></div>
@@ -402,7 +404,7 @@
         <div class="painel">
             <div class="painel-emocao">
                 <div class="painel-titulo">💬 Emoção descoberta</div>
-                <div class="placeholder" id="placeholder">Vire um par de cartas para ver a pergunta terapêutica</div>
+                <div class="placeholder" id="placeholder">Vire um par para ver a pergunta</div>
                 <div class="detalhe" id="detalhe">
                     <div class="em-nome" id="det-nome"></div>
                     <div class="em-desc" id="det-desc"></div>
@@ -410,8 +412,8 @@
                 </div>
             </div>
             <div class="controles">
-                <button class="btn-p" onclick="novoJogo()">🔀 Novo jogo</button>
-                <button class="btn-s" onclick="revelarTodas()">👁 Ver todas</button>
+                <button class="btn-p" onclick="novoJogo()">🔀 Novo</button>
+                <button class="btn-s" onclick="revelarTodas()">👁 Ver</button>
             </div>
         </div>
     </div>
@@ -436,46 +438,57 @@
             },
             {
                 emoji: '😢', nome: 'Tristeza', cor: '#bfdbfe', bg: '#001433',
-                desc: 'Uma sensação de perda ou mágoa. É normal sentir tristeza.',
+                desc: 'Uma sensação de perda ou mágoa.',
                 pergunta: 'O que costuma te deixar triste? Como você se cuida?'
             },
             {
                 emoji: '😠', nome: 'Raiva', cor: '#fca5a5', bg: '#200000',
-                desc: 'Sentir-se irritado. A raiva tem uma mensagem importante.',
+                desc: 'Sentir-se irritado. A raiva tem uma mensagem.',
                 pergunta: 'O que te faz sentir raiva? O que ajuda a acalmar?'
             },
             {
                 emoji: '😨', nome: 'Medo', cor: '#c4b5fd', bg: '#12003a',
-                desc: 'Uma sensação de insegurança. O medo existe para proteger.',
+                desc: 'Sensação de insegurança. O medo nos protege.',
                 pergunta: 'De que você tem medo? Quem te ajuda quando está com medo?'
             },
             {
                 emoji: '😮', nome: 'Surpresa', cor: '#fdba74', bg: '#1a0f00',
-                desc: 'Algo inesperado aconteceu! Pode ser boa ou ruim.',
+                desc: 'Algo inesperado aconteceu!',
                 pergunta: 'Qual foi a última surpresa? Foi boa ou ruim?'
             },
             {
                 emoji: '🥰', nome: 'Amor', cor: '#fbcfe8', bg: '#200010',
-                desc: 'Um sentimento quentinho de carinho por alguém especial.',
-                pergunta: 'Quem ou o que você ama muito? Como demonstra esse amor?'
+                desc: 'Carinho quentinho por alguém especial.',
+                pergunta: 'Quem você ama muito? Como demonstra esse amor?'
             },
             {
                 emoji: '😌', nome: 'Calma', cor: '#6ee7b7', bg: '#001a10',
-                desc: 'Sentir-se tranquilo, seguro e em paz.',
+                desc: 'Sentir-se tranquilo e em paz.',
                 pergunta: 'O que te deixa calmo? Como você cria esses momentos?'
             },
             {
                 emoji: '🤩', nome: 'Empolgação', cor: '#fef08a', bg: '#181200',
-                desc: 'Uma energia animada quando algo emocionante vai acontecer!',
+                desc: 'Energia animada para algo emocionante!',
                 pergunta: 'O que te deixa empolgado? O que você está animado para fazer?'
+            },
+            {
+                emoji: '😔', nome: 'Frustração', cor: '#fcd34d', bg: '#1a1200',
+                desc: 'Quando as coisas não saem como queremos.',
+                pergunta: 'Quando você se sentiu frustrado? O que você fez?'
+            },
+            {
+                emoji: '😳', nome: 'Vergonha', cor: '#fda4af', bg: '#200010',
+                desc: 'Uma sensação intensa de timidez.',
+                pergunta: 'O que te deixa com vergonha? Como você lida com isso?'
             },
         ];
 
-        // Colunas e tamanho de carta por nível
+        // colunas por nível e qtd de pares
         const CFG = {
-            facil: { qtd: 3, cols: 3, cardW: 88, cardH: 108 },
-            medio: { qtd: 6, cols: 6, cardW: 82, cardH: 100 },
-            dificil: { qtd: 8, cols: 8, cardW: 76, cardH: 94 },
+            facil: { qtd: 3, cols: 3 },
+            medio: { qtd: 6, cols: 4 },
+            dificil: { qtd: 8, cols: 5 },
+            expert: { qtd: 10, cols: 5 },
         };
 
         let nivel = 'facil', cartas = [], viradas = [], pares = [], jogadas = 0, travado = false;
@@ -506,29 +519,21 @@
             document.getElementById('win').classList.remove('visivel');
 
             const tab = document.getElementById('tabuleiro');
-            tab.style.gridTemplateColumns = `repeat(${cfg.cols}, ${cfg.cardW}px)`;
-
-            // Ajusta tamanho de todas as cartas
-            document.querySelectorAll('.carta-wrap').forEach(c => {
-                c.style.width = cfg.cardW + 'px';
-                c.style.height = cfg.cardH + 'px';
-            });
-
+            tab.style.gridTemplateColumns = `repeat(${cfg.cols}, 96px)`;
             tab.innerHTML = '';
+
             cartas.forEach((carta, idx) => {
                 const wrap = document.createElement('div');
                 wrap.className = 'carta-wrap';
-                wrap.style.width = cfg.cardW + 'px';
-                wrap.style.height = cfg.cardH + 'px';
                 wrap.innerHTML = `
           <div class="carta-inner" id="ci-${idx}">
             <div class="carta-face carta-verso">
-              <div class="carta-numero" style="font-size:${cfg.cardW > 80 ? 28 : 22}px">${idx + 1}</div>
+              <div class="carta-numero">${idx + 1}</div>
               <div class="carta-verso-dica">VIRAR</div>
             </div>
-            <div class="carta-face carta-frente" style="background:${carta.bg};border-color:${carta.cor}55;">
-              <div class="carta-emoji" style="font-size:${cfg.cardW > 80 ? 28 : 22}px">${carta.emoji}</div>
-              <div class="carta-nome" style="font-size:${cfg.cardW > 80 ? 10 : 9}px">${carta.nome}</div>
+            <div class="carta-face carta-frente" style="background:${carta.bg};border-color:${carta.cor}60;">
+              <div class="carta-emoji">${carta.emoji}</div>
+              <div class="carta-nome">${carta.nome}</div>
             </div>
           </div>`;
                 wrap.addEventListener('click', () => clicar(idx));
@@ -540,7 +545,6 @@
             if (travado || viradas.includes(idx) || pares.includes(idx)) return;
             document.getElementById(`ci-${idx}`).classList.add('virada');
             viradas.push(idx);
-
             if (viradas.length === 2) {
                 jogadas++; travado = true; atualizarStats();
                 const [a, b] = viradas;
