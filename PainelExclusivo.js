@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-agenda-online', section: 'agenda-online-section' },
         { btn: 'btn-recibos', section: 'recibos-section' },
         { btn: 'btn-perfil', section: 'perfil-section' },
+        { btn: 'btn-relatorio-convenio', section: 'relatorio-convenio-section' },
     ];
     function mostrarSecao(id) {
         document.querySelectorAll('.active-section, .hidden-section').forEach(s => {
@@ -93,6 +94,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (id === 'recibos-section') {
             popularSelectRecibos();
             carregarRecibos();
+        }
+        if (id === 'relatorio-convenio-section') {
+            carregarConvenios();
         }
         if (id === 'perfil-section') {
             inicializarCanvas();
