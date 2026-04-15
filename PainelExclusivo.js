@@ -51,15 +51,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-perfil', section: 'perfil-section' },
     ];
     function mostrarSecao(id) {
-        document.querySelectorAll('section').forEach(s => {
-            s.style.display = 'none';
+        document.querySelectorAll('.active-section, .hidden-section').forEach(s => {
+            s.classList.remove('active-section');
+            s.classList.add('hidden-section');
         });
         const alvo = document.getElementById(id);
-        if (alvo) alvo.style.display = 'block';
+        if (alvo) {
+            alvo.classList.remove('hidden-section');
+            alvo.classList.add('active-section');
+        }
 
+        document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
+        const btnAtivo = document.querySelector(`[aria-controls="${id}"]`);
+        if (btnAtivo) btnAtivo.classList.add('active');
+
+        if (id === 'agenda-section') {
+            carregarAgendaHoje();
+            carregarRecorrentes();
+        }
+        if (id === 'agenda-online-section') {
+            carregarLinkAgendamento();
+            const grid = document.getElementById('dias-grid');
+            if (!grid || grid.children.length === 0) renderizarDiasConfig();
+            carregarDisponibilidade();
+            carregarAgendamentosOnline();
+        }
         if (id === 'termos-section') {
             popularSelectTermos();
             carregarTermos();
+        }
+        if (id === 'form-section') {
+            carregarEscalas();
         }
         if (id === 'resultados-section') {
             carregarResultados();
@@ -67,15 +89,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (id === 'evolucao-section') {
             carregarConvenios();
-        }
-        if (id === 'agenda-online-section') {
-            carregarLinkAgendamento();
-            const grid = document.getElementById('dias-grid');
-            if (!grid || grid.children.length === 0) {
-                renderizarDiasConfig();
-            }
-            carregarDisponibilidade();
-            carregarAgendamentosOnline();
         }
         if (id === 'recibos-section') {
             popularSelectRecibos();
@@ -85,10 +98,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             inicializarCanvas();
             carregarAssinaturaSalva();
         }
-        if (id === 'agenda-section') {
-            carregarRecorrentes();
-        }
-        
     }
     botoes.forEach(({ btn, section }) => {
         const el = document.getElementById(btn);
