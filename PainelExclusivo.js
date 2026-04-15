@@ -1869,3 +1869,158 @@ function fecharJogo() {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') fecharJogo();
 });
+/* ============================================================
+   PATCH: Bug Report / Suporte
+   Adicione este bloco no final do PainelExclusivo.js
+   OU inclua como <script defer src="bug-report.js"></script>
+   ============================================================ */
+
+// --- Estado do modal ---
+let bugTipoSelecionado = 'erro';
+
+function abrirModalBug() {
+    const modal = document.getElementById('modal-bug-report');
+    if (!modal) return;
+
+    // Reset
+    document.getElementById('bug-titulo').value = '';
+    document.getElementById('bug-descricao').value = '';
+    document.getElementById('bug-contato').value = '';
+    document.getElementById('bug-sucesso').style.display = 'none';
+    document.querySelector('.modal-bug-body').style.display = 'flex';
+    document.querySelector('.modal-bug-footer').style.display = 'flex';
+
+    // Preenche info técnica
+    preencherInfoTecnica();
+
+    // Reseta tipo selecionado
+    bugTipoSelecionado = 'erro';
+    document.querySelectorAll('.bug-tipo-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.tipo === 'erro');
+    });
+
+    modal.style.display = 'flex';
+    setTimeout(() => document.getElementById('bug-titulo')?.focus(), 100);
+}
+
+function fecharModalBug() {
+    const modal = document.getElementById('modal-bug-report');
+    if (modal) modal.style.display = 'none';
+}
+
+function preencherInfoTecnica() {
+    const preview = document.getElementById('bug-info-preview');
+    if (!preview) return;
+
+    const info = coletarInfoTecnica();
+    preview.textContent = [
+        `Página:      ${info.pagina}`,
+        `Seção ativa: ${info.secao}`,
+        `Navegador:   ${info.navegador}`,
+        `Tela:        ${info.tela}`,
+        `Data/Hora:   ${info.dataHora}`,
+        `Profissional:${info.profissional}`,
+    ].join('\n');
+}
+
+function coletarInfoTecnica() {
+    // Descobre qual seção está ativa pelo botão com class "active" na sidebar
+    const btnAtivo = document.querySelector('.sidebar button.active');
+    const secaoAtiva = btnAtivo ? btnAtivo.textContent.trim() : 'Desconhecida';
+
+    // Tenta pegar nome do profissional logado
+    let nomeProfissional = 'Não identificado';
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            nomeProfissional = payload.nome || payload.email || 'Não identificado';
+        }
+    } catch (_) { }
+
+    return {
+        pagina: window.location.href,
+        secao: secaoAtiva,
+        navegador: navigator.userAgent,
+        tela: `${window.innerWidth}x${window.innerHeight}`,
+        dataHora: new Date().toLocaleString('pt-BR'),
+        profissional: nomeProfissional,
+    };
+}
+
+// Seleção de tipo de problema
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.bug-tipo-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.bug-tipo-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            bugTipoSelecionado = btn.dataset.tipo;
+        });
+    });
+
+    // Fechar ao clicar fora
+    document.getElementById('modal-bug-report')?.addEventListener('click', (e) => {
+        if (e.target.id === 'modal-bug-report') fecharModalBug();
+    });
+
+    // Fechar com ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') fecharModalBug();
+    });
+});
+
+async function enviarBugReport() {
+    const titulo = document.getElementById('bug-titulo').value.trim();
+    const descricao = document.getElementById('bug-descricao').value.trim();
+    const contato = document.getElementById('bug-contato').value.trim();
+
+    if (!titulo) {
+        document.getElementById('bug-titulo').focus();
+        mostrarToast('Por favor, adicione um título para o problema.', 'aviso');
+        return;
+    }
+    if (!descricao) {
+        document.getElementById('bug-descricao').focus();
+        mostrarToast('Por favor, descreva o problema antes de enviar.', 'aviso');
+        return;
+    }
+
+    const btnEnviar = document.getElementById('btn-enviar-bug-submit');
+    btnEnviar.disabled = true;
+    btnEnviar.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando...';
+
+    const infoTecnica = coletarInfoTecnica();
+    const token = localStorage.getItem('token');
+
+    try {
+        const resp = await fetch(`${API_URL}/api/suporte/bug`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify({
+                tipo: bugTipoSelecionado,
+                titulo,
+                descricao,
+                contato: contato || null,
+                info: infoTecnica
+            })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) throw new Error(data.erro || 'Erro ao enviar.');
+
+        // Mostra sucesso
+        document.querySelector('.modal-bug-body').style.display = 'none';
+        document.querySelector('.modal-bug-footer').style.display = 'none';
+        document.getElementById('bug-sucesso').style.display = 'flex';
+
+    } catch (err) {
+        mostrarToast('Não foi possível enviar o relatório. Tente novamente.', 'erro');
+    } finally {
+        btnEnviar.disabled = false;
+        btnEnviar.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar relatório';
+    }
+}
