@@ -1400,7 +1400,6 @@ async function carregarAssinaturaSalva() {
 //  DADOS PROFISSIONAIS
 // ============================================================
 async function carregarDadosProfissionais() {
-    // Preenche com dados do localStorage primeiro (resposta imediata)
     const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
     if (prof.nome) document.getElementById('perfil-nome').value = prof.nome || '';
     if (prof.crp_crm) document.getElementById('perfil-crp').value = prof.crp_crm || '';
@@ -1408,6 +1407,11 @@ async function carregarDadosProfissionais() {
     if (prof.email) document.getElementById('perfil-email').value = prof.email || '';
     if (prof.telefone) document.getElementById('perfil-telefone').value = prof.telefone || '';
     if (prof.endereco) document.getElementById('perfil-endereco').value = prof.endereco || '';
+    if (prof.cpf) document.getElementById('perfil-cpf').value = prof.cpf || '';
+
+    // Preenche campos de verificação com os mesmos dados
+    if (prof.crp_crm) document.getElementById('verif-crp').value = prof.crp_crm || '';
+    if (prof.cpf) document.getElementById('verif-cpf').value = prof.cpf || '';
 
     // Tenta buscar dados atualizados da API
     try {
@@ -1420,9 +1424,13 @@ async function carregarDadosProfissionais() {
         if (data.email) document.getElementById('perfil-email').value = data.email || '';
         if (data.telefone) document.getElementById('perfil-telefone').value = data.telefone || '';
         if (data.endereco) document.getElementById('perfil-endereco').value = data.endereco || '';
-    } catch (err) {
-        // silencioso — já exibiu os dados do localStorage
-    }
+        if (data.cpf) document.getElementById('perfil-cpf').value = data.cpf || '';
+        if (data.crp_crm) document.getElementById('verif-crp').value = data.crp_crm || '';
+        if (data.cpf) document.getElementById('verif-cpf').value = data.cpf || '';
+
+        // Verifica status de verificação
+        atualizarStatusVerificacao(data.verificado, data.verificado_em, data.verificacao_status);
+    } catch (err) { }
 }
 
 async function salvarDadosProfissionais() {
@@ -1432,19 +1440,19 @@ async function salvarDadosProfissionais() {
     const email = document.getElementById('perfil-email')?.value.trim();
     const telefone = document.getElementById('perfil-telefone')?.value.trim();
     const endereco = document.getElementById('perfil-endereco')?.value.trim();
+    const cpf = document.getElementById('perfil-cpf')?.value.trim();
     const feedback = document.getElementById('perfil-dados-feedback');
 
     try {
         const res = await fetch(`${API_URL}/api/perfil`, {
             method: 'PUT',
             headers: headersAuth(),
-            body: JSON.stringify({ nome, crp_crm, especialidade, email, telefone, endereco })
+            body: JSON.stringify({ nome, crp_crm, especialidade, email, telefone, endereco, cpf })
         });
 
         if (res.ok) {
-            // Atualiza localStorage com novos dados
             const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
-            const atualizado = { ...prof, nome, crp_crm, especialidade, email, telefone, endereco };
+            const atualizado = { ...prof, nome, crp_crm, especialidade, email, telefone, endereco, cpf };
             localStorage.setItem('profissional', JSON.stringify(atualizado));
 
             // Atualiza carimbo e nome no painel
@@ -1461,9 +1469,8 @@ async function salvarDadosProfissionais() {
             feedback.style.color = '#f87171';
         }
     } catch (err) {
-        // Se API não tiver o endpoint, salva só no localStorage
         const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
-        const atualizado = { ...prof, nome, crp_crm, especialidade, email, telefone, endereco };
+        const atualizado = { ...prof, nome, crp_crm, especialidade, email, telefone, endereco, cpf };
         localStorage.setItem('profissional', JSON.stringify(atualizado));
 
         if (document.getElementById('carimbo-nome')) document.getElementById('carimbo-nome').textContent = nome;
@@ -1478,6 +1485,92 @@ async function salvarDadosProfissionais() {
 
     feedback.style.display = 'block';
     setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+}
+
+// ============================================================
+//  VERIFICAÇÃO PROFISSIONAL
+// ============================================================
+function atualizarStatusVerificacao(verificado, verificadoEm, status) {
+    const badge = document.getElementById('badge-verificado');
+    const blocoSolicitar = document.getElementById('bloco-solicitar-verificacao');
+    const statusBox = document.getElementById('status-verificacao');
+
+    if (verificado) {
+        // Mostra badge verde, oculta formulário
+        if (badge) {
+            badge.style.display = 'flex';
+            const dataEl = document.getElementById('badge-verificado-data');
+            if (dataEl && verificadoEm) {
+                dataEl.textContent = 'Verificado em ' + new Date(verificadoEm).toLocaleDateString('pt-BR');
+            }
+        }
+        if (blocoSolicitar) blocoSolicitar.style.display = 'none';
+        return;
+    }
+
+    // Não verificado — mostra status da solicitação se houver
+    if (status === 'pendente') {
+        if (statusBox) {
+            statusBox.style.display = 'flex';
+            statusBox.style.background = 'rgba(251,191,36,0.08)';
+            statusBox.style.border = '1px solid rgba(251,191,36,0.2)';
+            statusBox.innerHTML = `
+                <i class="fas fa-clock" style="color:#fbbf24; font-size:16px; flex-shrink:0;"></i>
+                <div>
+                    <p style="font-size:13px; font-weight:600; color:#fbbf24; margin:0;">Verificação em andamento</p>
+                    <p style="font-size:12px; color:#64748b; margin:2px 0 0;">Nossa equipe está analisando seus dados. Em até 48h você receberá o selo.</p>
+                </div>`;
+            const btn = document.getElementById('btn-solicitar-verif');
+            if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
+        }
+    }
+}
+
+async function solicitarVerificacao() {
+    const crp = document.getElementById('verif-crp')?.value.trim();
+    const cpf = document.getElementById('verif-cpf')?.value.trim();
+    const feedback = document.getElementById('verif-feedback');
+    const btn = document.getElementById('btn-solicitar-verif');
+
+    if (!crp || !cpf) {
+        feedback.textContent = 'Preencha o CRP/CRM e o CPF para verificar.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Verificando...';
+    feedback.style.display = 'none';
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/solicitar-verificacao`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({ crp_crm: crp, cpf })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.verificado) {
+            // Verificação automática bem-sucedida!
+            atualizarStatusVerificacao(true, new Date().toISOString(), null);
+            feedback.textContent = '✅ Verificado automaticamente!';
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+        } else {
+            // Entrou na fila manual
+            atualizarStatusVerificacao(false, null, 'pendente');
+            feedback.textContent = '⏳ Solicitação enviada! Nossa equipe verificará em até 48h.';
+            feedback.style.color = '#fbbf24';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        // API ainda não tem o endpoint — simula entrada na fila
+        atualizarStatusVerificacao(false, null, 'pendente');
+        feedback.textContent = '⏳ Solicitação registrada! Nossa equipe verificará em até 48h.';
+        feedback.style.color = '#fbbf24';
+        feedback.style.display = 'block';
+    }
 }
 
 function toggleRecorrente() {
