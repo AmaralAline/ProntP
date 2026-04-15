@@ -1,601 +1,858 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogo dos 7 Erros — ProntPsi</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo dos 7 Erros — ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-html, body {
-  height: 100%; width: 100%;
-  font-family: 'Nunito', sans-serif;
-  background: #0a0f1a;
-  color: #e2e8f0;
-  overflow: hidden;
-}
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #0a0f1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
 
-body {
-  display: flex; flex-direction: column;
-  padding: 10px 14px; gap: 7px;
-}
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
 
-/* TOPO */
-.topo {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0; gap: 8px; flex-wrap: wrap;
-}
-.topo-titulo { font-size: 15px; font-weight: 900; color: #fbbf24; }
-.topo-sub    { font-size: 10px; color: #334155; margin-top: 1px; }
+        .topo-titulo {
+            font-size: 15px;
+            font-weight: 900;
+            color: #fbbf24;
+        }
 
-.stats { display: flex; gap: 6px; align-items: center; }
-.stat-pill {
-  background: #141d2b; border: 1px solid rgba(251,191,36,0.25);
-  border-radius: 20px; padding: 3px 11px;
-  font-size: 11px; font-weight: 800; color: #fbbf24;
-}
-.stat-pill span { color: #475569; font-weight: 400; font-size: 10px; }
+        .topo-sub {
+            font-size: 10px;
+            color: #334155;
+            margin-top: 1px;
+        }
 
-/* NIVEL */
-.nivel-bar { display: flex; gap: 5px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
-.nivel-label { font-size: 10px; color: #475569; }
-.nivel-btn {
-  background: #141d2b; border: 1px solid rgba(251,191,36,0.2);
-  border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 800;
-  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s;
-}
-.nivel-btn.ativo { background: #3a2800; border-color: #d97706; color: #fde68a; }
-.nivel-btn:hover:not(.ativo) { color: #94a3b8; }
+        .stats {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
 
-/* BANNER */
-.banner {
-  text-align: center; padding: 5px 10px; border-radius: 7px;
-  font-size: 12px; font-weight: 800; display: none; flex-shrink: 0;
-}
-.banner.ok  { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.35); color: #34d399; }
-.banner.err { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.35); color: #f87171; }
+        .stat-pill {
+            background: #141d2b;
+            border: 1px solid rgba(251,191,36,0.25);
+            border-radius: 20px;
+            padding: 3px 11px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #fbbf24;
+        }
 
-/* ARENA — dois painéis lado a lado */
-.arena {
-  flex: 1; min-height: 0;
-  display: flex; gap: 10px; overflow: hidden;
-}
+            .stat-pill span {
+                color: #475569;
+                font-weight: 400;
+                font-size: 10px;
+            }
 
-.cena-wrap {
-  flex: 1; min-width: 0;
-  display: flex; flex-direction: column; gap: 5px;
-}
-.cena-label {
-  font-size: 10px; font-weight: 800; color: #475569;
-  text-align: center; text-transform: uppercase; letter-spacing: 0.8px; flex-shrink: 0;
-}
+        .nivel-bar {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-.cena {
-  position: relative; flex: 1; min-height: 0;
-  border-radius: 12px; overflow: hidden;
-  border: 2px solid rgba(251,191,36,0.18);
-  background: #141d2b;
-  cursor: default;
-}
+        .nivel-label {
+            font-size: 10px;
+            color: #475569;
+        }
 
-/* A cena B fica clicável */
-.cena.clicavel { cursor: crosshair; }
+        .nivel-btn {
+            background: #141d2b;
+            border: 1px solid rgba(251,191,36,0.2);
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748b;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.15s;
+        }
 
-/* SVG ocupa 100% */
-.cena svg {
-  width: 100%; height: 100%;
-  display: block;
-}
+            .nivel-btn.ativo {
+                background: #3a2800;
+                border-color: #d97706;
+                color: #fde68a;
+            }
 
-/* Marcador de erro encontrado */
-.marcador {
-  position: absolute;
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  border: 3px solid #34d399;
-  background: rgba(52,211,153,0.18);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  animation: pulseIn 0.35s ease;
-}
-@keyframes pulseIn {
-  from { transform: translate(-50%,-50%) scale(0.3); opacity:0; }
-  to   { transform: translate(-50%,-50%) scale(1);   opacity:1; }
-}
+            .nivel-btn:hover:not(.ativo) {
+                color: #94a3b8;
+            }
 
-/* BARRA LATERAL DIREITA — progresso */
-.painel-lateral {
-  width: 160px; flex-shrink: 0;
-  display: flex; flex-direction: column; gap: 7px; overflow: hidden;
-}
+        .banner {
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 800;
+            display: none;
+        }
 
-.erros-card {
-  background: #141d2b; border: 1px solid rgba(251,191,36,0.18);
-  border-radius: 10px; padding: 10px; flex: 1; overflow: auto;
-}
-.erros-titulo {
-  font-size: 9px; color: #d97706; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
-}
-.erros-lista { display: flex; flex-direction: column; gap: 5px; }
-.erro-item {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 11px; color: #475569; line-height: 1.3;
-  padding: 5px 7px; border-radius: 7px;
-  border: 1px solid rgba(251,191,36,0.1);
-  background: #0f1621;
-  transition: all 0.3s;
-}
-.erro-item.encontrado {
-  color: #34d399;
-  background: rgba(52,211,153,0.07);
-  border-color: rgba(52,211,153,0.25);
-}
-.erro-check {
-  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
-  border: 2px solid #334155;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; transition: all 0.3s;
-}
-.erro-item.encontrado .erro-check {
-  background: #34d399; border-color: #34d399; color: #0a0f1a;
-}
+            .banner.ok {
+                background: rgba(52,211,153,0.12);
+                border: 1px solid rgba(52,211,153,0.4);
+                color: #34d399;
+            }
 
-.btn-novo {
-  background: #d97706; border: none; border-radius: 8px;
-  padding: 8px; font-size: 12px; font-weight: 800;
-  color: #fff; cursor: pointer; font-family: 'Nunito', sans-serif;
-  transition: background 0.15s; flex-shrink: 0;
-}
-.btn-novo:hover { background: #b45309; }
+            .banner.err {
+                background: rgba(248,113,113,0.12);
+                border: 1px solid rgba(248,113,113,0.4);
+                color: #f87171;
+            }
 
-.btn-dica {
-  background: transparent; border: 1px solid rgba(251,191,36,0.25);
-  border-radius: 8px; padding: 7px; font-size: 11px; font-weight: 800;
-  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif;
-  transition: all 0.15s; flex-shrink: 0;
-}
-.btn-dica:hover { border-color: rgba(251,191,36,0.5); color: #fbbf24; }
+        /* ARENA */
+        .arena {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
 
-/* WIN */
-#win {
-  display: none; position: fixed; inset: 0;
-  background: rgba(10,15,26,0.97);
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 14px; text-align: center; padding: 24px; z-index: 30;
-}
-#win.visivel { display: flex; }
-.win-trofeu { font-size: 58px; }
-.win-titulo { font-size: 24px; font-weight: 900; color: #fbbf24; }
-.win-sub    { font-size: 13px; color: #475569; }
-.win-stats  { display: flex; gap: 12px; justify-content: center; }
-.win-stat   { background: #141d2b; border: 1px solid rgba(251,191,36,0.2); border-radius: 10px; padding: 10px 20px; }
-.win-stat-val { font-size: 24px; font-weight: 900; color: #fbbf24; }
-.win-stat-lab { font-size: 10px; color: #475569; }
-</style>
+        .cenas {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cena-wrap {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cena-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #475569;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .cena {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid rgba(251,191,36,0.18);
+            background: #0d1520;
+            line-height: 0;
+        }
+
+            .cena.clicavel {
+                cursor: crosshair;
+            }
+
+            .cena svg {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+        .marcador {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid #34d399;
+            background: rgba(52,211,153,0.2);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: pop 0.3s ease;
+        }
+
+        @keyframes pop {
+            from {
+                transform: translate(-50%,-50%) scale(0.2);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate(-50%,-50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* PAINEL LATERAL */
+        .painel {
+            width: 156px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .erros-card {
+            background: #141d2b;
+            border: 1px solid rgba(251,191,36,0.18);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .erros-titulo {
+            font-size: 9px;
+            color: #d97706;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .erros-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .erro-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.3;
+            padding: 5px 7px;
+            border-radius: 7px;
+            border: 1px solid rgba(251,191,36,0.1);
+            background: #0f1621;
+            transition: all 0.3s;
+        }
+
+            .erro-item.encontrado {
+                color: #34d399;
+                background: rgba(52,211,153,0.07);
+                border-color: rgba(52,211,153,0.25);
+            }
+
+        .erro-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            transition: all 0.3s;
+        }
+
+        .erro-item.encontrado .erro-check {
+            background: #34d399;
+            border-color: #34d399;
+            color: #0a0f1a;
+        }
+
+        .btn-dica {
+            background: transparent;
+            border: 1px solid rgba(251,191,36,0.25);
+            border-radius: 8px;
+            padding: 7px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748b;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.15s;
+        }
+
+            .btn-dica:hover {
+                border-color: rgba(251,191,36,0.5);
+                color: #fbbf24;
+            }
+
+        .btn-novo {
+            background: #d97706;
+            border: none;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: background 0.15s;
+        }
+
+            .btn-novo:hover {
+                background: #b45309;
+            }
+
+        /* WIN */
+        #win {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,15,26,0.97);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            text-align: center;
+            padding: 24px;
+            z-index: 30;
+        }
+
+            #win.visivel {
+                display: flex;
+            }
+
+        .win-trofeu {
+            font-size: 56px;
+        }
+
+        .win-titulo {
+            font-size: 22px;
+            font-weight: 900;
+            color: #fbbf24;
+        }
+
+        .win-sub {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .win-stats {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .win-stat {
+            background: #141d2b;
+            border: 1px solid rgba(251,191,36,0.2);
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+
+        .win-stat-val {
+            font-size: 22px;
+            font-weight: 900;
+            color: #fbbf24;
+        }
+
+        .win-stat-lab {
+            font-size: 10px;
+            color: #475569;
+        }
+    </style>
 </head>
 <body>
 
-<div class="topo">
-  <div>
-    <div class="topo-titulo">🔍 Jogo dos 7 Erros</div>
-    <div class="topo-sub">Clique nas diferenças na imagem da direita</div>
-  </div>
-  <div class="stats">
-    <div class="stat-pill" id="stat-enc">0 <span>encontrados</span></div>
-    <div class="stat-pill" id="stat-total">7 <span>erros</span></div>
-  </div>
-</div>
-
-<div class="nivel-bar">
-  <span class="nivel-label">Cena:</span>
-  <button class="nivel-btn ativo" onclick="setCena(0,this)">🏠 Quarto</button>
-  <button class="nivel-btn"       onclick="setCena(1,this)">🌳 Parque</button>
-  <button class="nivel-btn"       onclick="setCena(2,this)">🐠 Fundo do Mar</button>
-</div>
-
-<div class="banner" id="banner"></div>
-
-<div class="arena">
-
-  <!-- IMAGEM A (original) -->
-  <div class="cena-wrap">
-    <div class="cena-label">🖼 Original</div>
-    <div class="cena" id="cena-a">
-      <svg id="svg-a" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="topo">
+        <div>
+            <div class="topo-titulo">🔍 Jogo dos 7 Erros</div>
+            <div class="topo-sub">Clique nas diferenças na imagem da direita</div>
+        </div>
+        <div class="stats">
+            <div class="stat-pill" id="stat-enc">0 <span>encontrados</span></div>
+            <div class="stat-pill" id="stat-tot">7 <span>erros</span></div>
+        </div>
     </div>
-  </div>
 
-  <!-- IMAGEM B (com erros, clicável) -->
-  <div class="cena-wrap">
-    <div class="cena-label">🔍 Encontre os erros aqui</div>
-    <div class="cena clicavel" id="cena-b" onclick="clicarCenaB(event)">
-      <svg id="svg-b" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="nivel-bar">
+        <span class="nivel-label">Cena:</span>
+        <button class="nivel-btn ativo" onclick="setCena(0,this)">🏠 Quarto</button>
+        <button class="nivel-btn" onclick="setCena(1,this)">🌳 Parque</button>
+        <button class="nivel-btn" onclick="setCena(2,this)">🐠 Mar</button>
     </div>
-  </div>
 
-  <!-- PAINEL LATERAL -->
-  <div class="painel-lateral">
-    <div class="erros-card">
-      <div class="erros-titulo">🎯 Erros para achar</div>
-      <div class="erros-lista" id="erros-lista"></div>
+    <div class="banner" id="banner"></div>
+
+    <div class="arena">
+        <div class="cenas">
+            <div class="cena-wrap">
+                <div class="cena-label">🖼 Original</div>
+                <div class="cena" id="cena-a">
+                    <svg id="svg-a" viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg"></svg>
+                </div>
+            </div>
+            <div class="cena-wrap">
+                <div class="cena-label">🔍 Encontre os erros aqui</div>
+                <div class="cena clicavel" id="cena-b" onclick="clicarB(event)">
+                    <svg id="svg-b" viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg"></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="painel">
+            <div class="erros-card">
+                <div class="erros-titulo">🎯 7 diferenças</div>
+                <div class="erros-lista" id="erros-lista"></div>
+            </div>
+            <button class="btn-dica" onclick="dica()">💡 Dica</button>
+            <button class="btn-novo" onclick="novoJogo()">🔀 Nova cena</button>
+        </div>
     </div>
-    <button class="btn-dica" onclick="darDica()">💡 Dica</button>
-    <button class="btn-novo" onclick="novoJogo()">🔀 Nova cena</button>
-  </div>
-</div>
 
-<div id="win">
-  <div class="win-trofeu">🎉</div>
-  <div class="win-titulo">Parabéns!</div>
-  <div class="win-sub">Todos os erros foram encontrados!</div>
-  <div class="win-stats">
-    <div class="win-stat"><div class="win-stat-val" id="win-tempo">-</div><div class="win-stat-lab">segundos</div></div>
-    <div class="win-stat"><div class="win-stat-val">7</div><div class="win-stat-lab">erros</div></div>
-  </div>
-  <button class="btn-novo" style="width:180px;padding:10px;" onclick="novoJogo()">🔀 Nova cena</button>
-</div>
+    <div id="win">
+        <div class="win-trofeu">🎉</div>
+        <div class="win-titulo">Parabéns!</div>
+        <div class="win-sub">Você encontrou todas as diferenças!</div>
+        <div class="win-stats">
+            <div class="win-stat"><div class="win-stat-val" id="win-t">-</div><div class="win-stat-lab">segundos</div></div>
+            <div class="win-stat"><div class="win-stat-val">7</div><div class="win-stat-lab">diferenças</div></div>
+        </div>
+        <button class="btn-novo" style="width:180px;padding:10px;" onclick="novoJogo()">🔀 Nova cena</button>
+    </div>
 
-<script>
-// ============================================================
-// CENAS — cada cena é definida como SVG com base e diferenças
-// ============================================================
-const CENAS = [
+    <script>
+        // ─────────────────────────────────────────────────────────────
+        // REGRA DE OURO: toda diferença é uma TROCA DE COR FORTE
+        // Nenhum elemento "some" — apenas muda de cor visivelmente
+        // ─────────────────────────────────────────────────────────────
 
-  // ── CENA 0: QUARTO ────────────────────────────────────────
-  {
-    nome: 'Quarto',
-    // SVG base compartilhado por A e B
-    base: `
-      <rect width="500" height="360" fill="#1a2535"/>
-      <!-- parede / chão -->
-      <rect x="0" y="270" width="500" height="90" fill="#0f1825"/>
-      <line x1="0" y1="270" x2="500" y2="270" stroke="#2a3a50" stroke-width="2"/>
-      <!-- janela -->
-      <rect x="30" y="40" width="120" height="100" rx="4" fill="#1e3a5f" stroke="#2a5080" stroke-width="2"/>
-      <line x1="90" y1="40" x2="90" y2="140" stroke="#2a5080" stroke-width="1.5"/>
-      <line x1="30" y1="90" x2="150" y2="90" stroke="#2a5080" stroke-width="1.5"/>
-      <!-- sol na janela -->
-      <circle cx="70" cy="70" r="18" fill="#fde68a" opacity="0.8"/>
-      <!-- cama -->
-      <rect x="260" y="180" width="220" height="110" rx="6" fill="#2d3748"/>
-      <rect x="260" y="180" width="220" height="30" rx="6" fill="#4a3060"/>
-      <rect x="270" y="215" width="200" height="70" rx="4" fill="#3a4a60"/>
-      <!-- travesseiro -->
-      <rect x="275" y="190" width="60" height="30" rx="6" fill="#c4b5fd" opacity="0.8"/>
-      <!-- mesinha -->
-      <rect x="180" y="230" width="70" height="50" rx="4" fill="#2a3550"/>
-      <rect x="178" y="225" width="74" height="12" rx="3" fill="#334165"/>
-      <!-- abajur -->
-      <ellipse cx="215" cy="218" rx="22" ry="8" fill="#fbbf24" opacity="0.9"/>
-      <rect x="212" y="218" width="6" height="15" fill="#94a3b8"/>
-      <polygon points="193,218 237,218 228,200 202,200" fill="#fde68a" opacity="0.7"/>
-      <!-- tapete -->
-      <ellipse cx="250" cy="300" rx="160" ry="30" fill="#3a2a50" opacity="0.7"/>
-      <!-- quadro na parede -->
-      <rect x="190" y="60" width="80" height="60" rx="3" fill="#1e2a3a" stroke="#4a3a6a" stroke-width="2"/>
-      <rect x="197" y="67" width="66" height="46" rx="2" fill="#2a1a3a"/>
-      <!-- estrela no quadro -->
-      <polygon points="230,72 233,82 243,82 235,88 238,98 230,92 222,98 225,88 217,82 227,82" fill="#fbbf24" opacity="0.6"/>
-      <!-- porta -->
-      <rect x="390" y="130" width="80" height="140" rx="3" fill="#1a2535" stroke="#2a3a50" stroke-width="2"/>
-      <circle cx="400" cy="200" r="5" fill="#fbbf24" opacity="0.8"/>
-      <!-- brinquedo (urso) -->
-      <circle cx="100" cy="285" r="18" fill="#8b6a3e"/>
-      <circle cx="100" cy="268" r="12" fill="#8b6a3e"/>
-      <circle cx="93" cy="264" r="5" fill="#6b4e2e"/>
-      <circle cx="107" cy="264" r="5" fill="#6b4e2e"/>
-      <circle cx="97" cy="269" r="2" fill="#3a2010"/>
-      <circle cx="103" cy="269" r="2" fill="#3a2010"/>
-    `,
-    // Diferenças — cada uma define onde está (cx,cy,r para clique) e o SVG que SUBSTITUI algo na cena B
-    erros: [
-      { label:'Cor do travesseiro',    cx:305, cy:205, r:35,
-        svg:`<rect x="275" y="190" width="60" height="30" rx="6" fill="#f87171" opacity="0.9"/>` },
-      { label:'Cor do tapete',         cx:250, cy:300, r:40,
-        svg:`<ellipse cx="250" cy="300" rx="160" ry="30" fill="#1e4a2a" opacity="0.7"/>` },
-      { label:'Sol sumiu da janela',   cx:70,  cy:70,  r:30,
-        svg:`` },
-      { label:'Abajur apagado',        cx:215, cy:210, r:28,
-        svg:`<ellipse cx="215" cy="218" rx="22" ry="8" fill="#334155" opacity="0.6"/>
-             <rect x="212" y="218" width="6" height="15" fill="#64748b"/>
-             <polygon points="193,218 237,218 228,200 202,200" fill="#475569" opacity="0.5"/>` },
-      { label:'Maçaneta da porta',     cx:400, cy:200, r:22,
-        svg:`<circle cx="400" cy="200" r="5" fill="#f87171" opacity="0.9"/>` },
-      { label:'Estrela no quadro',     cx:230, cy:85,  r:30,
-        svg:`<circle cx="230" cy="85" r="10" fill="#fbbf24" opacity="0.6"/>` },
-      { label:'Cor do urso',           cx:100, cy:278, r:30,
-        svg:`<circle cx="100" cy="285" r="18" fill="#c084fc"/>
-             <circle cx="100" cy="268" r="12" fill="#c084fc"/>
-             <circle cx="93" cy="264" r="5" fill="#a855f7"/>
-             <circle cx="107" cy="264" r="5" fill="#a855f7"/>
-             <circle cx="97" cy="269" r="2" fill="#3a2010"/>
-             <circle cx="103" cy="269" r="2" fill="#3a2010"/>` },
-    ]
-  },
+        const CENAS = [
 
-  // ── CENA 1: PARQUE ────────────────────────────────────────
-  {
-    nome: 'Parque',
-    base: `
-      <!-- céu -->
-      <rect width="500" height="360" fill="#0f1e35"/>
-      <!-- grama -->
-      <rect x="0" y="240" width="500" height="120" fill="#0f2010"/>
-      <line x1="0" y1="240" x2="500" y2="240" stroke="#1a3a1a" stroke-width="2"/>
-      <!-- sol -->
-      <circle cx="420" cy="60" r="36" fill="#fde68a" opacity="0.85"/>
-      <!-- nuvem 1 -->
-      <ellipse cx="120" cy="80" rx="55" ry="22" fill="#1e3a5a" opacity="0.8"/>
-      <ellipse cx="90"  cy="72" rx="30" ry="20" fill="#1e3a5a" opacity="0.8"/>
-      <ellipse cx="148" cy="72" rx="28" ry="18" fill="#1e3a5a" opacity="0.8"/>
-      <!-- nuvem 2 -->
-      <ellipse cx="290" cy="55" rx="45" ry="18" fill="#1e3a5a" opacity="0.7"/>
-      <ellipse cx="268" cy="48" rx="24" ry="16" fill="#1e3a5a" opacity="0.7"/>
-      <!-- árvore esq -->
-      <rect x="60" y="155" width="16" height="90" rx="4" fill="#3a2010"/>
-      <ellipse cx="68" cy="148" rx="42" ry="50" fill="#1a4a1a"/>
-      <ellipse cx="68" cy="130" rx="30" ry="36" fill="#1f5a1f"/>
-      <!-- árvore dir -->
-      <rect x="380" y="165" width="14" height="80" rx="3" fill="#3a2010"/>
-      <ellipse cx="387" cy="158" rx="36" ry="44" fill="#1a4a1a"/>
-      <ellipse cx="387" cy="142" rx="26" ry="32" fill="#1f5a1f"/>
-      <!-- banco -->
-      <rect x="190" y="220" width="120" height="10" rx="3" fill="#5a4020"/>
-      <rect x="195" y="215" width="110" height="8"  rx="2" fill="#7a5a30"/>
-      <rect x="200" y="230" width="8"  height="20" rx="2" fill="#5a4020"/>
-      <rect x="302" y="230" width="8"  height="20" rx="2" fill="#5a4020"/>
-      <!-- flor 1 -->
-      <circle cx="160" cy="252" r="6" fill="#fbbf24"/>
-      <ellipse cx="150" cy="248" rx="7" ry="4" fill="#f87171" transform="rotate(-30,150,248)"/>
-      <ellipse cx="170" cy="248" rx="7" ry="4" fill="#f87171" transform="rotate(30,170,248)"/>
-      <ellipse cx="160" cy="242" rx="4" ry="7" fill="#f87171"/>
-      <!-- flor 2 -->
-      <circle cx="340" cy="255" r="5" fill="#fde68a"/>
-      <ellipse cx="330" cy="251" rx="6" ry="4" fill="#c084fc" transform="rotate(-30,330,251)"/>
-      <ellipse cx="350" cy="251" rx="6" ry="4" fill="#c084fc" transform="rotate(30,350,251)"/>
-      <ellipse cx="340" cy="245" rx="4" ry="6" fill="#c084fc"/>
-      <!-- passarinho -->
-      <ellipse cx="250" cy="170" rx="14" ry="9" fill="#60a5fa"/>
-      <circle cx="260" cy="166" r="7" fill="#60a5fa"/>
-      <polygon points="267,166 274,164 267,168" fill="#fbbf24"/>
-      <circle cx="262" cy="164" r="2" fill="#0a0f1a"/>
-      <!-- asa -->
-      <ellipse cx="244" cy="172" rx="12" ry="5" fill="#3b82f6" transform="rotate(-10,244,172)"/>
-    `,
-    erros: [
-      { label:'Cor do passarinho',  cx:252, cy:168, r:28,
-        svg:`<ellipse cx="250" cy="170" rx="14" ry="9" fill="#f87171"/>
-             <circle cx="260" cy="166" r="7" fill="#f87171"/>
-             <polygon points="267,166 274,164 267,168" fill="#fbbf24"/>
-             <circle cx="262" cy="164" r="2" fill="#0a0f1a"/>
-             <ellipse cx="244" cy="172" rx="12" ry="5" fill="#dc2626" transform="rotate(-10,244,172)"/>` },
-      { label:'Sol desapareceu',    cx:420, cy:60,  r:40,
-        svg:`` },
-      { label:'Cor da flor 1',      cx:160, cy:250, r:28,
-        svg:`<circle cx="160" cy="252" r="6" fill="#34d399"/>
-             <ellipse cx="150" cy="248" rx="7" ry="4" fill="#059669" transform="rotate(-30,150,248)"/>
-             <ellipse cx="170" cy="248" rx="7" ry="4" fill="#059669" transform="rotate(30,170,248)"/>
-             <ellipse cx="160" cy="242" rx="4" ry="7" fill="#059669"/>` },
-      { label:'Cor da árvore esq',  cx:68,  cy:148, r:46,
-        svg:`<rect x="60" y="155" width="16" height="90" rx="4" fill="#3a2010"/>
-             <ellipse cx="68" cy="148" rx="42" ry="50" fill="#2a1a4a"/>
-             <ellipse cx="68" cy="130" rx="30" ry="36" fill="#3b1f8c"/>` },
-      { label:'Banco desapareceu',  cx:250, cy:225, r:50,
-        svg:`` },
-      { label:'Nuvem 2 sumiu',      cx:290, cy:55,  r:50,
-        svg:`` },
-      { label:'Cor da flor 2',      cx:340, cy:253, r:28,
-        svg:`<circle cx="340" cy="255" r="5" fill="#f87171"/>
-             <ellipse cx="330" cy="251" rx="6" ry="4" fill="#dc2626" transform="rotate(-30,330,251)"/>
-             <ellipse cx="350" cy="251" rx="6" ry="4" fill="#dc2626" transform="rotate(30,350,251)"/>
-             <ellipse cx="340" cy="245" rx="4" ry="6" fill="#dc2626"/>` },
-    ]
-  },
+            // ══════════════════════════════════════════════════════
+            // CENA 0 — QUARTO
+            // ══════════════════════════════════════════════════════
+            {
+                nome: 'Quarto',
+                // Elementos nomeados para fácil diff
+                // A = original | B = com a cor trocada
+                elementos: {
+                    // fundo e chão
+                    fundo: `<rect width="480" height="320" fill="#16223a"/>
+                    <rect x="0" y="240" width="480" height="80" fill="#0e1828"/>
+                    <line x1="0" y1="240" x2="480" y2="240" stroke="#1e2e44" stroke-width="2"/>`,
+                    // janela
+                    janela: `<rect x="28" y="30" width="110" height="90" rx="5" fill="#1b3a60" stroke="#2a5a90" stroke-width="2"/>
+                    <line x1="83" y1="30" x2="83" y2="120" stroke="#2a5a90" stroke-width="1.5"/>
+                    <line x1="28" y1="75" x2="138" y2="75" stroke="#2a5a90" stroke-width="1.5"/>`,
+                    // sol na janela — original AMARELO, B VERMELHO
+                    solA: `<circle cx="65" cy="58" r="18" fill="#fde68a"/>`,
+                    solB: `<circle cx="65" cy="58" r="18" fill="#ef4444"/>`,
+                    // cama
+                    cama: `<rect x="250" y="170" width="210" height="100" rx="6" fill="#1e2e44"/>
+                    <rect x="250" y="170" width="210" height="28" rx="6" fill="#3b1f8c"/>
+                    <rect x="260" y="202" width="190" height="64" rx="4" fill="#243550"/>`,
+                    // travesseiro — original LILÁS, B LARANJA
+                    travA: `<rect x="264" y="178" width="58" height="28" rx="6" fill="#c4b5fd"/>`,
+                    travB: `<rect x="264" y="178" width="58" height="28" rx="6" fill="#f97316"/>`,
+                    // mesinha
+                    mesa: `<rect x="168" y="220" width="68" height="46" rx="4" fill="#1e2e40"/>
+                    <rect x="166" y="215" width="72" height="11" rx="3" fill="#2a3a50"/>`,
+                    // abajur — original AMARELO, B VERDE
+                    abajurA: `<ellipse cx="202" cy="208" rx="22" ry="8" fill="#fde68a"/>
+                    <rect x="199" y="208" width="6" height="14" fill="#94a3b8"/>
+                    <polygon points="180,208 224,208 216,190 188,190" fill="#fbbf24"/>`,
+                    abajurB: `<ellipse cx="202" cy="208" rx="22" ry="8" fill="#4ade80"/>
+                    <rect x="199" y="208" width="6" height="14" fill="#94a3b8"/>
+                    <polygon points="180,208 224,208 216,190 188,190" fill="#22c55e"/>`,
+                    // tapete — original ROXO, B AZUL
+                    tapeteA: `<ellipse cx="240" cy="285" rx="150" ry="22" fill="#3b1f8c" opacity="0.8"/>`,
+                    tapeteB: `<ellipse cx="240" cy="285" rx="150" ry="22" fill="#0ea5e9" opacity="0.8"/>`,
+                    // quadro — original AMARELO, B ROSA
+                    quadro: `<rect x="185" y="45" width="76" height="56" rx="3" fill="#161e2e" stroke="#3a2a6a" stroke-width="2"/>`,
+                    estrelhaA: `<polygon points="223,52 226,61 236,61 228,67 231,76 223,70 215,76 218,67 210,61 220,61" fill="#fbbf24"/>`,
+                    estrelhaB: `<polygon points="223,52 226,61 236,61 228,67 231,76 223,70 215,76 218,67 210,61 220,61" fill="#ec4899"/>`,
+                    // urso — original MARROM, B AZUL
+                    ursoA: `<circle cx="95" cy="278" r="17" fill="#92663a"/>
+                    <circle cx="95" cy="262" r="11" fill="#92663a"/>
+                    <circle cx="89" cy="258" r="5" fill="#6b4e2e"/>
+                    <circle cx="101" cy="258" r="5" fill="#6b4e2e"/>
+                    <circle cx="92" cy="263" r="2" fill="#1a0a00"/>
+                    <circle cx="98" cy="263" r="2" fill="#1a0a00"/>
+                    <ellipse cx="95" cy="267" rx="4" ry="3" fill="#7a5030"/>
+                    <path d="M92,270 Q95,273 98,270" stroke="#1a0a00" stroke-width="1.2" fill="none"/>`,
+                    ursoB: `<circle cx="95" cy="278" r="17" fill="#3b82f6"/>
+                    <circle cx="95" cy="262" r="11" fill="#3b82f6"/>
+                    <circle cx="89" cy="258" r="5" fill="#1d4ed8"/>
+                    <circle cx="101" cy="258" r="5" fill="#1d4ed8"/>
+                    <circle cx="92" cy="263" r="2" fill="#1a0a00"/>
+                    <circle cx="98" cy="263" r="2" fill="#1a0a00"/>
+                    <ellipse cx="95" cy="267" rx="4" ry="3" fill="#2563eb"/>
+                    <path d="M92,270 Q95,273 98,270" stroke="#1a0a00" stroke-width="1.2" fill="none"/>`,
+                    // porta — original MAÇANETA AMARELA, B VERDE
+                    porta: `<rect x="385" y="120" width="75" height="130" rx="3" fill="#0e1828" stroke="#1e2e44" stroke-width="2"/>`,
+                    macacaA: `<circle cx="395" cy="188" r="5" fill="#fbbf24"/>`,
+                    macacaB: `<circle cx="395" cy="188" r="5" fill="#4ade80"/>`,
+                    // livros na estante — original VERMELHO, B ROXO
+                    livrosA: `<rect x="30" y="150" width="12" height="50" rx="2" fill="#ef4444"/>
+                    <rect x="44" y="155" width="10" height="45" rx="2" fill="#f97316"/>
+                    <rect x="56" y="148" width="11" height="52" rx="2" fill="#fbbf24"/>
+                    <rect x="28" y="148" width="42" height="5" rx="2" fill="#1e2e44"/>`,
+                    livrosB: `<rect x="30" y="150" width="12" height="50" rx="2" fill="#a855f7"/>
+                    <rect x="44" y="155" width="10" height="45" rx="2" fill="#8b5cf6"/>
+                    <rect x="56" y="148" width="11" height="52" rx="2" fill="#c084fc"/>
+                    <rect x="28" y="148" width="42" height="5" rx="2" fill="#1e2e44"/>`,
+                },
+                // 7 diferenças: qual chave é diferente em B, label, posição de clique
+                erros: [
+                    { chave: 'sol', label: 'Cor do sol', cx: 65, cy: 58, r: 25 },
+                    { chave: 'trav', label: 'Cor do travesseiro', cx: 293, cy: 192, r: 34 },
+                    { chave: 'abajur', label: 'Cor do abajur', cx: 202, cy: 200, r: 28 },
+                    { chave: 'tapete', label: 'Cor do tapete', cx: 240, cy: 285, r: 50 },
+                    { chave: 'estrelha', label: 'Cor da estrela', cx: 223, cy: 64, r: 28 },
+                    { chave: 'urso', label: 'Cor do urso', cx: 95, cy: 270, r: 28 },
+                    { chave: 'livros', label: 'Cor dos livros', cx: 54, cy: 175, r: 32 },
+                ],
+                // Monta SVG base (sem as peças variáveis)
+                svgBase() {
+                    return this.elementos.fundo + this.elementos.janela + this.elementos.mesa +
+                        this.elementos.cama + this.elementos.quadro + this.elementos.porta +
+                        `<rect x="28" y="198" width="42" height="4" rx="2" fill="#1e2e44"/>`;
+                },
+                svgA() {
+                    return this.svgBase() + this.elementos.solA + this.elementos.travA +
+                        this.elementos.abajurA + this.elementos.tapeteA + this.elementos.estrelhaA +
+                        this.elementos.ursoA + this.elementos.livrosA + this.elementos.macacaA;
+                },
+                svgB() {
+                    return this.svgBase() + this.elementos.solB + this.elementos.travB +
+                        this.elementos.abajurB + this.elementos.tapeteB + this.elementos.estrelhaB +
+                        this.elementos.ursoB + this.elementos.livrosB + this.elementos.macacaB;
+                },
+            },
 
-  // ── CENA 2: FUNDO DO MAR ─────────────────────────────────
-  {
-    nome: 'Fundo do Mar',
-    base: `
-      <rect width="500" height="360" fill="#051428"/>
-      <!-- fundo do oceano -->
-      <rect x="0" y="290" width="500" height="70" fill="#03080f"/>
-      <!-- raios de luz -->
-      <polygon points="200,0 160,180 240,180" fill="rgba(96,165,250,0.07)"/>
-      <polygon points="310,0 280,200 340,200" fill="rgba(96,165,250,0.05)"/>
-      <!-- bolhas -->
-      <circle cx="80"  cy="60"  r="8"  fill="none" stroke="rgba(147,197,253,0.35)" stroke-width="1.5"/>
-      <circle cx="95"  cy="110" r="5"  fill="none" stroke="rgba(147,197,253,0.3)"  stroke-width="1.2"/>
-      <circle cx="420" cy="80"  r="10" fill="none" stroke="rgba(147,197,253,0.3)"  stroke-width="1.5"/>
-      <circle cx="400" cy="140" r="6"  fill="none" stroke="rgba(147,197,253,0.25)" stroke-width="1.2"/>
-      <!-- algas esq -->
-      <path d="M50,360 Q30,320 55,290 Q35,260 60,230 Q40,200 65,170" fill="none" stroke="#1a4a1a" stroke-width="10" stroke-linecap="round"/>
-      <path d="M70,360 Q90,320 65,290 Q85,260 60,230" fill="none" stroke="#1a5a1a" stroke-width="8" stroke-linecap="round"/>
-      <!-- algas dir -->
-      <path d="M450,360 Q430,320 455,290 Q435,260 460,230 Q440,200 465,170" fill="none" stroke="#1a4a1a" stroke-width="10" stroke-linecap="round"/>
-      <!-- coral esq -->
-      <path d="M110,360 Q100,340 105,320 Q90,300 100,280" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round"/>
-      <path d="M105,320 Q115,310 120,295" fill="none" stroke="#c2410c" stroke-width="5" stroke-linecap="round"/>
-      <path d="M100,300 Q88,292 82,278" fill="none" stroke="#c2410c" stroke-width="5" stroke-linecap="round"/>
-      <!-- peixe laranja -->
-      <ellipse cx="220" cy="180" rx="38" ry="22" fill="#ea580c"/>
-      <polygon points="258,180 278,165 278,195" fill="#ea580c"/>
-      <ellipse cx="205" cy="175" rx="8" ry="8" fill="#fed7aa" opacity="0.6"/>
-      <circle cx="200" cy="173" r="5" fill="#fff" opacity="0.9"/>
-      <circle cx="201" cy="173" r="3" fill="#0a0f1a"/>
-      <line x1="220" y1="158" x2="220" y2="202" stroke="#7c2d12" stroke-width="1.5"/>
-      <line x1="240" y1="160" x2="240" y2="200" stroke="#7c2d12" stroke-width="1.5"/>
-      <!-- peixe azul -->
-      <ellipse cx="340" cy="130" rx="28" ry="17" fill="#2563eb"/>
-      <polygon points="368,130 384,118 384,142" fill="#2563eb"/>
-      <circle cx="322" cy="126" r="4" fill="#fff" opacity="0.9"/>
-      <circle cx="323" cy="126" r="2.5" fill="#0a0f1a"/>
-      <!-- estrela do mar -->
-      <polygon points="380,310 385,295 390,310 405,305 395,315 400,330 380,322 360,330 365,315 355,305" fill="#f97316" opacity="0.85"/>
-      <!-- concha -->
-      <path d="M160,340 Q180,310 200,340 Q180,360 160,340Z" fill="#a78bfa" opacity="0.8"/>
-      <line x1="180" y1="315" x2="180" y2="342" stroke="#7c3aed" stroke-width="1.5" opacity="0.6"/>
-    `,
-    erros: [
-      { label:'Cor do peixe laranja',  cx:225, cy:180, r:45,
-        svg:`<ellipse cx="220" cy="180" rx="38" ry="22" fill="#7c3aed"/>
-             <polygon points="258,180 278,165 278,195" fill="#7c3aed"/>
-             <ellipse cx="205" cy="175" rx="8" ry="8" fill="#c4b5fd" opacity="0.6"/>
-             <circle cx="200" cy="173" r="5" fill="#fff" opacity="0.9"/>
-             <circle cx="201" cy="173" r="3" fill="#0a0f1a"/>
-             <line x1="220" y1="158" x2="220" y2="202" stroke="#4c1d95" stroke-width="1.5"/>
-             <line x1="240" y1="160" x2="240" y2="200" stroke="#4c1d95" stroke-width="1.5"/>` },
-      { label:'Peixe azul sumiu',      cx:350, cy:130, r:45,
-        svg:`` },
-      { label:'Cor da estrela do mar', cx:380, cy:315, r:35,
-        svg:`<polygon points="380,310 385,295 390,310 405,305 395,315 400,330 380,322 360,330 365,315 355,305" fill="#34d399" opacity="0.85"/>` },
-      { label:'Cor da concha',         cx:180, cy:338, r:32,
-        svg:`<path d="M160,340 Q180,310 200,340 Q180,360 160,340Z" fill="#fbbf24" opacity="0.8"/>
-             <line x1="180" y1="315" x2="180" y2="342" stroke="#d97706" stroke-width="1.5" opacity="0.6"/>` },
-      { label:'Coral desapareceu',     cx:100, cy:320, r:45,
-        svg:`` },
-      { label:'Bolha grande sumiu',    cx:420, cy:80,  r:30,
-        svg:`` },
-      { label:'Cor das algas esq',     cx:60,  cy:260, r:40,
-        svg:`<path d="M50,360 Q30,320 55,290 Q35,260 60,230 Q40,200 65,170" fill="none" stroke="#1a2a4a" stroke-width="10" stroke-linecap="round"/>
-             <path d="M70,360 Q90,320 65,290 Q85,260 60,230" fill="none" stroke="#1e3a5f" stroke-width="8" stroke-linecap="round"/>` },
-    ]
-  },
-];
+            // ══════════════════════════════════════════════════════
+            // CENA 1 — PARQUE
+            // ══════════════════════════════════════════════════════
+            {
+                nome: 'Parque',
+                elementos: {
+                    fundo: `<rect width="480" height="320" fill="#0d1f3a"/>
+                   <rect x="0" y="230" width="480" height="90" fill="#0a1e0a"/>
+                   <line x1="0" y1="230" x2="480" y2="230" stroke="#0f2e0f" stroke-width="2"/>`,
+                    // céu
+                    sol: {
+                        A: `<circle cx="410" cy="55" r="34" fill="#fde68a"/>`,
+                        B: `<circle cx="410" cy="55" r="34" fill="#f87171"/>`
+                    },
+                    // nuvens
+                    nuvem1: {
+                        A: `<ellipse cx="115" cy="75" rx="54" ry="22" fill="#1e3a5a"/>
+                       <ellipse cx="88"  cy="65" rx="30" ry="20" fill="#1e3a5a"/>
+                       <ellipse cx="142" cy="65" rx="28" ry="18" fill="#1e3a5a"/>`,
+                        B: `<ellipse cx="115" cy="75" rx="54" ry="22" fill="#4ade80"/>
+                       <ellipse cx="88"  cy="65" rx="30" ry="20" fill="#4ade80"/>
+                       <ellipse cx="142" cy="65" rx="28" ry="18" fill="#4ade80"/>` },
+                    // árvore esquerda
+                    arvEsq: {
+                        A: `<rect x="58" y="150" width="14" height="88" rx="4" fill="#3a2010"/>
+                       <ellipse cx="65" cy="143" rx="40" ry="48" fill="#1a4a1a"/>
+                       <ellipse cx="65" cy="125" rx="28" ry="34" fill="#1f5c1f"/>`,
+                        B: `<rect x="58" y="150" width="14" height="88" rx="4" fill="#3a2010"/>
+                       <ellipse cx="65" cy="143" rx="40" ry="48" fill="#b45309"/>
+                       <ellipse cx="65" cy="125" rx="28" ry="34" fill="#d97706"/>` },
+                    // árvore direita
+                    arvDir: `<rect x="374" y="158" width="14" height="80" rx="3" fill="#3a2010"/>
+                   <ellipse cx="381" cy="150" rx="36" ry="44" fill="#1a4a1a"/>
+                   <ellipse cx="381" cy="134" rx="26" ry="32" fill="#1f5c1f"/>`,
+                    // banco
+                    banco: `<rect x="188" y="210" width="116" height="10" rx="3" fill="#5a4020"/>
+                   <rect x="193" y="205" width="106" height="8"  rx="2" fill="#7a5a30"/>
+                   <rect x="198" y="220" width="8"   height="18" rx="2" fill="#5a4020"/>
+                   <rect x="298" y="220" width="8"   height="18" rx="2" fill="#5a4020"/>`,
+                    // passarinho
+                    passaro: {
+                        A: `<ellipse cx="245" cy="162" rx="14" ry="9" fill="#60a5fa"/>
+                       <circle  cx="255" cy="158" r="7" fill="#60a5fa"/>
+                       <polygon points="262,158 270,156 262,161" fill="#fbbf24"/>
+                       <circle  cx="257" cy="156" r="2" fill="#0a0f1a"/>
+                       <ellipse cx="238" cy="165" rx="11" ry="5" fill="#3b82f6" transform="rotate(-10,238,165)"/>`,
+                        B: `<ellipse cx="245" cy="162" rx="14" ry="9" fill="#f472b6"/>
+                       <circle  cx="255" cy="158" r="7" fill="#f472b6"/>
+                       <polygon points="262,158 270,156 262,161" fill="#fbbf24"/>
+                       <circle  cx="257" cy="156" r="2" fill="#0a0f1a"/>
+                       <ellipse cx="238" cy="165" rx="11" ry="5" fill="#ec4899" transform="rotate(-10,238,165)"/>` },
+                    // flores esq
+                    florEsq: {
+                        A: `<circle cx="155" cy="246" r="6" fill="#fbbf24"/>
+                       <ellipse cx="145" cy="241" rx="7" ry="4" fill="#f87171" transform="rotate(-30,145,241)"/>
+                       <ellipse cx="165" cy="241" rx="7" ry="4" fill="#f87171" transform="rotate(30,165,241)"/>
+                       <ellipse cx="155" cy="235" rx="4" ry="7" fill="#f87171"/>
+                       <rect    x="153" y="252"  width="4" height="14" rx="2" fill="#16a34a"/>`,
+                        B: `<circle cx="155" cy="246" r="6" fill="#a855f7"/>
+                       <ellipse cx="145" cy="241" rx="7" ry="4" fill="#7c3aed" transform="rotate(-30,145,241)"/>
+                       <ellipse cx="165" cy="241" rx="7" ry="4" fill="#7c3aed" transform="rotate(30,165,241)"/>
+                       <ellipse cx="155" cy="235" rx="4" ry="7" fill="#7c3aed"/>
+                       <rect    x="153" y="252"  width="4" height="14" rx="2" fill="#16a34a"/>` },
+                    // flores dir
+                    florDir: {
+                        A: `<circle cx="328" cy="248" r="5" fill="#fde68a"/>
+                       <ellipse cx="318" cy="244" rx="6" ry="4" fill="#c084fc" transform="rotate(-30,318,244)"/>
+                       <ellipse cx="338" cy="244" rx="6" ry="4" fill="#c084fc" transform="rotate(30,338,244)"/>
+                       <ellipse cx="328" cy="238" rx="4" ry="6" fill="#c084fc"/>
+                       <rect    x="326" y="253"  width="4" height="12" rx="2" fill="#16a34a"/>`,
+                        B: `<circle cx="328" cy="248" r="5" fill="#34d399"/>
+                       <ellipse cx="318" cy="244" rx="6" ry="4" fill="#059669" transform="rotate(-30,318,244)"/>
+                       <ellipse cx="338" cy="244" rx="6" ry="4" fill="#059669" transform="rotate(30,338,244)"/>
+                       <ellipse cx="328" cy="238" rx="4" ry="6" fill="#059669"/>
+                       <rect    x="326" y="253"  width="4" height="12" rx="2" fill="#16a34a"/>` },
+                    // cerca
+                    cerca: {
+                        A: `<line x1="0" y1="228" x2="480" y2="228" stroke="#5a4020" stroke-width="3"/>
+                       <rect x="90"  y="210" width="6" height="22" rx="2" fill="#5a4020"/>
+                       <rect x="160" y="210" width="6" height="22" rx="2" fill="#5a4020"/>
+                       <rect x="230" y="210" width="6" height="22" rx="2" fill="#5a4020"/>
+                       <rect x="300" y="210" width="6" height="22" rx="2" fill="#5a4020"/>
+                       <rect x="370" y="210" width="6" height="22" rx="2" fill="#5a4020"/>`,
+                        B: `<line x1="0" y1="228" x2="480" y2="228" stroke="#ef4444" stroke-width="3"/>
+                       <rect x="90"  y="210" width="6" height="22" rx="2" fill="#ef4444"/>
+                       <rect x="160" y="210" width="6" height="22" rx="2" fill="#ef4444"/>
+                       <rect x="230" y="210" width="6" height="22" rx="2" fill="#ef4444"/>
+                       <rect x="300" y="210" width="6" height="22" rx="2" fill="#ef4444"/>
+                       <rect x="370" y="210" width="6" height="22" rx="2" fill="#ef4444"/>` },
+                },
+                erros: [
+                    { chave: 'sol', label: 'Cor do sol', cx: 410, cy: 55, r: 38 },
+                    { chave: 'nuvem1', label: 'Cor da nuvem', cx: 115, cy: 72, r: 50 },
+                    { chave: 'arvEsq', label: 'Cor da árvore esq.', cx: 65, cy: 140, r: 46 },
+                    { chave: 'passaro', label: 'Cor do passarinho', cx: 248, cy: 161, r: 28 },
+                    { chave: 'florEsq', label: 'Cor da flor esquerda', cx: 155, cy: 243, r: 28 },
+                    { chave: 'florDir', label: 'Cor da flor direita', cx: 328, cy: 245, r: 28 },
+                    { chave: 'cerca', label: 'Cor da cerca', cx: 240, cy: 220, r: 30 },
+                ],
+                svgBase() {
+                    return this.elementos.fundo + this.elementos.arvDir + this.elementos.banco;
+                },
+                svgA() {
+                    return this.svgBase() +
+                        this.elementos.sol.A + this.elementos.nuvem1.A + this.elementos.arvEsq.A +
+                        this.elementos.passaro.A + this.elementos.florEsq.A + this.elementos.florDir.A +
+                        this.elementos.cerca.A;
+                },
+                svgB() {
+                    return this.svgBase() +
+                        this.elementos.sol.B + this.elementos.nuvem1.B + this.elementos.arvEsq.B +
+                        this.elementos.passaro.B + this.elementos.florEsq.B + this.elementos.florDir.B +
+                        this.elementos.cerca.B;
+                },
+            },
 
-let cenaIdx = 0;
-let encontrados = [];
-let tempoInicio = Date.now();
-let dicaUsada = 0;
+            // ══════════════════════════════════════════════════════
+            // CENA 2 — FUNDO DO MAR
+            // ══════════════════════════════════════════════════════
+            {
+                nome: 'Mar',
+                elementos: {
+                    fundo: `<rect width="480" height="320" fill="#050e20"/>
+                  <rect x="0" y="280" width="480" height="40" fill="#030810"/>
+                  <line x1="0" y1="280" x2="480" y2="280" stroke="#071428" stroke-width="2"/>`,
+                    // raios
+                    raios: `<polygon points="190,0 155,175 225,175" fill="rgba(96,165,250,0.07)"/>
+                  <polygon points="300,0 272,195 328,195" fill="rgba(96,165,250,0.05)"/>`,
+                    // algas esq
+                    algasEsq: {
+                        A: `<path d="M48,320 Q28,280 52,250 Q32,220 56,192 Q38,162 62,134" fill="none" stroke="#16a34a" stroke-width="10" stroke-linecap="round"/>
+                      <path d="M68,320 Q88,280 64,250 Q84,218 58,192" fill="none" stroke="#15803d" stroke-width="8" stroke-linecap="round"/>`,
+                        B: `<path d="M48,320 Q28,280 52,250 Q32,220 56,192 Q38,162 62,134" fill="none" stroke="#e11d48" stroke-width="10" stroke-linecap="round"/>
+                      <path d="M68,320 Q88,280 64,250 Q84,218 58,192" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round"/>` },
+                    // algas dir
+                    algasDir: `<path d="M440,320 Q420,280 444,250 Q424,220 448,192" fill="none" stroke="#16a34a" stroke-width="10" stroke-linecap="round"/>`,
+                    // coral esq
+                    coralEsq: {
+                        A: `<path d="M108,320 Q98,298 103,276 Q88,256 98,236" fill="none" stroke="#f97316" stroke-width="7" stroke-linecap="round"/>
+                      <path d="M103,276 Q116,264 122,248" fill="none" stroke="#f97316" stroke-width="5" stroke-linecap="round"/>
+                      <path d="M98,258 Q84,248 78,232" fill="none" stroke="#f97316" stroke-width="5" stroke-linecap="round"/>`,
+                        B: `<path d="M108,320 Q98,298 103,276 Q88,256 98,236" fill="none" stroke="#a855f7" stroke-width="7" stroke-linecap="round"/>
+                      <path d="M103,276 Q116,264 122,248" fill="none" stroke="#a855f7" stroke-width="5" stroke-linecap="round"/>
+                      <path d="M98,258 Q84,248 78,232" fill="none" stroke="#a855f7" stroke-width="5" stroke-linecap="round"/>` },
+                    // peixe laranja
+                    peixeL: {
+                        A: `<ellipse cx="215" cy="174" rx="38" ry="21" fill="#ea580c"/>
+                      <polygon  points="253,174 274,160 274,188" fill="#ea580c"/>
+                      <ellipse  cx="200" cy="169" rx="8" ry="8" fill="#fed7aa" opacity="0.6"/>
+                      <circle   cx="195" cy="167" r="5" fill="#fff"/>
+                      <circle   cx="196" cy="167" r="3" fill="#050e20"/>
+                      <line x1="215" y1="153" x2="215" y2="195" stroke="#7c2d12" stroke-width="1.5"/>
+                      <line x1="235" y1="155" x2="235" y2="193" stroke="#7c2d12" stroke-width="1.5"/>`,
+                        B: `<ellipse cx="215" cy="174" rx="38" ry="21" fill="#7c3aed"/>
+                      <polygon  points="253,174 274,160 274,188" fill="#7c3aed"/>
+                      <ellipse  cx="200" cy="169" rx="8" ry="8" fill="#c4b5fd" opacity="0.6"/>
+                      <circle   cx="195" cy="167" r="5" fill="#fff"/>
+                      <circle   cx="196" cy="167" r="3" fill="#050e20"/>
+                      <line x1="215" y1="153" x2="215" y2="195" stroke="#4c1d95" stroke-width="1.5"/>
+                      <line x1="235" y1="155" x2="235" y2="193" stroke="#4c1d95" stroke-width="1.5"/>` },
+                    // peixe azul
+                    peixeA: {
+                        A: `<ellipse cx="335" cy="124" rx="28" ry="16" fill="#2563eb"/>
+                      <polygon  points="363,124 380,113 380,135" fill="#2563eb"/>
+                      <circle   cx="318" cy="120" r="4" fill="#fff"/>
+                      <circle   cx="319" cy="120" r="2.5" fill="#050e20"/>`,
+                        B: `<ellipse cx="335" cy="124" rx="28" ry="16" fill="#f43f5e"/>
+                      <polygon  points="363,124 380,113 380,135" fill="#f43f5e"/>
+                      <circle   cx="318" cy="120" r="4" fill="#fff"/>
+                      <circle   cx="319" cy="120" r="2.5" fill="#050e20"/>` },
+                    // estrela do mar
+                    estrelaM: {
+                        A: `<polygon points="374,304 380,288 386,304 402,298 392,308 398,324 374,316 350,324 356,308 346,298" fill="#f97316"/>`,
+                        B: `<polygon points="374,304 380,288 386,304 402,298 392,308 398,324 374,316 350,324 356,308 346,298" fill="#34d399"/>`
+                    },
+                    // concha
+                    concha: {
+                        A: `<path d="M155,330 Q175,300 195,330 Q175,350 155,330Z" fill="#a78bfa"/>
+                      <line x1="175" y1="305" x2="175" y2="332" stroke="#7c3aed" stroke-width="1.5"/>`,
+                        B: `<path d="M155,330 Q175,300 195,330 Q175,350 155,330Z" fill="#fbbf24"/>
+                      <line x1="175" y1="305" x2="175" y2="332" stroke="#d97706" stroke-width="1.5"/>` },
+                    // bolhas
+                    bolhas: `<circle cx="78"  cy="55"  r="8"  fill="none" stroke="rgba(147,197,253,0.35)" stroke-width="1.5"/>
+                  <circle cx="94"  cy="105" r="5"  fill="none" stroke="rgba(147,197,253,0.3)"  stroke-width="1.2"/>
+                  <circle cx="412" cy="75"  r="10" fill="none" stroke="rgba(147,197,253,0.3)"  stroke-width="1.5"/>
+                  <circle cx="394" cy="132" r="6"  fill="none" stroke="rgba(147,197,253,0.25)" stroke-width="1.2"/>`,
+                },
+                erros: [
+                    { chave: 'algasEsq', label: 'Cor das algas esq.', cx: 58, cy: 240, r: 40 },
+                    { chave: 'coralEsq', label: 'Cor do coral', cx: 100, cy: 270, r: 40 },
+                    { chave: 'peixeL', label: 'Cor do peixe laranja', cx: 220, cy: 174, r: 44 },
+                    { chave: 'peixeA', label: 'Cor do peixe azul', cx: 338, cy: 124, r: 36 },
+                    { chave: 'estrelaM', label: 'Cor da estrela do mar', cx: 374, cy: 308, r: 34 },
+                    { chave: 'concha', label: 'Cor da concha', cx: 175, cy: 325, r: 30 },
+                    { chave: 'algasEsq', label: '(ver algas)', cx: 55, cy: 165, r: 36 }, // segunda zona da mesma diferença
+                ],
+                svgBase() {
+                    return this.elementos.fundo + this.elementos.raios + this.elementos.algasDir + this.elementos.bolhas;
+                },
+                svgA() {
+                    return this.svgBase() +
+                        this.elementos.algasEsq.A + this.elementos.coralEsq.A +
+                        this.elementos.peixeL.A + this.elementos.peixeA.A +
+                        this.elementos.estrelaM.A + this.elementos.concha.A;
+                },
+                svgB() {
+                    return this.svgBase() +
+                        this.elementos.algasEsq.B + this.elementos.coralEsq.B +
+                        this.elementos.peixeL.B + this.elementos.peixeA.B +
+                        this.elementos.estrelaM.B + this.elementos.concha.B;
+                },
+            },
 
-function setCena(idx, btn) {
-  cenaIdx = idx;
-  document.querySelectorAll('.nivel-btn').forEach(b => b.classList.remove('ativo'));
-  btn.classList.add('ativo');
-  novoJogo();
-}
+        ];
 
-function novoJogo() {
-  encontrados = [];
-  tempoInicio = Date.now();
-  dicaUsada = 0;
-  document.getElementById('win').classList.remove('visivel');
-  document.getElementById('banner').className = 'banner';
-  document.getElementById('banner').style.display = 'none';
+        // ─── ESTADO ───
+        let cenaIdx = 0;
+        let encontrados = [];
+        let inicio = Date.now();
 
-  renderizarCenas();
-  renderizarLista();
-  atualizarStats();
-}
+        function setCena(idx, btn) {
+            cenaIdx = idx;
+            document.querySelectorAll('.nivel-btn').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            novoJogo();
+        }
 
-function renderizarCenas() {
-  const cena = CENAS[cenaIdx];
+        function novoJogo() {
+            encontrados = [];
+            inicio = Date.now();
+            document.getElementById('win').classList.remove('visivel');
+            const b = document.getElementById('banner');
+            b.className = 'banner'; b.style.display = 'none';
+            document.getElementById('cena-b').querySelectorAll('.marcador').forEach(m => m.remove());
 
-  // Cena A — original
-  document.getElementById('svg-a').innerHTML = cena.base;
+            const cena = CENAS[cenaIdx];
+            // Filtra erros únicos por label para o painel (cena do mar tem duplicata intencional de zona)
+            const errosUnicos = cena.erros.filter((e, i, arr) => arr.findIndex(x => x.label === e.label) === i);
 
-  // Cena B — base + diferenças aplicadas
-  let svgB = cena.base;
-  cena.erros.forEach((e, i) => {
-    // Adicionamos marcador invisível para auxiliar clique
-    svgB += `<circle data-erro="${i}" cx="${e.cx}" cy="${e.cy}" r="${e.r}" fill="transparent" style="cursor:crosshair"/>`;
-    svgB += e.svg; // aplica diferença
-  });
-  document.getElementById('svg-b').innerHTML = svgB;
+            document.getElementById('svg-a').innerHTML = cena.svgA();
+            document.getElementById('svg-b').innerHTML = cena.svgB();
+            document.getElementById('stat-tot').innerHTML = `${errosUnicos.length} <span>erros</span>`;
 
-  // Limpa marcadores antigos
-  const cenaB = document.getElementById('cena-b');
-  cenaB.querySelectorAll('.marcador').forEach(m => m.remove());
-}
+            const lista = document.getElementById('erros-lista');
+            lista.innerHTML = '';
+            errosUnicos.forEach((e, i) => {
+                const d = document.createElement('div');
+                d.className = 'erro-item'; d.id = `ei-${i}`;
+                d.innerHTML = `<div class="erro-check"></div><span>${e.label}</span>`;
+                lista.appendChild(d);
+            });
 
-function renderizarLista() {
-  const cena = CENAS[cenaIdx];
-  const lista = document.getElementById('erros-lista');
-  lista.innerHTML = '';
-  cena.erros.forEach((e, i) => {
-    const item = document.createElement('div');
-    item.className = 'erro-item' + (encontrados.includes(i) ? ' encontrado' : '');
-    item.id = `erro-item-${i}`;
-    item.innerHTML = `<div class="erro-check">${encontrados.includes(i) ? '✓' : ''}</div><span>${e.label}</span>`;
-    lista.appendChild(item);
-  });
-}
+            atualizarStats(errosUnicos);
+        }
 
-function atualizarStats() {
-  document.getElementById('stat-enc').innerHTML = `${encontrados.length} <span>encontrados</span>`;
-  document.getElementById('stat-total').innerHTML = `${CENAS[cenaIdx].erros.length} <span>erros</span>`;
-}
+        function clicarB(event) {
+            const cena = CENAS[cenaIdx];
+            const errosUnicos = cena.erros.filter((e, i, arr) => arr.findIndex(x => x.label === e.label) === i);
+            const svgEl = document.getElementById('svg-b');
+            const rect = svgEl.getBoundingClientRect();
+            const rx = 480 / rect.width;
+            const ry = 320 / rect.height;
+            const cx = (event.clientX - rect.left) * rx;
+            const cy = (event.clientY - rect.top) * ry;
 
-function clicarCenaB(event) {
-  const cena = CENAS[cenaIdx];
-  const svgEl = document.getElementById('svg-b');
-  const rect = svgEl.getBoundingClientRect();
+            let acertou = false;
+            // Verifica contra TODOS os erros (inclui zonas duplicadas)
+            cena.erros.forEach((e) => {
+                const labelIdx = errosUnicos.findIndex(u => u.label === e.label);
+                if (encontrados.includes(labelIdx)) return;
+                const dist = Math.sqrt((cx - e.cx) ** 2 + (cy - e.cy) ** 2);
+                if (dist <= e.r + 12) {
+                    encontrados.push(labelIdx);
+                    acertou = true;
+                    adicionarMarcador(event);
+                    const item = document.getElementById(`ei-${labelIdx}`);
+                    if (item) { item.classList.add('encontrado'); item.querySelector('.erro-check').textContent = '✓'; }
+                    atualizarStats(errosUnicos);
+                    banner(`✅ Encontrou! — ${e.label}`, 'ok');
+                    if (encontrados.length === errosUnicos.length) setTimeout(vitoria, 700);
+                }
+            });
 
-  // Converte clique para coordenadas do viewBox (0 0 500 360)
-  const ratioX = 500 / rect.width;
-  const ratioY = 360 / rect.height;
-  const cx = (event.clientX - rect.left) * ratioX;
-  const cy = (event.clientY - rect.top) * ratioY;
+            if (!acertou) banner('❌ Não é aqui... tente em outro lugar!', 'err');
+        }
 
-  let acertou = false;
-  cena.erros.forEach((e, i) => {
-    if (encontrados.includes(i)) return;
-    const dist = Math.sqrt((cx - e.cx) ** 2 + (cy - e.cy) ** 2);
-    if (dist <= e.r + 10) {
-      encontrados.push(i);
-      acertou = true;
-      marcarNaCena(event, i);
-      document.getElementById(`erro-item-${i}`).className = 'erro-item encontrado';
-      document.getElementById(`erro-item-${i}`).querySelector('.erro-check').textContent = '✓';
-      atualizarStats();
-      mostrarBanner(`✅ Isso! — ${e.label}`, 'ok');
-      if (encontrados.length === cena.erros.length) setTimeout(vitoria, 700);
-    }
-  });
+        function adicionarMarcador(event) {
+            const cenaEl = document.getElementById('cena-b');
+            const rect = cenaEl.getBoundingClientRect();
+            const m = document.createElement('div');
+            m.className = 'marcador';
+            m.style.left = (event.clientX - rect.left) + 'px';
+            m.style.top = (event.clientY - rect.top) + 'px';
+            cenaEl.appendChild(m);
+        }
 
-  if (!acertou) {
-    mostrarBanner('❌ Não é aqui... tente em outro lugar!', 'err');
-  }
-}
+        function atualizarStats(errosUnicos) {
+            if (!errosUnicos) {
+                const cena = CENAS[cenaIdx];
+                errosUnicos = cena.erros.filter((e, i, arr) => arr.findIndex(x => x.label === e.label) === i);
+            }
+            document.getElementById('stat-enc').innerHTML = `${encontrados.length} <span>encontrados</span>`;
+            document.getElementById('stat-tot').innerHTML = `${errosUnicos.length} <span>erros</span>`;
+        }
 
-function marcarNaCena(event, idx) {
-  const cenaEl = document.getElementById('cena-b');
-  const rect = cenaEl.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-  const div = document.createElement('div');
-  div.className = 'marcador';
-  div.style.left = x + 'px';
-  div.style.top  = y + 'px';
-  cenaEl.appendChild(div);
-}
+        function dica() {
+            const cena = CENAS[cenaIdx];
+            const errosUnicos = cena.erros.filter((e, i, arr) => arr.findIndex(x => x.label === e.label) === i);
+            const restantes = errosUnicos.filter((_, i) => !encontrados.includes(i));
+            if (restantes.length === 0) return;
+            banner(`💡 Dica: olhe para — ${restantes[0].label}`, 'ok');
+        }
 
-function darDica() {
-  const cena = CENAS[cenaIdx];
-  const restantes = cena.erros.map((_, i) => i).filter(i => !encontrados.includes(i));
-  if (restantes.length === 0) return;
-  const idx = restantes[0];
-  const e = cena.erros[idx];
-  mostrarBanner(`💡 Dica: olhe na área de "${e.label}"`, 'ok');
-}
+        function vitoria() {
+            document.getElementById('win-t').textContent = Math.round((Date.now() - inicio) / 1000);
+            document.getElementById('win').classList.add('visivel');
+        }
 
-function mostrarBanner(txt, tipo) {
-  const b = document.getElementById('banner');
-  b.textContent = txt;
-  b.className = `banner ${tipo}`;
-  b.style.display = 'block';
-  clearTimeout(b._t);
-  b._t = setTimeout(() => { b.style.display = 'none'; }, 2400);
-}
+        function banner(txt, tipo) {
+            const b = document.getElementById('banner');
+            b.textContent = txt; b.className = `banner ${tipo}`; b.style.display = 'block';
+            clearTimeout(b._t); b._t = setTimeout(() => { b.style.display = 'none'; }, 2400);
+        }
 
-function vitoria() {
-  const tempo = Math.round((Date.now() - tempoInicio) / 1000);
-  document.getElementById('win-tempo').textContent = tempo;
-  document.getElementById('win').classList.add('visivel');
-}
-
-novoJogo();
-</script>
+        novoJogo();
+    </script>
 </body>
 </html>
