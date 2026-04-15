@@ -72,8 +72,8 @@
         <main class="main-content">
 
             <!-- ================================================
-    INÍCIO (RELÓGIO)
-    ================================================ -->
+            INÍCIO (RELÓGIO)
+            ================================================ -->
             <section id="clock-section" class="active-section">
                 <!-- HEADER DO DASHBOARD -->
                 <div class="dashboard-header">
@@ -143,8 +143,8 @@
             </section>
 
             <!-- ================================================
-    AGENDA
-    ================================================ -->
+            AGENDA
+            ================================================ -->
             <section id="agenda-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -212,7 +212,7 @@
                                         <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
                                         <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
                                     </div>
-                                    
+
                                     <div>
                                         <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
                                         <select id="recorrente-duracao" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
@@ -273,8 +273,8 @@
             </section>
 
             <!-- ================================================
-    PACIENTES
-    ================================================ -->
+            PACIENTES
+            ================================================ -->
             <section id="cadastro-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -328,8 +328,8 @@
             </section>
 
             <!-- ================================================
-    PRONTUÁRIO / EVOLUÇÃO
-    ================================================ -->
+            PRONTUÁRIO / EVOLUÇÃO
+            ================================================ -->
             <section id="evolucao-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -529,8 +529,8 @@
             </section>
 
             <!-- ================================================
-    FORMULÁRIOS
-    ================================================ -->
+            FORMULÁRIOS
+            ================================================ -->
             <section id="form-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -570,8 +570,8 @@
             </section>
 
             <!-- ================================================
-    RESULTADOS
-    ================================================ -->
+            RESULTADOS
+            ================================================ -->
             <section id="resultados-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -720,7 +720,7 @@
                             <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
                             <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
                         </div>
-                        
+
                         <div>
                             <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
                             <select id="recorrente-duracao" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
@@ -898,6 +898,69 @@
                     </table>
                 </div>
             </section>
+
+            <!-- ================================================
+            DASHBOARD LATERAL DIREITA (mini painel)
+            ================================================ -->
+            <aside class="dashboard-lateral" id="dashboard-lateral">
+                <div class="dash-lateral-relogio">
+                    <div class="clock" style="width:64px;height:64px;">
+                        <div class="center-circle"></div>
+                        <div id="hour-hand-mini" class="hand hour"></div>
+                        <div id="minute-hand-mini" class="hand minute"></div>
+                        <div id="second-hand-mini" class="hand second"></div>
+                    </div>
+                    <div class="dash-lateral-saudacao">Olá,</div>
+                    <div class="dash-lateral-nome" id="dash-lateral-nome">Profissional</div>
+                </div>
+
+                <div class="dashboard-lateral-titulo">Resumo</div>
+
+                <div class="dash-mini-card">
+                    <div class="dash-mini-icon" style="background:rgba(139,92,246,0.15);">
+                        <i class="fas fa-users" style="color:#a78bfa;"></i>
+                    </div>
+                    <div>
+                        <div class="dash-mini-label">Pacientes</div>
+                        <div class="dash-mini-value" id="dash-mini-pacientes">—</div>
+                    </div>
+                </div>
+
+                <div class="dash-mini-card">
+                    <div class="dash-mini-icon" style="background:rgba(96,165,250,0.15);">
+                        <i class="fas fa-calendar-check" style="color:#60a5fa;"></i>
+                    </div>
+                    <div>
+                        <div class="dash-mini-label">Hoje</div>
+                        <div class="dash-mini-value" id="dash-mini-hoje">—</div>
+                    </div>
+                </div>
+
+                <div class="dash-mini-card">
+                    <div class="dash-mini-icon" style="background:rgba(251,191,36,0.15);">
+                        <i class="fas fa-clock" style="color:#fbbf24;"></i>
+                    </div>
+                    <div>
+                        <div class="dash-mini-label">Pendentes</div>
+                        <div class="dash-mini-value" id="dash-mini-pendentes">—</div>
+                    </div>
+                </div>
+
+                <div class="dash-mini-card">
+                    <div class="dash-mini-icon" style="background:rgba(52,211,153,0.15);">
+                        <i class="fas fa-check-circle" style="color:#34d399;"></i>
+                    </div>
+                    <div>
+                        <div class="dash-mini-label">Respondidos</div>
+                        <div class="dash-mini-value" id="dash-mini-respondidos">—</div>
+                    </div>
+                </div>
+
+                <div class="dash-lateral-agenda-titulo">Agenda de Hoje</div>
+                <div id="dash-lateral-agenda">
+                    <p style="color:#475569; font-size:12px; font-style:italic;">Carregando...</p>
+                </div>
+            </aside>
 
         </main>
     </div>
