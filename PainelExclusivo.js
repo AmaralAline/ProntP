@@ -139,20 +139,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 //  POLÍTICA DE PRIVACIDADE
 // ============================================================
 async function verificarPolitica() {
+    // 1. Verifica localStorage primeiro — resposta imediata, evita piscar a faixa
+    const profId = profissional?.id || 'desconhecido';
+    const chaveLocal = `politica_aceita_${profId}`;
+    if (localStorage.getItem(chaveLocal) === '1') return;
+
     try {
         const res = await fetch(`${API_URL}/api/perfil`, { headers: headersAuth() });
         if (!res.ok) return;
         const data = await res.json();
 
-        if (!data.politica_aceita) {
-            // Bloqueia o sistema
-            document.body.classList.add('politica-pendente');
-            document.getElementById('faixa-politica').style.display = 'flex';
-            // Adiciona padding no bottom do main para não esconder conteúdo
-            document.querySelector('.main-content').style.paddingBottom = '100px';
+        if (data.politica_aceita) {
+            // Já aceito no banco — salva localmente para não consultar de novo
+            localStorage.setItem(chaveLocal, '1');
+            return;
         }
+
+        // Não aceito ainda — bloqueia o sistema
+        document.body.classList.add('politica-pendente');
+        document.getElementById('faixa-politica').style.display = 'flex';
+        document.querySelector('.main-content').style.paddingBottom = '100px';
     } catch (err) {
-        // Se API não retornar o campo, não bloqueia (compatibilidade)
         console.log('Verificação de política ignorada:', err.message);
     }
 }
@@ -172,6 +179,9 @@ async function aceitarPolitica() {
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Salvando...';
 
+    const profId = profissional?.id || 'desconhecido';
+    const chaveLocal = `politica_aceita_${profId}`;
+
     try {
         const res = await fetch(`${API_URL}/api/perfil/aceitar-politica`, {
             method: 'POST',
@@ -179,21 +189,39 @@ async function aceitarPolitica() {
         });
 
         if (res.ok) {
-            // Remove bloqueio
-            document.body.classList.remove('politica-pendente');
-            document.getElementById('faixa-politica').style.display = 'none';
-            document.querySelector('.main-content').style.paddingBottom = '';
-            document.getElementById('overlay-bloqueio').style.display = 'none';
+            // Salva no localStorage para não perguntar de novo
+            localStorage.setItem(chaveLocal, '1');
+            liberarSistema();
+
+            // Envia email de confirmação para o profissional
+            enviarEmailConfirmacaoPolitica();
         } else {
             btn.disabled = false;
             btn.innerHTML = '<i class="fas fa-check" style="margin-right:6px;"></i>Confirmar e continuar';
         }
     } catch (err) {
-        // Se API não tiver o endpoint ainda, aceita localmente
-        document.body.classList.remove('politica-pendente');
-        document.getElementById('faixa-politica').style.display = 'none';
-        document.querySelector('.main-content').style.paddingBottom = '';
+        // Mesmo com erro na API, salva localmente e libera
+        localStorage.setItem(chaveLocal, '1');
+        liberarSistema();
         console.log('Política aceita localmente');
+    }
+}
+
+function liberarSistema() {
+    document.body.classList.remove('politica-pendente');
+    document.getElementById('faixa-politica').style.display = 'none';
+    document.querySelector('.main-content').style.paddingBottom = '';
+    document.getElementById('overlay-bloqueio').style.display = 'none';
+}
+
+async function enviarEmailConfirmacaoPolitica() {
+    try {
+        await fetch(`${API_URL}/api/perfil/email-confirmacao-politica`, {
+            method: 'POST',
+            headers: headersAuth()
+        });
+    } catch (err) {
+        // Silencioso — não é crítico
     }
 }
 
