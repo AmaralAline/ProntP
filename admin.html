@@ -7,8 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Roboto', sans-serif; background: #0f1621; color: #e2e8f0; min-height: 100vh; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0f1621;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
         .header {
             background: #1a2332;
             border-bottom: 1px solid rgba(139,92,246,0.2);
@@ -17,17 +28,41 @@
             align-items: center;
             justify-content: space-between;
         }
-        .header h1 { font-size: 18px; font-weight: 700; color: #a78bfa; }
-        .header span { font-size: 13px; color: #64748b; }
-        .header a { color: #64748b; font-size: 13px; text-decoration: none; }
-        .header a:hover { color: #a78bfa; }
-        .main { padding: 32px; max-width: 1200px; margin: 0 auto; }
+
+            .header h1 {
+                font-size: 18px;
+                font-weight: 700;
+                color: #a78bfa;
+            }
+
+            .header span {
+                font-size: 13px;
+                color: #64748b;
+            }
+
+            .header a {
+                color: #64748b;
+                font-size: 13px;
+                text-decoration: none;
+            }
+
+                .header a:hover {
+                    color: #a78bfa;
+                }
+
+        .main {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         .metricas-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 16px;
             margin-bottom: 32px;
         }
+
         .metrica-card {
             background: #1a2332;
             border: 1px solid rgba(139,92,246,0.15);
@@ -35,9 +70,25 @@
             padding: 20px;
             text-align: center;
         }
-        .metrica-valor { font-size: 32px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
-        .metrica-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-        .metrica-receita { color: #34d399; }
+
+        .metrica-valor {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 6px;
+        }
+
+        .metrica-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metrica-receita {
+            color: #34d399;
+        }
+
         .section-title {
             font-size: 16px;
             font-weight: 600;
@@ -46,13 +97,19 @@
             letter-spacing: 1px;
             margin-bottom: 16px;
         }
+
         .table-card {
             background: #1a2332;
             border: 1px solid rgba(139,92,246,0.15);
             border-radius: 12px;
             overflow: hidden;
         }
-        table { width: 100%; border-collapse: collapse; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
         th {
             background: #141d2b;
             padding: 12px 16px;
@@ -63,13 +120,18 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         td {
             padding: 14px 16px;
             border-top: 1px solid rgba(139,92,246,0.08);
             font-size: 13px;
             color: #cbd5e1;
         }
-        tr:hover td { background: rgba(139,92,246,0.04); }
+
+        tr:hover td {
+            background: rgba(139,92,246,0.04);
+        }
+
         .badge {
             display: inline-block;
             padding: 3px 10px;
@@ -77,10 +139,27 @@
             font-size: 11px;
             font-weight: 500;
         }
-        .badge-pago { background: rgba(52,211,153,0.15); color: #34d399; }
-        .badge-trial { background: rgba(251,191,36,0.15); color: #fbbf24; }
-        .badge-ativo { background: rgba(52,211,153,0.15); color: #34d399; }
-        .badge-suspenso { background: rgba(248,113,113,0.15); color: #f87171; }
+
+        .badge-pago {
+            background: rgba(52,211,153,0.15);
+            color: #34d399;
+        }
+
+        .badge-trial {
+            background: rgba(251,191,36,0.15);
+            color: #fbbf24;
+        }
+
+        .badge-ativo {
+            background: rgba(52,211,153,0.15);
+            color: #34d399;
+        }
+
+        .badge-suspenso {
+            background: rgba(248,113,113,0.15);
+            color: #f87171;
+        }
+
         .btn-acao {
             padding: 5px 12px;
             border-radius: 6px;
@@ -91,36 +170,91 @@
             transition: all 0.2s;
             margin-right: 4px;
         }
-        .btn-suspender { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
-        .btn-suspender:hover { background: rgba(248,113,113,0.25); }
-        .btn-ativar { background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
-        .btn-ativar:hover { background: rgba(52,211,153,0.25); }
-        .btn-pago { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
-        .btn-pago:hover { background: rgba(139,92,246,0.25); }
-        .loading { text-align: center; padding: 40px; color: #64748b; }
+
+        .btn-suspender {
+            background: rgba(248,113,113,0.15);
+            color: #f87171;
+            border: 1px solid rgba(248,113,113,0.3);
+        }
+
+            .btn-suspender:hover {
+                background: rgba(248,113,113,0.25);
+            }
+
+        .btn-ativar {
+            background: rgba(52,211,153,0.15);
+            color: #34d399;
+            border: 1px solid rgba(52,211,153,0.3);
+        }
+
+            .btn-ativar:hover {
+                background: rgba(52,211,153,0.25);
+            }
+
+        .btn-pago {
+            background: rgba(139,92,246,0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(139,92,246,0.3);
+        }
+
+            .btn-pago:hover {
+                background: rgba(139,92,246,0.25);
+            }
+
+        .btn-verificar {
+            background: rgba(52,211,153,0.15);
+            color: #34d399;
+            border: 1px solid rgba(52,211,153,0.3);
+        }
+
+            .btn-verificar:hover {
+                background: rgba(52,211,153,0.25);
+            }
+
+        .btn-rejeitar {
+            background: rgba(248,113,113,0.15);
+            color: #f87171;
+            border: 1px solid rgba(248,113,113,0.3);
+        }
+
+            .btn-rejeitar:hover {
+                background: rgba(248,113,113,0.25);
+            }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
         .filtro {
             display: flex;
             gap: 12px;
             margin-bottom: 16px;
             flex-wrap: wrap;
         }
-        .filtro button {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid rgba(139,92,246,0.2);
-            background: transparent;
-            color: #94a3b8;
-            font-size: 13px;
-            cursor: pointer;
-            font-family: 'Roboto', sans-serif;
-            transition: all 0.2s;
-        }
-        .filtro button.ativo {
-            background: rgba(139,92,246,0.15);
-            color: #a78bfa;
-            border-color: rgba(139,92,246,0.4);
-        }
-        .filtro button:hover { background: rgba(139,92,246,0.1); }
+
+            .filtro button {
+                padding: 8px 16px;
+                border-radius: 8px;
+                border: 1px solid rgba(139,92,246,0.2);
+                background: transparent;
+                color: #94a3b8;
+                font-size: 13px;
+                cursor: pointer;
+                font-family: 'Roboto', sans-serif;
+                transition: all 0.2s;
+            }
+
+                .filtro button.ativo {
+                    background: rgba(139,92,246,0.15);
+                    color: #a78bfa;
+                    border-color: rgba(139,92,246,0.4);
+                }
+
+                .filtro button:hover {
+                    background: rgba(139,92,246,0.1);
+                }
     </style>
 </head>
 <body>
@@ -140,6 +274,32 @@
             <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Em trial</div></div>
             <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Total de pacientes</div></div>
             <div class="metrica-card"><div class="metrica-valor metrica-receita">—</div><div class="metrica-label">Receita mensal</div></div>
+        </div>
+
+        <!-- VERIFICAÇÕES PENDENTES -->
+        <div id="secao-verificacoes" style="margin-bottom:32px; display:none;">
+            <p class="section-title">
+                <i class="fas fa-shield-alt" style="color:#fbbf24; margin-right:8px;"></i>
+                Verificações Pendentes
+                <span id="badge-pendentes" style="background:rgba(251,191,36,0.15); color:#fbbf24; font-size:11px; padding:2px 10px; border-radius:20px; margin-left:10px; font-weight:500; text-transform:none; letter-spacing:0;"></span>
+            </p>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Profissional</th>
+                            <th>E-mail</th>
+                            <th>CRP / CRM</th>
+                            <th>CPF</th>
+                            <th>Solicitado em</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-verificacoes">
+                        <tr><td colspan="6" class="loading">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- TABELA DE PROFISSIONAIS -->
@@ -229,31 +389,32 @@
             }
 
             tbody.innerHTML = profissionais.map(p => `
-                    <tr id="row-${p.id}">
-                        <td>
-                            <strong style="color:#f1f5f9;">${p.nome}</strong>
-                            ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
-                        </td>
-                        <td>${p.email}</td>
-                        <td>${p.especialidade || '-'}</td>
-                        <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
-                        <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
-                        <td>${p.total_pacientes}</td>
-                        <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
-                        <td>
-                            ${!p.is_admin ? `
-                                ${p.ativo
+                        <tr id="row-${p.id}">
+                            <td>
+                                <strong style="color:#f1f5f9;">${p.nome}</strong>
+                                ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
+                                ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
+                            </td>
+                            <td>${p.email}</td>
+                            <td>${p.especialidade || '-'}</td>
+                            <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
+                            <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
+                            <td>${p.total_pacientes}</td>
+                            <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
+                            <td>
+                                ${!p.is_admin ? `
+                                    ${p.ativo
                         ? `<button class="btn-acao btn-suspender" onclick="suspender(${p.id})">Suspender</button>`
                         : `<button class="btn-acao btn-ativar" onclick="ativar(${p.id})">Ativar</button>`
                     }
-                                ${p.plano !== 'pago'
+                                    ${p.plano !== 'pago'
                         ? `<button class="btn-acao btn-pago" onclick="tornarPago(${p.id})">Tornar pago</button>`
                         : ''
                     }
-                            ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
-                        </td>
-                    </tr>
-                `).join('');
+                                ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
+                            </td>
+                        </tr>
+                    `).join('');
         }
 
         function filtrar(tipo, btn) {
@@ -305,6 +466,88 @@
 
         carregarMetricas();
         carregarProfissionais();
+        carregarVerificacoesPendentes();
+
+        async function carregarVerificacoesPendentes() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/verificacoes-pendentes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+
+                const secao = document.getElementById('secao-verificacoes');
+                const tbody = document.getElementById('tabela-verificacoes');
+                const badge = document.getElementById('badge-pendentes');
+
+                if (!data.length) {
+                    secao.style.display = 'none';
+                    return;
+                }
+
+                secao.style.display = 'block';
+                badge.textContent = data.length + ' pendente' + (data.length > 1 ? 's' : '');
+
+                tbody.innerHTML = data.map(v => `
+                        <tr id="verif-row-${v.id}">
+                            <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
+                            <td style="color:#94a3b8;">${v.email}</td>
+                            <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
+                            <td style="color:#94a3b8;">${v.cpf || '—'}</td>
+                            <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
+                            <td>
+                                <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
+                                    <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
+                                </button>
+                                <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
+                                    <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+            } catch (err) {
+                console.error('Erro ao carregar verificações:', err);
+            }
+        }
+
+        async function aprovarVerificacao(id) {
+            if (!confirm('Aprovar verificação deste profissional? O selo verde será ativado imediatamente.')) return;
+            try {
+                const res = await fetch(`${API_URL}/api/admin/verificacoes/${id}/aprovar`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                });
+                if (res.ok) {
+                    document.getElementById(`verif-row-${id}`)?.remove();
+                    await carregarVerificacoesPendentes();
+                    await carregarProfissionais();
+                    alert('✅ Profissional verificado com sucesso!');
+                } else {
+                    alert('Erro ao aprovar verificação.');
+                }
+            } catch (err) {
+                alert('Erro de conexão.');
+            }
+        }
+
+        async function rejeitarVerificacao(id) {
+            if (!confirm('Rejeitar esta solicitação de verificação?')) return;
+            try {
+                const res = await fetch(`${API_URL}/api/admin/verificacoes/${id}/rejeitar`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                });
+                if (res.ok) {
+                    document.getElementById(`verif-row-${id}`)?.remove();
+                    await carregarVerificacoesPendentes();
+                    alert('Solicitação rejeitada.');
+                } else {
+                    alert('Erro ao rejeitar.');
+                }
+            } catch (err) {
+                alert('Erro de conexão.');
+            }
+        }
     </script>
     <a href="admin.html" style="
     display: flex; align-items: center; gap: 10px;
