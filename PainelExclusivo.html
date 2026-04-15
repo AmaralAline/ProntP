@@ -105,8 +105,8 @@
         <main class="main-content">
 
             <!-- ================================================
-    INÍCIO (RELÓGIO)
-    ================================================ -->
+            INÍCIO (RELÓGIO)
+            ================================================ -->
             <section id="clock-section" class="active-section">
                 <!-- HEADER DO DASHBOARD -->
                 <div class="dashboard-header">
@@ -176,8 +176,8 @@
             </section>
 
             <!-- ================================================
-    AGENDA
-    ================================================ -->
+            AGENDA
+            ================================================ -->
             <section id="agenda-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -306,8 +306,8 @@
             </section>
 
             <!-- ================================================
-    PACIENTES
-    ================================================ -->
+            PACIENTES
+            ================================================ -->
             <section id="cadastro-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -361,8 +361,8 @@
             </section>
 
             <!-- ================================================
-    PRONTUÁRIO / EVOLUÇÃO
-    ================================================ -->
+            PRONTUÁRIO / EVOLUÇÃO
+            ================================================ -->
             <section id="evolucao-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -442,8 +442,8 @@
             </section>
 
             <!-- ================================================
-    RELATÓRIO DE CONVÊNIO (seção própria)
-    ================================================ -->
+            RELATÓRIO DE CONVÊNIO (seção própria)
+            ================================================ -->
             <section id="relatorio-convenio-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -730,8 +730,8 @@
             </section>
 
             <!-- ================================================
-    FORMULÁRIOS
-    ================================================ -->
+            FORMULÁRIOS
+            ================================================ -->
             <section id="form-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -771,8 +771,8 @@
             </section>
 
             <!-- ================================================
-    RESULTADOS
-    ================================================ -->
+            RESULTADOS
+            ================================================ -->
             <section id="resultados-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
@@ -1221,8 +1221,8 @@
             </section>
 
             <!-- ================================================
-    DASHBOARD LATERAL DIREITA (mini painel)
-    ================================================ -->
+            DASHBOARD LATERAL DIREITA (mini painel)
+            ================================================ -->
             <aside class="dashboard-lateral" id="dashboard-lateral">
                 <div class="dash-lateral-relogio">
                     <div class="clock" style="width:64px;height:64px;">
@@ -1363,7 +1363,93 @@
             </button>
         </div>
     </div>
+    <!-- ============================================================
+     INSTRUÇÕES: Cole este bloco ANTES de </body> no PainelExclusivo.html
+     (substitui ou adiciona logo antes de <script defer src="PainelExclusivo.js">)
+     ============================================================ -->
+    <!-- BOTÃO FLUTUANTE DE SUPORTE -->
+    <button id="btn-bug-report" onclick="abrirModalBug()" title="Reportar um problema">
+        <i class="fas fa-bug"></i>
+        <span>Suporte</span>
+    </button>
 
+    <!-- MODAL DE REPORTE DE BUG -->
+    <div id="modal-bug-report" class="modal-bug-overlay" style="display:none;">
+        <div class="modal-bug-box">
+            <div class="modal-bug-header">
+                <div class="modal-bug-icon"><i class="fas fa-bug"></i></div>
+                <div>
+                    <h3>Reportar um problema</h3>
+                    <p>Descreva o que aconteceu e nossa equipe irá analisar.</p>
+                </div>
+                <button class="modal-bug-fechar" onclick="fecharModalBug()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-bug-body">
+                <!-- Tipo do problema -->
+                <div class="bug-field">
+                    <label>Tipo do problema *</label>
+                    <div class="bug-tipos">
+                        <button type="button" class="bug-tipo-btn active" data-tipo="erro">
+                            <i class="fas fa-exclamation-circle"></i> Erro / Bug
+                        </button>
+                        <button type="button" class="bug-tipo-btn" data-tipo="lentidao">
+                            <i class="fas fa-hourglass-half"></i> Lentidão
+                        </button>
+                        <button type="button" class="bug-tipo-btn" data-tipo="layout">
+                            <i class="fas fa-desktop"></i> Visual / Layout
+                        </button>
+                        <button type="button" class="bug-tipo-btn" data-tipo="sugestao">
+                            <i class="fas fa-lightbulb"></i> Sugestão
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Descrição -->
+                <div class="bug-field">
+                    <label for="bug-titulo">Título rápido *</label>
+                    <input type="text" id="bug-titulo" placeholder="Ex: Botão de salvar não funciona na agenda"
+                           maxlength="120" />
+                </div>
+
+                <div class="bug-field">
+                    <label for="bug-descricao">O que aconteceu? *</label>
+                    <textarea id="bug-descricao" rows="4"
+                              placeholder="Descreva o que você estava fazendo quando o problema ocorreu. Quanto mais detalhes, mais rápido conseguimos corrigir!"></textarea>
+                </div>
+
+                <!-- Contato opcional -->
+                <div class="bug-field">
+                    <label for="bug-contato">Seu e-mail para retorno <span style="color:#64748b;">(opcional)</span></label>
+                    <input type="email" id="bug-contato" placeholder="seu@email.com" />
+                </div>
+
+                <!-- Info técnica colapsável -->
+                <details class="bug-info-tecnica">
+                    <summary><i class="fas fa-code"></i> Informações técnicas (enviadas automaticamente)</summary>
+                    <div id="bug-info-preview" class="bug-info-preview"></div>
+                </details>
+            </div>
+
+            <div class="modal-bug-footer">
+                <button class="btn-cancelar-bug" onclick="fecharModalBug()">Cancelar</button>
+                <button class="btn-enviar-bug" id="btn-enviar-bug-submit" onclick="enviarBugReport()">
+                    <i class="fas fa-paper-plane"></i> Enviar relatório
+                </button>
+            </div>
+
+            <!-- Feedback de sucesso -->
+            <div id="bug-sucesso" class="bug-sucesso" style="display:none;">
+                <div class="bug-sucesso-icon"><i class="fas fa-check-circle"></i></div>
+                <h4>Relatório enviado!</h4>
+                <p>Obrigado. Nossa equipe vai analisar e, se necessário, entrar em contato.</p>
+                <button onclick="fecharModalBug()">Fechar</button>
+            </div>
+        </div>
+    </div>
+    <script defer src="bug-report.js"></script>
     <script defer src="PainelExclusivo.js"></script>
     <script defer src="agenda.js"></script>
     <script defer src="sessao.js"></script>
