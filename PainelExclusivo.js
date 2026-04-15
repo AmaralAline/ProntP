@@ -1526,18 +1526,55 @@ function atualizarStatusVerificacao(verificado, verificadoEm, status) {
     }
 }
 
+// Máscara CPF
+function mascaraCPF(input) {
+    let v = input.value.replace(/\D/g, '').substring(0, 11);
+    if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+    else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+    else if (v.length > 3) v = v.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+    input.value = v;
+}
+
+// Atualiza preview do registro montado
+function atualizarPreviewRegistro() {
+    const conselho = document.getElementById('verif-conselho')?.value || '';
+    const regiao = document.getElementById('verif-regiao')?.value || '';
+    const numero = document.getElementById('verif-numero')?.value || '';
+    const preview = document.getElementById('verif-preview');
+    if (!preview) return;
+    if (conselho && regiao && numero) {
+        preview.textContent = `Registro: ${conselho} ${regiao}/${numero}`;
+    } else {
+        preview.textContent = '';
+    }
+}
+
+// Listeners para preview (adicionados após DOM carregado)
+document.addEventListener('DOMContentLoaded', () => {
+    ['verif-conselho', 'verif-regiao', 'verif-numero'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', atualizarPreviewRegistro);
+        if (el) el.addEventListener('change', atualizarPreviewRegistro);
+    });
+});
+
 async function solicitarVerificacao() {
-    const crp = document.getElementById('verif-crp')?.value.trim();
+    const conselho = document.getElementById('verif-conselho')?.value.trim();
+    const regiao = document.getElementById('verif-regiao')?.value.trim();
+    const numero = document.getElementById('verif-numero')?.value.trim();
     const cpf = document.getElementById('verif-cpf')?.value.trim();
     const feedback = document.getElementById('verif-feedback');
     const btn = document.getElementById('btn-solicitar-verif');
 
-    if (!crp || !cpf) {
-        feedback.textContent = 'Preencha o CRP/CRM e o CPF para verificar.';
+    if (!conselho || !regiao || !numero || !cpf) {
+        feedback.textContent = 'Preencha todos os campos para solicitar a verificação.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
     }
+
+    // Monta o registro completo ex: "CRP 06/123456"
+    const crp_crm = `${conselho} ${regiao}/${numero}`;
 
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Verificando...';
@@ -1547,25 +1584,22 @@ async function solicitarVerificacao() {
         const res = await fetch(`${API_URL}/api/perfil/solicitar-verificacao`, {
             method: 'POST',
             headers: headersAuth(),
-            body: JSON.stringify({ crp_crm: crp, cpf })
+            body: JSON.stringify({ crp_crm, cpf })
         });
         const data = await res.json();
 
         if (res.ok && data.verificado) {
-            // Verificação automática bem-sucedida!
             atualizarStatusVerificacao(true, new Date().toISOString(), null);
             feedback.textContent = '✅ Verificado automaticamente!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
         } else {
-            // Entrou na fila manual
             atualizarStatusVerificacao(false, null, 'pendente');
             feedback.textContent = '⏳ Solicitação enviada! Nossa equipe verificará em até 48h.';
             feedback.style.color = '#fbbf24';
             feedback.style.display = 'block';
         }
     } catch (err) {
-        // API ainda não tem o endpoint — simula entrada na fila
         atualizarStatusVerificacao(false, null, 'pendente');
         feedback.textContent = '⏳ Solicitação registrada! Nossa equipe verificará em até 48h.';
         feedback.style.color = '#fbbf24';

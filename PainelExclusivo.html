@@ -581,15 +581,72 @@
                         <div id="status-verificacao" style="display:none; align-items:center; gap:10px; border-radius:10px; padding:12px 16px; margin-bottom:16px;">
                         </div>
 
-                        <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin-bottom:16px;">
-                            <div style="flex:1; min-width:160px;">
-                                <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">CRP / CRM para verificar</label>
-                                <input type="text" id="verif-crp" placeholder="Ex: CRP 06/000001"
-                                       style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+
+                            <!-- Conselho -->
+                            <div>
+                                <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Conselho</label>
+                                <select id="verif-conselho" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    <option value="CRP">CRP — Psicologia</option>
+                                    <option value="CRM">CRM — Medicina</option>
+                                    <option value="CRO">CRO — Odontologia</option>
+                                    <option value="CREFITO">CREFITO — Fisioterapia</option>
+                                    <option value="CRN">CRN — Nutrição</option>
+                                    <option value="COREN">COREN — Enfermagem</option>
+                                    <option value="CFF">CFF — Farmácia</option>
+                                    <option value="CFESS">CFESS — Serviço Social</option>
+                                </select>
                             </div>
-                            <div style="flex:1; min-width:160px;">
+
+                            <!-- Região/Estado -->
+                            <div>
+                                <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Região / Estado</label>
+                                <select id="verif-regiao" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    <option value="01">01 — São Paulo</option>
+                                    <option value="02">02 — Rio de Janeiro</option>
+                                    <option value="03">03 — Minas Gerais</option>
+                                    <option value="04">04 — Rio Grande do Sul</option>
+                                    <option value="05">05 — Bahia</option>
+                                    <option value="06">06 — Pernambuco</option>
+                                    <option value="07">07 — Ceará</option>
+                                    <option value="08">08 — Pará</option>
+                                    <option value="09">09 — Goiás</option>
+                                    <option value="10">10 — Amazonas</option>
+                                    <option value="11">11 — Espírito Santo</option>
+                                    <option value="12">12 — Paraná</option>
+                                    <option value="13">13 — Santa Catarina</option>
+                                    <option value="14">14 — Mato Grosso</option>
+                                    <option value="15">15 — Mato Grosso do Sul</option>
+                                    <option value="16">16 — Maranhão</option>
+                                    <option value="17">17 — Paraíba</option>
+                                    <option value="18">18 — Rio Grande do Norte</option>
+                                    <option value="19">19 — Alagoas</option>
+                                    <option value="20">20 — Piauí</option>
+                                    <option value="21">21 — Sergipe</option>
+                                    <option value="22">22 — Tocantins</option>
+                                    <option value="23">23 — Rondônia</option>
+                                    <option value="24">24 — Roraima</option>
+                                    <option value="25">25 — Amapá</option>
+                                    <option value="26">26 — Acre</option>
+                                    <option value="27">27 — Distrito Federal</option>
+                                </select>
+                            </div>
+
+                            <!-- Número do registro — só números -->
+                            <div>
+                                <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Número do registro</label>
+                                <input type="text" id="verif-numero" placeholder="000000" maxlength="10"
+                                       oninput="this.value=this.value.replace(/\D/g,'')"
+                                       style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; letter-spacing:2px;">
+                                <!-- Preview do registro montado -->
+                                <p id="verif-preview" style="font-size:11px; color:#a78bfa; margin-top:6px;"></p>
+                            </div>
+
+                            <!-- CPF — só números com máscara -->
+                            <div>
                                 <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">CPF</label>
                                 <input type="text" id="verif-cpf" placeholder="000.000.000-00" maxlength="14"
+                                       oninput="mascaraCPF(this)"
                                        style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
                             </div>
                         </div>
