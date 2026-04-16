@@ -331,232 +331,445 @@
                 </tbody>
             </table>
         </div>
-    </div>
 
-    <script>
-        const API_URL = 'https://prontpsiback-production.up.railway.app';
-        const token = localStorage.getItem('token');
-        const profissional = JSON.parse(localStorage.getItem('profissional') || '{}');
+        <!-- ================================================
+             PAGAMENTOS ONLINE — visão geral da plataforma
+        ================================================ -->
+        <div style="margin-top:40px;">
+            <p class="section-title">
+                <i class="fas fa-credit-card" style="color:#a78bfa; margin-right:8px;"></i>
+                Pagamentos Online da Plataforma
+            </p>
 
-        if (!token) window.location.href = 'login.html';
+            <!-- MÉTRICAS FINANCEIRAS -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; margin-bottom:24px;">
+                <div class="metrica-card">
+                    <div class="metrica-valor" id="adm-total-agendamentos">—</div>
+                    <div class="metrica-label">Total de agendamentos</div>
+                </div>
+                <div class="metrica-card">
+                    <div class="metrica-valor metrica-receita" id="adm-volume-confirmado">—</div>
+                    <div class="metrica-label">Volume confirmado</div>
+                </div>
+                <div class="metrica-card">
+                    <div class="metrica-valor" style="color:#fbbf24;" id="adm-total-pendentes">—</div>
+                    <div class="metrica-label">Pendentes</div>
+                </div>
+                <div class="metrica-card">
+                    <div class="metrica-valor" style="color:#f87171;" id="adm-total-cancelados">—</div>
+                    <div class="metrica-label">Cancelados / Reembolsados</div>
+                </div>
+                <div class="metrica-card">
+                    <div class="metrica-valor" style="color:#60a5fa;" id="adm-profs-com-stripe">—</div>
+                    <div class="metrica-label">Profissionais com Stripe</div>
+                </div>
+            </div>
 
-        document.getElementById('admin-nome').textContent = profissional.nome || '';
+            <!-- FILTROS -->
+            <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap; align-items:flex-end;">
+                <div>
+                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Mês</label>
+                    <select id="adm-mes" style="padding:8px 12px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        <option value="">Todos</option>
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Status</label>
+                    <select id="adm-status" style="padding:8px 12px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                        <option value="">Todos</option>
+                        <option value="confirmado">Confirmado</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:4px;">Profissional</label>
+                    <select id="adm-prof-filtro" style="padding:8px 12px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; min-width:180px;">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+                <button onclick="filtrarPagamentos()" style="background:#7c3aed; color:#fff; border:none; padding:8px 18px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                    <i class="fas fa-filter" style="margin-right:6px;"></i>Filtrar
+                </button>
+            </div>
 
-        let todosProfissionais = [];
+            <!-- TABELA DE PAGAMENTOS -->
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Profissional</th>
+                            <th>Paciente</th>
+                            <th>Data consulta</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Reembolso</th>
+                            <th>ID Stripe (prova)</th>
+                            <th>Agendado em</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adm-tabela-pagamentos">
+                        <tr><td colspan="8" class="loading">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:12px; color:#475569; margin-top:10px;">
+                <i class="fas fa-info-circle" style="margin-right:4px;"></i>
+                O <strong style="color:#64748b;">ID Stripe</strong> é a prova irrefutável do pagamento. Com ele o profissional consegue confirmar qualquer transação no painel do Stripe.
+            </p>
+        </div>
 
-        async function carregarMetricas() {
-            try {
-                const res = await fetch(`${API_URL}/api/admin/metricas`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
+        <script>
+            const API_URL = 'https://prontpsiback-production.up.railway.app';
+            const token = localStorage.getItem('token');
+            const profissional = JSON.parse(localStorage.getItem('profissional') || '{}');
 
-                if (res.status === 403) {
-                    alert('Acesso negado. Você não é administrador.');
-                    window.location.href = 'PainelExclusivo.html';
+            if (!token) window.location.href = 'login.html';
+
+            document.getElementById('admin-nome').textContent = profissional.nome || '';
+
+            let todosProfissionais = [];
+
+            async function carregarMetricas() {
+                try {
+                    const res = await fetch(`${API_URL}/api/admin/metricas`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+
+                    if (res.status === 403) {
+                        alert('Acesso negado. Você não é administrador.');
+                        window.location.href = 'PainelExclusivo.html';
+                        return;
+                    }
+
+                    const data = await res.json();
+                    const cards = document.getElementById('metricas-grid').querySelectorAll('.metrica-card');
+                    cards[0].querySelector('.metrica-valor').textContent = data.total_profissionais;
+                    cards[1].querySelector('.metrica-valor').textContent = data.pagantes;
+                    cards[2].querySelector('.metrica-valor').textContent = data.em_trial;
+                    cards[3].querySelector('.metrica-valor').textContent = data.total_pacientes;
+                    cards[4].querySelector('.metrica-valor').textContent = `R$ ${data.receita_mensal}`;
+                } catch (err) {
+                    console.error('Erro ao carregar métricas:', err);
+                }
+            }
+
+            async function carregarProfissionais() {
+                try {
+                    const res = await fetch(`${API_URL}/api/admin/profissionais`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    todosProfissionais = await res.json();
+                    renderizarTabela(todosProfissionais);
+                } catch (err) {
+                    console.error('Erro ao carregar profissionais:', err);
+                }
+            }
+
+            function renderizarTabela(profissionais) {
+                const tbody = document.getElementById('tabela-profissionais');
+
+                if (!profissionais.length) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="loading">Nenhum profissional encontrado.</td></tr>';
                     return;
                 }
 
-                const data = await res.json();
-                const cards = document.getElementById('metricas-grid').querySelectorAll('.metrica-card');
-                cards[0].querySelector('.metrica-valor').textContent = data.total_profissionais;
-                cards[1].querySelector('.metrica-valor').textContent = data.pagantes;
-                cards[2].querySelector('.metrica-valor').textContent = data.em_trial;
-                cards[3].querySelector('.metrica-valor').textContent = data.total_pacientes;
-                cards[4].querySelector('.metrica-valor').textContent = `R$ ${data.receita_mensal}`;
-            } catch (err) {
-                console.error('Erro ao carregar métricas:', err);
-            }
-        }
-
-        async function carregarProfissionais() {
-            try {
-                const res = await fetch(`${API_URL}/api/admin/profissionais`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                todosProfissionais = await res.json();
-                renderizarTabela(todosProfissionais);
-            } catch (err) {
-                console.error('Erro ao carregar profissionais:', err);
-            }
-        }
-
-        function renderizarTabela(profissionais) {
-            const tbody = document.getElementById('tabela-profissionais');
-
-            if (!profissionais.length) {
-                tbody.innerHTML = '<tr><td colspan="8" class="loading">Nenhum profissional encontrado.</td></tr>';
-                return;
+                tbody.innerHTML = profissionais.map(p => `
+                                <tr id="row-${p.id}">
+                                    <td>
+                                        <strong style="color:#f1f5f9;">${p.nome}</strong>
+                                        ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
+                                        ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
+                                    </td>
+                                    <td>${p.email}</td>
+                                    <td>${p.especialidade || '-'}</td>
+                                    <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
+                                    <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
+                                    <td>${p.total_pacientes}</td>
+                                    <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
+                                    <td>
+                                        ${!p.is_admin ? `
+                                            ${p.ativo
+                            ? `<button class="btn-acao btn-suspender" onclick="suspender(${p.id})">Suspender</button>`
+                            : `<button class="btn-acao btn-ativar" onclick="ativar(${p.id})">Ativar</button>`
+                        }
+                                            ${p.plano !== 'pago'
+                            ? `<button class="btn-acao btn-pago" onclick="tornarPago(${p.id})">Tornar pago</button>`
+                            : ''
+                        }
+                                        ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
+                                    </td>
+                                </tr>
+                            `).join('');
             }
 
-            tbody.innerHTML = profissionais.map(p => `
-                        <tr id="row-${p.id}">
-                            <td>
-                                <strong style="color:#f1f5f9;">${p.nome}</strong>
-                                ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
-                                ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
-                            </td>
-                            <td>${p.email}</td>
-                            <td>${p.especialidade || '-'}</td>
-                            <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
-                            <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
-                            <td>${p.total_pacientes}</td>
-                            <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
-                            <td>
-                                ${!p.is_admin ? `
-                                    ${p.ativo
-                        ? `<button class="btn-acao btn-suspender" onclick="suspender(${p.id})">Suspender</button>`
-                        : `<button class="btn-acao btn-ativar" onclick="ativar(${p.id})">Ativar</button>`
+            function filtrar(tipo, btn) {
+                document.querySelectorAll('.filtro button').forEach(b => b.classList.remove('ativo'));
+                btn.classList.add('ativo');
+
+                if (tipo === 'todos') return renderizarTabela(todosProfissionais);
+                if (tipo === 'suspenso') return renderizarTabela(todosProfissionais.filter(p => !p.ativo));
+                renderizarTabela(todosProfissionais.filter(p => p.plano === tipo && p.ativo));
+            }
+
+            async function suspender(id) {
+                if (!confirm('Tem certeza que deseja suspender este profissional?')) return;
+                const prof = todosProfissionais.find(p => p.id === id);
+                await atualizarProfissional(id, 0, prof.plano);
+            }
+
+            async function ativar(id) {
+                const prof = todosProfissionais.find(p => p.id === id);
+                await atualizarProfissional(id, 1, prof.plano);
+            }
+
+            async function tornarPago(id) {
+                if (!confirm('Marcar este profissional como pagante?')) return;
+                await atualizarProfissional(id, 1, 'pago');
+            }
+
+            async function atualizarProfissional(id, ativo, plano) {
+                try {
+                    const res = await fetch(`${API_URL}/api/admin/profissionais/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ ativo, plano })
+                    });
+
+                    if (res.ok) {
+                        await carregarProfissionais();
+                        await carregarMetricas();
+                    } else {
+                        alert('Erro ao atualizar profissional.');
                     }
-                                    ${p.plano !== 'pago'
-                        ? `<button class="btn-acao btn-pago" onclick="tornarPago(${p.id})">Tornar pago</button>`
-                        : ''
-                    }
-                                ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
-                            </td>
-                        </tr>
-                    `).join('');
-        }
-
-        function filtrar(tipo, btn) {
-            document.querySelectorAll('.filtro button').forEach(b => b.classList.remove('ativo'));
-            btn.classList.add('ativo');
-
-            if (tipo === 'todos') return renderizarTabela(todosProfissionais);
-            if (tipo === 'suspenso') return renderizarTabela(todosProfissionais.filter(p => !p.ativo));
-            renderizarTabela(todosProfissionais.filter(p => p.plano === tipo && p.ativo));
-        }
-
-        async function suspender(id) {
-            if (!confirm('Tem certeza que deseja suspender este profissional?')) return;
-            const prof = todosProfissionais.find(p => p.id === id);
-            await atualizarProfissional(id, 0, prof.plano);
-        }
-
-        async function ativar(id) {
-            const prof = todosProfissionais.find(p => p.id === id);
-            await atualizarProfissional(id, 1, prof.plano);
-        }
-
-        async function tornarPago(id) {
-            if (!confirm('Marcar este profissional como pagante?')) return;
-            await atualizarProfissional(id, 1, 'pago');
-        }
-
-        async function atualizarProfissional(id, ativo, plano) {
-            try {
-                const res = await fetch(`${API_URL}/api/admin/profissionais/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ ativo, plano })
-                });
-
-                if (res.ok) {
-                    await carregarProfissionais();
-                    await carregarMetricas();
-                } else {
-                    alert('Erro ao atualizar profissional.');
+                } catch (err) {
+                    alert('Erro de conexão.');
                 }
-            } catch (err) {
-                alert('Erro de conexão.');
             }
-        }
 
-        carregarMetricas();
-        carregarProfissionais();
-        carregarVerificacoesPendentes();
+            carregarMetricas();
+            carregarProfissionais();
+            carregarVerificacoesPendentes();
 
-        async function carregarVerificacoesPendentes() {
-            try {
-                const res = await fetch(`${API_URL}/api/admin/verificacoes-pendentes`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (!res.ok) return;
-                const data = await res.json();
+            async function carregarVerificacoesPendentes() {
+                try {
+                    const res = await fetch(`${API_URL}/api/admin/verificacoes-pendentes`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (!res.ok) return;
+                    const data = await res.json();
 
-                const secao = document.getElementById('secao-verificacoes');
-                const tbody = document.getElementById('tabela-verificacoes');
-                const badge = document.getElementById('badge-pendentes');
+                    const secao = document.getElementById('secao-verificacoes');
+                    const tbody = document.getElementById('tabela-verificacoes');
+                    const badge = document.getElementById('badge-pendentes');
 
-                if (!data.length) {
-                    secao.style.display = 'none';
+                    if (!data.length) {
+                        secao.style.display = 'none';
+                        return;
+                    }
+
+                    secao.style.display = 'block';
+                    badge.textContent = data.length + ' pendente' + (data.length > 1 ? 's' : '');
+
+                    tbody.innerHTML = data.map(v => `
+                                <tr id="verif-row-${v.id}">
+                                    <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
+                                    <td style="color:#94a3b8;">${v.email}</td>
+                                    <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
+                                    <td style="color:#94a3b8;">${v.cpf || '—'}</td>
+                                    <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
+                                    <td>
+                                        <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
+                                            <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
+                                        </button>
+                                        <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
+                                            <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('');
+                } catch (err) {
+                    console.error('Erro ao carregar verificações:', err);
+                }
+            }
+
+            async function aprovarVerificacao(id) {
+                if (!confirm('Aprovar verificação deste profissional? O selo verde será ativado imediatamente.')) return;
+                try {
+                    const res = await fetch(`${API_URL}/api/admin/verificacoes/${id}/aprovar`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                    });
+                    if (res.ok) {
+                        document.getElementById(`verif-row-${id}`)?.remove();
+                        await carregarVerificacoesPendentes();
+                        await carregarProfissionais();
+                        alert('✅ Profissional verificado com sucesso!');
+                    } else {
+                        alert('Erro ao aprovar verificação.');
+                    }
+                } catch (err) {
+                    alert('Erro de conexão.');
+                }
+            }
+
+            async function rejeitarVerificacao(id) {
+                if (!confirm('Rejeitar esta solicitação de verificação?')) return;
+                try {
+                    const res = await fetch(`${API_URL}/api/admin/verificacoes/${id}/rejeitar`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                    });
+                    if (res.ok) {
+                        document.getElementById(`verif-row-${id}`)?.remove();
+                        await carregarVerificacoesPendentes();
+                        alert('Solicitação rejeitada.');
+                    } else {
+                        alert('Erro ao rejeitar.');
+                    }
+                } catch (err) {
+                    alert('Erro de conexão.');
+                }
+            }
+
+            // ============================================================
+            //  PAGAMENTOS ONLINE — Admin
+            // ============================================================
+            let todosPagamentos = [];
+
+            async function carregarPagamentosAdmin() {
+                try {
+                    const res = await fetch(`${API_URL}/api/admin/agendamentos-online`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (!res.ok) return;
+                    todosPagamentos = await res.json();
+
+                    // Preenche filtro de profissionais
+                    const profsMap = new Map();
+                    todosPagamentos.forEach(p => {
+                        if (p.profissional_id && p.profissional_nome) {
+                            profsMap.set(p.profissional_id, p.profissional_nome);
+                        }
+                    });
+                    const selProf = document.getElementById('adm-prof-filtro');
+                    profsMap.forEach((nome, id) => {
+                        const opt = document.createElement('option');
+                        opt.value = id;
+                        opt.textContent = nome;
+                        selProf.appendChild(opt);
+                    });
+
+                    // Métricas gerais
+                    const confirmados = todosPagamentos.filter(p => p.status === 'confirmado');
+                    const pendentes = todosPagamentos.filter(p => p.status === 'pendente');
+                    const cancelados = todosPagamentos.filter(p => p.status === 'cancelado');
+                    const volume = confirmados.reduce((s, p) => s + parseFloat(p.valor || 0), 0);
+                    const profsAtivos = profsMap.size;
+
+                    document.getElementById('adm-total-agendamentos').textContent = todosPagamentos.length;
+                    document.getElementById('adm-volume-confirmado').textContent = `R$ ${volume.toFixed(2)}`;
+                    document.getElementById('adm-total-pendentes').textContent = pendentes.length;
+                    document.getElementById('adm-total-cancelados').textContent = cancelados.length;
+                    document.getElementById('adm-profs-com-stripe').textContent = profsAtivos;
+
+                    // Aplica filtro do mês atual por padrão
+                    filtrarPagamentos();
+                } catch (err) {
+                    console.error('Erro ao carregar pagamentos:', err);
+                }
+            }
+
+            function filtrarPagamentos() {
+                const mes = document.getElementById('adm-mes').value;
+                const status = document.getElementById('adm-status').value;
+                const profId = document.getElementById('adm-prof-filtro').value;
+
+                let resultado = todosPagamentos;
+
+                if (mes) {
+                    resultado = resultado.filter(p => {
+                        const d = new Date(p.data_consulta + 'T00:00:00');
+                        return d.getMonth() + 1 === parseInt(mes);
+                    });
+                }
+                if (status) resultado = resultado.filter(p => p.status === status);
+                if (profId) resultado = resultado.filter(p => p.profissional_id == profId);
+
+                renderizarPagamentos(resultado);
+            }
+
+            function renderizarPagamentos(lista) {
+                const tbody = document.getElementById('adm-tabela-pagamentos');
+                if (!tbody) return;
+
+                if (!lista.length) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="loading">Nenhum registro encontrado.</td></tr>';
                     return;
                 }
 
-                secao.style.display = 'block';
-                badge.textContent = data.length + ' pendente' + (data.length > 1 ? 's' : '');
+                const statusCor = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171' };
+                const statusLabel = { confirmado: '✓ Confirmado', pendente: '⏳ Pendente', cancelado: '✗ Cancelado' };
 
-                tbody.innerHTML = data.map(v => `
-                        <tr id="verif-row-${v.id}">
-                            <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
-                            <td style="color:#94a3b8;">${v.email}</td>
-                            <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
-                            <td style="color:#94a3b8;">${v.cpf || '—'}</td>
-                            <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
+                tbody.innerHTML = lista.map(ag => {
+                    const dataConsulta = new Date(ag.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR');
+                    const criadoEm = ag.criado_em ? new Date(ag.criado_em).toLocaleDateString('pt-BR') : '—';
+                    const cor = statusCor[ag.status] || '#64748b';
+                    const label = statusLabel[ag.status] || ag.status;
+                    const stripeId = ag.stripe_payment_intent || ag.stripe_session_id || null;
+                    const stripeCell = stripeId
+                        ? `<span title="${stripeId}" style="font-family:monospace; font-size:11px; color:#8b5cf6; cursor:help;">${stripeId.substring(0, 22)}...</span>`
+                        : '<span style="color:#475569; font-size:12px;">Sem ID</span>';
+                    const reembolso = ag.reembolso_valor
+                        ? `<span style="color:#f87171;">R$ ${parseFloat(ag.reembolso_valor).toFixed(2)}</span>`
+                        : '<span style="color:#475569;">—</span>';
+
+                    return `<tr>
+                            <td><strong style="color:#f1f5f9;">${ag.profissional_nome || '—'}</strong></td>
                             <td>
-                                <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
-                                    <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
-                                </button>
-                                <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
-                                    <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
-                                </button>
+                                <span style="color:#cbd5e1;">${ag.paciente_nome}</span><br>
+                                <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
                             </td>
-                        </tr>
-                    `).join('');
-            } catch (err) {
-                console.error('Erro ao carregar verificações:', err);
+                            <td style="color:#94a3b8;">${dataConsulta}<br>
+                                <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
+                            </td>
+                            <td style="font-weight:600; color:#a78bfa;">R$ ${parseFloat(ag.valor || 0).toFixed(2)}</td>
+                            <td><span style="color:${cor}; font-size:12px; font-weight:500;">${label}</span></td>
+                            <td>${reembolso}</td>
+                            <td>${stripeCell}</td>
+                            <td style="color:#64748b; font-size:12px;">${criadoEm}</td>
+                        </tr>`;
+                }).join('');
             }
-        }
 
-        async function aprovarVerificacao(id) {
-            if (!confirm('Aprovar verificação deste profissional? O selo verde será ativado imediatamente.')) return;
-            try {
-                const res = await fetch(`${API_URL}/api/admin/verificacoes/${id}/aprovar`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-                });
-                if (res.ok) {
-                    document.getElementById(`verif-row-${id}`)?.remove();
-                    await carregarVerificacoesPendentes();
-                    await carregarProfissionais();
-                    alert('✅ Profissional verificado com sucesso!');
-                } else {
-                    alert('Erro ao aprovar verificação.');
-                }
-            } catch (err) {
-                alert('Erro de conexão.');
-            }
-        }
+            // Mês atual como padrão
+            document.getElementById('adm-mes').value = new Date().getMonth() + 1;
 
-        async function rejeitarVerificacao(id) {
-            if (!confirm('Rejeitar esta solicitação de verificação?')) return;
-            try {
-                const res = await fetch(`${API_URL}/api/admin/verificacoes/${id}/rejeitar`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-                });
-                if (res.ok) {
-                    document.getElementById(`verif-row-${id}`)?.remove();
-                    await carregarVerificacoesPendentes();
-                    alert('Solicitação rejeitada.');
-                } else {
-                    alert('Erro ao rejeitar.');
-                }
-            } catch (err) {
-                alert('Erro de conexão.');
-            }
-        }
-    </script>
-    <a href="admin.html" style="
+            carregarPagamentosAdmin();
+        </script>
+        <a href="admin.html" style="
     display: flex; align-items: center; gap: 10px;
     color: #f87171; font-size: 13px; text-decoration: none;
     padding: 8px 12px; border-radius: 8px; margin-top: 8px;
     background: rgba(248,113,113,0.08);
     border: 1px solid rgba(248,113,113,0.2);
 ">
-        <i class="fas fa-shield-alt"></i> Painel Admin
-    </a>
+            <i class="fas fa-shield-alt"></i> Painel Admin
+        </a>
 </body>
 </html>
