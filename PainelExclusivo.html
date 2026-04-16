@@ -1681,21 +1681,1764 @@
                     <div id="bug-info-preview" class="bug-info-preview"></div>
                 </details>
             </div>
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>ProntPsi — Painel</title>
+                <link rel="stylesheet" href="PainelExclusivo.css">
+                <style>
+                    .menu-group-label {
+                        font-size: 9px;
+                        text-transform: uppercase;
+                        letter-spacing: 1.5px;
+                        color: #475569;
+                        font-weight: 600;
+                        padding: 12px 10px 4px;
+                        list-style: none;
+                    }
 
-            <div class="modal-bug-footer">
-                <button class="btn-cancelar-bug" onclick="fecharModalBug()">Cancelar</button>
-                <button class="btn-enviar-bug" id="btn-enviar-bug-submit" onclick="enviarBugReport()">
-                    <i class="fas fa-paper-plane"></i> Enviar relatório
+                    .sidebar ul > li:first-child {
+                        margin-bottom: 4px;
+                        padding-bottom: 8px;
+                        border-bottom: 1px solid rgba(139,92,246,0.1);
+                    }
+                </style>
+                <link rel="stylesheet" href="PainelExclusivo.css?v=2">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+            </head>
+            <body>
+                <div class="container">
+
+                    <!-- SIDEBAR -->
+                    <nav class="sidebar">
+                        <div class="sidebar-logo">
+                            <h2>ProntPsi</h2>
+                            <span>Sistema Clínico</span>
+                        </div>
+                        <ul>
+                            <!-- INÍCIO -->
+                            <li><button id="btn-clock" aria-controls="clock-section" class="active"><i class="fas fa-home"></i> Início</button></li>
+
+                            <!-- GRUPO: CLÍNICO -->
+                            <li class="menu-group-label">Clínico</li>
+                            <li><button id="btn-agenda" aria-controls="agenda-section"><i class="fas fa-calendar-alt"></i> Agenda</button></li>
+                            <li><button id="btn-agenda-online" aria-controls="agenda-online-section"><i class="fas fa-link"></i> Agenda Online</button></li>
+                            <li><button id="btn-cadastro" aria-controls="cadastro-section"><i class="fas fa-users"></i> Pacientes</button></li>
+                            <li><button id="btn-evolucao" aria-controls="evolucao-section"><i class="fas fa-notes-medical"></i> Prontuário</button></li>
+                            <li class="menu-group-label">Recursos Terapêuticos</li>
+                            <li>
+                                <button id="btn-recursos-terapeuticos" aria-controls="recursos-terapeuticos-section">
+                                    <i class="fas fa-gamepad"></i> Atend. Online
+                                </button>
+                            </li>
+                            <!-- GRUPO: DOCUMENTOS -->
+                            <li class="menu-group-label">Documentos</li>
+                            <li><button id="btn-form" aria-controls="form-section"><i class="fas fa-paper-plane"></i> Formulários</button></li>
+                            <li><button id="btn-resultados" aria-controls="resultados-section"><i class="fas fa-chart-bar"></i> Resultados</button></li>
+                            <li><button id="btn-recibos" aria-controls="recibos-section"><i class="fas fa-receipt"></i> Recibos</button></li>
+                            <li><button id="btn-termos" aria-controls="termos-section"><i class="fas fa-file-signature"></i> Termos</button></li>
+                            <li><button id="btn-relatorio-convenio" aria-controls="relatorio-convenio-section"><i class="fas fa-file-invoice"></i> Rel. Convênio</button></li>
+                            <li><button id="btn-financeiro" aria-controls="financeiro-section"><i class="fas fa-dollar-sign"></i> Financeiro</button></li>
+
+                            <!-- GRUPO: CONTA -->
+                            <li class="menu-group-label">Conta</li>
+                            <li><button id="btn-perfil" aria-controls="perfil-section"><i class="fas fa-user-cog"></i> Meu Perfil</button></li>
+
+                            <div style="padding: 16px; margin-top: auto; border-top: 1px solid rgba(139,92,246,0.15);">
+                                <a href="planos.html" style="
+        display: flex; align-items: center; gap: 10px;
+        color: #fbbf24; font-size: 13px; text-decoration: none;
+        padding: 8px 12px; border-radius: 8px;
+        background: rgba(251,191,36,0.08);
+        border: 1px solid rgba(251,191,36,0.2);
+    ">
+                                    <i class="fas fa-crown"></i> Ver meu plano
+                                </a>
+                            </div>
+                        </ul>
+                        <a href="admin.html" style="
+    display: flex; align-items: center; gap: 10px;
+    color: #f87171; font-size: 13px; text-decoration: none;
+    padding: 8px 12px; border-radius: 8px; margin-top: 8px;
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.2);
+">
+                            <i class="fas fa-shield-alt"></i> Painel Admin
+                        </a>
+                        <a href="https://receitasaude.saude.gov.br" target="_blank" style="
+    display: flex; align-items: center; gap: 10px;
+    color: #34d399; font-size: 13px; text-decoration: none;
+    padding: 8px 12px; border-radius: 8px; margin-top: 8px;
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.2);
+">
+                            <i class="fas fa-file-medical"></i> Receita Saúde
+                        </a>
+                        <button onclick="sair()" style="
+    display: flex; align-items: center; gap: 10px;
+    color: #64748b; font-size: 13px;
+    padding: 8px 12px; border-radius: 8px; margin-top: 8px;
+    background: transparent;
+    border: 1px solid rgba(100,116,139,0.2);
+    cursor: pointer; width: 100%; font-family: Roboto, sans-serif;
+    transition: all 0.2s;
+" onmouseover="this.style.color='#f87171'; this.style.borderColor='rgba(248,113,113,0.3)'"
+                                onmouseout="this.style.color='#64748b'; this.style.borderColor='rgba(100,116,139,0.2)'"
+                                ">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </button>
+                    </nav>
+
+                    <!-- HAMBURGER -->
+                    <button class="hamburger" aria-expanded="false" aria-label="Abrir menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+
+                    <!-- MAIN -->
+                    <main class="main-content">
+
+                        <!-- ================================================
+                INÍCIO (RELÓGIO)
+                ================================================ -->
+                        <section id="clock-section" class="active-section">
+                            <!-- HEADER DO DASHBOARD -->
+                            <div class="dashboard-header">
+                                <div>
+                                    <h2 class="dashboard-titulo">Bom dia, <span id="nome-profissional">Profissional</span> 👋</h2>
+                                    <p class="dashboard-data" id="dashboard-data"></p>
+                                </div>
+                                <div class="clock-mini">
+                                    <div class="clock" style="width:100px;height:100px;">
+                                        <div class="center-circle"></div>
+                                        <div id="hour-hand" class="hand hour"></div>
+                                        <div id="minute-hand" class="hand minute"></div>
+                                        <div id="second-hand" class="hand second"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CARDS DE RESUMO -->
+                            <div class="dashboard-cards">
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(139,92,246,0.15);">
+                                        <i class="fas fa-users" style="color:#a78bfa;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Total de Pacientes</p>
+                                        <p class="dash-card-value" id="dash-total-pacientes">—</p>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(96,165,250,0.15);">
+                                        <i class="fas fa-calendar-check" style="color:#60a5fa;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Consultas Hoje</p>
+                                        <p class="dash-card-value" id="dash-consultas-hoje">—</p>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(251,191,36,0.15);">
+                                        <i class="fas fa-clock" style="color:#fbbf24;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Formulários Pendentes</p>
+                                        <p class="dash-card-value" id="dash-pendentes">—</p>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(52,211,153,0.15);">
+                                        <i class="fas fa-check-circle" style="color:#34d399;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Formulários Respondidos</p>
+                                        <p class="dash-card-value" id="dash-respondidos">—</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PRÓXIMAS CONSULTAS DO DIA -->
+                            <div class="dashboard-section">
+                                <h3 class="dashboard-section-title">
+                                    <i class="fas fa-calendar-alt"></i> Agenda de Hoje
+                                </h3>
+                                <div id="dashboard-agenda-hoje">
+                                    <p style="color:#64748b; font-size:14px;">Carregando...</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ================================================
+                AGENDA
+                ================================================ -->
+                        <section id="agenda-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Agenda</h2>
+                                <p>Gerencie suas consultas e compromissos</p>
+                            </div>
+
+                            <div class="agenda-layout">
+
+                                <!-- Formulário -->
+                                <div class="agenda-form-card">
+                                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Nova Consulta</h3>
+                                    <form id="agenda-form">
+                                        <div>
+                                            <label for="paciente-agenda">Paciente</label>
+                                            <select id="paciente-agenda" required>
+                                                <option value="">Selecione um paciente</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="start-datetime">Data e Hora de Início</label>
+                                            <input type="datetime-local" id="start-datetime">
+                                        </div>
+                                        <div id="agenda-duracao-div">
+                                            <label for="agenda-duracao">Duração da sessão</label>
+                                            <select id="agenda-duracao" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                                <option value="30">30 min</option>
+                                                <option value="45">45 min</option>
+                                                <option value="50" selected>50 min</option>
+                                                <option value="60">60 min</option>
+                                                <option value="90">90 min</option>
+                                                <option value="120">120 min</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- TOGGLE RECORRENTE -->
+                                        <div style="display:flex; align-items:center; gap:10px; margin:8px 0;">
+                                            <input type="checkbox" id="toggle-recorrente" onchange="toggleRecorrente()" style="width:16px; height:16px; accent-color:#7c3aed; cursor:pointer;">
+                                            <label for="toggle-recorrente" style="font-size:13px; color:#a78bfa; cursor:pointer; margin:0;">
+                                                <i class="fas fa-repeat" style="margin-right:4px;"></i> Agendamento recorrente (semanal)
+                                            </label>
+                                        </div>
+
+                                        <!-- CAMPOS RECORRENTE (ocultos por padrão) -->
+                                        <div id="campos-recorrente" style="display:none; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; padding:12px; margin-bottom:8px;">
+                                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                                                <div>
+                                                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Dia da semana *</label>
+                                                    <select id="recorrente-dia" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                                        <option value="">Selecione...</option>
+                                                        <option value="0">Domingo</option>
+                                                        <option value="1">Segunda-feira</option>
+                                                        <option value="2">Terça-feira</option>
+                                                        <option value="3">Quarta-feira</option>
+                                                        <option value="4">Quinta-feira</option>
+                                                        <option value="5">Sexta-feira</option>
+                                                        <option value="6">Sábado</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Data de início *</label>
+                                                    <input type="date" id="recorrente-data-inicio" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
+                                                    <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                                </div>
+
+                                                <div>
+                                                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
+                                                    <select id="recorrente-duracao" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                                        <option value="30">30 min</option>
+                                                        <option value="45">45 min</option>
+                                                        <option value="50" selected>50 min</option>
+                                                        <option value="60">60 min</option>
+                                                        <option value="90">90 min</option>
+                                                        <option value="120">120 min</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Valor (R$)</label>
+                                                    <input type="number" id="recorrente-valor" placeholder="150.00" step="0.01" style="width:100%; padding:8px 10px; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                                </div>
+                                            </div>
+                                            <button type="button" onclick="salvarRecorrente()" style="margin-top:12px; background:#7c3aed; color:#fff; border:none; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                                                <i class="fas fa-plus" style="margin-right:6px;"></i>Criar Recorrência
+                                            </button>
+                                            <p id="recorrente-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
+                                        </div>
+
+                                        <div>
+                                            <label for="descricao">Observações (opcional)</label>
+                                            <textarea id="descricao" placeholder="Notas sobre a consulta"></textarea>
+                                        </div>
+                                        <button type="submit">Agendar Consulta</button>
+                                        <p id="agenda-error" class="error-message">Por favor, preencha todos os campos obrigatórios.</p>
+                                    </form>
+
+                                    <!-- RECORRÊNCIAS ATIVAS -->
+                                    <div style="margin-top:20px; border-top:1px solid rgba(139,92,246,0.1); padding-top:16px;">
+                                        <h4 style="font-size:13px; font-weight:600; color:#a78bfa; margin-bottom:10px;">
+                                            <i class="fas fa-repeat" style="margin-right:6px;"></i>Recorrências Ativas
+                                        </h4>
+                                        <div id="recorrentes-lista" style="font-size:13px; color:#64748b;">Carregando...</div>
+                                    </div>
+                                </div>
+
+                                <!-- Lado direito -->
+                                <div class="agenda-side">
+                                    <div class="agenda-today-card">
+                                        <h3>Hoje</h3>
+                                        <div id="daily-agenda-list">
+                                            <p style="color:#64748b; font-size:13px;">Carregando...</p>
+                                        </div>
+                                    </div>
+                                    <div class="date-picker-card">
+                                        <h3>Ver outro dia</h3>
+                                        <div class="selecao-dia">
+                                            <input type="date" id="data-selecionada">
+                                            <button id="btn-ver-dia">Buscar</button>
+                                        </div>
+                                        <div id="lista-agenda-dia" style="margin-top:12px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ================================================
+                PACIENTES
+                ================================================ -->
+                        <section id="cadastro-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Pacientes</h2>
+                                <p>Cadastre e gerencie seus pacientes</p>
+                            </div>
+
+                            <div class="cadastro-layout">
+                                <div class="form-card">
+                                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Novo Paciente</h3>
+                                    <form id="cadastro-form">
+                                        <div>
+                                            <label for="nome">Nome completo</label>
+                                            <input type="text" id="nome" required placeholder="Nome do paciente">
+                                        </div>
+                                        <div>
+                                            <label for="telefone">Telefone</label>
+                                            <input type="tel" id="telefone" required placeholder="(00) 00000-0000">
+                                        </div>
+                                        <div>
+                                            <label for="email">E-mail</label>
+                                            <input type="email" id="email" required placeholder="email@exemplo.com">
+                                        </div>
+                                        <div>
+                                            <label for="pagamento">Forma de Pagamento</label>
+                                            <select id="pagamento" required>
+                                                <option value="">Selecione</option>
+                                                <option value="dinheiro">Dinheiro</option>
+                                                <option value="cartao">Cartão</option>
+                                                <option value="pix">PIX</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="data-inicio">Data de Nascimento</label>
+                                            <input type="date" id="data-inicio" required>
+                                        </div>
+                                        <div>
+                                            <label for="queixa">Queixa Principal</label>
+                                            <textarea id="queixa" required placeholder="Descreva a queixa inicial do paciente"></textarea>
+                                        </div>
+                                        <button type="submit">Cadastrar Paciente</button>
+                                        <p id="cadastro-error" class="error-message">Por favor, preencha todos os campos.</p>
+                                    </form>
+                                </div>
+
+                                <div>
+                                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Pacientes Cadastrados</h3>
+                                    <div id="lista-pacientes"></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ================================================
+                PRONTUÁRIO / EVOLUÇÃO
+                ================================================ -->
+                        <section id="evolucao-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Prontuário</h2>
+                                <p>Registre e consulte evoluções dos pacientes</p>
+                            </div>
+                            <div class="evolucao-layout">
+                                <div class="form-card">
+                                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Nova Evolução</h3>
+                                    <form id="evolucao-form">
+                                        <div>
+                                            <label for="paciente">Paciente</label>
+                                            <select id="paciente" required>
+                                                <option value="">Selecione um paciente</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="data-evolucao">Data</label>
+                                            <input type="date" id="data-evolucao" required>
+                                        </div>
+                                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                            <div>
+                                                <label for="duracao-minutos">Duração (min)</label>
+                                                <input type="number" id="duracao-minutos" value="50" min="1" max="480">
+                                            </div>
+                                            <div>
+                                                <label for="valor-sessao">Valor (R$)</label>
+                                                <input type="number" id="valor-sessao" placeholder="0,00" step="0.01">
+                                            </div>
+                                        </div>
+                                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                            <div>
+                                                <label for="cid10">CID-10</label>
+                                                <input type="text" id="cid10" placeholder="Ex: F32.0">
+                                            </div>
+                                            <div>
+                                                <label for="codigo-procedimento">Cód. Procedimento</label>
+                                                <input type="text" id="codigo-procedimento" placeholder="Ex: 60000071">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="convenio">Convênio</label>
+                                            <input type="text" id="convenio" placeholder="Ex: Unimed, Bradesco, Particular">
+                                        </div>
+                                        <div>
+                                            <label for="evolucao">Evolução / Registro da Sessão</label>
+                                            <textarea id="evolucao" required placeholder="Descreva a evolução do paciente nesta sessão..." style="min-height:140px;"></textarea>
+                                        </div>
+                                        <button type="submit">Salvar Evolução</button>
+                                        <p id="evolucao-error" class="error-message">Por favor, preencha todos os campos.</p>
+                                    </form>
+                                </div>
+                                <div class="evolucao-historico">
+                                    <h3>Histórico de Evoluções</h3>
+                                    <div style="margin-bottom:16px;">
+                                        <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:8px;">Selecionar Paciente</label>
+                                        <select id="paciente-historico" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                            <option value="">Selecione um paciente</option>
+                                        </select>
+                                    </div>
+                                    <table id="evolucao-tabela" style="display:none;">
+                                        <thead>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Convênio</th>
+                                                <th>CID</th>
+                                                <th>Duração</th>
+                                                <th>Valor</th>
+                                                <th>Evolução</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                    <p id="evolucao-vazio" class="evolucao-vazio">Selecione um paciente para ver o histórico.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ================================================
+                RELATÓRIO DE CONVÊNIO (seção própria)
+                ================================================ -->
+                        <section id="relatorio-convenio-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Relatório de Convênio</h2>
+                                <p>Gere relatórios mensais de produção para apresentar aos convênios</p>
+                            </div>
+                            <div class="form-card" style="max-width:560px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">
+                                    <i class="fas fa-file-invoice" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Gerar Relatório de Produção
+                                </h3>
+                                <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin-bottom:20px;">
+                                    <div>
+                                        <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
+                                        <select id="rel-mes" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                            <option value="1">Janeiro</option>
+                                            <option value="2">Fevereiro</option>
+                                            <option value="3">Março</option>
+                                            <option value="4">Abril</option>
+                                            <option value="5">Maio</option>
+                                            <option value="6">Junho</option>
+                                            <option value="7">Julho</option>
+                                            <option value="8">Agosto</option>
+                                            <option value="9">Setembro</option>
+                                            <option value="10">Outubro</option>
+                                            <option value="11">Novembro</option>
+                                            <option value="12">Dezembro</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
+                                        <input type="number" id="rel-ano" value="2026" min="2024" max="2030" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:90px;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Filtrar por Convênio</label>
+                                        <select id="rel-convenio" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:180px;">
+                                            <option value="">Todos (Relatório Geral)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <button onclick="gerarRelatorioProducao()" style="background:#7c3aed; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-download" style="margin-right:6px;"></i>Gerar PDF
+                                    </button>
+                                    <button onclick="carregarConvenios()" style="background:transparent; color:#a78bfa; border:1px solid rgba(139,92,246,0.3); padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-sync" style="margin-right:6px;"></i>Atualizar convênios
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ================================================
+                FINANCEIRO
+                ================================================ -->
+                        <section id="financeiro-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Financeiro</h2>
+                                <p>Relatório dos pagamentos recebidos via agenda online</p>
+                            </div>
+
+                            <!-- FILTROS -->
+                            <div class="form-card" style="margin-bottom:24px;">
+                                <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+                                    <div>
+                                        <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
+                                        <select id="fin-mes" style="padding:9px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                            <option value="1">Janeiro</option>
+                                            <option value="2">Fevereiro</option>
+                                            <option value="3">Março</option>
+                                            <option value="4">Abril</option>
+                                            <option value="5">Maio</option>
+                                            <option value="6">Junho</option>
+                                            <option value="7">Julho</option>
+                                            <option value="8">Agosto</option>
+                                            <option value="9">Setembro</option>
+                                            <option value="10">Outubro</option>
+                                            <option value="11">Novembro</option>
+                                            <option value="12">Dezembro</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
+                                        <input type="number" id="fin-ano" value="2025" min="2024" max="2030"
+                                               style="padding:9px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; width:100px;">
+                                    </div>
+                                    <button onclick="carregarFinanceiro()" style="background:#7c3aed; color:#fff; border:none; padding:9px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-search" style="margin-right:6px;"></i>Filtrar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- CARDS RESUMO -->
+                            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; margin-bottom:24px;">
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(52,211,153,0.15);">
+                                        <i class="fas fa-check-circle" style="color:#34d399;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Confirmados</p>
+                                        <p class="dash-card-value" id="fin-total-confirmados">—</p>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(139,92,246,0.15);">
+                                        <i class="fas fa-dollar-sign" style="color:#a78bfa;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Total Recebido</p>
+                                        <p class="dash-card-value" id="fin-total-valor">—</p>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(251,191,36,0.15);">
+                                        <i class="fas fa-clock" style="color:#fbbf24;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Pendentes</p>
+                                        <p class="dash-card-value" id="fin-total-pendentes">—</p>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-icon" style="background:rgba(248,113,113,0.15);">
+                                        <i class="fas fa-times-circle" style="color:#f87171;"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dash-card-label">Cancelados</p>
+                                        <p class="dash-card-value" id="fin-total-cancelados">—</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TABELA -->
+                            <div style="background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; overflow:hidden;">
+                                <div style="padding:16px 20px; border-bottom:1px solid rgba(139,92,246,0.1); display:flex; justify-content:space-between; align-items:center;">
+                                    <p style="font-size:14px; font-weight:600; color:#e2e8f0;">Pagamentos do período</p>
+                                    <a id="fin-link-stripe" href="https://dashboard.stripe.com/payments" target="_blank"
+                                       style="font-size:12px; color:#a78bfa; text-decoration:none; display:flex; align-items:center; gap:6px;">
+                                        <i class="fas fa-external-link-alt"></i> Ver no Stripe
+                                    </a>
+                                </div>
+                                <div style="overflow-x:auto;">
+                                    <table style="width:100%; border-collapse:collapse;">
+                                        <thead>
+                                            <tr style="background:#141d2b;">
+                                                <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Paciente</th>
+                                                <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Data</th>
+                                                <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Valor</th>
+                                                <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Status</th>
+                                                <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">ID Stripe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="fin-tabela-body">
+                                            <tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Selecione um período e clique em Filtrar.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- AVISO STRIPE -->
+                            <div style="background:rgba(139,92,246,0.05); border:1px solid rgba(139,92,246,0.15); border-radius:8px; padding:14px; margin-top:16px; display:flex; gap:10px; align-items:flex-start;">
+                                <i class="fas fa-info-circle" style="color:#8b5cf6; margin-top:2px; flex-shrink:0;"></i>
+                                <p style="font-size:12px; color:#64748b; line-height:1.6;">
+                                    Os valores mostrados aqui são os <strong style="color:#e2e8f0;">registrados no sistema</strong> no momento do agendamento.
+                                    Para conferir reembolsos, disputas e saques, acesse seu
+                                    <a href="https://dashboard.stripe.com" target="_blank" style="color:#a78bfa;">painel do Stripe</a>.
+                                    O <strong style="color:#e2e8f0;">ID Stripe</strong> de cada pagamento serve como prova em caso de disputas.
+                                </p>
+                            </div>
+                        </section>
+
+                        <section id="perfil-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Meu Perfil</h2>
+                                <p>Seus dados profissionais, assinatura e carimbo digital</p>
+                            </div>
+
+                            <!-- DADOS PROFISSIONAIS -->
+                            <div class="form-card" style="max-width:600px; margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                                    <i class="fas fa-id-card" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Dados Profissionais
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                                    Esses dados aparecem nos recibos, termos e relatórios gerados pelo sistema.
+                                </p>
+
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                                    <div class="form-group">
+                                        <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Nome completo</label>
+                                        <input type="text" id="perfil-nome" placeholder="Seu nome completo"
+                                               style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">CRP / CRM</label>
+                                        <input type="text" id="perfil-crp" placeholder="Ex: CRP 06/000001"
+                                               style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Especialidade</label>
+                                        <input type="text" id="perfil-especialidade" placeholder="Ex: Psicóloga Clínica"
+                                               style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">E-mail profissional</label>
+                                        <input type="email" id="perfil-email" placeholder="seu@email.com"
+                                               style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Telefone</label>
+                                        <input type="text" id="perfil-telefone" placeholder="(00) 00000-0000"
+                                               style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Endereço do consultório</label>
+                                        <input type="text" id="perfil-endereco" placeholder="Rua, número, cidade"
+                                               style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">CPF</label>
+                                        <input type="text" id="perfil-cpf" placeholder="000.000.000-00" maxlength="14"
+                                               style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                </div>
+
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <button onclick="salvarDadosProfissionais()" style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Dados
+                                    </button>
+                                    <p id="perfil-dados-feedback" style="font-size:13px; display:none;"></p>
+                                </div>
+                            </div>
+
+                            <!-- VERIFICAÇÃO PROFISSIONAL -->
+                            <div class="form-card" style="max-width:600px; margin-bottom:24px;" id="card-verificacao">
+
+                                <!-- Badge de verificado (aparece quando verificado) -->
+                                <div id="badge-verificado" style="display:none; align-items:center; gap:10px; background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.25); border-radius:10px; padding:12px 16px; margin-bottom:20px;">
+                                    <div style="width:36px; height:36px; border-radius:50%; background:rgba(52,211,153,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                        <i class="fas fa-check-circle" style="color:#34d399; font-size:18px;"></i>
+                                    </div>
+                                    <div>
+                                        <p style="font-size:14px; font-weight:600; color:#34d399; margin:0;">Profissional Verificado ✓</p>
+                                        <p style="font-size:12px; color:#64748b; margin:2px 0 0;" id="badge-verificado-data">Verificado em —</p>
+                                    </div>
+                                </div>
+
+                                <!-- Formulário de solicitação (aparece quando não verificado) -->
+                                <div id="bloco-solicitar-verificacao">
+                                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                                        <i class="fas fa-shield-alt" style="color:#8b5cf6; margin-right:8px;"></i>
+                                        Verificação Profissional
+                                    </h3>
+                                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                                        Verifique seu CRP/CRM e CPF para receber o selo <strong style="color:#34d399;">Profissional Verificado</strong>. O sistema tentará a verificação automática; se necessário, nossa equipe concluirá manualmente em até 48h.
+                                    </p>
+
+                                    <!-- Status da solicitação -->
+                                    <div id="status-verificacao" style="display:none; align-items:center; gap:10px; border-radius:10px; padding:12px 16px; margin-bottom:16px;">
+                                    </div>
+
+                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+
+                                        <!-- Conselho -->
+                                        <div>
+                                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Conselho</label>
+                                            <select id="verif-conselho" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                                <option value="CRP">CRP — Psicologia</option>
+                                                <option value="CRM">CRM — Medicina</option>
+                                                <option value="CRO">CRO — Odontologia</option>
+                                                <option value="CREFITO">CREFITO — Fisioterapia</option>
+                                                <option value="CRN">CRN — Nutrição</option>
+                                                <option value="COREN">COREN — Enfermagem</option>
+                                                <option value="CFF">CFF — Farmácia</option>
+                                                <option value="CFESS">CFESS — Serviço Social</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Região/Estado -->
+                                        <div>
+                                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Região / Estado</label>
+                                            <select id="verif-regiao" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                                <option value="01">01 — São Paulo</option>
+                                                <option value="02">02 — Rio de Janeiro</option>
+                                                <option value="03">03 — Minas Gerais</option>
+                                                <option value="04">04 — Rio Grande do Sul</option>
+                                                <option value="05">05 — Bahia</option>
+                                                <option value="06">06 — Pernambuco</option>
+                                                <option value="07">07 — Ceará</option>
+                                                <option value="08">08 — Pará</option>
+                                                <option value="09">09 — Goiás</option>
+                                                <option value="10">10 — Amazonas</option>
+                                                <option value="11">11 — Espírito Santo</option>
+                                                <option value="12">12 — Paraná</option>
+                                                <option value="13">13 — Santa Catarina</option>
+                                                <option value="14">14 — Mato Grosso</option>
+                                                <option value="15">15 — Mato Grosso do Sul</option>
+                                                <option value="16">16 — Maranhão</option>
+                                                <option value="17">17 — Paraíba</option>
+                                                <option value="18">18 — Rio Grande do Norte</option>
+                                                <option value="19">19 — Alagoas</option>
+                                                <option value="20">20 — Piauí</option>
+                                                <option value="21">21 — Sergipe</option>
+                                                <option value="22">22 — Tocantins</option>
+                                                <option value="23">23 — Rondônia</option>
+                                                <option value="24">24 — Roraima</option>
+                                                <option value="25">25 — Amapá</option>
+                                                <option value="26">26 — Acre</option>
+                                                <option value="27">27 — Distrito Federal</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Número do registro — só números -->
+                                        <div>
+                                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Número do registro</label>
+                                            <input type="text" id="verif-numero" placeholder="000000" maxlength="10"
+                                                   oninput="this.value=this.value.replace(/\D/g,'')"
+                                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; letter-spacing:2px;">
+                                            <!-- Preview do registro montado -->
+                                            <p id="verif-preview" style="font-size:11px; color:#a78bfa; margin-top:6px;"></p>
+                                        </div>
+
+                                        <!-- CPF — só números com máscara -->
+                                        <div>
+                                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">CPF</label>
+                                            <input type="text" id="verif-cpf" placeholder="000.000.000-00" maxlength="14"
+                                                   oninput="mascaraCPF(this)"
+                                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                        </div>
+                                    </div>
+
+                                    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                                        <button id="btn-solicitar-verif" onclick="solicitarVerificacao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                            <i class="fas fa-search" style="margin-right:6px;"></i>Solicitar Verificação
+                                        </button>
+                                        <p id="verif-feedback" style="font-size:13px; display:none;"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ASSINATURA DIGITAL -->
+                            <div class="form-card" style="max-width:600px; margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                                    <i class="fas fa-signature" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Assinatura Digital
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                                    Desenhe sua assinatura abaixo. Ela será aplicada automaticamente em todos os recibos e relatórios gerados.
+                                </p>
+
+                                <div style="position:relative; margin-bottom:16px;">
+                                    <canvas id="canvas-assinatura" width="500" height="160" style="
+                background:#0f1621; border:1px solid rgba(139,92,246,0.3);
+                border-radius:8px; cursor:crosshair; display:block;
+                touch-action:none;
+            "></canvas>
+                                    <p style="font-size:11px; color:#64748b; margin-top:6px; text-align:center;">
+                                        Desenhe sua assinatura acima usando o mouse ou dedo
+                                    </p>
+                                </div>
+
+                                <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+                                    <button onclick="limparAssinatura()" style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-eraser" style="margin-right:6px;"></i>Limpar
+                                    </button>
+                                    <button onclick="salvarAssinatura()" style="background:#7c3aed; color:#fff; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Assinatura
+                                    </button>
+                                </div>
+
+                                <!-- PRÉVIA DA ASSINATURA SALVA -->
+                                <div id="assinatura-salva-box" style="display:none;">
+                                    <p style="font-size:13px; color:#34d399; margin-bottom:8px;">✅ Assinatura salva:</p>
+                                    <img id="assinatura-preview" style="max-width:300px; border:1px solid rgba(139,92,246,0.2); border-radius:8px; background:#0f1621; padding:8px;">
+                                </div>
+                                <p id="assinatura-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
+                            </div>
+                            <!-- CONFIGURAÇÃO DE PAGAMENTOS ONLINE (STRIPE) -->
+                            <!-- LINK DE ATENDIMENTO ONLINE -->
+                            <div class="form-card" style="max-width:600px; margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                                    <i class="fas fa-video" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Link de Atendimento Online
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                                    Cole aqui o link fixo da sua sala de vídeo (Google Meet, Zoom, Jitsi, etc).
+                                    Ele será enviado automaticamente ao paciente após a confirmação do agendamento.
+                                </p>
+
+                                <div style="margin-bottom:12px;">
+                                    <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">
+                                        Link da sala de vídeo
+                                    </label>
+                                    <input type="url" id="link-video" placeholder="https://meet.google.com/xxx-yyyy-zzz"
+                                           style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                </div>
+
+                                <div style="background:#0f1621; border-radius:8px; padding:12px; margin-bottom:16px;">
+                                    <p style="font-size:12px; color:#64748b; line-height:1.6; margin:0;">
+                                        💡 Sugestões gratuitas:
+                                        <a href="https://meet.google.com" target="_blank" style="color:#a78bfa;">Google Meet</a> ·
+                                        <a href="https://meet.jit.si" target="_blank" style="color:#a78bfa;">Jitsi (sem conta)</a> ·
+                                        <a href="https://zoom.us" target="_blank" style="color:#a78bfa;">Zoom</a>
+                                    </p>
+                                </div>
+
+                                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                                    <button onclick="salvarLinkVideo()" style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Link
+                                    </button>
+                                    <p id="link-video-feedback" style="font-size:13px; display:none;"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-card" style="max-width:600px; margin-bottom:24px;" id="card-stripe">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                                    <i class="fas fa-credit-card" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Pagamentos Online — Stripe
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                                    Conecte sua conta Stripe para receber pagamentos diretamente. Os valores das consultas online vão
+                                    <strong style="color:#e2e8f0;">direto para o seu saldo Stripe</strong> — sem intermediários.
+                                </p>
+
+                                <!-- STATUS: SEM CHAVE CONFIGURADA -->
+                                <div id="stripe-sem-chave">
+                                    <div style="background:rgba(251,191,36,0.06); border:1px solid rgba(251,191,36,0.2); border-radius:10px; padding:16px; margin-bottom:20px; display:flex; gap:12px; align-items:flex-start;">
+                                        <i class="fas fa-exclamation-triangle" style="color:#fbbf24; font-size:16px; margin-top:2px; flex-shrink:0;"></i>
+                                        <div>
+                                            <p style="font-size:13px; font-weight:600; color:#fbbf24; margin-bottom:4px;">Pagamentos não configurados</p>
+                                            <p style="font-size:12px; color:#94a3b8; line-height:1.5;">
+                                                Sem isso, seus pacientes <strong style="color:#e2e8f0;">não conseguem pagar online</strong>.
+                                                Crie sua conta em <a href="https://dashboard.stripe.com/register" target="_blank" style="color:#a78bfa;">stripe.com</a> e cole as chaves abaixo.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- INSTRUÇÕES EM PASSO A PASSO -->
+                                    <div style="margin-bottom:20px;">
+                                        <p style="font-size:12px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Como configurar:</p>
+                                        <div style="display:flex; flex-direction:column; gap:8px;">
+                                            <div style="display:flex; gap:10px; align-items:flex-start;">
+                                                <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">1</span>
+                                                <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Acesse <a href="https://dashboard.stripe.com/register" target="_blank" style="color:#a78bfa;">dashboard.stripe.com</a> e crie sua conta (grátis)</p>
+                                            </div>
+                                            <div style="display:flex; gap:10px; align-items:flex-start;">
+                                                <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">2</span>
+                                                <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">No menu lateral: <strong style="color:#e2e8f0;">Developers → API Keys</strong></p>
+                                            </div>
+                                            <div style="display:flex; gap:10px; align-items:flex-start;">
+                                                <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">3</span>
+                                                <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Copie a <strong style="color:#e2e8f0;">Secret Key</strong> (começa com <code style="background:#0f1621; padding:1px 5px; border-radius:4px; color:#a78bfa;">sk_live_</code>) e cole abaixo</p>
+                                            </div>
+                                            <div style="display:flex; gap:10px; align-items:flex-start;">
+                                                <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">4</span>
+                                                <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Complete o cadastro bancário no Stripe para receber saques</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- FORMULÁRIO DE CHAVES -->
+                                    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+                                        <div>
+                                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">
+                                                Secret Key <span style="color:#f87171;">*</span>
+                                                <span style="color:#475569; font-weight:400;"> (nunca compartilhe esta chave)</span>
+                                            </label>
+                                            <div style="position:relative;">
+                                                <input type="password" id="stripe-secret-key" placeholder="sk_live_... ou sk_test_..."
+                                                       style="width:100%; padding:10px 40px 10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; letter-spacing:1px;">
+                                                <button onclick="toggleVerStripe('stripe-secret-key', this)" type="button"
+                                                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer; font-size:14px;">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">
+                                                Publishable Key <span style="color:#64748b; font-weight:400;">(opcional, começa com pk_)</span>
+                                            </label>
+                                            <input type="text" id="stripe-publishable-key" placeholder="pk_live_... ou pk_test_..."
+                                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                        </div>
+                                    </div>
+
+                                    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                                        <button onclick="salvarChavesStripe()" id="btn-salvar-stripe"
+                                                style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                            <i class="fas fa-plug" style="margin-right:6px;"></i>Conectar Stripe
+                                        </button>
+                                        <p id="stripe-feedback" style="font-size:13px; display:none;"></p>
+                                    </div>
+                                </div>
+
+                                <!-- STATUS: CHAVE CONFIGURADA -->
+                                <div id="stripe-com-chave" style="display:none;">
+                                    <div style="background:rgba(52,211,153,0.06); border:1px solid rgba(52,211,153,0.25); border-radius:10px; padding:16px; margin-bottom:20px; display:flex; gap:12px; align-items:center;">
+                                        <div style="width:36px; height:36px; border-radius:50%; background:rgba(52,211,153,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                            <i class="fas fa-check-circle" style="color:#34d399; font-size:18px;"></i>
+                                        </div>
+                                        <div style="flex:1;">
+                                            <p style="font-size:14px; font-weight:600; color:#34d399; margin-bottom:2px;">✅ Stripe conectado</p>
+                                            <p style="font-size:12px; color:#64748b; margin:0;">Chave: <code id="stripe-chave-preview" style="background:#0f1621; padding:1px 6px; border-radius:4px; color:#a78bfa; font-size:11px;"></code></p>
+                                        </div>
+                                    </div>
+
+                                    <div style="background:#0f1621; border-radius:8px; padding:14px; margin-bottom:16px;">
+                                        <p style="font-size:13px; color:#64748b; margin-bottom:8px; font-weight:500;">💡 Como funciona agora:</p>
+                                        <ul style="font-size:12px; color:#94a3b8; padding-left:16px; line-height:2;">
+                                            <li>Pacientes pagam a consulta pelo link de agendamento</li>
+                                            <li>O valor entra <strong style="color:#e2e8f0;">direto no seu Stripe</strong></li>
+                                            <li>Você saca para sua conta bancária pelo painel do Stripe</li>
+                                            <li>O ProntPsi não toca no seu dinheiro</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                        <a href="https://dashboard.stripe.com/payments" target="_blank"
+                                           style="display:inline-flex; align-items:center; gap:6px; background:rgba(139,92,246,0.1); color:#a78bfa; border:1px solid rgba(139,92,246,0.3); padding:8px 16px; border-radius:8px; font-size:13px; text-decoration:none; font-family:'Roboto',sans-serif;">
+                                            <i class="fas fa-external-link-alt"></i> Ver pagamentos no Stripe
+                                        </a>
+                                        <button onclick="removerChavesStripe()"
+                                                style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                                            <i class="fas fa-unlink" style="margin-right:6px;"></i>Desconectar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PRÉVIA DO CARIMBO -->
+                            <div class="form-card" style="max-width:600px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                                    <i class="fas fa-stamp" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Carimbo Digital
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                                    Seu carimbo é gerado automaticamente com seus dados cadastrados.
+                                </p>
+                                <div id="carimbo-preview" style="
+            display:inline-block; border:3px solid rgba(124,58,237,0.6);
+            border-radius:50%; padding:16px 24px; text-align:center;
+            min-width:180px;
+        ">
+                                    <p style="font-size:13px; font-weight:700; color:#a78bfa;" id="carimbo-nome">Aline Amaral</p>
+                                    <p style="font-size:10px; color:#64748b; margin:2px 0;" id="carimbo-crp">CRP 06/000001</p>
+                                    <p style="font-size:10px; color:#64748b;" id="carimbo-especialidade">Psicóloga</p>
+                                    <div style="border-top:1px solid rgba(124,58,237,0.3); margin:6px 0;"></div>
+                                    <p style="font-size:9px; color:#64748b;">ProntPsi</p>
+                                </div>
+                                <p style="font-size:12px; color:#64748b; margin-top:12px;">
+                                    Para alterar os dados do carimbo, atualize seu cadastro de profissional.
+                                </p>
+                            </div>
+                        </section>
+
+                        <!-- ================================================
+                FORMULÁRIOS
+                ================================================ -->
+                        <section id="form-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Formulários</h2>
+                                <p>Envie escalas e questionários para seus pacientes por e-mail</p>
+                            </div>
+
+                            <div class="formularios-container">
+                                <div class="form-card">
+                                    <div class="form-group">
+                                        <label for="paciente-form">Paciente</label>
+                                        <select id="paciente-form" required>
+                                            <option value="">Escolha um paciente</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tipo-formulario">Formulário / Escala</label>
+                                        <select id="tipo-formulario" required>
+                                            <option value="">Carregando escalas...</option>
+                                        </select>
+                                    </div>
+                                    <button id="gerar-link-form">
+                                        <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Gerar Link para o Paciente
+                                    </button>
+                                    <p id="form-error" class="error-message">Por favor, selecione paciente e formulário.</p>
+
+                                    <div id="link-gerado" style="display:none; margin-top:20px;">
+                                        <p style="font-size:13px; color:#94a3b8; margin-bottom:8px;">Link gerado:</p>
+                                        <input type="text" id="url-link-gerado" readonly>
+                                        <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
+                                            <button id="copiar-link"><i class="fas fa-copy" style="margin-right:6px;"></i>Copiar Link</button>
+                                            <p id="link-info" style="font-size:12px; color:#6ee7b7; margin:0;"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ================================================
+                RESULTADOS
+                ================================================ -->
+                        <section id="resultados-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Resultados</h2>
+                                <p>Visualize as respostas e evolução dos questionários</p>
+                            </div>
+
+                            <!-- GRÁFICO DE EVOLUÇÃO -->
+                            <div style="background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:24px; margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                                    <i class="fas fa-chart-line" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Evolução do Paciente
+                                </h3>
+                                <div style="display:flex; gap:12px; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap;">
+                                    <div>
+                                        <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Selecionar Paciente</label>
+                                        <select id="paciente-grafico" style="padding:8px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; min-width:200px;">
+                                            <option value="">Escolha um paciente</option>
+                                        </select>
+                                    </div>
+                                    <button onclick="carregarGraficos()" style="background:#7c3aed; color:#fff; border:none; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-chart-bar" style="margin-right:6px;"></i>Ver Evolução
+                                    </button>
+                                </div>
+                                <div id="graficos-container">
+                                    <p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">
+                                        Selecione um paciente para ver a evolução dos questionários ao longo do tempo.
+                                    </p>
+                                </div>
+                            </div>
+
+
+                            <!-- TABELA DE RESULTADOS -->
+                            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Formulários Respondidos</h3>
+                            <div class="resultados-filtro">
+                                <label for="paciente-resultados">Filtrar por paciente:</label>
+                                <select id="paciente-resultados">
+                                    <option value="">Todos os pacientes</option>
+                                </select>
+                            </div>
+                            <div class="table-card">
+                                <table id="resultados-tabela" style="display:none;">
+                                    <thead>
+                                        <tr>
+                                            <th>Paciente</th>
+                                            <th>Formulário</th>
+                                            <th>Respondido em</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <p id="resultados-vazio" class="resultados-vazio">Nenhum resultado encontrado.</p>
+                        </section>
+                        <section id="agenda-online-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Agenda Online</h2>
+                                <p>Configure seus horários disponíveis e compartilhe o link de agendamento</p>
+                            </div>
+
+                            <!-- LINK DE AGENDAMENTO -->
+                            <div class="form-card" style="margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                                    <i class="fas fa-link" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Seu Link de Agendamento
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:12px;">
+                                    Compartilhe este link com seus pacientes ou coloque no seu site/WhatsApp:
+                                </p>
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    <input type="text" id="link-agendamento" readonly style="flex:1; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#a78bfa; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    <button onclick="copiarLinkAgendamento()" style="background:#7c3aed; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; white-space:nowrap;">
+                                        <i class="fas fa-copy"></i> Copiar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- CONFIGURAR DISPONIBILIDADE -->
+                            <div class="form-card" style="margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                                    <i class="fas fa-calendar-check" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Configurar Horários Disponíveis
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                                    Adicione quantos blocos de horário quiser por dia. Funciona 24h!
+                                </p>
+
+                                <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.1);">
+                                    <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Valor padrão da consulta (R$)</label>
+                                    <input type="number" id="valor-padrao" placeholder="150.00" step="0.01" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; width:200px;">
+                                    <span style="font-size:12px; color:#64748b; margin-left:8px;">Duração padrão (min):</span>
+                                    <select id="duracao-padrao" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; margin-left:4px;">
+                                        <option value="30">30 min</option>
+                                        <option value="45">45 min</option>
+                                        <option value="50" selected>50 min</option>
+                                        <option value="60">60 min</option>
+                                        <option value="90">90 min</option>
+                                        <option value="120">120 min</option>
+                                    </select>
+                                </div>
+
+                                <div id="dias-grid"></div>
+
+                                <button onclick="salvarDisponibilidade()" style="background:#7c3aed; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif; margin-top:20px;">
+                                    <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Disponibilidade
+                                </button>
+                                <p id="disponibilidade-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
+                            </div>
+                            <!-- AGENDAMENTOS RECORRENTES -->
+                            <div class="form-card" style="margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                                    <i class="fas fa-repeat" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Agendamento Recorrente
+                                </h3>
+                                <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                                    Cadastre pacientes com horário fixo semanal. As consultas são geradas automaticamente.
+                                </p>
+
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Paciente *</label>
+                                        <select id="recorrente-paciente" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                            <option value="">Selecione...</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Dia da semana *</label>
+                                        <select id="recorrente-dia" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                            <option value="">Selecione...</option>
+                                            <option value="0">Domingo</option>
+                                            <option value="1">Segunda-feira</option>
+                                            <option value="2">Terça-feira</option>
+                                            <option value="3">Quarta-feira</option>
+                                            <option value="4">Quinta-feira</option>
+                                            <option value="5">Sexta-feira</option>
+                                            <option value="6">Sábado</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Data de início *</label>
+                                        <input type="date" id="recorrente-data-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Horário início *</label>
+                                        <input type="time" id="recorrente-inicio" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                    </div>
+
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Duração (min)</label>
+                                        <select id="recorrente-duracao" style="width:100%; padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                            <option value="30">30 min</option>
+                                            <option value="45">45 min</option>
+                                            <option value="50" selected>50 min</option>
+                                            <option value="60">60 min</option>
+                                            <option value="90">90 min</option>
+                                            <option value="120">120 min</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div style="display:flex; align-items:flex-end; gap:12px; margin-bottom:16px;">
+                                    <div>
+                                        <label style="font-size:12px; color:#64748b; display:block; margin-bottom:4px;">Valor (R$)</label>
+                                        <input type="number" id="recorrente-valor" placeholder="150.00" step="0.01" style="padding:8px 12px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; width:160px;">
+                                    </div>
+                                    <button onclick="salvarRecorrente()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-plus" style="margin-right:6px;"></i>Criar Recorrência
+                                    </button>
+                                </div>
+                                <p id="recorrente-feedback" style="font-size:13px; margin-top:4px; display:none;"></p>
+
+                                <h4 style="font-size:14px; font-weight:600; color:#e2e8f0; margin:20px 0 12px;">Recorrências Ativas</h4>
+                                <div class="table-card">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Paciente</th>
+                                                <th>Dia</th>
+                                                <th>Horário</th>
+                                                <th>Valor</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recorrentes-tbody">
+                                            <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhuma recorrência ativa.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- AGENDAMENTOS RECEBIDOS -->
+                            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Agendamentos Recebidos</h3>
+                            <div class="table-card">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Paciente</th>
+                                            <th>Data</th>
+                                            <th>Horário</th>
+                                            <th>Valor</th>
+                                            <th>Status</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="agendamentos-online-tbody">
+                                        <tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Nenhum agendamento ainda.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section id="termos-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Termos de Consentimento</h2>
+                                <p>Envie e gerencie termos de consentimento digital dos pacientes</p>
+                            </div>
+                            <div class="form-card" style="max-width:500px; margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Enviar Termo para Paciente</h3>
+                                <div class="form-group">
+                                    <label>Selecione o Paciente</label>
+                                    <select id="paciente-termo">
+                                        <option value="">Escolha um paciente</option>
+                                    </select>
+                                </div>
+                                <button id="btn-gerar-termo" onclick="gerarTermo()" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar Termo por Email
+                                </button>
+                                <p id="termo-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
+                            </div>
+                            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Termos Enviados</h3>
+                            <div class="table-card">
+                                <table id="termos-tabela">
+                                    <thead>
+                                        <tr>
+                                            <th>Paciente</th>
+                                            <th>Enviado em</th>
+                                            <th>Status</th>
+                                            <th>Assinado em</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="termos-tbody">
+                                        <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">Nenhum termo enviado ainda.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section id="recibos-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2>Recibos</h2>
+                                <p>Gere e envie recibos de consulta por email para seus pacientes</p>
+                            </div>
+
+                            <!-- GERAR RECIBO -->
+                            <div class="form-card" style="max-width:560px; margin-bottom:24px;">
+                                <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">
+                                    <i class="fas fa-plus-circle" style="color:#8b5cf6; margin-right:8px;"></i>
+                                    Gerar Novo Recibo
+                                </h3>
+                                <div class="form-group">
+                                    <label>Paciente</label>
+                                    <select id="recibo-paciente">
+                                        <option value="">Selecione um paciente</option>
+                                    </select>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                    <div class="form-group">
+                                        <label>Data da consulta</label>
+                                        <input type="date" id="recibo-data">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Valor (R$)</label>
+                                        <input type="number" id="recibo-valor" placeholder="150.00" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Descrição</label>
+                                    <input type="text" id="recibo-descricao" placeholder="Consulta psicológica" value="Consulta psicológica">
+                                </div>
+                                <div class="form-group">
+                                    <label>Forma de pagamento</label>
+                                    <select id="recibo-pagamento">
+                                        <option value="Particular">Particular</option>
+                                        <option value="PIX">PIX</option>
+                                        <option value="Cartão de crédito">Cartão de crédito</option>
+                                        <option value="Cartão de débito">Cartão de débito</option>
+                                        <option value="Transferência bancária">Transferência bancária</option>
+                                        <option value="Dinheiro">Dinheiro</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                                    <input type="checkbox" id="recibo-enviar-email" style="width:18px; height:18px; accent-color:#7c3aed;">
+                                    <label for="recibo-enviar-email" style="font-size:14px; color:#94a3b8; cursor:pointer;">
+                                        Enviar recibo por email para o paciente
+                                    </label>
+                                </div>
+                                <button onclick="gerarRecibo()" style="background:#7c3aed; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-file-invoice" style="margin-right:6px;"></i>Gerar Recibo
+                                </button>
+                                <p id="recibo-feedback" style="font-size:13px; margin-top:12px; display:none;"></p>
+                            </div>
+
+                            <!-- LISTA DE RECIBOS -->
+                            <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:16px;">Recibos Emitidos</h3>
+                            <div class="table-card">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Número</th>
+                                            <th>Paciente</th>
+                                            <th>Data</th>
+                                            <th>Valor</th>
+                                            <th>Pagamento</th>
+                                            <th>Email</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recibos-tbody">
+                                        <tr><td colspan="7" style="text-align:center; color:#64748b; padding:20px;">Nenhum recibo emitido ainda.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section id="recursos-terapeuticos-section" class="hidden-section">
+                            <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                            <div class="page-header">
+                                <h2><i class="fas fa-gamepad" style="color:#8b5cf6; margin-right:10px;"></i>Recursos Terapêuticos — Atendimento Online Infantil</h2>
+                                <p>Compartilhe sua tela e use estes jogos interativos com seus pacientes durante a sessão online</p>
+                            </div>
+
+                            <!-- GRID DE JOGOS -->
+                            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:32px;">
+
+                                <!-- Memória das Emoções -->
+                                <div class="card" onclick="abrirJogo('memoria-emocoes')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🎴</div>
+                                        <div>
+                                            <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Memória das Emoções</p>
+                                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Reconhecimento emocional</p>
+                                        </div>
+                                    </div>
+                                    <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Encontre os pares de emoções. Cada descoberta gera uma pergunta terapêutica.</p>
+                                    <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">4 a 10 anos</span>
+                                </div>
+
+                                <!-- Quem Sou Eu -->
+                                <div class="card" onclick="abrirJogo('quem-sou-eu')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:42px;height:42px;border-radius:10px;background:rgba(96,165,250,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🪞</div>
+                                        <div>
+                                            <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Quem Sou Eu?</p>
+                                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Autoconhecimento</p>
+                                        </div>
+                                    </div>
+                                    <p style="font-size:12px;color:#94a3b8;line-height:1.5;">A criança responde perguntas sobre si mesma revelando uma imagem por vez.</p>
+                                    <span style="font-size:11px;background:rgba(96,165,250,0.15);color:#60a5fa;padding:3px 8px;border-radius:6px;">5 a 12 anos</span>
+                                </div>
+
+                                <!-- Termômetro das Emoções -->
+                                <div class="card" onclick="abrirJogo('termometro')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🌡️</div>
+                                        <div>
+                                            <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Termômetro das Emoções</p>
+                                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Regulação emocional</p>
+                                        </div>
+                                    </div>
+                                    <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Arraste o ponteiro para mostrar a intensidade do que está sentindo agora.</p>
+                                    <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">4 a 14 anos</span>
+                                </div>
+
+                                <!-- Memória Comidas Saudáveis -->
+                                <div class="card" onclick="abrirJogo('memoria-comidas')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:42px;height:42px;border-radius:10px;background:rgba(52,211,153,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🥦</div>
+                                        <div>
+                                            <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Memória Saudável</p>
+                                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Hábitos alimentares</p>
+                                        </div>
+                                    </div>
+                                    <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Jogo da memória com alimentos saudáveis e seus benefícios para o corpo.</p>
+                                    <span style="font-size:11px;background:rgba(52,211,153,0.15);color:#34d399;padding:3px 8px;border-radius:6px;">4 a 10 anos</span>
+                                </div>
+
+                                <!-- Jogo dos 7 Erros -->
+                                <div class="card" onclick="abrirJogo('sete-erros')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:42px;height:42px;border-radius:10px;background:rgba(248,113,113,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🔍</div>
+                                        <div>
+                                            <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Jogo dos 7 Erros</p>
+                                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Atenção e foco</p>
+                                        </div>
+                                    </div>
+                                    <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Encontre as diferenças entre duas imagens. Trabalha atenção e concentração.</p>
+                                    <span style="font-size:11px;background:rgba(248,113,113,0.15);color:#f87171;padding:3px 8px;border-radius:6px;">5 a 12 anos</span>
+                                </div>
+
+                                <!-- Bolha da Respiração -->
+                                <div class="card" onclick="abrirJogo('respiracao')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🫧</div>
+                                        <div>
+                                            <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Bolha da Respiração</p>
+                                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Regulação / Ansiedade</p>
+                                        </div>
+                                    </div>
+                                    <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Exercício de respiração guiada com animação visual para acalmar a criança.</p>
+                                    <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">3 a 14 anos</span>
+                                </div>
+
+                                <!-- Em breve -->
+                                <div class="card" style="flex-direction:column; align-items:flex-start; gap:8px; opacity:0.5; cursor:default;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:42px;height:42px;border-radius:10px;background:rgba(100,116,139,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🧩</div>
+                                        <div>
+                                            <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Mais jogos em breve</p>
+                                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Em desenvolvimento</p>
+                                        </div>
+                                    </div>
+                                    <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Quebra-cabeça temático, Situações Sociais, Rotina do Dia e mais.</p>
+                                    <span style="font-size:11px;background:rgba(100,116,139,0.15);color:#94a3b8;padding:3px 8px;border-radius:6px;">Em breve</span>
+                                </div>
+
+                            </div>
+
+                            <!-- MODAL DO JOGO (fullscreen) -->
+                            <div id="jogo-modal" style="display:none; position:fixed; inset:0; background:#0a0f1a; z-index:9999; flex-direction:column;">
+                                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#1a2332; border-bottom:1px solid rgba(139,92,246,0.2);">
+                                    <div style="display:flex; align-items:center; gap:12px;">
+                                        <span style="font-size:11px; background:rgba(139,92,246,0.2); color:#a78bfa; padding:3px 10px; border-radius:6px; text-transform:uppercase; letter-spacing:1px;">ProntPsi</span>
+                                        <span id="jogo-titulo-modal" style="font-size:15px; font-weight:600; color:#e2e8f0;"></span>
+                                    </div>
+                                    <button onclick="fecharJogo()" style="background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.3); color:#f87171; padding:7px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; display:flex; align-items:center; gap:6px;">
+                                        <i class="fas fa-times"></i> Fechar jogo
+                                    </button>
+                                </div>
+                                <div id="jogo-iframe-container" style="flex:1; overflow:hidden;">
+                                    <iframe id="jogo-iframe" style="width:100%; height:100%; border:none; background:#0a0f1a;"></iframe>
+                                </div>
+                            </div>
+
+                        </section>
+
+                        <!-- ================================================
+                DASHBOARD LATERAL DIREITA (mini painel)
+                ================================================ -->
+                        <aside class="dashboard-lateral" id="dashboard-lateral">
+                            <div class="dash-lateral-relogio">
+                                <div class="clock" style="width:64px;height:64px;">
+                                    <div class="center-circle"></div>
+                                    <div id="hour-hand-mini" class="hand hour"></div>
+                                    <div id="minute-hand-mini" class="hand minute"></div>
+                                    <div id="second-hand-mini" class="hand second"></div>
+                                </div>
+                                <div class="dash-lateral-saudacao">Olá,</div>
+                                <div class="dash-lateral-nome" id="dash-lateral-nome">Profissional</div>
+                            </div>
+
+                            <div class="dashboard-lateral-titulo">Resumo</div>
+
+                            <div class="dash-mini-card">
+                                <div class="dash-mini-icon" style="background:rgba(139,92,246,0.15);">
+                                    <i class="fas fa-users" style="color:#a78bfa;"></i>
+                                </div>
+                                <div>
+                                    <div class="dash-mini-label">Pacientes</div>
+                                    <div class="dash-mini-value" id="dash-mini-pacientes">—</div>
+                                </div>
+                            </div>
+
+                            <div class="dash-mini-card">
+                                <div class="dash-mini-icon" style="background:rgba(96,165,250,0.15);">
+                                    <i class="fas fa-calendar-check" style="color:#60a5fa;"></i>
+                                </div>
+                                <div>
+                                    <div class="dash-mini-label">Hoje</div>
+                                    <div class="dash-mini-value" id="dash-mini-hoje">—</div>
+                                </div>
+                            </div>
+
+                            <div class="dash-mini-card">
+                                <div class="dash-mini-icon" style="background:rgba(251,191,36,0.15);">
+                                    <i class="fas fa-clock" style="color:#fbbf24;"></i>
+                                </div>
+                                <div>
+                                    <div class="dash-mini-label">Pendentes</div>
+                                    <div class="dash-mini-value" id="dash-mini-pendentes">—</div>
+                                </div>
+                            </div>
+
+                            <div class="dash-mini-card">
+                                <div class="dash-mini-icon" style="background:rgba(52,211,153,0.15);">
+                                    <i class="fas fa-check-circle" style="color:#34d399;"></i>
+                                </div>
+                                <div>
+                                    <div class="dash-mini-label">Respondidos</div>
+                                    <div class="dash-mini-value" id="dash-mini-respondidos">—</div>
+                                </div>
+                            </div>
+
+                            <div class="dash-lateral-agenda-titulo">Agenda de Hoje</div>
+                            <div id="dash-lateral-agenda">
+                                <p style="color:#475569; font-size:12px; font-style:italic;">Carregando...</p>
+                            </div>
+                        </aside>
+
+                    </main>
+                </div>
+
+                <!-- OVERLAY DE BLOQUEIO -->
+                <div id="overlay-bloqueio"></div>
+
+                <!-- FAIXA DE POLÍTICA -->
+                <div id="faixa-politica" style="display:none;">
+                    <div class="faixa-texto">
+                        <div class="faixa-titulo">
+                            <i class="fas fa-shield-alt"></i>
+                            Política de Privacidade e Termos de Uso — ProntPsi
+                        </div>
+                        <div class="faixa-subtitulo">
+                            Para continuar usando o sistema, você precisa aceitar nossa política.
+                            <a onclick="abrirModalPolitica()">Ler a Política de Privacidade completa</a>
+                        </div>
+                    </div>
+                    <div class="faixa-aceite">
+                        <label class="faixa-checkbox-label">
+                            <input type="checkbox" id="check-politica" onchange="toggleBtnAceitar()">
+                            Li e aceito a Política de Privacidade e os Termos de Uso
+                        </label>
+                        <button id="btn-aceitar-politica" onclick="aceitarPolitica()">
+                            <i class="fas fa-check" style="margin-right:6px;"></i>Confirmar e continuar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MODAL DA POLÍTICA COMPLETA -->
+                <div id="modal-politica">
+                    <div class="modal-politica-content">
+                        <h2><i class="fas fa-shield-alt" style="color:#8b5cf6; margin-right:10px;"></i>Política de Privacidade</h2>
+                        <p class="modal-politica-subtitulo">ProntPsi — Sistema Clínico Digital · Última atualização: abril de 2026</p>
+
+                        <div class="politica-secao">
+                            <h3>1. Quem somos</h3>
+                            <p>O ProntPsi é um sistema clínico digital destinado exclusivamente a profissionais de saúde habilitados. A responsável pela plataforma é a desenvolvedora e operadora do sistema, que atua como controladora dos dados nos termos da Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+                        </div>
+
+                        <div class="politica-secao">
+                            <h3>2. Dados que coletamos</h3>
+                            <p>Coletamos dados fornecidos diretamente por você: nome, e-mail, CRP/CRM, CPF, especialidade, telefone e endereço profissional. Também armazenamos dados clínicos inseridos por você sobre seus pacientes, como evoluções, agendamentos e formulários.</p>
+                        </div>
+
+                        <div class="politica-secao">
+                            <h3>3. Como usamos seus dados</h3>
+                            <p>Seus dados são utilizados exclusivamente para operação do sistema: autenticação, geração de documentos (recibos, relatórios, termos), envio de e-mails clínicos e funcionalidades do painel. Não compartilhamos seus dados com terceiros para fins comerciais.</p>
+                        </div>
+
+                        <div class="politica-secao">
+                            <h3>4. Dados dos seus pacientes</h3>
+                            <p>Você, como profissional, é o responsável pelos dados clínicos de seus pacientes inseridos no sistema. O ProntPsi atua como operador desses dados. É sua responsabilidade obter o consentimento dos pacientes para uso de prontuário eletrônico, o que pode ser feito pelo recurso de Termos de Consentimento disponível no sistema.</p>
+                        </div>
+
+                        <div class="politica-secao">
+                            <h3>5. Segurança</h3>
+                            <p>Utilizamos autenticação com token JWT, comunicação criptografada (HTTPS) e acesso restrito por credenciais. Os dados são armazenados em servidores protegidos. Nenhum acesso externo é permitido sem autenticação.</p>
+                        </div>
+
+                        <div class="politica-secao">
+                            <h3>6. Seus direitos</h3>
+                            <p>Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento entrando em contato conosco. Dados de pacientes podem ser exportados em PDF pelo próprio sistema.</p>
+                        </div>
+
+                        <div class="politica-secao">
+                            <h3>7. Retenção de dados</h3>
+                            <p>Seus dados são mantidos enquanto sua conta estiver ativa. Em caso de encerramento, os dados são mantidos por até 5 anos conforme exigência do CFP para prontuários eletrônicos, após o que são anonimizados ou excluídos.</p>
+                        </div>
+
+                        <div class="politica-secao">
+                            <h3>8. Contato</h3>
+                            <p>Dúvidas sobre esta política? Entre em contato pelo e-mail disponível no painel ou pelo suporte da plataforma.</p>
+                        </div>
+
+                        <button class="btn-fechar-politica" onclick="fecharModalPolitica()">
+                            <i class="fas fa-times" style="margin-right:6px;"></i>Fechar
+                        </button>
+                    </div>
+                </div>
+                <!-- ============================================================
+         INSTRUÇÕES: Cole este bloco ANTES de </body> no PainelExclusivo.html
+         (substitui ou adiciona logo antes de <script defer src="PainelExclusivo.js">)
+         ============================================================ -->
+                <!-- BOTÃO FLUTUANTE DE SUPORTE -->
+                <button id="btn-bug-report" onclick="abrirModalBug()" title="Reportar um problema">
+                    <i class="fas fa-bug"></i>
+                    <span>Suporte</span>
                 </button>
-            </div>
 
-            <!-- Feedback de sucesso -->
-            <div id="bug-sucesso" class="bug-sucesso" style="display:none;">
-                <div class="bug-sucesso-icon"><i class="fas fa-check-circle"></i></div>
-                <h4>Relatório enviado!</h4>
-                <p>Obrigado. Nossa equipe vai analisar e, se necessário, entrar em contato.</p>
-                <button onclick="fecharModalBug()">Fechar</button>
-            </div>
+                <!-- MODAL DE REPORTE DE BUG -->
+                <div id="modal-bug-report" class="modal-bug-overlay" style="display:none;">
+                    <div class="modal-bug-box">
+                        <div class="modal-bug-header">
+                            <div class="modal-bug-icon"><i class="fas fa-bug"></i></div>
+                            <div>
+                                <h3>Reportar um problema</h3>
+                                <p>Descreva o que aconteceu e nossa equipe irá analisar.</p>
+                            </div>
+                            <button class="modal-bug-fechar" onclick="fecharModalBug()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="modal-bug-body">
+                            <!-- Tipo do problema -->
+                            <div class="bug-field">
+                                <label>Tipo do problema *</label>
+                                <div class="bug-tipos">
+                                    <button type="button" class="bug-tipo-btn active" data-tipo="erro">
+                                        <i class="fas fa-exclamation-circle"></i> Erro / Bug
+                                    </button>
+                                    <button type="button" class="bug-tipo-btn" data-tipo="lentidao">
+                                        <i class="fas fa-hourglass-half"></i> Lentidão
+                                    </button>
+                                    <button type="button" class="bug-tipo-btn" data-tipo="layout">
+                                        <i class="fas fa-desktop"></i> Visual / Layout
+                                    </button>
+                                    <button type="button" class="bug-tipo-btn" data-tipo="sugestao">
+                                        <i class="fas fa-lightbulb"></i> Sugestão
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Descrição -->
+                            <div class="bug-field">
+                                <label for="bug-titulo">Título rápido *</label>
+                                <input type="text" id="bug-titulo" placeholder="Ex: Botão de salvar não funciona na agenda"
+                                       maxlength="120" />
+                            </div>
+
+                            <div class="bug-field">
+                                <label for="bug-descricao">O que aconteceu? *</label>
+                                <textarea id="bug-descricao" rows="4"
+                                          placeholder="Descreva o que você estava fazendo quando o problema ocorreu. Quanto mais detalhes, mais rápido conseguimos corrigir!"></textarea>
+                            </div>
+
+                            <!-- Contato opcional -->
+                            <div class="bug-field">
+                                <label for="bug-contato">Seu e-mail para retorno <span style="color:#64748b;">(opcional)</span></label>
+                                <input type="email" id="bug-contato" placeholder="seu@email.com" />
+                            </div>
+
+                            <!-- Info técnica colapsável -->
+                            <details class="bug-info-tecnica">
+                                <summary><i class="fas fa-code"></i> Informações técnicas (enviadas automaticamente)</summary>
+                                <div id="bug-info-preview" class="bug-info-preview"></div>
+                            </details>
+                        </div>
+
+                        <div class="modal-bug-footer">
+                            <button class="btn-cancelar-bug" onclick="fecharModalBug()">Cancelar</button>
+                            <button class="btn-enviar-bug" id="btn-enviar-bug-submit" onclick="enviarBugReport()">
+                                <i class="fas fa-paper-plane"></i> Enviar relatório
+                            </button>
+                        </div>
+
+                        <!-- Feedback de sucesso -->
+                        <div id="bug-sucesso" class="bug-sucesso" style="display:none;">
+                            <div class="bug-sucesso-icon"><i class="fas fa-check-circle"></i></div>
+                            <h4>Relatório enviado!</h4>
+                            <p>Obrigado. Nossa equipe vai analisar e, se necessário, entrar em contato.</p>
+                            <button onclick="fecharModalBug()">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+                <script defer src="bug-report.js"></script>
+                <script defer src="PainelExclusivo.js"></script>
+                <script defer src="agenda.js"></script>
+                <script defer src="sessao.js"></script>
+                <script defer src="formularios.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+            </body>
+        </html>
+        <div class="modal-bug-footer">
+            <button class="btn-cancelar-bug" onclick="fecharModalBug()">Cancelar</button>
+            <button class="btn-enviar-bug" id="btn-enviar-bug-submit" onclick="enviarBugReport()">
+                <i class="fas fa-paper-plane"></i> Enviar relatório
+            </button>
+        </div>
+
+        <!-- Feedback de sucesso -->
+        <div id="bug-sucesso" class="bug-sucesso" style="display:none;">
+            <div class="bug-sucesso-icon"><i class="fas fa-check-circle"></i></div>
+            <h4>Relatório enviado!</h4>
+            <p>Obrigado. Nossa equipe vai analisar e, se necessário, entrar em contato.</p>
+            <button onclick="fecharModalBug()">Fechar</button>
+        </div>
         </div>
     </div>
     <script defer src="bug-report.js"></script>

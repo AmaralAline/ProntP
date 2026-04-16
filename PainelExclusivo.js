@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             carregarAssinaturaSalva();
             carregarDadosProfissionais();
             carregarStatusStripe();
+            carregarLinkVideo();
         }
     }
     botoes.forEach(({ btn, section }) => {
@@ -2229,4 +2230,48 @@ function sair() {
     localStorage.removeItem('token');
     localStorage.removeItem('profissional');
     window.location.href = 'login.html';
+}
+// ============================================================
+//  LINK DE ATENDIMENTO ONLINE
+// ============================================================
+async function carregarLinkVideo() {
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/link-video`, { headers: headersAuth() });
+        if (!res.ok) return;
+        const data = await res.json();
+        const input = document.getElementById('link-video');
+        if (input && data.link_video) input.value = data.link_video;
+    } catch (err) {
+        console.error('Erro ao carregar link de vídeo:', err);
+    }
+}
+
+async function salvarLinkVideo() {
+    const link = document.getElementById('link-video').value.trim();
+    const feedback = document.getElementById('link-video-feedback');
+
+    feedback.style.display = 'none';
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/link-video`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({ link_video: link })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            feedback.textContent = '✅ Link salvo com sucesso!';
+            feedback.style.color = '#34d399';
+        } else {
+            feedback.textContent = '❌ ' + data.erro;
+            feedback.style.color = '#f87171';
+        }
+        feedback.style.display = 'block';
+        setTimeout(() => { feedback.style.display = 'none'; }, 3000);
+    } catch (err) {
+        feedback.textContent = '❌ Erro de conexão.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    }
 }

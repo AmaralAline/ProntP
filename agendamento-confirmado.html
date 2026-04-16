@@ -108,6 +108,100 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* CAIXA DO LINK DE VÍDEO */
+        .video-box {
+            background: rgba(139,92,246,0.06);
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+            .video-box p {
+                margin: 0 0 12px;
+                font-size: 13px;
+                color: #a78bfa;
+                font-weight: 600;
+            }
+
+            .video-box a {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: #7c3aed;
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 18px;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 500;
+                margin-bottom: 12px;
+            }
+
+                .video-box a:hover {
+                    background: #6d28d9;
+                }
+
+        /* BOTÕES COMPARTILHAR */
+        .compartilhar {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-whats {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #25d366;
+            color: #fff;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+            .btn-whats:hover {
+                background: #1da851;
+            }
+
+        .btn-email {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            color: #a78bfa;
+            border: 1px solid rgba(139,92,246,0.35);
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+        }
+
+            .btn-email:hover {
+                background: rgba(139,92,246,0.1);
+            }
+
+        .btn-copiado {
+            font-size: 11px;
+            color: #34d399;
+            display: none;
+            text-align: center;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
@@ -122,6 +216,27 @@
             </p>
         </div>
 
+        <!-- LINK DE VÍDEO — aparece só se o profissional tiver cadastrado -->
+        <div class="video-box" id="video-box" style="display:none;">
+            <p>🎥 Link para a consulta online</p>
+            <a id="btn-entrar-sala" href="#" target="_blank">
+                📹 Entrar na sala de vídeo
+            </a>
+            <br>
+            <div class="compartilhar">
+                <a id="btn-whatsapp" class="btn-whats" href="#" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    WhatsApp
+                </a>
+                <button id="btn-copiar-link" class="btn-email" onclick="copiarLink()">
+                    📋 Copiar link
+                </button>
+            </div>
+            <p class="btn-copiado" id="msg-copiado">✅ Link copiado!</p>
+        </div>
+
         <div class="aviso">
             ⚠️ <strong>Política de cancelamento:</strong> cancelamentos com menos de 24h de antecedência terão reembolso de apenas 50% do valor pago.
         </div>
@@ -131,65 +246,98 @@
         const API_URL = 'https://prontpsiback-production.up.railway.app';
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
-
         const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
+        let linkVideo = null;
+        let dadosConsulta = null;
+
         function mostrarErro(msg) {
-            document.getElementById('info-box').innerHTML = `
-                    <p style="text-align:center; color:#f87171; font-size:13px;">❌ ${msg}</p>
-                `;
+            document.getElementById('info-box').innerHTML =
+                `<p style="text-align:center; color:#f87171; font-size:13px;">❌ ${msg}</p>`;
+        }
+
+        function copiarLink() {
+            if (!linkVideo) return;
+            navigator.clipboard.writeText(linkVideo).then(() => {
+                const msg = document.getElementById('msg-copiado');
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 2500);
+            });
+        }
+
+        function montarMensagemWhatsApp(dados, dataStr) {
+            const hora = dados.hora_inicio ? dados.hora_inicio.substring(0, 5) : '';
+            let msg = `Olá! Sua consulta foi confirmada 🎉\n\n📅 *${dataStr}* às *${hora}*`;
+            if (linkVideo) msg += `\n\n🎥 Link para a consulta:\n${linkVideo}`;
+            msg += `\n\n_ProntPsi — Sistema Clínico_`;
+            return encodeURIComponent(msg);
         }
 
         async function confirmarEExibirDetalhes() {
-            if (!id) {
-                mostrarErro('ID do agendamento não encontrado na URL.');
-                return;
-            }
+            if (!id) { mostrarErro('ID do agendamento não encontrado na URL.'); return; }
 
             try {
-                // 1. Chama a rota que confirma o pagamento via Stripe do profissional
+                // 1. Confirma o pagamento
                 await fetch(`${API_URL}/api/agendamento-confirmar/${id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
 
-                // 2. Busca os dados do agendamento para exibir
+                // 2. Busca dados do agendamento
                 const res = await fetch(`${API_URL}/api/agendamento-confirmado/${id}`);
                 const data = await res.json();
 
-                if (res.ok) {
-                    const data_consulta = new Date(data.data_consulta + 'T00:00:00');
-                    const dia = diasSemana[data_consulta.getDay()];
-                    const dataStr = `${dia}, ${data_consulta.toLocaleDateString('pt-BR')}`;
+                if (!res.ok) { mostrarErro('Não foi possível carregar os detalhes.'); return; }
 
-                    const statusColor = data.status === 'confirmado' ? '#34d399' : '#fbbf24';
-                    const statusText = data.status === 'confirmado' ? '✓ Confirmado' : '⏳ Processando...';
+                dadosConsulta = data;
+                const data_consulta = new Date(data.data_consulta + 'T00:00:00');
+                const dia = diasSemana[data_consulta.getDay()];
+                const dataStr = `${dia}, ${data_consulta.toLocaleDateString('pt-BR')}`;
 
-                    document.getElementById('info-box').innerHTML = `
-                            <div class="info-linha"><span>Paciente</span><span>${data.paciente_nome}</span></div>
-                            <div class="info-linha"><span>Data</span><span>${dataStr}</span></div>
-                            <div class="info-linha"><span>Horário</span><span>${data.hora_inicio.substring(0, 5)}</span></div>
-                            <div class="info-linha"><span>Valor pago</span><span>R$ ${parseFloat(data.valor).toFixed(2)}</span></div>
-                            <div class="info-linha">
-                                <span>Status</span>
-                                <span style="color:${statusColor};">${statusText}</span>
-                            </div>
-                        `;
+                const statusColor = data.status === 'confirmado' ? '#34d399' : '#fbbf24';
+                const statusText = data.status === 'confirmado' ? '✓ Confirmado' : '⏳ Processando...';
 
-                    // Se ainda estiver processando, tenta novamente em 3s
-                    if (data.status !== 'confirmado') {
-                        setTimeout(confirmarEExibirDetalhes, 3000);
+                document.getElementById('info-box').innerHTML = `
+                        <div class="info-linha"><span>Paciente</span><span>${data.paciente_nome}</span></div>
+                        <div class="info-linha"><span>Data</span><span>${dataStr}</span></div>
+                        <div class="info-linha"><span>Horário</span><span>${data.hora_inicio.substring(0, 5)}</span></div>
+                        <div class="info-linha"><span>Valor pago</span><span>R$ ${parseFloat(data.valor).toFixed(2)}</span></div>
+                        <div class="info-linha">
+                            <span>Status</span>
+                            <span style="color:${statusColor};">${statusText}</span>
+                        </div>
+                    `;
+
+                // 3. Busca link de vídeo do profissional
+                try {
+                    const resLink = await fetch(`${API_URL}/api/profissional/${data.profissional_id}/link-video`);
+                    const dataLink = await resLink.json();
+                    if (dataLink.link_video) {
+                        linkVideo = dataLink.link_video;
+
+                        // Mostra a caixa de vídeo
+                        const videoBox = document.getElementById('video-box');
+                        videoBox.style.display = 'block';
+                        document.getElementById('btn-entrar-sala').href = linkVideo;
+
+                        // Monta link do WhatsApp
+                        const msgWA = montarMensagemWhatsApp(data, dataStr);
+                        document.getElementById('btn-whatsapp').href =
+                            `https://wa.me/?text=${msgWA}`;
                     }
-                } else {
-                    mostrarErro('Não foi possível carregar os detalhes do agendamento.');
+                } catch (_) { /* sem link de vídeo, tudo bem */ }
+
+                // Se ainda processando, tenta novamente em 3s
+                if (data.status !== 'confirmado') {
+                    setTimeout(confirmarEExibirDetalhes, 3000);
                 }
+
             } catch (err) {
                 console.error(err);
                 mostrarErro('Erro de conexão. Recarregue a página.');
             }
         }
 
-        // Aguarda 1.5s para o Stripe processar antes de confirmar
         setTimeout(confirmarEExibirDetalhes, 1500);
     </script>
 </body>
