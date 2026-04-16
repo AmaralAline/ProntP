@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Aceitar Extensão de 6 Meses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f1621;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .card {
+            background: #1a2332;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 20px;
+            padding: 40px 36px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .logo { color: #a78bfa; font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+        .icone { font-size: 56px; margin-bottom: 16px; }
+        h1 { font-size: 22px; color: #f1f5f9; margin-bottom: 8px; }
+        p { color: #94a3b8; line-height: 1.7; font-size: 14px; }
+        .destaque {
+            background: rgba(5,150,105,0.1);
+            border: 1px solid rgba(5,150,105,0.25);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .destaque-valor { font-size: 26px; font-weight: 700; color: #34d399; margin-bottom: 4px; }
+        .destaque-sub { font-size: 13px; color: #64748b; }
+        .btn-aceitar {
+            display: inline-block;
+            background: #059669;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .btn-aceitar:hover { background: #047857; }
+        .btn-aceitar:disabled { background: #475569; cursor: not-allowed; }
+        .footer-links { margin-top: 24px; font-size: 12px; color: #475569; }
+        .footer-links a { color: #a78bfa; text-decoration: none; }
+        #estado-carregando { color: #64748b; font-size: 14px; }
+        #estado-sucesso, #estado-erro { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="logo">ProntPsi</div>
+
+    <!-- CARREGANDO -->
+    <div id="estado-carregando">
+        <div class="icone">⏳</div>
+        <h1>Verificando...</h1>
+        <p>Aguarde um momento.</p>
+    </div>
+
+    <!-- SUCESSO (aceite agora) -->
+    <div id="estado-sucesso">
+        <div class="icone">🎁</div>
+        <h1>Extensão confirmada!</h1>
+        <p>Olá, <strong id="nome-prof" style="color:#f1f5f9;"></strong>! Seu acesso foi renovado com sucesso.</p>
+        <div class="destaque">
+            <div class="destaque-valor">+6 meses gratuitos</div>
+            <div class="destaque-sub">Acesso completo até <strong id="data-expira" style="color:#34d399;"></strong></div>
+        </div>
+        <a href="PainelExclusivo.html" class="btn-aceitar">Acessar o sistema →</a>
+    </div>
+
+    <!-- JÁ ACEITO -->
+    <div id="estado-ja-aceito">
+        <div class="icone">✅</div>
+        <h1>Extensão já ativa!</h1>
+        <p id="msg-ja-aceito" style="margin-bottom:20px;"></p>
+        <a href="PainelExclusivo.html" class="btn-aceitar">Ir para o sistema →</a>
+    </div>
+
+    <!-- ERRO -->
+    <div id="estado-erro">
+        <div class="icone">⚠️</div>
+        <h1>Link inválido</h1>
+        <p>Este link de extensão não é válido, já foi usado ou expirou. Entre em contato com nossa equipe pelo Instagram.</p>
+    </div>
+
+    <div class="footer-links">
+        <a href="https://instagram.com/prontpsi" target="_blank">@prontpsi</a>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'https://prontpsiback-production.up.railway.app';
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    function mostrar(id) {
+        ['estado-carregando','estado-sucesso','estado-ja-aceito','estado-erro'].forEach(el => {
+            document.getElementById(el).style.display = 'none';
+        });
+        document.getElementById(id).style.display = 'block';
+    }
+
+    async function processar() {
+        if (!token) { mostrar('estado-erro'); return; }
+
+        try {
+            const res = await fetch(`${API_URL}/api/teste/aceitar-extensao/${token}`);
+            const data = await res.json();
+
+            if (!res.ok) { mostrar('estado-erro'); return; }
+
+            if (data.ja_aceito) {
+                document.getElementById('msg-ja-aceito').textContent =
+                    `Olá, ${data.nome}! Sua extensão já estava ativa. Aproveite!`;
+                mostrar('estado-ja-aceito');
+                return;
+            }
+
+            document.getElementById('nome-prof').textContent = data.nome || '';
+            if (data.expira_em) {
+                document.getElementById('data-expira').textContent =
+                    new Date(data.expira_em).toLocaleDateString('pt-BR');
+            }
+            mostrar('estado-sucesso');
+
+        } catch (err) {
+            mostrar('estado-erro');
+        }
+    }
+
+    processar();
+</script>
+</body>
+</html>

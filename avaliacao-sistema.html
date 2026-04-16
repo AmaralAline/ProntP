@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Avaliação do Sistema</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f1621;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #7c3aed;
+            padding: 20px 24px;
+            text-align: center;
+        }
+        .header h1 { color: #fff; font-size: 20px; font-weight: 700; }
+        .header p { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 4px; }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        /* PROGRESS */
+        .progress-bar {
+            background: #1a2332;
+            border-radius: 100px;
+            height: 6px;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #7c3aed;
+            height: 100%;
+            border-radius: 100px;
+            transition: width 0.4s ease;
+        }
+
+        /* STEPS */
+        .step { display: none; }
+        .step.ativo { display: block; }
+
+        /* CARDS DE SEÇÃO */
+        .secao {
+            background: #1a2332;
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .secao-titulo {
+            font-size: 13px;
+            font-weight: 600;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* CAMPOS */
+        label {
+            display: block;
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        label strong { color: #cbd5e1; }
+
+        /* ESTRELAS */
+        .estrelas {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+        .estrelas input[type="radio"] { display: none; }
+        .estrelas label {
+            font-size: 28px;
+            cursor: pointer;
+            color: #334155;
+            transition: color 0.15s, transform 0.1s;
+            margin: 0;
+            padding: 0;
+        }
+        .estrelas label:hover,
+        .estrelas label.selecionada { color: #fbbf24; }
+        .estrelas label:active { transform: scale(1.2); }
+
+        /* SIM/NÃO */
+        .sim-nao {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .sim-nao input[type="radio"] { display: none; }
+        .sim-nao label {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+            transition: all 0.2s;
+            margin: 0;
+        }
+        .sim-nao input[type="radio"]:checked + label {
+            background: rgba(139,92,246,0.15);
+            border-color: rgba(139,92,246,0.5);
+            color: #a78bfa;
+            font-weight: 500;
+        }
+
+        /* SELECTS */
+        select, textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        select:focus, textarea:focus {
+            border-color: rgba(139,92,246,0.5);
+        }
+        textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+        /* BOTÕES */
+        .btn-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .btn {
+            padding: 12px 28px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-voltar {
+            background: rgba(255,255,255,0.05);
+            color: #64748b;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-voltar:hover { background: rgba(255,255,255,0.08); }
+        .btn-proximo {
+            background: #7c3aed;
+            color: #fff;
+            margin-left: auto;
+        }
+        .btn-proximo:hover { background: #6d28d9; }
+        .btn-enviar {
+            background: #059669;
+            color: #fff;
+            margin-left: auto;
+            padding: 14px 36px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .btn-enviar:hover { background: #047857; }
+
+        /* HEADER DO STEP */
+        .step-header {
+            margin-bottom: 24px;
+        }
+        .step-numero {
+            font-size: 11px;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .step-titulo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 6px;
+        }
+        .step-desc {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* SUCESSO */
+        .sucesso {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .sucesso-icone { font-size: 64px; margin-bottom: 20px; }
+        .sucesso h2 { font-size: 24px; color: #f1f5f9; margin-bottom: 12px; }
+        .sucesso p { color: #94a3b8; line-height: 1.7; font-size: 15px; }
+
+        /* MINI LABEL DE NOTA */
+        .nota-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #475569;
+            margin-top: -16px;
+            margin-bottom: 20px;
+        }
+
+        .grupo-notas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media(max-width:500px) { .grupo-notas { grid-template-columns: 1fr; } }
+
+        .instagram-footer {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 13px;
+            color: #475569;
+        }
+        .instagram-footer a { color: #a78bfa; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>ProntPsi</h1>
+    <p>Formulário de Avaliação do Sistema</p>
+</div>
+
+<div class="container">
+
+    <!-- BARRA DE PROGRESSO -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progresso" style="width:20%;"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         STEP 1 — APRESENTAÇÃO
+    ══════════════════════════════════════════ -->
+    <div class="step ativo" id="step-1">
+        <div class="step-header">
+            <p class="step-numero">Passo 1 de 5</p>
+            <h2 class="step-titulo">Olá! Sua opinião vale muito 💜</h2>
+            <p class="step-desc">
+                Você usou o ProntPsi por 30 dias. Agora gostaríamos de entender como foi sua experiência.
+                O formulário tem 5 etapas e leva cerca de <strong>5 minutos</strong>.
+                <br><br>
+                Ao responder, você garante automaticamente <strong>mais 6 meses de acesso gratuito</strong>!
+            </p>
+        </div>
+
+        <div class="secao">
+            <div class="secao-titulo">🎁 Sua recompensa</div>
+            <div style="background:rgba(5,150,105,0.1); border:1px solid rgba(5,150,105,0.25); border-radius:10px; padding:20px; text-align:center;">
+                <p style="font-size:22px; font-weight:700; color:#34d399; margin-bottom:6px;">+6 meses gratuitos</p>
+                <p style="color:#64748b; font-size:13px;">Você receberá o e-mail de ativação logo após responder</p>
+            </div>
+        </div>
+
+        <div class="btn-nav">
+            <button class="btn btn-proximo" onclick="irStep(2)">Começar avaliação →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         STEP 2 — NOTAS GERAIS
+    ══════════════════════════════════════════ -->
+    <div class="step" id="step-2">
+        <div class="step-header">
+            <p class="step-numero">Passo 2 de 5</p>
+            <h2 class="step-titulo">Impressão geral do sistema</h2>
+            <p class="step-desc">Avalie de 1 a 5 estrelas. Só quem usou consegue responder com precisão!</p>
+        </div>
+
+        <div class="secao">
+            <div class="secao-titulo">⭐ Notas gerais</div>
+
+            <label><strong>Facilidade de uso (usabilidade)</strong><br>O sistema é intuitivo? Você conseguiu navegar sem dificuldades?</label>
+            <div class="estrelas" id="stars-usabilidade">
+                <input type="radio" name="usabilidade" id="u1" value="1"><label for="u1">★</label>
+                <input type="radio" name="usabilidade" id="u2" value="2"><label for="u2">★</label>
+                <input type="radio" name="usabilidade" id="u3" value="3"><label for="u3">★</label>
+                <input type="radio" name="usabilidade" id="u4" value="4"><label for="u4">★</label>
+                <input type="radio" name="usabilidade" id="u5" value="5"><label for="u5">★</label>
+            </div>
+            <div class="nota-label"><span>Muito difícil</span><span>Perfeito</span></div>
+
+            <label><strong>Variedade de funcionalidades</strong><br>O sistema tem tudo que você precisa no dia a dia clínico?</label>
+            <div class="estrelas" id="stars-funcionalidades">
+                <input type="radio" name="funcionalidades" id="f1" value="1"><label for="f1">★</label>
+                <input type="radio" name="funcionalidades" id="f2" value="2"><label for="f2">★</label>
+                <input type="radio" name="funcionalidades" id="f3" value="3"><label for="f3">★</label>
+                <input type="radio" name="funcionalidades" id="f4" value="4"><label for="f4">★</label>
+                <input type="radio" name="funcionalidades" id="f5" value="5"><label for="f5">★</label>
+            </div>
+            <div class="nota-label"><span>Muito limitado</span><span>Completo</span></div>
+
+            <label><strong>Desempenho e velocidade</strong><br>O sistema carregou rápido? Houve travamentos ou lentidão?</label>
+            <div class="estrelas" id="stars-desempenho">
+                <input type="radio" name="desempenho" id="d1" value="1"><label for="d1">★</label>
+                <input type="radio" name="desempenho" id="d2" value="2"><label for="d2">★</label>
+                <input type="radio" name="desempenho" id="d3" value="3"><label for="d3">★</label>
+                <input type="radio" name="desempenho" id="d4" value="4"><label for="d4">★</label>
+                <input type="radio" name="desempenho" id="d5" value="5"><label for="d5">★</label>
+            </div>
+            <div class="nota-label"><span>Muito lento</span><span>Excelente</span></div>
+        </div>
+
+        <div class="btn-nav">
+            <button class="btn btn-voltar" onclick="irStep(1)">← Voltar</button>
+            <button class="btn btn-proximo" onclick="irStep(3)">Próximo →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         STEP 3 — NOTAS POR FUNCIONALIDADE
+    ══════════════════════════════════════════ -->
+    <div class="step" id="step-3">
+        <div class="step-header">
+            <p class="step-numero">Passo 3 de 5</p>
+            <h2 class="step-titulo">Avalie cada funcionalidade</h2>
+            <p class="step-desc">Avalie as funcionalidades que você usou. Somente quem usou de verdade consegue responder isso!</p>
+        </div>
+
+        <div class="secao">
+            <div class="secao-titulo">🔧 Funcionalidades específicas</div>
+
+            <div class="grupo-notas">
+                <div>
+                    <label><strong>📋 Prontuário eletrônico</strong><br>Registro de evoluções, histórico do paciente</label>
+                    <div class="estrelas">
+                        <input type="radio" name="prontuario_nota" id="p1" value="1"><label for="p1">★</label>
+                        <input type="radio" name="prontuario_nota" id="p2" value="2"><label for="p2">★</label>
+                        <input type="radio" name="prontuario_nota" id="p3" value="3"><label for="p3">★</label>
+                        <input type="radio" name="prontuario_nota" id="p4" value="4"><label for="p4">★</label>
+                        <input type="radio" name="prontuario_nota" id="p5" value="5"><label for="p5">★</label>
+                    </div>
+                </div>
+                <div>
+                    <label><strong>📅 Agenda e agendamento</strong><br>Calendário, agendamento online</label>
+                    <div class="estrelas">
+                        <input type="radio" name="agenda_nota" id="ag1" value="1"><label for="ag1">★</label>
+                        <input type="radio" name="agenda_nota" id="ag2" value="2"><label for="ag2">★</label>
+                        <input type="radio" name="agenda_nota" id="ag3" value="3"><label for="ag3">★</label>
+                        <input type="radio" name="agenda_nota" id="ag4" value="4"><label for="ag4">★</label>
+                        <input type="radio" name="agenda_nota" id="ag5" value="5"><label for="ag5">★</label>
+                    </div>
+                </div>
+                <div>
+                    <label><strong>📊 Formulários e escalas</strong><br>Envio de escalas, gráfico de evolução</label>
+                    <div class="estrelas">
+                        <input type="radio" name="formularios_nota" id="fo1" value="1"><label for="fo1">★</label>
+                        <input type="radio" name="formularios_nota" id="fo2" value="2"><label for="fo2">★</label>
+                        <input type="radio" name="formularios_nota" id="fo3" value="3"><label for="fo3">★</label>
+                        <input type="radio" name="formularios_nota" id="fo4" value="4"><label for="fo4">★</label>
+                        <input type="radio" name="formularios_nota" id="fo5" value="5"><label for="fo5">★</label>
+                    </div>
+                </div>
+                <div>
+                    <label><strong>🧾 Recibos</strong><br>Emissão e envio de recibos por e-mail</label>
+                    <div class="estrelas">
+                        <input type="radio" name="recibos_nota" id="re1" value="1"><label for="re1">★</label>
+                        <input type="radio" name="recibos_nota" id="re2" value="2"><label for="re2">★</label>
+                        <input type="radio" name="recibos_nota" id="re3" value="3"><label for="re3">★</label>
+                        <input type="radio" name="recibos_nota" id="re4" value="4"><label for="re4">★</label>
+                        <input type="radio" name="recibos_nota" id="re5" value="5"><label for="re5">★</label>
+                    </div>
+                </div>
+                <div>
+                    <label><strong>📈 Relatório de produção</strong><br>PDF mensal, por convênio, com carimbo</label>
+                    <div class="estrelas">
+                        <input type="radio" name="relatorio_nota" id="rl1" value="1"><label for="rl1">★</label>
+                        <input type="radio" name="relatorio_nota" id="rl2" value="2"><label for="rl2">★</label>
+                        <input type="radio" name="relatorio_nota" id="rl3" value="3"><label for="rl3">★</label>
+                        <input type="radio" name="relatorio_nota" id="rl4" value="4"><label for="rl4">★</label>
+                        <input type="radio" name="relatorio_nota" id="rl5" value="5"><label for="rl5">★</label>
+                    </div>
+                </div>
+            </div>
+
+            <label style="margin-top:4px;"><strong>Você usou todas as funcionalidades disponíveis?</strong></label>
+            <div class="sim-nao">
+                <input type="radio" name="usou_todas" id="usou-sim" value="sim">
+                <label for="usou-sim">✓ Sim, explorei tudo</label>
+                <input type="radio" name="usou_todas" id="usou-nao" value="nao">
+                <label for="usou-nao">✗ Não, usei apenas algumas</label>
+            </div>
+
+            <label><strong>Qual funcionalidade você mais gostou?</strong></label>
+            <select name="funcionalidade_favorita" id="funcionalidade_favorita">
+                <option value="">Selecione...</option>
+                <option>Prontuário eletrônico</option>
+                <option>Agenda e agendamento online</option>
+                <option>Formulários e escalas clínicas</option>
+                <option>Gráfico de evolução do paciente</option>
+                <option>Recibos digitais</option>
+                <option>Relatório de produção em PDF</option>
+                <option>Termos de consentimento</option>
+                <option>Assinatura digital</option>
+                <option>Agendamentos recorrentes</option>
+            </select>
+
+            <label><strong>Qual funcionalidade você achou menos útil ou usou menos?</strong></label>
+            <select name="funcionalidade_menos_util" id="funcionalidade_menos_util">
+                <option value="">Selecione...</option>
+                <option>Prontuário eletrônico</option>
+                <option>Agenda e agendamento online</option>
+                <option>Formulários e escalas clínicas</option>
+                <option>Gráfico de evolução do paciente</option>
+                <option>Recibos digitais</option>
+                <option>Relatório de produção em PDF</option>
+                <option>Termos de consentimento</option>
+                <option>Assinatura digital</option>
+                <option>Agendamentos recorrentes</option>
+            </select>
+        </div>
+
+        <div class="btn-nav">
+            <button class="btn btn-voltar" onclick="irStep(2)">← Voltar</button>
+            <button class="btn btn-proximo" onclick="irStep(4)">Próximo →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         STEP 4 — PROBLEMAS E SUGESTÕES
+    ══════════════════════════════════════════ -->
+    <div class="step" id="step-4">
+        <div class="step-header">
+            <p class="step-numero">Passo 4 de 5</p>
+            <h2 class="step-titulo">Problemas e sugestões</h2>
+            <p class="step-desc">Essas respostas são o que mais nos ajudam a melhorar. Seja direto!</p>
+        </div>
+
+        <div class="secao">
+            <div class="secao-titulo">🐛 Problemas encontrados</div>
+
+            <label><strong>Você encontrou algum bug, erro ou comportamento estranho?</strong><br>
+            Descreva o que aconteceu, em qual tela e o que você estava fazendo. Se não encontrou nenhum, deixe em branco.</label>
+            <textarea id="bug_encontrado" placeholder="Ex: Ao salvar a evolução do paciente X, a página travou e o texto sumiu..."></textarea>
+
+            <label><strong>O que você sente falta no sistema? O que poderia ser melhorado?</strong><br>
+            Pense no seu fluxo de trabalho real: o que faria sua rotina mais fácil?</label>
+            <textarea id="sugestao_melhoria" placeholder="Ex: Gostaria de poder exportar a lista de pacientes em Excel, seria muito útil para..."></textarea>
+        </div>
+
+        <div class="btn-nav">
+            <button class="btn btn-voltar" onclick="irStep(3)">← Voltar</button>
+            <button class="btn btn-proximo" onclick="irStep(5)">Próximo →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         STEP 5 — DECISÃO FINAL
+    ══════════════════════════════════════════ -->
+    <div class="step" id="step-5">
+        <div class="step-header">
+            <p class="step-numero">Passo 5 de 5</p>
+            <h2 class="step-titulo">Última etapa 🏁</h2>
+            <p class="step-desc">Duas perguntas importantes sobre sua decisão de continuar com o ProntPsi.</p>
+        </div>
+
+        <div class="secao">
+            <div class="secao-titulo">💬 Sua decisão</div>
+
+            <label><strong>Você recomendaria o ProntPsi para outro psicólogo?</strong></label>
+            <div class="sim-nao">
+                <input type="radio" name="recomendaria" id="rec-sim" value="sim">
+                <label for="rec-sim">✓ Sim, com certeza</label>
+                <input type="radio" name="recomendaria" id="rec-nao" value="nao">
+                <label for="rec-nao">✗ Não recomendaria</label>
+            </div>
+
+            <label><strong>Por quê? (opcional)</strong><br>O que te faria — ou não — recomendar o sistema?</label>
+            <textarea id="motivo_recomendacao" placeholder="Ex: Sim, porque facilita muito o registro das sessões e economiza tempo..."></textarea>
+
+            <label><strong>Você tem interesse em continuar usando o ProntPsi após o período gratuito?</strong></label>
+            <div class="sim-nao">
+                <input type="radio" name="continuar_usando" id="cont-sim" value="sim">
+                <label for="cont-sim">✓ Sim, quero continuar</label>
+                <input type="radio" name="continuar_usando" id="cont-nao" value="nao">
+                <label for="cont-nao">✗ Provavelmente não</label>
+            </div>
+
+            <div id="campo-motivo-nao" style="display:none;">
+                <label><strong>O que te faz hesitar?</strong><br>Preço? Falta alguma funcionalidade? Usou pouco?</label>
+                <textarea id="motivo_nao_continuar" placeholder="Ex: O preço ficaria alto para mim no momento, mas o sistema é muito bom..."></textarea>
+            </div>
+
+            <label><strong>Comentário livre (opcional)</strong><br>Qualquer coisa que queira compartilhar com a equipe do ProntPsi:</label>
+            <textarea id="comentario_livre" placeholder="Espaço livre para você..."></textarea>
+        </div>
+
+        <div class="btn-nav">
+            <button class="btn btn-voltar" onclick="irStep(4)">← Voltar</button>
+            <button class="btn btn-enviar" onclick="enviarAvaliacao()">
+                ✅ Enviar avaliação e ganhar 6 meses
+            </button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SUCESSO
+    ══════════════════════════════════════════ -->
+    <div class="step" id="step-sucesso">
+        <div class="sucesso">
+            <div class="sucesso-icone">🎉</div>
+            <h2>Avaliação enviada!</h2>
+            <p style="margin-bottom:20px;">
+                Obrigado pela sua contribuição, <strong id="nome-sucesso" style="color:#f1f5f9;"></strong>!<br>
+                Sua opinião é fundamental para melhorarmos o ProntPsi.
+            </p>
+            <div style="background:#1a2332; border:1px solid rgba(52,211,153,0.25); border-radius:14px; padding:24px; max-width:400px; margin:0 auto 28px;">
+                <p style="font-size:18px; font-weight:700; color:#34d399; margin-bottom:6px;">🎁 +6 meses gratuitos ativando!</p>
+                <p style="color:#64748b; font-size:13px;">
+                    Nossa equipe vai revisar sua avaliação e enviar o e-mail de ativação em breve.
+                    Fique de olho na sua caixa de entrada!
+                </p>
+            </div>
+            <a href="PainelExclusivo.html" style="display:inline-block; background:#7c3aed; color:#fff; padding:14px 32px; border-radius:10px; text-decoration:none; font-weight:600; font-size:15px;">
+                Voltar ao sistema →
+            </a>
+        </div>
+    </div>
+
+    <div class="instagram-footer">
+        Siga o ProntPsi: <a href="https://instagram.com/prontpsi" target="_blank">@prontpsi</a>
+    </div>
+
+</div>
+
+<script>
+    const API_URL = 'https://prontpsiback-production.up.railway.app';
+
+    // Pega UID da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const profissionalId = urlParams.get('uid');
+    if (!profissionalId) {
+        alert('Link inválido. Por favor use o link enviado por e-mail.');
+    }
+
+    let stepAtual = 1;
+    const totalSteps = 5;
+
+    function irStep(n) {
+        document.getElementById(`step-${stepAtual}`).classList.remove('ativo');
+        stepAtual = n;
+        const el = document.getElementById(`step-${n}`);
+        if (el) el.classList.add('ativo');
+        const pct = Math.round((n / totalSteps) * 100);
+        document.getElementById('progresso').style.width = pct + '%';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Efeito estrelas cascata
+    document.querySelectorAll('.estrelas').forEach(grupo => {
+        const labels = grupo.querySelectorAll('label');
+        const inputs = grupo.querySelectorAll('input');
+
+        labels.forEach((label, i) => {
+            label.addEventListener('mouseenter', () => {
+                labels.forEach((l, j) => l.classList.toggle('selecionada', j <= i));
+            });
+            label.addEventListener('mouseleave', () => {
+                const checked = grupo.querySelector('input:checked');
+                const val = checked ? parseInt(checked.value) - 1 : -1;
+                labels.forEach((l, j) => l.classList.toggle('selecionada', j <= val));
+            });
+            label.addEventListener('click', () => {
+                inputs[i].checked = true;
+                labels.forEach((l, j) => l.classList.toggle('selecionada', j <= i));
+            });
+        });
+    });
+
+    // Mostrar campo motivo não continuar
+    document.querySelectorAll('input[name="continuar_usando"]').forEach(input => {
+        input.addEventListener('change', () => {
+            document.getElementById('campo-motivo-nao').style.display =
+                input.value === 'nao' ? 'block' : 'none';
+        });
+    });
+
+    function getRadio(name) {
+        const el = document.querySelector(`input[name="${name}"]:checked`);
+        return el ? (isNaN(el.value) ? el.value : parseInt(el.value)) : null;
+    }
+
+    async function enviarAvaliacao() {
+        const btn = document.querySelector('.btn-enviar');
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+
+        const payload = {
+            profissional_id: parseInt(profissionalId),
+            usabilidade: getRadio('usabilidade'),
+            funcionalidades: getRadio('funcionalidades'),
+            desempenho: getRadio('desempenho'),
+            prontuario_nota: getRadio('prontuario_nota'),
+            agenda_nota: getRadio('agenda_nota'),
+            formularios_nota: getRadio('formularios_nota'),
+            recibos_nota: getRadio('recibos_nota'),
+            relatorio_nota: getRadio('relatorio_nota'),
+            usou_todas_funcionalidades: getRadio('usou_todas') === 'sim',
+            funcionalidade_favorita: document.getElementById('funcionalidade_favorita').value || null,
+            funcionalidade_menos_util: document.getElementById('funcionalidade_menos_util').value || null,
+            bug_encontrado: document.getElementById('bug_encontrado').value.trim() || null,
+            sugestao_melhoria: document.getElementById('sugestao_melhoria').value.trim() || null,
+            recomendaria: getRadio('recomendaria') === 'sim',
+            motivo_recomendacao: document.getElementById('motivo_recomendacao').value.trim() || null,
+            continuar_usando: getRadio('continuar_usando') === 'sim',
+            motivo_nao_continuar: document.getElementById('motivo_nao_continuar')?.value.trim() || null,
+            comentario_livre: document.getElementById('comentario_livre').value.trim() || null
+        };
+
+        try {
+            const res = await fetch(`${API_URL}/api/teste/avaliacao`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                document.getElementById(`step-${stepAtual}`).classList.remove('ativo');
+                document.getElementById('step-sucesso').classList.add('ativo');
+                document.getElementById('progresso').style.width = '100%';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert('Erro: ' + (data.erro || 'Não foi possível enviar.'));
+                btn.disabled = false;
+                btn.textContent = '✅ Enviar avaliação e ganhar 6 meses';
+            }
+        } catch (err) {
+            alert('Erro de conexão. Tente novamente.');
+            btn.disabled = false;
+            btn.textContent = '✅ Enviar avaliação e ganhar 6 meses';
+        }
+    }
+</script>
+</body>
+</html>
