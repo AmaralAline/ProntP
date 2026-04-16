@@ -58,6 +58,7 @@
                 <li><button id="btn-recibos" aria-controls="recibos-section"><i class="fas fa-receipt"></i> Recibos</button></li>
                 <li><button id="btn-termos" aria-controls="termos-section"><i class="fas fa-file-signature"></i> Termos</button></li>
                 <li><button id="btn-relatorio-convenio" aria-controls="relatorio-convenio-section"><i class="fas fa-file-invoice"></i> Rel. Convênio</button></li>
+                <li><button id="btn-financeiro" aria-controls="financeiro-section"><i class="fas fa-dollar-sign"></i> Financeiro</button></li>
 
                 <!-- GRUPO: CONTA -->
                 <li class="menu-group-label">Conta</li>
@@ -492,6 +493,126 @@
                             <i class="fas fa-sync" style="margin-right:6px;"></i>Atualizar convênios
                         </button>
                     </div>
+                </div>
+            </section>
+
+            <!-- ================================================
+            FINANCEIRO
+            ================================================ -->
+            <section id="financeiro-section" class="hidden-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2>Financeiro</h2>
+                    <p>Relatório dos pagamentos recebidos via agenda online</p>
+                </div>
+
+                <!-- FILTROS -->
+                <div class="form-card" style="margin-bottom:24px;">
+                    <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+                        <div>
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
+                            <select id="fin-mes" style="padding:9px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
+                            <input type="number" id="fin-ano" value="2025" min="2024" max="2030"
+                                   style="padding:9px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; width:100px;">
+                        </div>
+                        <button onclick="carregarFinanceiro()" style="background:#7c3aed; color:#fff; border:none; padding:9px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-search" style="margin-right:6px;"></i>Filtrar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARDS RESUMO -->
+                <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; margin-bottom:24px;">
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(52,211,153,0.15);">
+                            <i class="fas fa-check-circle" style="color:#34d399;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Confirmados</p>
+                            <p class="dash-card-value" id="fin-total-confirmados">—</p>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(139,92,246,0.15);">
+                            <i class="fas fa-dollar-sign" style="color:#a78bfa;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Total Recebido</p>
+                            <p class="dash-card-value" id="fin-total-valor">—</p>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(251,191,36,0.15);">
+                            <i class="fas fa-clock" style="color:#fbbf24;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Pendentes</p>
+                            <p class="dash-card-value" id="fin-total-pendentes">—</p>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-icon" style="background:rgba(248,113,113,0.15);">
+                            <i class="fas fa-times-circle" style="color:#f87171;"></i>
+                        </div>
+                        <div>
+                            <p class="dash-card-label">Cancelados</p>
+                            <p class="dash-card-value" id="fin-total-cancelados">—</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABELA -->
+                <div style="background:#1a2332; border:1px solid rgba(139,92,246,0.15); border-radius:12px; overflow:hidden;">
+                    <div style="padding:16px 20px; border-bottom:1px solid rgba(139,92,246,0.1); display:flex; justify-content:space-between; align-items:center;">
+                        <p style="font-size:14px; font-weight:600; color:#e2e8f0;">Pagamentos do período</p>
+                        <a id="fin-link-stripe" href="https://dashboard.stripe.com/payments" target="_blank"
+                           style="font-size:12px; color:#a78bfa; text-decoration:none; display:flex; align-items:center; gap:6px;">
+                            <i class="fas fa-external-link-alt"></i> Ver no Stripe
+                        </a>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr style="background:#141d2b;">
+                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Paciente</th>
+                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Data</th>
+                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Valor</th>
+                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Status</th>
+                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">ID Stripe</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fin-tabela-body">
+                                <tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Selecione um período e clique em Filtrar.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- AVISO STRIPE -->
+                <div style="background:rgba(139,92,246,0.05); border:1px solid rgba(139,92,246,0.15); border-radius:8px; padding:14px; margin-top:16px; display:flex; gap:10px; align-items:flex-start;">
+                    <i class="fas fa-info-circle" style="color:#8b5cf6; margin-top:2px; flex-shrink:0;"></i>
+                    <p style="font-size:12px; color:#64748b; line-height:1.6;">
+                        Os valores mostrados aqui são os <strong style="color:#e2e8f0;">registrados no sistema</strong> no momento do agendamento.
+                        Para conferir reembolsos, disputas e saques, acesse seu
+                        <a href="https://dashboard.stripe.com" target="_blank" style="color:#a78bfa;">painel do Stripe</a>.
+                        O <strong style="color:#e2e8f0;">ID Stripe</strong> de cada pagamento serve como prova em caso de disputas.
+                    </p>
                 </div>
             </section>
 
@@ -1570,5 +1691,98 @@
     <script defer src="sessao.js"></script>
     <script defer src="formularios.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script>
+        // ============================================================
+        //  FINANCEIRO — relatório de pagamentos online do profissional
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mês atual como padrão
+            const agora = new Date();
+            const selMes = document.getElementById('fin-mes');
+            const inpAno = document.getElementById('fin-ano');
+            if (selMes) selMes.value = agora.getMonth() + 1;
+            if (inpAno) inpAno.value = agora.getFullYear();
+
+            // Registra navegação do botão financeiro
+            const btnFin = document.getElementById('btn-financeiro');
+            if (btnFin) {
+                btnFin.addEventListener('click', () => carregarFinanceiro());
+            }
+        });
+
+        async function carregarFinanceiro() {
+            const mes = document.getElementById('fin-mes').value;
+            const ano = document.getElementById('fin-ano').value;
+            const tbody = document.getElementById('fin-tabela-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/agendamentos-online`, {
+                    headers: headersAuth()
+                });
+                if (!res.ok) throw new Error('Erro ao buscar pagamentos');
+                const todos = await res.json();
+
+                // Filtra pelo mês/ano selecionado
+                const filtrados = todos.filter(ag => {
+                    const d = new Date(ag.data_consulta + 'T00:00:00');
+                    return d.getMonth() + 1 === parseInt(mes) && d.getFullYear() === parseInt(ano);
+                });
+
+                // Calcula totais
+                const confirmados = filtrados.filter(a => a.status === 'confirmado');
+                const pendentes = filtrados.filter(a => a.status === 'pendente');
+                const cancelados = filtrados.filter(a => a.status === 'cancelado');
+                const totalValor = confirmados.reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+
+                document.getElementById('fin-total-confirmados').textContent = confirmados.length;
+                document.getElementById('fin-total-pendentes').textContent = pendentes.length;
+                document.getElementById('fin-total-cancelados').textContent = cancelados.length;
+                document.getElementById('fin-total-valor').textContent = `R$ ${totalValor.toFixed(2)}`;
+
+                if (!filtrados.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Nenhum pagamento neste período.</td></tr>';
+                    return;
+                }
+
+                const statusCor = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171' };
+                const statusLabel = { confirmado: '✓ Confirmado', pendente: '⏳ Pendente', cancelado: '✗ Cancelado' };
+
+                tbody.innerHTML = filtrados.map(ag => {
+                    const data = new Date(ag.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR');
+                    const cor = statusCor[ag.status] || '#64748b';
+                    const label = statusLabel[ag.status] || ag.status;
+                    const stripeId = ag.stripe_payment_intent || ag.stripe_session_id || '—';
+                    const stripePreview = stripeId !== '—'
+                        ? `<span title="${stripeId}" style="cursor:help; font-family:monospace; font-size:11px; color:#8b5cf6;">${stripeId.substring(0, 20)}...</span>`
+                        : '<span style="color:#475569;">—</span>';
+
+                    return `<tr>
+                        <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); font-size:13px; color:#e2e8f0;">
+                            <strong>${ag.paciente_nome}</strong><br>
+                            <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
+                        </td>
+                        <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); font-size:13px; color:#94a3b8;">${data}<br>
+                            <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
+                        </td>
+                        <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); font-size:14px; font-weight:600; color:#a78bfa;">
+                            R$ ${parseFloat(ag.valor || 0).toFixed(2)}
+                        </td>
+                        <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08);">
+                            <span style="font-size:12px; font-weight:500; color:${cor};">${label}</span>
+                            ${ag.reembolso_valor ? `<br><span style="font-size:11px; color:#f87171;">Reembolso: R$ ${parseFloat(ag.reembolso_valor).toFixed(2)}</span>` : ''}
+                        </td>
+                        <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08);">${stripePreview}</td>
+                    </tr>`;
+                }).join('');
+
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="5" style="padding:40px; text-align:center; color:#f87171;">Erro ao carregar. Tente novamente.</td></tr>`;
+                console.error(err);
+            }
+        }
+    </script>
 </body>
 </html>
