@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-recibos', section: 'recibos-section' },
         { btn: 'btn-perfil', section: 'perfil-section' },
         { btn: 'btn-relatorio-convenio', section: 'relatorio-convenio-section' },
+        { btn: 'btn-financeiro', section: 'financeiro-section' },
         { btn: 'btn-recursos-terapeuticos', section: 'recursos-terapeuticos-section' },
     ];
     function mostrarSecao(id) {
@@ -98,6 +99,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (id === 'relatorio-convenio-section') {
             carregarConvenios();
+        }
+        if (id === 'financeiro-section') {
+            carregarFinanceiro();
         }
         if (id === 'perfil-section') {
             inicializarCanvas();
@@ -2126,4 +2130,94 @@ function toggleVerStripe(inputId, btn) {
     btn.innerHTML = isPassword
         ? '<i class="fas fa-eye-slash"></i>'
         : '<i class="fas fa-eye"></i>';
+}
+// ============================================================
+//  FINANCEIRO — relatório de pagamentos recebidos via agenda online
+// ============================================================
+
+// Inicializa o mês/ano atual ao carregar
+document.addEventListener('DOMContentLoaded', () => {
+    const agora = new Date();
+    const selMes = document.getElementById('fin-mes');
+    const inpAno = document.getElementById('fin-ano');
+    if (selMes) selMes.value = agora.getMonth() + 1;
+    if (inpAno) inpAno.value = agora.getFullYear();
+});
+
+async function carregarFinanceiro() {
+    const selMes = document.getElementById('fin-mes');
+    const inpAno = document.getElementById('fin-ano');
+    const tbody = document.getElementById('fin-tabela-body');
+    if (!tbody || !selMes || !inpAno) return;
+
+    const mes = parseInt(selMes.value);
+    const ano = parseInt(inpAno.value);
+
+    tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>';
+
+    try {
+        const res = await fetch(`${API_URL}/api/agendamentos-online`, {
+            headers: headersAuth()
+        });
+        if (!res.ok) throw new Error('Erro ao buscar pagamentos');
+        const todos = await res.json();
+
+        // Filtra pelo mês/ano selecionado
+        const filtrados = todos.filter(ag => {
+            const d = new Date(ag.data_consulta + 'T00:00:00');
+            return d.getMonth() + 1 === mes && d.getFullYear() === ano;
+        });
+
+        // Totais
+        const confirmados = filtrados.filter(a => a.status === 'confirmado');
+        const pendentes = filtrados.filter(a => a.status === 'pendente');
+        const cancelados = filtrados.filter(a => a.status === 'cancelado');
+        const totalValor = confirmados.reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+
+        document.getElementById('fin-total-confirmados').textContent = confirmados.length;
+        document.getElementById('fin-total-pendentes').textContent = pendentes.length;
+        document.getElementById('fin-total-cancelados').textContent = cancelados.length;
+        document.getElementById('fin-total-valor').textContent = `R$ ${totalValor.toFixed(2)}`;
+
+        if (!filtrados.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Nenhum pagamento neste período.</td></tr>';
+            return;
+        }
+
+        const statusCor = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171' };
+        const statusLabel = { confirmado: '✓ Confirmado', pendente: '⏳ Pendente', cancelado: '✗ Cancelado' };
+
+        tbody.innerHTML = filtrados.map(ag => {
+            const data = new Date(ag.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR');
+            const hora = ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : '';
+            const cor = statusCor[ag.status] || '#64748b';
+            const label = statusLabel[ag.status] || ag.status;
+            const stripeId = ag.stripe_payment_intent || ag.stripe_session_id || null;
+            const stripeCell = stripeId
+                ? `<span title="${stripeId}" style="font-family:monospace; font-size:11px; color:#8b5cf6; cursor:help;">${stripeId.substring(0, 24)}...</span>`
+                : '<span style="color:#475569;">—</span>';
+
+            return `<tr>
+                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); color:#e2e8f0;">
+                    <strong>${ag.paciente_nome}</strong><br>
+                    <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
+                </td>
+                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); color:#94a3b8;">
+                    ${data}<br><span style="font-size:11px; color:#64748b;">${hora}</span>
+                </td>
+                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); font-weight:600; color:#a78bfa;">
+                    R$ ${parseFloat(ag.valor || 0).toFixed(2)}
+                    ${ag.reembolso_valor ? `<br><span style="font-size:11px; color:#f87171; font-weight:400;">Reembolso: R$ ${parseFloat(ag.reembolso_valor).toFixed(2)}</span>` : ''}
+                </td>
+                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08);">
+                    <span style="font-size:12px; font-weight:500; color:${cor};">${label}</span>
+                </td>
+                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08);">${stripeCell}</td>
+            </tr>`;
+        }).join('');
+
+    } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#f87171;">Erro ao carregar. Tente novamente.</td></tr>';
+        console.error(err);
+    }
 }
