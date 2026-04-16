@@ -2221,3 +2221,12 @@ async function carregarFinanceiro() {
         console.error(err);
     }
 }
+// ============================================================
+//  SAIR — limpa sessão e redireciona para login
+// ============================================================
+function sair() {
+    if (!confirm('Deseja sair do sistema?')) return;
+    localStorage.removeItem('token');
+    localStorage.removeItem('profissional');
+    window.location.href = 'login.html';
+}
