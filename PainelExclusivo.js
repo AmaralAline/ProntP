@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             inicializarCanvas();
             carregarAssinaturaSalva();
             carregarDadosProfissionais();
+            carregarStatusStripe();
         }
     }
     botoes.forEach(({ btn, section }) => {
@@ -2023,4 +2024,106 @@ async function enviarBugReport() {
         btnEnviar.disabled = false;
         btnEnviar.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar relatório';
     }
+}
+
+// ============================================================
+//  STRIPE — Pagamentos online do profissional
+// ============================================================
+
+async function carregarStatusStripe() {
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/stripe`, { headers: headersAuth() });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.configurado) {
+            document.getElementById('stripe-sem-chave').style.display = 'none';
+            document.getElementById('stripe-com-chave').style.display = 'block';
+            document.getElementById('stripe-chave-preview').textContent = data.chave_preview;
+        } else {
+            document.getElementById('stripe-sem-chave').style.display = 'block';
+            document.getElementById('stripe-com-chave').style.display = 'none';
+        }
+    } catch (err) {
+        console.error('Erro ao carregar status Stripe:', err);
+    }
+}
+
+async function salvarChavesStripe() {
+    const secretKey = document.getElementById('stripe-secret-key').value.trim();
+    const publishKey = document.getElementById('stripe-publishable-key').value.trim();
+    const feedback = document.getElementById('stripe-feedback');
+    const btn = document.getElementById('btn-salvar-stripe');
+
+    if (!secretKey) {
+        feedback.textContent = '❌ A Secret Key é obrigatória.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    if (!secretKey.startsWith('sk_')) {
+        feedback.textContent = '❌ A Secret Key deve começar com sk_live_ ou sk_test_';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Verificando...';
+    feedback.style.display = 'none';
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/stripe`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                stripe_secret_key: secretKey,
+                stripe_publishable_key: publishKey || null
+            })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            feedback.textContent = '✅ ' + data.mensagem;
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+            setTimeout(() => carregarStatusStripe(), 800);
+        } else {
+            feedback.textContent = '❌ ' + data.erro;
+            feedback.style.color = '#f87171';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        feedback.textContent = '❌ Erro de conexão. Tente novamente.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-plug" style="margin-right:6px;"></i>Conectar Stripe';
+    }
+}
+
+async function removerChavesStripe() {
+    if (!confirm('Tem certeza? Seus pacientes não poderão mais pagar online até você reconectar o Stripe.')) return;
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/stripe`, {
+            method: 'DELETE',
+            headers: headersAuth()
+        });
+        if (res.ok) carregarStatusStripe();
+    } catch (err) {
+        alert('Erro ao desconectar. Tente novamente.');
+    }
+}
+
+function toggleVerStripe(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    btn.innerHTML = isPassword
+        ? '<i class="fas fa-eye-slash"></i>'
+        : '<i class="fas fa-eye"></i>';
 }

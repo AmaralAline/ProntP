@@ -238,15 +238,15 @@
 
     <script>
         const API_URL = 'https://prontpsiback-production.up.railway.app';
-        const params  = new URLSearchParams(window.location.search);
-        const profId  = params.get('prof');
+        const params = new URLSearchParams(window.location.search);
+        const profId = params.get('prof');
 
         let horarioSelecionado = null;
-        let todosHorarios      = [];
-        let profissionalData   = null;
+        let todosHorarios = [];
+        let profissionalData = null;
 
         const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-        const meses      = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+        const meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 
         async function iniciar() {
             if (!profId) { mostrarErroGeral('Link inválido.'); return; }
@@ -257,13 +257,13 @@
             }
 
             try {
-                const res  = await fetch(`${API_URL}/api/agendar/${profId}/horarios`);
+                const res = await fetch(`${API_URL}/api/agendar/${profId}/horarios`);
                 const data = await res.json();
 
                 if (!res.ok) { mostrarErroGeral(data.erro || 'Profissional não encontrado.'); return; }
 
                 profissionalData = data.profissional;
-                todosHorarios    = data.horarios;
+                todosHorarios = data.horarios;
 
                 document.getElementById('prof-nome').textContent = data.profissional.nome;
                 document.getElementById('prof-info').textContent =
@@ -273,7 +273,7 @@
                 renderizarFiltros();
 
                 document.getElementById('loading').style.display = 'none';
-                document.getElementById('app').style.display     = 'block';
+                document.getElementById('app').style.display = 'block';
 
             } catch (err) {
                 mostrarErroGeral('Erro ao carregar horários. Tente novamente.');
@@ -283,7 +283,7 @@
         function renderizarFiltros() {
             const semanas = {};
             todosHorarios.forEach(h => {
-                const data  = new Date(h.data + 'T00:00:00');
+                const data = new Date(h.data + 'T00:00:00');
                 const chave = `Semana ${Math.ceil((data.getDate()) / 7)}`;
                 if (!semanas[h.data.substring(0, 7)]) semanas[h.data.substring(0, 7)] = true;
             });
@@ -295,8 +295,8 @@
             mesesUnicos.forEach(m => {
                 const [ano, mes] = m.split('-');
                 const btn = document.createElement('button');
-                btn.textContent = `${meses[parseInt(mes)-1]}/${ano}`;
-                btn.onclick     = function() { filtrarHorarios(m, this); };
+                btn.textContent = `${meses[parseInt(mes) - 1]}/${ano}`;
+                btn.onclick = function () { filtrarHorarios(m, this); };
                 filtro.appendChild(btn);
             });
         }
@@ -317,20 +317,20 @@
 
             grid.innerHTML = horarios.map(h => {
                 const data = new Date(h.data + 'T00:00:00');
-                const dia  = diasSemana[data.getDay()];
+                const dia = diasSemana[data.getDay()];
                 const dataStr = `${dia}, ${data.getDate()} ${meses[data.getMonth()]}`;
-                const hora  = h.hora_inicio.substring(0, 5);
+                const hora = h.hora_inicio.substring(0, 5);
                 const valor = parseFloat(h.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                const id    = `${h.data}-${h.hora_inicio}`;
+                const id = `${h.data}-${h.hora_inicio}`;
 
                 return `
-                    <div class="horario-btn ${horarioSelecionado?.data === h.data && horarioSelecionado?.hora_inicio === h.hora_inicio ? 'selecionado' : ''}"
-                         onclick="selecionarHorario(${JSON.stringify(h).replace(/"/g, '&quot;')}, this)">
-                        <div class="horario-data">${dataStr}</div>
-                        <div class="horario-hora">${hora}</div>
-                        <div class="horario-valor">${valor}</div>
-                    </div>
-                `;
+                        <div class="horario-btn ${horarioSelecionado?.data === h.data && horarioSelecionado?.hora_inicio === h.hora_inicio ? 'selecionado' : ''}"
+                             onclick="selecionarHorario(${JSON.stringify(h).replace(/"/g, '&quot;')}, this)">
+                            <div class="horario-data">${dataStr}</div>
+                            <div class="horario-hora">${hora}</div>
+                            <div class="horario-valor">${valor}</div>
+                        </div>
+                    `;
             }).join('');
         }
 
@@ -356,8 +356,8 @@
         }
 
         function irStep3() {
-            const nome     = document.getElementById('pac-nome').value.trim();
-            const email    = document.getElementById('pac-email').value.trim();
+            const nome = document.getElementById('pac-nome').value.trim();
+            const email = document.getElementById('pac-email').value.trim();
             const politica = document.getElementById('aceito-politica').checked;
 
             if (!nome || !email) {
@@ -369,30 +369,31 @@
                 return;
             }
 
-            document.getElementById('erro-step2').style.display   = 'none';
+            document.getElementById('erro-step2').style.display = 'none';
             document.getElementById('erro-politica').style.display = 'none';
 
             // Monta resumo
-            const data  = new Date(horarioSelecionado.data + 'T00:00:00');
-            const dia   = diasSemana[data.getDay()];
+            const data = new Date(horarioSelecionado.data + 'T00:00:00');
+            const dia = diasSemana[data.getDay()];
             const dataStr = `${dia}, ${data.getDate()} de ${meses[data.getMonth()]}`;
             const valor = parseFloat(horarioSelecionado.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
             document.getElementById('resumo-box').innerHTML = `
-                <div class="resumo-linha"><span>Profissional</span><span>${profissionalData.nome}</span></div>
-                <div class="resumo-linha"><span>Data</span><span>${dataStr}</span></div>
-                <div class="resumo-linha"><span>Horário</span><span>${horarioSelecionado.hora_inicio.substring(0,5)}</span></div>
-                <div class="resumo-linha"><span>Duração</span><span>${horarioSelecionado.duracao_minutos} min</span></div>
-                <div class="resumo-linha"><span>Paciente</span><span>${nome}</span></div>
-                <div class="resumo-linha resumo-total"><span>Total</span><span>${valor}</span></div>
-            `;
+                    <div class="resumo-linha"><span>Profissional</span><span>${profissionalData.nome}</span></div>
+                    <div class="resumo-linha"><span>Data</span><span>${dataStr}</span></div>
+                    <div class="resumo-linha"><span>Horário</span><span>${horarioSelecionado.hora_inicio.substring(0, 5)}</span></div>
+                    <div class="resumo-linha"><span>Duração</span><span>${horarioSelecionado.duracao_minutos} min</span></div>
+                    <div class="resumo-linha"><span>Paciente</span><span>${nome}</span></div>
+                    <div class="resumo-linha resumo-total"><span>Total</span><span>${valor}</span></div>
+                `;
 
             document.querySelectorAll('.step').forEach(s => s.classList.remove('ativo'));
             document.getElementById('step3').classList.add('ativo');
         }
 
-        async function processarPagamento() {
-            const btn   = document.getElementById('btn-pagar');
+        <script>
+            async function processarPagamento() {
+        const btn   = document.getElementById('btn-pagar');
             const erro  = document.getElementById('erro-step3');
             const nome  = document.getElementById('pac-nome').value.trim();
             const email = document.getElementById('pac-email').value.trim();
@@ -403,49 +404,68 @@
             erro.style.display = 'none';
 
             try {
-                const res  = await fetch(`${API_URL}/api/agendar/${profId}/checkout`, {
-                    method:  'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body:    JSON.stringify({
-                        disponibilidade_id: horarioSelecionado.disponibilidade_id,
-                        data_consulta:      horarioSelecionado.data,
-                        hora_inicio:        horarioSelecionado.hora_inicio,
-                        hora_fim:           horarioSelecionado.hora_fim,
-                        paciente_nome:      nome,
-                        paciente_email:     email,
-                        paciente_telefone:  tel,
-                        valor:              horarioSelecionado.valor
-                    })
-                });
+            const res = await fetch(`${API_URL}/api/agendar/${profId}/checkout`, {
+                method:  'POST',
+            headers: {'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                disponibilidade_id: horarioSelecionado.disponibilidade_id,
+            data_consulta:      horarioSelecionado.data,
+            hora_inicio:        horarioSelecionado.hora_inicio,
+            hora_fim:           horarioSelecionado.hora_fim,
+            paciente_nome:      nome,
+            paciente_email:     email,
+            paciente_telefone:  tel,
+            valor:              horarioSelecionado.valor
+                })
+            });
 
-                const data = await res.json();
+            const data = await res.json();
 
-                if (res.ok && data.url) {
-                    window.location.href = data.url;
-                } else {
-                    erro.textContent   = data.erro || 'Erro ao processar. Tente novamente.';
-                    erro.style.display = 'block';
-                    btn.disabled       = false;
-                    btn.textContent    = '💳 Pagar e Confirmar Consulta';
-                }
-            } catch (err) {
-                erro.textContent   = 'Erro de conexão. Tente novamente.';
-                erro.style.display = 'block';
-                btn.disabled       = false;
-                btn.textContent    = '💳 Pagar e Confirmar Consulta';
+            // ⚡ NOVO: trata caso do profissional sem Stripe configurado
+            if (res.status === 402 && data.sem_stripe) {
+                erro.innerHTML = `
+                    <div style="background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.25); border-radius:8px; padding:14px; text-align:left;">
+                        <p style="color:#fbbf24; font-weight:600; margin-bottom:6px;">⚠️ Pagamento online não disponível</p>
+                        <p style="color:#94a3b8; font-size:12px; line-height:1.5;">
+                            Este profissional ainda não configurou os pagamentos online.<br>
+                            Entre em contato diretamente para agendar sua consulta.
+                        </p>
+                    </div>
+                `;
+            erro.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = '💳 Pagar e Confirmar Consulta';
+            return;
             }
-        }
 
-        function mostrarErroGeral(msg) {
-            document.getElementById('loading').style.display    = 'none';
-            document.getElementById('erro-geral').style.display = 'block';
-            document.getElementById('erro-geral').innerHTML     = `
-                <h2 style="color:#f87171; margin-bottom:12px;">❌ Ops!</h2>
-                <p style="color:#94a3b8;">${msg}</p>
-            `;
+            if (res.ok && data.url) {
+                window.location.href = data.url;
+            } else {
+                erro.textContent = data.erro || 'Erro ao processar. Tente novamente.';
+            erro.style.display = 'block';
+            btn.disabled       = false;
+            btn.textContent    = '💳 Pagar e Confirmar Consulta';
+            }
+        } catch (err) {
+                erro.textContent = 'Erro de conexão. Tente novamente.';
+            erro.style.display = 'block';
+            btn.disabled       = false;
+            btn.textContent    = '💳 Pagar e Confirmar Consulta';
         }
+}
+    </script>
 
-        iniciar();
+
+    function mostrarErroGeral(msg) {
+    document.getElementById('loading').style.display    = 'none';
+    document.getElementById('erro-geral').style.display = 'block';
+    document.getElementById('erro-geral').innerHTML     = `
+    <h2 style="color:#f87171; margin-bottom:12px;">❌ Ops!</h2>
+    <p style="color:#94a3b8;">${msg}</p>
+    `;
+    }
+
+    iniciar();
     </script>
 </body>
 </html>
