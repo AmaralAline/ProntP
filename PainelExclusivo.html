@@ -62,6 +62,7 @@
 
                 <!-- GRUPO: CONTA -->
                 <li class="menu-group-label">Conta</li>
+                <li><button id="btn-vitrine" aria-controls="vitrine-section"><i class="fas fa-store"></i> Vitrine Pública <span id="vitrine-badge-ativo" style="display:none;background:#34d399;color:#0a0f1a;font-size:9px;padding:1px 6px;border-radius:8px;margin-left:4px;font-weight:700;">ATIVO</span></button></li>
                 <li><button id="btn-perfil" aria-controls="perfil-section"><i class="fas fa-user-cog"></i> Meu Perfil</button></li>
 
                 <div style="padding: 16px; margin-top: auto; border-top: 1px solid rgba(139,92,246,0.15);">
@@ -975,6 +976,185 @@
                     <p style="font-size:12px; color:#64748b; margin-top:12px;">
                         Para alterar os dados do carimbo, atualize seu cadastro de profissional.
                     </p>
+                </div>
+            </section>
+
+            <!-- ================================================
+            VITRINE DE PROFISSIONAIS
+            ================================================ -->
+            <section id="vitrine-section" class="hidden-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2><i class="fas fa-store" style="margin-right:10px;color:#34d399;"></i>Vitrine de Profissionais</h2>
+                    <p style="color:#64748b;font-size:13px;margin-top:4px;">Configure como você aparece na vitrine pública do ProntPsi. Apenas profissionais verificados podem ser exibidos.</p>
+                </div>
+
+                <!-- Aviso de verificação pendente -->
+                <div id="vitrine-aviso-verif" style="display:none;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
+                    <p style="color:#fbbf24;font-size:13px;margin:0;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i><strong>Verificação necessária.</strong> Solicite a verificação do seu perfil na seção "Meu Perfil" para aparecer na vitrine.</p>
+                </div>
+
+                <div id="vitrine-form-wrapper">
+                    <div style="display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;">
+
+                        <!-- COLUNA ESQUERDA: formulário -->
+                        <div style="display:flex;flex-direction:column;gap:20px;">
+
+                            <!-- Toggle ativar/desativar -->
+                            <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;">
+                                <div>
+                                    <p style="color:#e2e8f0;font-weight:600;margin:0 0 4px;">Aparecer na vitrine pública</p>
+                                    <p style="color:#64748b;font-size:12px;margin:0;">Pacientes poderão encontrar você em prontpsi.com.br/profissionais.html</p>
+                                </div>
+                                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                                    <input type="checkbox" id="vitrine-toggle" style="display:none;" onchange="aoMudarToggleVitrine(this.checked)">
+                                    <div id="vitrine-toggle-track" style="width:44px;height:24px;border-radius:12px;background:rgba(100,116,139,0.4);position:relative;transition:background .2s;cursor:pointer;" onclick="document.getElementById('vitrine-toggle').click()">
+                                        <div id="vitrine-toggle-thumb" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Foto de perfil -->
+                            <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:20px 24px;">
+                                <p style="color:#e2e8f0;font-weight:600;margin:0 0 16px;">Foto de perfil</p>
+                                <div style="display:flex;align-items:center;gap:20px;">
+                                    <div style="position:relative;">
+                                        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#34d399);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;overflow:hidden;border:2px solid rgba(139,92,246,0.4);">
+                                            <span id="vitrine-foto-initials" style="position:absolute;">?</span>
+                                            <img id="vitrine-foto-preview" style="display:none;width:100%;height:100%;object-fit:cover;position:relative;z-index:1;" src="" alt="Foto">
+                                        </div>
+                                    </div>
+                                    <div style="flex:1;">
+                                        <label style="display:inline-block;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.4);color:#a78bfa;padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s;">
+                                            <i class="fas fa-upload" style="margin-right:6px;"></i>Escolher foto
+                                            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="uploadFotoVitrine(this)">
+                                        </label>
+                                        <p id="vitrine-foto-feedback" style="color:#64748b;font-size:12px;margin:8px 0 0;">JPG, PNG ou WEBP · máx. 2MB</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bio -->
+                            <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:20px 24px;">
+                                <p style="color:#e2e8f0;font-weight:600;margin:0 0 12px;">Apresentação <span style="color:#64748b;font-weight:400;font-size:12px;">(aparece no seu card)</span></p>
+                                <textarea id="vitrine-bio" rows="4" maxlength="300" oninput="atualizarBioCount()" placeholder="Escreva uma breve apresentação sobre você, sua abordagem e o que oferece aos seus pacientes..." style="width:100%;background:rgba(15,23,42,0.8);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:12px;color:#e2e8f0;font-size:13px;resize:vertical;font-family:'Roboto',sans-serif;box-sizing:border-box;"></textarea>
+                                <p id="vitrine-bio-count" style="color:#64748b;font-size:11px;text-align:right;margin:4px 0 0;">0 / 300</p>
+                            </div>
+
+                            <!-- Especialidades (tags) -->
+                            <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:20px 24px;">
+                                <p style="color:#e2e8f0;font-weight:600;margin:0 0 12px;">Especialidades <span style="color:#64748b;font-weight:400;font-size:12px;">(selecione as que se aplicam)</span></p>
+                                <div id="vitrine-tags-wrapper" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+                            </div>
+
+                            <!-- Localização -->
+                            <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:20px 24px;">
+                                <p style="color:#e2e8f0;font-weight:600;margin:0 0 16px;">Localização</p>
+                                <div style="display:grid;grid-template-columns:1fr 120px;gap:12px;">
+                                    <div>
+                                        <label style="color:#64748b;font-size:12px;display:block;margin-bottom:6px;">Cidade</label>
+                                        <input type="text" id="vitrine-cidade" placeholder="Ex: São Paulo" style="width:100%;background:rgba(15,23,42,0.8);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:13px;box-sizing:border-box;">
+                                    </div>
+                                    <div>
+                                        <label style="color:#64748b;font-size:12px;display:block;margin-bottom:6px;">Estado</label>
+                                        <select id="vitrine-estado" style="width:100%;background:rgba(15,23,42,0.8);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:13px;box-sizing:border-box;">
+                                            <option value="">UF</option>
+                                            <option>AC</option>
+                                            <option>AL</option>
+                                            <option>AP</option>
+                                            <option>AM</option>
+                                            <option>BA</option>
+                                            <option>CE</option>
+                                            <option>DF</option>
+                                            <option>ES</option>
+                                            <option>GO</option>
+                                            <option>MA</option>
+                                            <option>MT</option>
+                                            <option>MS</option>
+                                            <option>MG</option>
+                                            <option>PA</option>
+                                            <option>PB</option>
+                                            <option>PR</option>
+                                            <option>PE</option>
+                                            <option>PI</option>
+                                            <option>RJ</option>
+                                            <option>RN</option>
+                                            <option>RS</option>
+                                            <option>RO</option>
+                                            <option>RR</option>
+                                            <option>SC</option>
+                                            <option>SP</option>
+                                            <option>SE</option>
+                                            <option>TO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contato -->
+                            <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:20px 24px;">
+                                <p style="color:#e2e8f0;font-weight:600;margin:0 0 16px;">Formas de contato</p>
+                                <div style="display:flex;flex-direction:column;gap:14px;">
+                                    <div>
+                                        <label style="color:#64748b;font-size:12px;display:block;margin-bottom:6px;">WhatsApp</label>
+                                        <div style="display:flex;align-items:center;gap:10px;">
+                                            <input type="tel" id="vitrine-wpp" placeholder="(11) 99999-9999" oninput="mascaraTelefoneVitrine(this)" style="flex:1;background:rgba(15,23,42,0.8);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:13px;">
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;">
+                                                <input type="checkbox" id="vitrine-aceita-wpp" checked style="accent-color:#34d399;">
+                                                <span style="color:#64748b;font-size:12px;">Exibir</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style="color:#64748b;font-size:12px;display:block;margin-bottom:6px;">E-mail público <span style="color:#475569;">(opcional)</span></label>
+                                        <div style="display:flex;align-items:center;gap:10px;">
+                                            <input type="email" id="vitrine-email-pub" placeholder="contato@exemplo.com" style="flex:1;background:rgba(15,23,42,0.8);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:13px;">
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;">
+                                                <input type="checkbox" id="vitrine-aceita-email" style="accent-color:#34d399;">
+                                                <span style="color:#64748b;font-size:12px;">Exibir</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botão salvar -->
+                            <div style="display:flex;align-items:center;gap:16px;">
+                                <button onclick="salvarVitrine()" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;padding:12px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                                    <i class="fas fa-save" style="margin-right:8px;"></i>Salvar configurações
+                                </button>
+                                <p id="vitrine-feedback" style="display:none;font-size:13px;"></p>
+                            </div>
+                        </div>
+
+                        <!-- COLUNA DIREITA: preview do card -->
+                        <div style="position:sticky;top:20px;">
+                            <p style="color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Preview do seu card</p>
+                            <div style="background:rgba(15,23,42,0.8);border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:24px;box-shadow:0 4px 24px rgba(0,0,0,0.3);">
+                                <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+                                    <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#34d399);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0;border:2px solid rgba(139,92,246,0.4);">
+                                        <span id="prev-foto-initials" style="position:absolute;">?</span>
+                                        <img id="prev-foto-img" style="display:none;width:56px;height:56px;object-fit:cover;" src="" alt="">
+                                    </div>
+                                    <div style="flex:1;min-width:0;">
+                                        <p id="prev-nome" style="color:#e2e8f0;font-weight:700;font-size:15px;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Seu nome</p>
+                                        <p id="prev-spec" style="color:#64748b;font-size:12px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Especialidade · Cidade, Estado</p>
+                                        <p id="prev-crp" style="color:#7c3aed;font-size:11px;margin:2px 0 0;">CRP/CRM</p>
+                                    </div>
+                                </div>
+                                <p id="prev-bio" style="color:#94a3b8;font-size:12px;line-height:1.6;margin:0 0 12px;min-height:40px;"></p>
+                                <div id="prev-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;"></div>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                    <button id="prev-btn-wpp" style="display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;"><i class="fab fa-whatsapp"></i>WhatsApp</button>
+                                    <button id="prev-btn-email" style="display:none;align-items:center;gap:6px;background:rgba(139,92,246,0.2);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;"><i class="fas fa-envelope"></i>E-mail</button>
+                                </div>
+                                <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(139,92,246,0.1);display:flex;align-items:center;gap:6px;">
+                                    <i class="fas fa-check-circle" style="color:#34d399;font-size:11px;"></i>
+                                    <span style="color:#34d399;font-size:11px;">Profissional verificado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
