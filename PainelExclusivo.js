@@ -2310,6 +2310,7 @@ const ESPECIALIDADES_VITRINE = [
 let vitrineEspecialidadesSelecionadas = [];
 let vitrineProfVerificado = false;
 let vitrineFotoUrl = null;
+let vitrineAtivo = false;
 
 async function carregarVitrine() {
     try {
@@ -2344,9 +2345,10 @@ async function carregarVitrine() {
         const resV = await fetch(`${API_URL}/api/vitrine/perfil`, { headers: headersAuth() });
         const d = await resV.json();
 
+        vitrineAtivo = !!d.vitrine_ativo;
         const toggle = document.getElementById('vitrine-toggle');
-        if (toggle) toggle.checked = !!d.vitrine_ativo;
-        atualizarToggleVisual(!!d.vitrine_ativo);
+        if (toggle) toggle.checked = vitrineAtivo;
+        atualizarToggleVisual(vitrineAtivo);
 
         const bioEl = document.getElementById('vitrine-bio');
         if (bioEl) bioEl.value = d.vitrine_bio || '';
@@ -2403,14 +2405,17 @@ function atualizarToggleVisual(ativo) {
     thumb.style.transform = ativo ? 'translateX(22px)' : 'translateX(0)';
 }
 
-function aoMudarToggleVitrine(checked) {
-    atualizarToggleVisual(checked);
-    if (checked && !vitrineProfVerificado) {
+function aoMudarToggleVitrine(novoEstado) {
+    if (novoEstado && !vitrineProfVerificado) {
+        vitrineAtivo = false;
         const toggle = document.getElementById('vitrine-toggle');
         if (toggle) toggle.checked = false;
         atualizarToggleVisual(false);
         mostrarFeedbackVitrine('Você precisa ter a verificação aprovada para ativar a vitrine.', false);
+        return;
     }
+    vitrineAtivo = novoEstado;
+    atualizarToggleVisual(novoEstado);
 }
 
 function renderizarTagsVitrine() {
@@ -2522,8 +2527,7 @@ function exibirFotoVitrine(url) {
 }
 
 async function salvarVitrine() {
-    const toggle = document.getElementById('vitrine-toggle');
-    const ativo = toggle?.checked || false;
+    const ativo = vitrineAtivo;
 
     if (ativo && !vitrineProfVerificado) {
         mostrarFeedbackVitrine('Verificação profissional necessária para ativar a vitrine.', false);
@@ -2554,6 +2558,7 @@ async function salvarVitrine() {
         });
         const d = await res.json();
         if (res.ok) {
+            vitrineAtivo = ativo;
             mostrarFeedbackVitrine('✓ ' + d.mensagem, true);
             atualizarBadgeMenuVitrine(ativo && vitrineProfVerificado);
             atualizarToggleVisual(ativo);
