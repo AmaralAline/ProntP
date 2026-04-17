@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-termos', section: 'termos-section' },
         { btn: 'btn-agenda-online', section: 'agenda-online-section' },
         { btn: 'btn-recibos', section: 'recibos-section' },
+        { btn: 'btn-vitrine', section: 'vitrine-section' },
         { btn: 'btn-perfil', section: 'perfil-section' },
         { btn: 'btn-relatorio-convenio', section: 'relatorio-convenio-section' },
         { btn: 'btn-financeiro', section: 'financeiro-section' },
@@ -103,6 +104,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (id === 'financeiro-section') {
             carregarFinanceiro();
         }
+        if (id === 'vitrine-section') {
+            carregarVitrine();
+        }
         if (id === 'perfil-section') {
             inicializarCanvas();
             carregarAssinaturaSalva();
@@ -145,25 +149,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 //  POLÍTICA DE PRIVACIDADE
 // ============================================================
 async function verificarPolitica() {
-    // 1. Verifica localStorage primeiro — resposta imediata, evita piscar a faixa
+    // Versão atual da política — altere aqui quando atualizar os termos
+    const POLITICA_VERSAO_ATUAL = '2.0';
+
     const profId = profissional?.id || 'desconhecido';
     const chaveLocal = `politica_aceita_${profId}`;
-    if (localStorage.getItem(chaveLocal) === '1') return;
+
+    // Se já aceitou a versão atual localmente — nada a fazer
+    if (localStorage.getItem(chaveLocal) === POLITICA_VERSAO_ATUAL) return;
 
     try {
         const res = await fetch(`${API_URL}/api/perfil`, { headers: headersAuth() });
         if (!res.ok) return;
         const data = await res.json();
 
-        if (data.politica_aceita) {
-            // Já aceito no banco — salva localmente para não consultar de novo
-            localStorage.setItem(chaveLocal, '1');
+        const versaoOk = data.politica_aceita && data.politica_versao === POLITICA_VERSAO_ATUAL;
+
+        if (versaoOk) {
+            // Já aceitou a versão atual no banco — salva localmente
+            localStorage.setItem(chaveLocal, POLITICA_VERSAO_ATUAL);
             return;
         }
 
-        // Não aceito ainda — bloqueia o sistema
+        // Aceito versão antiga ou não aceito ainda — mostra faixa
+        const faixa = document.getElementById('faixa-politica');
+        if (data.politica_aceita && data.politica_versao !== POLITICA_VERSAO_ATUAL) {
+            // Já tinha aceito antes: avisa sobre atualização dos termos
+            const subtitulo = faixa?.querySelector('.faixa-subtitulo');
+            if (subtitulo) {
+                subtitulo.innerHTML += ' <strong style="color:#fbbf24;">Atualizamos nossos termos — incluímos agora a Vitrine de Profissionais. Por favor, releia e confirme.</strong>';
+            }
+        }
+
         document.body.classList.add('politica-pendente');
-        document.getElementById('faixa-politica').style.display = 'flex';
+        faixa.style.display = 'flex';
         document.querySelector('.main-content').style.paddingBottom = '100px';
     } catch (err) {
         console.log('Verificação de política ignorada:', err.message);
@@ -181,6 +200,7 @@ function toggleBtnAceitar() {
 }
 
 async function aceitarPolitica() {
+    const POLITICA_VERSAO_ATUAL = '2.0';
     const btn = document.getElementById('btn-aceitar-politica');
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Salvando...';
@@ -196,7 +216,7 @@ async function aceitarPolitica() {
 
         if (res.ok) {
             // Salva no localStorage para não perguntar de novo
-            localStorage.setItem(chaveLocal, '1');
+            localStorage.setItem(chaveLocal, POLITICA_VERSAO_ATUAL);
             liberarSistema();
 
             // Envia email de confirmação para o profissional
@@ -207,7 +227,7 @@ async function aceitarPolitica() {
         }
     } catch (err) {
         // Mesmo com erro na API, salva localmente e libera
-        localStorage.setItem(chaveLocal, '1');
+        localStorage.setItem(chaveLocal, POLITICA_VERSAO_ATUAL);
         liberarSistema();
         console.log('Política aceita localmente');
     }
@@ -2274,4 +2294,293 @@ async function salvarLinkVideo() {
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     }
+}
+
+// ============================================================
+//  VITRINE DE PROFISSIONAIS
+// ============================================================
+const ESPECIALIDADES_VITRINE = [
+    'Ansiedade', 'Depressão', 'TCC', 'Psicanálise', 'Infância',
+    'Adolescência', 'Casal', 'Família', 'Trauma', 'Luto',
+    'TDAH', 'Autismo', 'Bipolaridade', 'TOC', 'Online',
+    'Transtorno Alimentar', 'Dependência Química', 'Neuropsicologia',
+    'Orientação Profissional', 'Psiquiatria'
+];
+
+let vitrineEspecialidadesSelecionadas = [];
+let vitrineProfVerificado = false;
+let vitrineFotoUrl = null;
+
+async function carregarVitrine() {
+    try {
+        const resPerf = await fetch(`${API_URL}/api/perfil`, { headers: headersAuth() });
+        const perf = await resPerf.json();
+        vitrineProfVerificado = !!perf.verificado;
+
+        const aviso = document.getElementById('vitrine-aviso-verif');
+        const wrapper = document.getElementById('vitrine-form-wrapper');
+
+        if (!vitrineProfVerificado) {
+            if (aviso) aviso.style.display = 'block';
+            if (wrapper) { wrapper.style.opacity = '0.4'; wrapper.style.pointerEvents = 'none'; wrapper.style.userSelect = 'none'; }
+        } else {
+            if (aviso) aviso.style.display = 'none';
+            if (wrapper) { wrapper.style.opacity = '1'; wrapper.style.pointerEvents = 'auto'; wrapper.style.userSelect = 'auto'; }
+        }
+
+        const iniciais = perf.nome ? perf.nome.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() : '?';
+        const fotoInitEl = document.getElementById('vitrine-foto-initials');
+        const prevInitEl = document.getElementById('prev-foto-initials');
+        if (fotoInitEl) fotoInitEl.textContent = iniciais;
+        if (prevInitEl) prevInitEl.textContent = iniciais;
+
+        const prevNome = document.getElementById('prev-nome');
+        const prevSpec = document.getElementById('prev-spec');
+        const prevCrp = document.getElementById('prev-crp');
+        if (prevNome) prevNome.textContent = perf.nome || 'Seu nome';
+        if (prevSpec) prevSpec.textContent = `${perf.especialidade || 'Especialidade'} · Cidade, Estado`;
+        if (prevCrp) prevCrp.textContent = perf.crp_crm || 'CRP/CRM';
+
+        const resV = await fetch(`${API_URL}/api/vitrine/perfil`, { headers: headersAuth() });
+        const d = await resV.json();
+
+        const toggle = document.getElementById('vitrine-toggle');
+        if (toggle) toggle.checked = !!d.vitrine_ativo;
+        atualizarToggleVisual(!!d.vitrine_ativo);
+
+        const bioEl = document.getElementById('vitrine-bio');
+        if (bioEl) bioEl.value = d.vitrine_bio || '';
+        atualizarBioCount();
+
+        const wppEl = document.getElementById('vitrine-wpp');
+        if (wppEl) wppEl.value = d.vitrine_whatsapp || '';
+
+        const emailEl = document.getElementById('vitrine-email-pub');
+        if (emailEl) emailEl.value = d.vitrine_email_publico || '';
+
+        const acWppEl = document.getElementById('vitrine-aceita-wpp');
+        if (acWppEl) acWppEl.checked = d.vitrine_aceita_wpp !== 0;
+
+        const acEmailEl = document.getElementById('vitrine-aceita-email');
+        if (acEmailEl) acEmailEl.checked = !!d.vitrine_aceita_email;
+
+        const cidadeEl = document.getElementById('vitrine-cidade');
+        if (cidadeEl) cidadeEl.value = d.vitrine_cidade || '';
+
+        const estadoEl = document.getElementById('vitrine-estado');
+        if (estadoEl) estadoEl.value = d.vitrine_estado || '';
+
+        if (d.vitrine_foto_url) {
+            vitrineFotoUrl = d.vitrine_foto_url;
+            exibirFotoVitrine(d.vitrine_foto_url);
+        }
+
+        vitrineEspecialidadesSelecionadas = Array.isArray(d.vitrine_especialidades) ? d.vitrine_especialidades : [];
+        renderizarTagsVitrine();
+        atualizarBadgeMenuVitrine(!!d.vitrine_ativo && vitrineProfVerificado);
+        atualizarPreviewVitrine();
+
+        // Listeners de preview em tempo real
+        ['vitrine-cidade', 'vitrine-estado', 'vitrine-email-pub'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', atualizarPreviewVitrine);
+        });
+        ['vitrine-aceita-wpp', 'vitrine-aceita-email'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', atualizarPreviewVitrine);
+        });
+
+    } catch (err) {
+        console.error('Erro ao carregar vitrine:', err);
+    }
+}
+
+function atualizarToggleVisual(ativo) {
+    const track = document.getElementById('vitrine-toggle-track');
+    const thumb = document.getElementById('vitrine-toggle-thumb');
+    if (!track || !thumb) return;
+    track.style.background = ativo ? '#34d399' : 'rgba(100,116,139,0.4)';
+    thumb.style.transform = ativo ? 'translateX(22px)' : 'translateX(0)';
+}
+
+function aoMudarToggleVitrine(checked) {
+    atualizarToggleVisual(checked);
+    if (checked && !vitrineProfVerificado) {
+        const toggle = document.getElementById('vitrine-toggle');
+        if (toggle) toggle.checked = false;
+        atualizarToggleVisual(false);
+        mostrarFeedbackVitrine('Você precisa ter a verificação aprovada para ativar a vitrine.', false);
+    }
+}
+
+function renderizarTagsVitrine() {
+    const wrapper = document.getElementById('vitrine-tags-wrapper');
+    if (!wrapper) return;
+    wrapper.innerHTML = ESPECIALIDADES_VITRINE.map(tag => {
+        const ativa = vitrineEspecialidadesSelecionadas.includes(tag);
+        return `<button type="button" onclick="toggleTagVitrine('${tag}')" style="
+            padding:5px 14px; border-radius:16px; font-size:12px; cursor:pointer;
+            font-family:'Roboto',sans-serif; transition:all .15s;
+            border:1px solid ${ativa ? 'rgba(52,211,153,0.5)' : 'rgba(139,92,246,0.2)'};
+            background:${ativa ? 'rgba(52,211,153,0.1)' : 'transparent'};
+            color:${ativa ? '#34d399' : '#64748b'};">${tag}</button>`;
+    }).join('');
+}
+
+function toggleTagVitrine(tag) {
+    const idx = vitrineEspecialidadesSelecionadas.indexOf(tag);
+    if (idx >= 0) vitrineEspecialidadesSelecionadas.splice(idx, 1);
+    else vitrineEspecialidadesSelecionadas.push(tag);
+    renderizarTagsVitrine();
+    atualizarPreviewVitrine();
+}
+
+function atualizarBioCount() {
+    const bio = document.getElementById('vitrine-bio');
+    const cnt = document.getElementById('vitrine-bio-count');
+    if (!bio || !cnt) return;
+    const len = bio.value.length;
+    cnt.textContent = `${len} / 300`;
+    cnt.style.color = len > 270 ? '#f87171' : '#64748b';
+    atualizarPreviewVitrine();
+}
+
+function mascaraTelefoneVitrine(input) {
+    let v = input.value.replace(/\D/g, '').substring(0, 11);
+    if (v.length > 6) v = `(${v.substring(0, 2)}) ${v.substring(2, 7)}-${v.substring(7)}`;
+    else if (v.length > 2) v = `(${v.substring(0, 2)}) ${v.substring(2)}`;
+    else if (v.length > 0) v = `(${v}`;
+    input.value = v;
+}
+
+function atualizarPreviewVitrine() {
+    const bio = document.getElementById('vitrine-bio')?.value || '';
+    const cidade = document.getElementById('vitrine-cidade')?.value || '';
+    const estado = document.getElementById('vitrine-estado')?.value || '';
+    const acWpp = document.getElementById('vitrine-aceita-wpp')?.checked;
+    const acEmail = document.getElementById('vitrine-aceita-email')?.checked;
+    const emailP = document.getElementById('vitrine-email-pub')?.value || '';
+
+    const prevSpec = document.getElementById('prev-spec');
+    if (prevSpec) {
+        const esp = prevSpec.textContent.split('·')[0].trim();
+        const loc = cidade && estado ? `${cidade}, ${estado}` : cidade || estado || 'Cidade, Estado';
+        prevSpec.textContent = `${esp} · ${loc}`;
+    }
+
+    const prevBio = document.getElementById('prev-bio');
+    if (prevBio) prevBio.textContent = bio;
+
+    const prevTags = document.getElementById('prev-tags');
+    if (prevTags) {
+        prevTags.innerHTML = vitrineEspecialidadesSelecionadas.slice(0, 3).map(t =>
+            `<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:#1a2332;border:1px solid rgba(139,92,246,0.2);color:#64748b;">${t}</span>`
+        ).join('');
+    }
+
+    const prevWpp = document.getElementById('prev-btn-wpp');
+    const prevEmail = document.getElementById('prev-btn-email');
+    if (prevWpp) prevWpp.style.display = acWpp ? 'inline-flex' : 'none';
+    if (prevEmail) prevEmail.style.display = (acEmail && emailP) ? 'inline-flex' : 'none';
+}
+
+async function uploadFotoVitrine(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const fb = document.getElementById('vitrine-foto-feedback');
+    if (fb) { fb.textContent = 'Enviando...'; fb.style.color = '#94a3b8'; }
+    const form = new FormData();
+    form.append('foto', file);
+    try {
+        const res = await fetch(`${API_URL}/api/vitrine/foto`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: form
+        });
+        const d = await res.json();
+        if (res.ok && d.url) {
+            vitrineFotoUrl = d.url;
+            exibirFotoVitrine(d.url);
+            if (fb) { fb.textContent = '✓ Foto salva!'; fb.style.color = '#34d399'; }
+        } else {
+            if (fb) { fb.textContent = d.erro || 'Erro ao enviar foto.'; fb.style.color = '#f87171'; }
+        }
+    } catch (err) {
+        if (fb) { fb.textContent = 'Erro de conexão.'; fb.style.color = '#f87171'; }
+    }
+}
+
+function exibirFotoVitrine(url) {
+    const preview = document.getElementById('vitrine-foto-preview');
+    const initials = document.getElementById('vitrine-foto-initials');
+    const prevImg = document.getElementById('prev-foto-img');
+    const prevInit = document.getElementById('prev-foto-initials');
+    if (preview) { preview.src = url; preview.style.display = 'block'; }
+    if (initials) initials.style.display = 'none';
+    if (prevImg) { prevImg.src = url; prevImg.style.display = 'block'; }
+    if (prevInit) prevInit.style.display = 'none';
+}
+
+async function salvarVitrine() {
+    const toggle = document.getElementById('vitrine-toggle');
+    const ativo = toggle?.checked || false;
+
+    if (ativo && !vitrineProfVerificado) {
+        mostrarFeedbackVitrine('Verificação profissional necessária para ativar a vitrine.', false);
+        if (toggle) toggle.checked = false;
+        atualizarToggleVisual(false);
+        return;
+    }
+
+    mostrarFeedbackVitrine('Salvando...', null);
+
+    const payload = {
+        vitrine_ativo: ativo,
+        vitrine_bio: document.getElementById('vitrine-bio')?.value || null,
+        vitrine_whatsapp: document.getElementById('vitrine-wpp')?.value || null,
+        vitrine_email_publico: document.getElementById('vitrine-email-pub')?.value || null,
+        vitrine_aceita_wpp: document.getElementById('vitrine-aceita-wpp')?.checked ?? true,
+        vitrine_aceita_email: document.getElementById('vitrine-aceita-email')?.checked ?? false,
+        vitrine_cidade: document.getElementById('vitrine-cidade')?.value || null,
+        vitrine_estado: document.getElementById('vitrine-estado')?.value || null,
+        vitrine_especialidades: vitrineEspecialidadesSelecionadas,
+    };
+
+    try {
+        const res = await fetch(`${API_URL}/api/vitrine/perfil`, {
+            method: 'PUT',
+            headers: headersAuth(),
+            body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        if (res.ok) {
+            mostrarFeedbackVitrine('✓ ' + d.mensagem, true);
+            atualizarBadgeMenuVitrine(ativo && vitrineProfVerificado);
+            atualizarToggleVisual(ativo);
+        } else {
+            mostrarFeedbackVitrine(d.erro || 'Erro ao salvar.', false);
+            if (d.codigo === 'VERIFICACAO_PENDENTE' && toggle) {
+                toggle.checked = false;
+                atualizarToggleVisual(false);
+            }
+        }
+    } catch (err) {
+        mostrarFeedbackVitrine('Erro de conexão.', false);
+    }
+}
+
+function mostrarFeedbackVitrine(msg, sucesso) {
+    const fb = document.getElementById('vitrine-feedback');
+    if (!fb) return;
+    fb.style.display = 'block';
+    if (sucesso === true) fb.style.color = '#34d399';
+    else if (sucesso === false) fb.style.color = '#f87171';
+    else fb.style.color = '#94a3b8';
+    fb.textContent = msg;
+    if (sucesso === true) setTimeout(() => { fb.style.display = 'none'; }, 4000);
+}
+
+function atualizarBadgeMenuVitrine(ativo) {
+    const badge = document.getElementById('vitrine-badge-ativo');
+    if (badge) badge.style.display = ativo ? 'inline' : 'none';
 }

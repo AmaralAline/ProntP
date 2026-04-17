@@ -13,10 +13,10 @@
         </div>
         <form class="login-form" id="esqueciForm">
             <h1>Esqueci minha senha</h1>
-            <p>Digite seu e-mail cadastrado e enviaremos as instruções.</p>
+            <p>Digite seu e-mail cadastrado e enviaremos as instruï¿½ï¿½es.</p>
             <input type="email" id="email" placeholder="Seu e-mail" required />
             <p id="spnErro" style="display:none;"></p>
-            <button type="submit" id="btnEnviar">Enviar instruções</button>
+            <button type="submit" id="btnEnviar">Enviar instruï¿½ï¿½es</button>
             <a href="login.html">Voltar ao login</a>
         </form>
     </div>
@@ -43,10 +43,10 @@
                 exibirMensagem(data.mensagem || data.erro, res.ok ? 'sucesso' : 'erro');
 
             } catch (err) {
-                exibirMensagem('Erro de conexão com o servidor.', 'erro');
+                exibirMensagem('Erro de conexï¿½o com o servidor.', 'erro');
             } finally {
                 btnEnviar.disabled  = false;
-                btnEnviar.innerText = 'Enviar instruções';
+                btnEnviar.innerText = 'Enviar instruï¿½ï¿½es';
             }
         });
 

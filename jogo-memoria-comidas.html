@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memória Saudável — ProntPsi</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0a0f1a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 7px;
+}
+
+/* ── TOPO ── */
+.topo {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.topo-titulo { font-size: 15px; font-weight: 900; color: #4ade80; }
+.topo-sub    { font-size: 10px; color: #334155; margin-top: 1px; }
+
+.stats { display: flex; gap: 6px; }
+.stat-pill {
+  background: #141d2b; border: 1px solid rgba(74,222,128,0.25);
+  border-radius: 20px; padding: 3px 11px;
+  font-size: 11px; font-weight: 800; color: #4ade80;
+}
+.stat-pill span { color: #475569; font-weight: 400; font-size: 10px; }
+
+/* ── NÍVEL ── */
+.nivel-bar { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+.nivel-label { font-size: 10px; color: #475569; }
+.nivel-btn {
+  background: #141d2b; border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 800;
+  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s;
+}
+.nivel-btn.ativo { background: #052e16; border-color: #16a34a; color: #86efac; }
+.nivel-btn:hover:not(.ativo) { color: #94a3b8; }
+
+/* ── BANNER ── */
+.banner {
+  text-align: center; padding: 5px 10px; border-radius: 7px;
+  font-size: 12px; font-weight: 800; display: none;
+  background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3); color: #4ade80;
+}
+
+/* ── CORPO ── */
+.corpo { display: flex; gap: 10px; align-items: flex-start; }
+
+/* ── TABULEIRO ── */
+.tabuleiro { display: grid; gap: 8px; flex: 1; min-width: 0; }
+
+/* Carta padrão */
+.carta-wrap {
+  width: 96px; height: 116px;
+  perspective: 600px; cursor: pointer; flex-shrink: 0;
+}
+.carta-wrap:hover .carta-inner:not(.virada):not(.par) { filter: brightness(1.15); }
+
+.carta-inner {
+  width: 100%; height: 100%;
+  position: relative; transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  border-radius: 12px;
+}
+.carta-inner.virada, .carta-inner.par { transform: rotateY(180deg); }
+
+.carta-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: 12px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border: 2px solid transparent;
+}
+
+/* VERSO — número */
+.carta-verso {
+  background: linear-gradient(145deg, #0f2010 0%, #0d2818 100%);
+  border-color: rgba(22,163,74,0.55); gap: 4px;
+}
+.carta-numero { font-size: 30px; font-weight: 900; color: #4ade80; line-height: 1; }
+.carta-verso-dica { font-size: 9px; color: rgba(74,222,128,0.45); font-weight: 700; letter-spacing: 0.5px; }
+
+/* FRENTE — alimento ou benefício */
+.carta-frente { transform: rotateY(180deg); gap: 5px; padding: 6px; }
+.carta-frente.par-encontrado {
+  border-color: #4ade80 !important;
+  box-shadow: 0 0 16px rgba(74,222,128,0.3);
+}
+
+/* Carta de ALIMENTO */
+.carta-frente.tipo-alimento { background: #052e16; border-color: rgba(74,222,128,0.4); }
+.carta-emoji-food { font-size: 38px; line-height: 1; }
+.carta-nome-food  { font-size: 10px; font-weight: 800; text-align: center; color: #86efac; line-height: 1.2; max-width: 90%; }
+
+/* Carta de BENEFÍCIO */
+.carta-frente.tipo-beneficio { background: #1a2010; border-color: rgba(250,204,21,0.4); }
+.carta-beneficio-icon { font-size: 26px; line-height: 1; }
+.carta-beneficio-txt  { font-size: 9px; font-weight: 800; text-align: center; color: #fde68a; line-height: 1.3; max-width: 92%; }
+
+/* ── PAINEL LATERAL ── */
+.painel {
+  width: 174px; flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 7px;
+}
+
+.painel-descoberta {
+  background: #0a1a0a; border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 10px; padding: 11px; flex: 0 0 auto;
+}
+.painel-titulo {
+  font-size: 9px; color: #16a34a; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 7px;
+}
+.placeholder { font-size: 10px; color: #1a3a1a; text-align: center; padding: 6px 0; line-height: 1.5; }
+
+.detalhe { display: none; flex-direction: column; gap: 6px; }
+.detalhe.visivel { display: flex; }
+
+.det-alimento {
+  display: flex; align-items: center; gap: 8px;
+  background: #052e16; border-radius: 8px; padding: 7px 9px;
+}
+.det-alimento-emoji { font-size: 28px; line-height: 1; flex-shrink: 0; }
+.det-alimento-info  { display: flex; flex-direction: column; gap: 1px; }
+.det-nome   { font-size: 14px; font-weight: 900; color: #86efac; }
+.det-grupo  { font-size: 9px;  color: #4ade80; font-weight: 700; }
+
+.det-beneficio {
+  background: #1c1a00; border-radius: 8px; padding: 7px 9px;
+  border-left: 3px solid #fbbf24;
+  font-size: 11px; font-weight: 800; color: #fde68a; line-height: 1.5;
+}
+.det-curiosidade {
+  background: #0f1a2a; border-radius: 8px; padding: 7px 9px;
+  border-left: 3px solid #60a5fa;
+  font-size: 10px; color: #93c5fd; line-height: 1.55; font-weight: 600;
+}
+.det-pergunta {
+  background: #1a0f2a; border-radius: 8px; padding: 7px 9px;
+  border-left: 3px solid #a78bfa;
+  font-size: 10px; color: #c4b5fd; font-weight: 700; line-height: 1.55;
+}
+
+/* ── SCORE DE PARES ── */
+.pares-score {
+  background: #0a1a0a; border: 1px solid rgba(74,222,128,0.15);
+  border-radius: 10px; padding: 9px 11px;
+}
+.pares-score-titulo { font-size: 9px; color: #334155; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+.pares-lista { display: flex; flex-direction: column; gap: 3px; max-height: 160px; overflow-y: auto; }
+.par-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; color: #4ade80; padding: 3px 6px;
+  background: #052e16; border-radius: 6px;
+  animation: slideIn 0.3s ease;
+}
+@keyframes slideIn { from { opacity:0; transform: translateX(-8px); } to { opacity:1; transform: none; } }
+
+/* ── CONTROLES ── */
+.controles { display: flex; gap: 6px; }
+.btn-p {
+  flex: 1; background: #16a34a; border: none; border-radius: 8px;
+  padding: 9px 5px; font-size: 11px; font-weight: 800;
+  color: #fff; cursor: pointer; font-family: 'Nunito', sans-serif; transition: background 0.15s;
+}
+.btn-p:hover { background: #15803d; }
+.btn-s {
+  background: transparent; border: 1px solid rgba(74,222,128,0.25);
+  border-radius: 8px; padding: 9px 10px; font-size: 10px; font-weight: 800;
+  color: #64748b; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s;
+}
+.btn-s:hover { border-color: rgba(74,222,128,0.5); color: #4ade80; }
+
+/* ── WIN ── */
+#win {
+  display: none; position: fixed; inset: 0; background: rgba(10,15,26,0.97);
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; text-align: center; padding: 24px; z-index: 30;
+}
+#win.visivel { display: flex; }
+.win-trofeu { font-size: 56px; }
+.win-titulo { font-size: 22px; font-weight: 900; color: #4ade80; }
+.win-sub    { font-size: 13px; color: #475569; max-width: 320px; line-height: 1.5; }
+.win-stats  { display: flex; gap: 12px; justify-content: center; }
+.win-stat   { background: #052e16; border: 1px solid rgba(74,222,128,0.2); border-radius: 10px; padding: 10px 20px; }
+.win-stat-val { font-size: 22px; font-weight: 900; color: #4ade80; }
+.win-stat-lab { font-size: 10px; color: #475569; }
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <div>
+    <div class="topo-titulo">🥦 Memória Saudável</div>
+    <div class="topo-sub">Paciente fala o número — terapeuta vira a carta</div>
+  </div>
+  <div class="stats">
+    <div class="stat-pill" id="stat-pares">0 <span>pares</span></div>
+    <div class="stat-pill" id="stat-jogadas">0 <span>jogadas</span></div>
+  </div>
+</div>
+
+<div class="nivel-bar">
+  <span class="nivel-label">Nível:</span>
+  <button class="nivel-btn ativo" onclick="setNivel('facil',this)">Fácil — 6 pares</button>
+  <button class="nivel-btn"       onclick="setNivel('medio',this)">Médio — 10 pares</button>
+  <button class="nivel-btn"       onclick="setNivel('dificil',this)">Difícil — 14 pares</button>
+</div>
+
+<div class="banner" id="banner"></div>
+
+<div class="corpo">
+  <div class="tabuleiro" id="tabuleiro"></div>
+
+  <div class="painel">
+    <!-- DESCOBERTA -->
+    <div class="painel-descoberta">
+      <div class="painel-titulo">🌿 Alimento descoberto</div>
+      <div class="placeholder" id="placeholder">Vire um par para descobrir um alimento saudável!</div>
+      <div class="detalhe" id="detalhe">
+        <div class="det-alimento">
+          <div class="det-alimento-emoji" id="det-emoji"></div>
+          <div class="det-alimento-info">
+            <div class="det-nome"  id="det-nome"></div>
+            <div class="det-grupo" id="det-grupo"></div>
+          </div>
+        </div>
+        <div class="det-beneficio"   id="det-beneficio"></div>
+        <div class="det-curiosidade" id="det-curiosidade"></div>
+        <div class="det-pergunta"    id="det-pergunta"></div>
+      </div>
+    </div>
+
+    <!-- PARES ENCONTRADOS -->
+    <div class="pares-score">
+      <div class="pares-score-titulo">✅ Já encontrados</div>
+      <div class="pares-lista" id="pares-lista">
+        <div style="font-size:10px;color:#1a3a1a;padding:4px;">Nenhum par ainda...</div>
+      </div>
+    </div>
+
+    <div class="controles">
+      <button class="btn-p" onclick="novoJogo()">🔀 Novo</button>
+      <button class="btn-s" onclick="revelarTodas()">👁 Ver</button>
+    </div>
+  </div>
+</div>
+
+<div id="win">
+  <div class="win-trofeu">🥗</div>
+  <div class="win-titulo">Muito bem!</div>
+  <div class="win-sub" id="win-sub">Você conheceu todos os alimentos saudáveis!</div>
+  <div class="win-stats">
+    <div class="win-stat"><div class="win-stat-val" id="win-j">-</div><div class="win-stat-lab">jogadas</div></div>
+    <div class="win-stat"><div class="win-stat-val" id="win-p">-</div><div class="win-stat-lab">pares</div></div>
+  </div>
+  <button class="btn-p" style="width:180px;padding:10px;" onclick="novoJogo()">🔀 Jogar novamente</button>
+</div>
+
+<script>
+// ── BANCO DE ALIMENTOS ──
+// Cada alimento tem: emoji, nome, grupo, benefício, curiosidade, pergunta terapêutica, e ícone do benefício
+const ALIMENTOS = [
+  { emoji:'🍎', nome:'Maçã',        grupo:'Fruta',   icone:'💪',
+    beneficio:'Fortalece o sistema imunológico e dá energia!',
+    curiosidade:'A maçã tem fibras que ajudam o intestino a funcionar bem. São mais de 7.000 variedades no mundo!',
+    pergunta:'Você gosta de maçã? Prefere com ou sem casca?' },
+  { emoji:'🥦', nome:'Brócolis',    grupo:'Legume',  icone:'🦴',
+    beneficio:'Deixa os ossos fortes e protege o corpo de doenças!',
+    curiosidade:'O brócolis tem mais vitamina C que a laranja! E é primo do repolho e da couve-flor.',
+    pergunta:'Você já comeu brócolis? Como ele foi preparado?' },
+  { emoji:'🍇', nome:'Uva',         grupo:'Fruta',   icone:'❤️',
+    beneficio:'Faz bem para o coração e tem antioxidantes poderosos!',
+    curiosidade:'Uma cachoinha de uva pode ter mais de 100 uvinhas! Ela existe há mais de 8.000 anos.',
+    pergunta:'Você prefere uva verde ou uva roxa? Por quê?' },
+  { emoji:'🥕', nome:'Cenoura',     grupo:'Legume',  icone:'👀',
+    beneficio:'Melhora a visão e deixa a pele mais saudável!',
+    curiosidade:'A cenoura original era roxa! A laranja foi criada na Holanda há 400 anos.',
+    pergunta:'Como você mais gosta de comer cenoura? Crua ou cozida?' },
+  { emoji:'🍌', nome:'Banana',      grupo:'Fruta',   icone:'😊',
+    beneficio:'Dá energia, melhora o humor e ajuda os músculos!',
+    curiosidade:'A banana é tecnicamente uma baga! E cresce em plantas, não em árvores.',
+    pergunta:'Você come banana quando está com pressa? O que mais te dá energia?' },
+  { emoji:'🍅', nome:'Tomate',      grupo:'Fruta',   icone:'🛡️',
+    beneficio:'Protege o corpo contra doenças e é ótimo para a pele!',
+    curiosidade:'O tomate é uma fruta, mas todo mundo usa como legume na cozinha. Que confusão, né?',
+    pergunta:'Você sabia que tomate é fruta? O que você achou disso?' },
+  { emoji:'🥑', nome:'Abacate',     grupo:'Fruta',   icone:'🧠',
+    beneficio:'Faz muito bem para o cérebro e tem gordura do bem!',
+    curiosidade:'O abacate tem mais potássio que a banana! E a semente ocupa quase metade da fruta.',
+    pergunta:'Você já experimentou guacamole? O que você acha do abacate?' },
+  { emoji:'🍓', nome:'Morango',     grupo:'Fruta',   icone:'🦷',
+    beneficio:'Deixa os dentes mais saudáveis e tem muita vitamina C!',
+    curiosidade:'O morango não é uma fruta de verdade — é um falso fruto! E tem cerca de 200 sementes por fora.',
+    pergunta:'Você prefere morango puro ou com algo? Com leite condensado, talvez?' },
+  { emoji:'🌽', nome:'Milho',       grupo:'Cereal',  icone:'⚡',
+    beneficio:'Dá energia para brincar e se concentrar na escola!',
+    curiosidade:'Uma espiga de milho tem sempre um número par de fileiras. Pode contar!',
+    pergunta:'Você prefere milho cozido, na espiga ou na pipoca?' },
+  { emoji:'🥝', nome:'Kiwi',        grupo:'Fruta',   icone:'😴',
+    beneficio:'Ajuda a dormir melhor e tem mais vitamina C que a laranja!',
+    curiosidade:'O kiwi tem nome de pássaro! O pássaro kiwi da Nova Zelândia tem a mesma cor marrom e pelugem.',
+    pergunta:'Você já comeu kiwi? Achou azedo ou gostou do sabor?' },
+  { emoji:'🥬', nome:'Espinafre',   grupo:'Folha',   icone:'💪',
+    beneficio:'Deixa os músculos fortes — igual ao Popeye!',
+    curiosidade:'O espinafre tem ferro, mas o corpo absorve melhor o ferro com vitamina C. Limão no espinafre é ótimo!',
+    pergunta:'Você conhece o Popeye? O espinafre seria seu superpoder, qual seria o seu?' },
+  { emoji:'🫐', nome:'Mirtilo',     grupo:'Fruta',   icone:'🧠',
+    beneficio:'Melhora a memória e a concentração nos estudos!',
+    curiosidade:'O mirtilo é considerado um "superalimento". Quanto mais escuro, mais antioxidantes tem!',
+    pergunta:'Você conhece o mirtilo? Já viu nos mercados? Como você acha que é o sabor?' },
+  { emoji:'🍠', nome:'Batata-doce', grupo:'Tubérculo',icone:'🔋',
+    beneficio:'Carrega as energias para o dia todo — como uma bateria!',
+    curiosidade:'A batata-doce tem mais nutrientes que a batata comum. Ela pode ser laranja, roxa ou branca!',
+    pergunta:'Você já comeu batata-doce? Como ela foi preparada — assada, cozida ou frita?' },
+  { emoji:'🥗', nome:'Salada',      grupo:'Mix',     icone:'🌈',
+    beneficio:'Combina vários nutrientes — um arco-íris no seu prato!',
+    curiosidade:'Quanto mais colorida a salada, mais vitaminas ela tem. Cada cor representa um nutriente diferente!',
+    pergunta:'Se você fizesse uma salada, que cores e ingredientes colocaria?' },
+];
+
+const CFG = {
+  facil:  { qtd:6,  cols:4 },
+  medio:  { qtd:10, cols:5 },
+  dificil:{ qtd:14, cols:7 },
+};
+
+let nivel='facil', cartas=[], viradas=[], pares=[], jogadas=0, travado=false;
+let paresEncontrados=[];
+
+function embaralhar(a){
+  const r=[...a];
+  for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}
+  return r;
+}
+
+function setNivel(n,btn){
+  nivel=n;
+  document.querySelectorAll('.nivel-btn').forEach(b=>b.classList.remove('ativo'));
+  btn.classList.add('ativo');
+  novoJogo();
+}
+
+function novoJogo(){
+  const cfg=CFG[nivel];
+  const escolhidos=embaralhar([...ALIMENTOS]).slice(0,cfg.qtd);
+
+  // Cada par: uma carta ALIMENTO + uma carta BENEFÍCIO
+  const cartasAlimento  = escolhidos.map((a,i)=>({ ...a, tipo:'alimento',  uid:i }));
+  const cartasBeneficio = escolhidos.map((a,i)=>({ ...a, tipo:'beneficio', uid:i }));
+  cartas = embaralhar([...cartasAlimento, ...cartasBeneficio]);
+
+  viradas=[]; pares=[]; jogadas=0; travado=false; paresEncontrados=[];
+
+  atualizarStats();
+  document.getElementById('banner').style.display='none';
+  document.getElementById('placeholder').style.display='block';
+  document.getElementById('detalhe').classList.remove('visivel');
+  document.getElementById('win').classList.remove('visivel');
+  document.getElementById('pares-lista').innerHTML=
+    '<div style="font-size:10px;color:#1a3a1a;padding:4px;">Nenhum par ainda...</div>';
+
+  const tab=document.getElementById('tabuleiro');
+  tab.style.gridTemplateColumns=`repeat(${cfg.cols}, 96px)`;
+  tab.innerHTML='';
+
+  cartas.forEach((carta,idx)=>{
+    const wrap=document.createElement('div');
+    wrap.className='carta-wrap';
+
+    const frenteHTML = carta.tipo==='alimento'
+      ? `<div class="carta-face carta-frente tipo-alimento">
+           <div class="carta-emoji-food">${carta.emoji}</div>
+           <div class="carta-nome-food">${carta.nome}</div>
+         </div>`
+      : `<div class="carta-face carta-frente tipo-beneficio">
+           <div class="carta-beneficio-icon">${carta.icone}</div>
+           <div class="carta-beneficio-txt">${carta.beneficio}</div>
+         </div>`;
+
+    wrap.innerHTML=`
+      <div class="carta-inner" id="ci-${idx}">
+        <div class="carta-face carta-verso">
+          <div class="carta-numero">${idx+1}</div>
+          <div class="carta-verso-dica">VIRAR</div>
+        </div>
+        ${frenteHTML}
+      </div>`;
+    wrap.addEventListener('click',()=>clicar(idx));
+    tab.appendChild(wrap);
+  });
+}
+
+function clicar(idx){
+  if(travado||viradas.includes(idx)||pares.includes(idx))return;
+  document.getElementById(`ci-${idx}`).classList.add('virada');
+  viradas.push(idx);
+
+  if(viradas.length===2){
+    jogadas++; travado=true; atualizarStats();
+    const [a,b]=viradas;
+
+    // Par válido = mesma uid + tipos diferentes (alimento + benefício)
+    const parValido = cartas[a].uid===cartas[b].uid && cartas[a].tipo!==cartas[b].tipo;
+
+    if(parValido){
+      setTimeout(()=>{
+        [a,b].forEach(i=>{
+          document.getElementById(`ci-${i}`).querySelector('.carta-frente').classList.add('par-encontrado');
+          pares.push(i);
+        });
+        const alimento=cartas[a].tipo==='alimento' ? cartas[a] : cartas[b];
+        mostrarAlimento(alimento);
+        adicionarParLista(alimento);
+        viradas=[]; travado=false; atualizarStats();
+        mostrarBanner(`✅ Par encontrado! ${alimento.emoji} ${alimento.nome}`);
+        if(pares.length===cartas.length) setTimeout(vitoria,700);
+      },350);
+    } else {
+      setTimeout(()=>{
+        viradas.forEach(i=>document.getElementById(`ci-${i}`).classList.remove('virada'));
+        viradas=[]; travado=false;
+      },1100);
+    }
+  }
+}
+
+function mostrarAlimento(a){
+  document.getElementById('placeholder').style.display='none';
+  document.getElementById('det-emoji').textContent=a.emoji;
+  document.getElementById('det-nome').textContent=a.nome;
+  document.getElementById('det-grupo').textContent=a.grupo;
+  document.getElementById('det-beneficio').textContent=`${a.icone} ${a.beneficio}`;
+  document.getElementById('det-curiosidade').textContent=`🔬 ${a.curiosidade}`;
+  document.getElementById('det-pergunta').textContent=`💬 ${a.pergunta}`;
+  document.getElementById('detalhe').classList.add('visivel');
+}
+
+function adicionarParLista(a){
+  const lista=document.getElementById('pares-lista');
+  // Remove placeholder
+  const placeholder=lista.querySelector('div[style]');
+  if(placeholder) placeholder.remove();
+
+  const item=document.createElement('div');
+  item.className='par-item';
+  item.innerHTML=`<span>${a.emoji}</span><span>${a.nome}</span>`;
+  lista.appendChild(item);
+}
+
+function atualizarStats(){
+  document.getElementById('stat-pares').innerHTML=`${pares.length/2} <span>pares</span>`;
+  document.getElementById('stat-jogadas').innerHTML=`${jogadas} <span>jogadas</span>`;
+}
+
+function mostrarBanner(txt){
+  const b=document.getElementById('banner');
+  b.textContent=txt; b.style.display='block';
+  clearTimeout(b._t); b._t=setTimeout(()=>{ b.style.display='none'; },2200);
+}
+
+function revelarTodas(){
+  cartas.forEach((_,idx)=>document.getElementById(`ci-${idx}`).classList.add('virada'));
+  travado=true;
+}
+
+function vitoria(){
+  const total=pares.length/2;
+  document.getElementById('win-j').textContent=jogadas;
+  document.getElementById('win-p').textContent=total;
+  document.getElementById('win-sub').textContent=
+    `Você conheceu ${total} alimentos saudáveis! Que prato colorido e delicioso! 🌈`;
+  document.getElementById('win').classList.add('visivel');
+}
+
+novoJogo();
+</script>
+</body>
+</html>

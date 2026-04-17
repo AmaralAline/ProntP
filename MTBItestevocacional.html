@@ -1,0 +1,611 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste MBTI Aproximado – 60 Perguntas Completo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .pergunta {
+            margin: 24px 0;
+            padding: 18px;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+            .pergunta p {
+                font-weight: 600;
+                margin: 0 0 12px 0;
+            }
+
+        .opcoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        label {
+            display: inline-flex;
+            align-items: center;
+            background: #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+            label:hover {
+                background: #cbd5e1;
+            }
+
+        input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            margin: 40px auto 20px;
+            padding: 14px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background: #2563eb;
+            }
+
+        #resultado {
+            margin-top: 40px;
+            padding: 24px;
+            background: #eff6ff;
+            border-radius: 10px;
+            border: 1px solid #bfdbfe;
+            display: none;
+        }
+
+        .tipo {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #1e40af;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .porcentagens {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .porc {
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .descricao, .forcas {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #dbeafe;
+            margin: 16px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .opcoes {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Teste de Personalidade MBTI (Versão Completa – 60 itens)</h1>
+        <p style="text-align:center; color:#555; margin-bottom:32px;">
+            Responda com sinceridade o quanto concorda com cada afirmação.<br>
+            <small>1 = Discordo totalmente • 5 = Concordo totalmente</small><br>
+            <small>Este é um teste indicativo recreativo inspirado no MBTI. Não substitui avaliação profissional certificada.</small>
+        </p>
+
+        <form id="formTeste">
+
+            <!-- 1–15: Extroversão (E) vs Introversão (I) – alto = E -->
+            <div class="pergunta">
+                <p>1. Tens facilidade em fazer novas amizades.</p><div class="opcoes">
+                    <label><input type="radio" name="q1" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q1" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q1" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q1" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q1" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>2. Em festas ou eventos sociais, geralmente te sentes energizado e gostas de conversar com várias pessoas.</p><div class="opcoes">
+                    <label><input type="radio" name="q2" value="1"><span>1</span></label><label><input type="radio" name="q2" value="2"><span>2</span></label><label><input type="radio" name="q2" value="3"><span>3</span></label><label><input type="radio" name="q2" value="4"><span>4</span></label><label><input type="radio" name="q2" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>3. Preferes passar tempo com um grupo grande de pessoas do que sozinho ou com poucas pessoas.</p><div class="opcoes">
+                    <label><input type="radio" name="q3" value="1"><span>1</span></label><label><input type="radio" name="q3" value="2"><span>2</span></label><label><input type="radio" name="q3" value="3"><span>3</span></label><label><input type="radio" name="q3" value="4"><span>4</span></label><label><input type="radio" name="q3" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>4. Costumas iniciar conversas com desconhecidos sem dificuldade.</p><div class="opcoes">
+                    <label><input type="radio" name="q4" value="1"><span>1</span></label><label><input type="radio" name="q4" value="2"><span>2</span></label><label><input type="radio" name="q4" value="3"><span>3</span></label><label><input type="radio" name="q4" value="4"><span>4</span></label><label><input type="radio" name="q4" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>5. Ficas entusiasmado ao conhecer novas pessoas e partilhar ideias.</p><div class="opcoes">
+                    <label><input type="radio" name="q5" value="1"><span>1</span></label><label><input type="radio" name="q5" value="2"><span>2</span></label><label><input type="radio" name="q5" value="3"><span>3</span></label><label><input type="radio" name="q5" value="4"><span>4</span></label><label><input type="radio" name="q5" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>6. Preferes ambientes animados e cheios de gente a lugares calmos e tranquilos.</p><div class="opcoes">
+                    <label><input type="radio" name="q6" value="1"><span>1</span></label><label><input type="radio" name="q6" value="2"><span>2</span></label><label><input type="radio" name="q6" value="3"><span>3</span></label><label><input type="radio" name="q6" value="4"><span>4</span></label><label><input type="radio" name="q6" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>7. Depois de um dia social intenso, sentes-te recarregado e pronto para mais.</p><div class="opcoes">
+                    <label><input type="radio" name="q7" value="1"><span>1</span></label><label><input type="radio" name="q7" value="2"><span>2</span></label><label><input type="radio" name="q7" value="3"><span>3</span></label><label><input type="radio" name="q7" value="4"><span>4</span></label><label><input type="radio" name="q7" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>8. Gostas de ser o centro das atenções em grupos.</p><div class="opcoes">
+                    <label><input type="radio" name="q8" value="1"><span>1</span></label><label><input type="radio" name="q8" value="2"><span>2</span></label><label><input type="radio" name="q8" value="3"><span>3</span></label><label><input type="radio" name="q8" value="4"><span>4</span></label><label><input type="radio" name="q8" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>9. Falas mais do que escutas em conversas.</p><div class="opcoes">
+                    <label><input type="radio" name="q9" value="1"><span>1</span></label><label><input type="radio" name="q9" value="2"><span>2</span></label><label><input type="radio" name="q9" value="3"><span>3</span></label><label><input type="radio" name="q9" value="4"><span>4</span></label><label><input type="radio" name="q9" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>10. Tens muitos conhecidos e amigos em várias áreas.</p><div class="opcoes">
+                    <label><input type="radio" name="q10" value="1"><span>1</span></label><label><input type="radio" name="q10" value="2"><span>2</span></label><label><input type="radio" name="q10" value="3"><span>3</span></label><label><input type="radio" name="q10" value="4"><span>4</span></label><label><input type="radio" name="q10" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>11. Preferes trabalhar em equipe do que sozinho.</p><div class="opcoes">
+                    <label><input type="radio" name="q11" value="1"><span>1</span></label><label><input type="radio" name="q11" value="2"><span>2</span></label><label><input type="radio" name="q11" value="3"><span>3</span></label><label><input type="radio" name="q11" value="4"><span>4</span></label><label><input type="radio" name="q11" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>12. Expressas facilmente as tuas emoções para os outros.</p><div class="opcoes">
+                    <label><input type="radio" name="q12" value="1"><span>1</span></label><label><input type="radio" name="q12" value="2"><span>2</span></label><label><input type="radio" name="q12" value="3"><span>3</span></label><label><input type="radio" name="q12" value="4"><span>4</span></label><label><input type="radio" name="q12" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>13. Gostas de atividades sociais frequentes.</p><div class="opcoes">
+                    <label><input type="radio" name="q13" value="1"><span>1</span></label><label><input type="radio" name="q13" value="2"><span>2</span></label><label><input type="radio" name="q13" value="3"><span>3</span></label><label><input type="radio" name="q13" value="4"><span>4</span></label><label><input type="radio" name="q13" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>14. Sentes-te mais à vontade falando em público do que escrevendo.</p><div class="opcoes">
+                    <label><input type="radio" name="q14" value="1"><span>1</span></label><label><input type="radio" name="q14" value="2"><span>2</span></label><label><input type="radio" name="q14" value="3"><span>3</span></label><label><input type="radio" name="q14" value="4"><span>4</span></label><label><input type="radio" name="q14" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>15. Recarregas energias estando com outras pessoas.</p><div class="opcoes">
+                    <label><input type="radio" name="q15" value="1"><span>1</span></label><label><input type="radio" name="q15" value="2"><span>2</span></label><label><input type="radio" name="q15" value="3"><span>3</span></label><label><input type="radio" name="q15" value="4"><span>4</span></label><label><input type="radio" name="q15" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- 16–30: Intuição (N) vs Sensação (S) – alto = N -->
+            <div class="pergunta">
+                <p>16. As ideias complexas e inovadoras entusiasmam-te mais do que as simples e diretas.</p><div class="opcoes">
+                    <label><input type="radio" name="q16" value="1"><span>1</span></label><label><input type="radio" name="q16" value="2"><span>2</span></label><label><input type="radio" name="q16" value="3"><span>3</span></label><label><input type="radio" name="q16" value="4"><span>4</span></label><label><input type="radio" name="q16" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>17. Preferes focar no futuro e nas possibilidades do que no presente concreto.</p><div class="opcoes">
+                    <label><input type="radio" name="q17" value="1"><span>1</span></label><label><input type="radio" name="q17" value="2"><span>2</span></label><label><input type="radio" name="q17" value="3"><span>3</span></label><label><input type="radio" name="q17" value="4"><span>4</span></label><label><input type="radio" name="q17" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>18. Gostas mais de teorias e conceitos abstratos do que de fatos práticos.</p><div class="opcoes">
+                    <label><input type="radio" name="q18" value="1"><span>1</span></label><label><input type="radio" name="q18" value="2"><span>2</span></label><label><input type="radio" name="q18" value="3"><span>3</span></label><label><input type="radio" name="q18" value="4"><span>4</span></label><label><input type="radio" name="q18" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>19. Imaginas frequentemente "e se..." em vez de focar no que já existe.</p><div class="opcoes">
+                    <label><input type="radio" name="q19" value="1"><span>1</span></label><label><input type="radio" name="q19" value="2"><span>2</span></label><label><input type="radio" name="q19" value="3"><span>3</span></label><label><input type="radio" name="q19" value="4"><span>4</span></label><label><input type="radio" name="q19" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>20. Vês padrões e conexões entre coisas que os outros não notam.</p><div class="opcoes">
+                    <label><input type="radio" name="q20" value="1"><span>1</span></label><label><input type="radio" name="q20" value="2"><span>2</span></label><label><input type="radio" name="q20" value="3"><span>3</span></label><label><input type="radio" name="q20" value="4"><span>4</span></label><label><input type="radio" name="q20" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>21. Preferes ideias originais e criativas a métodos testados e comprovados.</p><div class="opcoes">
+                    <label><input type="radio" name="q21" value="1"><span>1</span></label><label><input type="radio" name="q21" value="2"><span>2</span></label><label><input type="radio" name="q21" value="3"><span>3</span></label><label><input type="radio" name="q21" value="4"><span>4</span></label><label><input type="radio" name="q21" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>22. Ficas mais interessado em "porquês" do que em "comos".</p><div class="opcoes">
+                    <label><input type="radio" name="q22" value="1"><span>1</span></label><label><input type="radio" name="q22" value="2"><span>2</span></label><label><input type="radio" name="q22" value="3"><span>3</span></label><label><input type="radio" name="q22" value="4"><span>4</span></label><label><input type="radio" name="q22" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>23. Gostas de explorar múltiplas perspectivas e significados.</p><div class="opcoes">
+                    <label><input type="radio" name="q23" value="1"><span>1</span></label><label><input type="radio" name="q23" value="2"><span>2</span></label><label><input type="radio" name="q23" value="3"><span>3</span></label><label><input type="radio" name="q23" value="4"><span>4</span></label><label><input type="radio" name="q23" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>24. Preferes trabalhar com conceitos e visões de futuro do que com detalhes práticos.</p><div class="opcoes">
+                    <label><input type="radio" name="q24" value="1"><span>1</span></label><label><input type="radio" name="q24" value="2"><span>2</span></label><label><input type="radio" name="q24" value="3"><span>3</span></label><label><input type="radio" name="q24" value="4"><span>4</span></label><label><input type="radio" name="q24" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>25. Sonhas acordado frequentemente com possibilidades e cenários.</p><div class="opcoes">
+                    <label><input type="radio" name="q25" value="1"><span>1</span></label><label><input type="radio" name="q25" value="2"><span>2</span></label><label><input type="radio" name="q25" value="3"><span>3</span></label><label><input type="radio" name="q25" value="4"><span>4</span></label><label><input type="radio" name="q25" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>26. Prestas mais atenção ao significado geral do que aos fatos isolados.</p><div class="opcoes">
+                    <label><input type="radio" name="q26" value="1"><span>1</span></label><label><input type="radio" name="q26" value="2"><span>2</span></label><label><input type="radio" name="q26" value="3"><span>3</span></label><label><input type="radio" name="q26" value="4"><span>4</span></label><label><input type="radio" name="q26" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>27. Gostas de mudanças e novidades em vez de rotinas previsíveis.</p><div class="opcoes">
+                    <label><input type="radio" name="q27" value="1"><span>1</span></label><label><input type="radio" name="q27" value="2"><span>2</span></label><label><input type="radio" name="q27" value="3"><span>3</span></label><label><input type="radio" name="q27" value="4"><span>4</span></label><label><input type="radio" name="q27" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>28. Vês o "quadro geral" antes dos detalhes específicos.</p><div class="opcoes">
+                    <label><input type="radio" name="q28" value="1"><span>1</span></label><label><input type="radio" name="q28" value="2"><span>2</span></label><label><input type="radio" name="q28" value="3"><span>3</span></label><label><input type="radio" name="q28" value="4"><span>4</span></label><label><input type="radio" name="q28" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>29. Preferes ser criativo e inovador do que seguir métodos tradicionais.</p><div class="opcoes">
+                    <label><input type="radio" name="q29" value="1"><span>1</span></label><label><input type="radio" name="q29" value="2"><span>2</span></label><label><input type="radio" name="q29" value="3"><span>3</span></label><label><input type="radio" name="q29" value="4"><span>4</span></label><label><input type="radio" name="q29" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>30. Ficas entusiasmado com visões de futuro e grandes ideias.</p><div class="opcoes">
+                    <label><input type="radio" name="q30" value="1"><span>1</span></label><label><input type="radio" name="q30" value="2"><span>2</span></label><label><input type="radio" name="q30" value="3"><span>3</span></label><label><input type="radio" name="q30" value="4"><span>4</span></label><label><input type="radio" name="q30" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- 31–45: Pensamento (T) vs Sentimento (F) – alto = T -->
+            <div class="pergunta">
+                <p>31. É mais fácil convenceres-te por argumentos lógicos do que por emoções.</p><div class="opcoes">
+                    <label><input type="radio" name="q31" value="1"><span>1</span></label><label><input type="radio" name="q31" value="2"><span>2</span></label><label><input type="radio" name="q31" value="3"><span>3</span></label><label><input type="radio" name="q31" value="4"><span>4</span></label><label><input type="radio" name="q31" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>32. Preferes ser objetivo e imparcial ao tomar decisões.</p><div class="opcoes">
+                    <label><input type="radio" name="q32" value="1"><span>1</span></label><label><input type="radio" name="q32" value="2"><span>2</span></label><label><input type="radio" name="q32" value="3"><span>3</span></label><label><input type="radio" name="q32" value="4"><span>4</span></label><label><input type="radio" name="q32" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>33. Analisas situações com lógica em vez de considerar sentimentos alheios primeiro.</p><div class="opcoes">
+                    <label><input type="radio" name="q33" value="1"><span>1</span></label><label><input type="radio" name="q33" value="2"><span>2</span></label><label><input type="radio" name="q33" value="3"><span>3</span></label><label><input type="radio" name="q33" value="4"><span>4</span></label><label><input type="radio" name="q33" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>34. Criticismo construtivo é mais útil do que elogios gentis.</p><div class="opcoes">
+                    <label><input type="radio" name="q34" value="1"><span>1</span></label><label><input type="radio" name="q34" value="2"><span>2</span></label><label><input type="radio" name="q34" value="3"><span>3</span></label><label><input type="radio" name="q34" value="4"><span>4</span></label><label><input type="radio" name="q34" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>35. Preferes justiça e verdade a harmonia e evitar conflitos.</p><div class="opcoes">
+                    <label><input type="radio" name="q35" value="1"><span>1</span></label><label><input type="radio" name="q35" value="2"><span>2</span></label><label><input type="radio" name="q35" value="3"><span>3</span></label><label><input type="radio" name="q35" value="4"><span>4</span></label><label><input type="radio" name="q35" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>36. Tomas decisões baseadas em fatos e lógica, mesmo que magoem alguém.</p><div class="opcoes">
+                    <label><input type="radio" name="q36" value="1"><span>1</span></label><label><input type="radio" name="q36" value="2"><span>2</span></label><label><input type="radio" name="q36" value="3"><span>3</span></label><label><input type="radio" name="q36" value="4"><span>4</span></label><label><input type="radio" name="q36" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>37. Argumentos racionais convencem-te mais do que apelos emocionais.</p><div class="opcoes">
+                    <label><input type="radio" name="q37" value="1"><span>1</span></label><label><input type="radio" name="q37" value="2"><span>2</span></label><label><input type="radio" name="q37" value="3"><span>3</span></label><label><input type="radio" name="q37" value="4"><span>4</span></label><label><input type="radio" name="q37" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>38. Preferes debater ideias de forma direta, mesmo que gere discussão.</p><div class="opcoes">
+                    <label><input type="radio" name="q38" value="1"><span>1</span></label><label><input type="radio" name="q38" value="2"><span>2</span></label><label><input type="radio" name="q38" value="3"><span>3</span></label><label><input type="radio" name="q38" value="4"><span>4</span></label><label><input type="radio" name="q38" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>39. A competência e a eficiência são mais importantes que a simpatia.</p><div class="opcoes">
+                    <label><input type="radio" name="q39" value="1"><span>1</span></label><label><input type="radio" name="q39" value="2"><span>2</span></label><label><input type="radio" name="q39" value="3"><span>3</span></label><label><input type="radio" name="q39" value="4"><span>4</span></label><label><input type="radio" name="q39" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>40. Dizes o que pensas sem rodeios para evitar mal-entendidos.</p><div class="opcoes">
+                    <label><input type="radio" name="q40" value="1"><span>1</span></label><label><input type="radio" name="q40" value="2"><span>2</span></label><label><input type="radio" name="q40" value="3"><span>3</span></label><label><input type="radio" name="q40" value="4"><span>4</span></label><label><input type="radio" name="q40" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>41. Preferes regras claras e consistentes a exceções baseadas em sentimentos.</p><div class="opcoes">
+                    <label><input type="radio" name="q41" value="1"><span>1</span></label><label><input type="radio" name="q41" value="2"><span>2</span></label><label><input type="radio" name="q41" value="3"><span>3</span></label><label><input type="radio" name="q41" value="4"><span>4</span></label><label><input type="radio" name="q41" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>42. Analisas prós e contras de forma racional antes de decidir.</p><div class="opcoes">
+                    <label><input type="radio" name="q42" value="1"><span>1</span></label><label><input type="radio" name="q42" value="2"><span>2</span></label><label><input type="radio" name="q42" value="3"><span>3</span></label><label><input type="radio" name="q42" value="4"><span>4</span></label><label><input type="radio" name="q42" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>43. A verdade objetiva é mais importante que preservar os sentimentos.</p><div class="opcoes">
+                    <label><input type="radio" name="q43" value="1"><span>1</span></label><label><input type="radio" name="q43" value="2"><span>2</span></label><label><input type="radio" name="q43" value="3"><span>3</span></label><label><input type="radio" name="q43" value="4"><span>4</span></label><label><input type="radio" name="q43" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>44. Preferes críticas diretas a elogios que não sejam sinceros.</p><div class="opcoes">
+                    <label><input type="radio" name="q44" value="1"><span>1</span></label><label><input type="radio" name="q44" value="2"><span>2</span></label><label><input type="radio" name="q44" value="3"><span>3</span></label><label><input type="radio" name="q44" value="4"><span>4</span></label><label><input type="radio" name="q44" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>45. Decisões difíceis devem basear-se em lógica, não em empatia.</p><div class="opcoes">
+                    <label><input type="radio" name="q45" value="1"><span>1</span></label><label><input type="radio" name="q45" value="2"><span>2</span></label><label><input type="radio" name="q45" value="3"><span>3</span></label><label><input type="radio" name="q45" value="4"><span>4</span></label><label><input type="radio" name="q45" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- 46–60: Julgamento (J) vs Percepção (P) – alto = J -->
+            <div class="pergunta">
+                <p>46. Preferes ter planos detalhados e cronogramas organizados.</p><div class="opcoes">
+                    <label><input type="radio" name="q46" value="1"><span>1</span></label><label><input type="radio" name="q46" value="2"><span>2</span></label><label><input type="radio" name="q46" value="3"><span>3</span></label><label><input type="radio" name="q46" value="4"><span>4</span></label><label><input type="radio" name="q46" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>47. Gostas de concluir tarefas antes do prazo e evitar deixar pendências.</p><div class="opcoes">
+                    <label><input type="radio" name="q47" value="1"><span>1</span></label><label><input type="radio" name="q47" value="2"><span>2</span></label><label><input type="radio" name="q47" value="3"><span>3</span></label><label><input type="radio" name="q47" value="4"><span>4</span></label><label><input type="radio" name="q47" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>48. Preferes estrutura e ordem a flexibilidade e espontaneidade.</p><div class="opcoes">
+                    <label><input type="radio" name="q48" value="1"><span>1</span></label><label><input type="radio" name="q48" value="2"><span>2</span></label><label><input type="radio" name="q48" value="3"><span>3</span></label><label><input type="radio" name="q48" value="4"><span>4</span></label><label><input type="radio" name="q48" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>49. Ficas desconfortável com situações imprevisíveis e sem planejamento.</p><div class="opcoes">
+                    <label><input type="radio" name="q49" value="1"><span>1</span></label><label><input type="radio" name="q49" value="2"><span>2</span></label><label><input type="radio" name="q49" value="3"><span>3</span></label><label><input type="radio" name="q49" value="4"><span>4</span></label><label><input type="radio" name="q49" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>50. Gostas de listas de tarefas e de riscar itens concluídos.</p><div class="opcoes">
+                    <label><input type="radio" name="q50" value="1"><span>1</span></label><label><input type="radio" name="q50" value="2"><span>2</span></label><label><input type="radio" name="q50" value="3"><span>3</span></label><label><input type="radio" name="q50" value="4"><span>4</span></label><label><input type="radio" name="q50" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>51. Preferes decidir rapidamente e seguir em frente a deixar opções abertas.</p><div class="opcoes">
+                    <label><input type="radio" name="q51" value="1"><span>1</span></label><label><input type="radio" name="q51" value="2"><span>2</span></label><label><input type="radio" name="q51" value="3"><span>3</span></label><label><input type="radio" name="q51" value="4"><span>4</span></label><label><input type="radio" name="q51" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>52. Organizas o teu dia com antecedência e segues o plano.</p><div class="opcoes">
+                    <label><input type="radio" name="q52" value="1"><span>1</span></label><label><input type="radio" name="q52" value="2"><span>2</span></label><label><input type="radio" name="q52" value="3"><span>3</span></label><label><input type="radio" name="q52" value="4"><span>4</span></label><label><input type="radio" name="q52" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>53. Ficas mais tranquilo quando tudo está decidido e planejado.</p><div class="opcoes">
+                    <label><input type="radio" name="q53" value="1"><span>1</span></label><label><input type="radio" name="q53" value="2"><span>2</span></label><label><input type="radio" name="q53" value="3"><span>3</span></label><label><input type="radio" name="q53" value="4"><span>4</span></label><label><input type="radio" name="q53" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>54. Preferes rotinas estabelecidas a improvisar no dia a dia.</p><div class="opcoes">
+                    <label><input type="radio" name="q54" value="1"><span>1</span></label><label><input type="radio" name="q54" value="2"><span>2</span></label><label><input type="radio" name="q54" value="3"><span>3</span></label><label><input type="radio" name="q54" value="4"><span>4</span></label><label><input type="radio" name="q54" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>55. Gostas de ter controle sobre o teu ambiente e agenda.</p><div class="opcoes">
+                    <label><input type="radio" name="q55" value="1"><span>1</span></label><label><input type="radio" name="q55" value="2"><span>2</span></label><label><input type="radio" name="q55" value="3"><span>3</span></label><label><input type="radio" name="q55" value="4"><span>4</span></label><label><input type="radio" name="q55" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>56. Fechas projetos e decisões o mais rápido possível.</p><div class="opcoes">
+                    <label><input type="radio" name="q56" value="1"><span>1</span></label><label><input type="radio" name="q56" value="2"><span>2</span></label><label><input type="radio" name="q56" value="3"><span>3</span></label><label><input type="radio" name="q56" value="4"><span>4</span></label><label><input type="radio" name="q56" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>57. Preferes saber o que esperar do dia seguinte.</p><div class="opcoes">
+                    <label><input type="radio" name="q57" value="1"><span>1</span></label><label><input type="radio" name="q57" value="2"><span>2</span></label><label><input type="radio" name="q57" value="3"><span>3</span></label><label><input type="radio" name="q57" value="4"><span>4</span></label><label><input type="radio" name="q57" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>58. Organizas o teu espaço de trabalho de forma metódica.</p><div class="opcoes">
+                    <label><input type="radio" name="q58" value="1"><span>1</span></label><label><input type="radio" name="q58" value="2"><span>2</span></label><label><input type="radio" name="q58" value="3"><span>3</span></label><label><input type="radio" name="q58" value="4"><span>4</span></label><label><input type="radio" name="q58" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>59. Sentir que estás no controle das coisas te deixa mais calmo.</p><div class="opcoes">
+                    <label><input type="radio" name="q59" value="1"><span>1</span></label><label><input type="radio" name="q59" value="2"><span>2</span></label><label><input type="radio" name="q59" value="3"><span>3</span></label><label><input type="radio" name="q59" value="4"><span>4</span></label><label><input type="radio" name="q59" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <div class="pergunta">
+                <p>60. Preferes finalizar compromissos cedo do que deixar para a última hora.</p><div class="opcoes">
+                    <label><input type="radio" name="q60" value="1"><span>1</span></label><label><input type="radio" name="q60" value="2"><span>2</span></label><label><input type="radio" name="q60" value="3"><span>3</span></label><label><input type="radio" name="q60" value="4"><span>4</span></label><label><input type="radio" name="q60" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <button type="button" onclick="calcularMBTI()">Ver meu tipo MBTI</button>
+        </form>
+
+        <div id="resultado">
+            <h2>Seu Tipo de Personalidade</h2>
+            <div class="tipo" id="codigo"></div>
+            <div class="porcentagens" id="porcentagens"></div>
+            <div class="descricao" id="descricao"></div>
+            <div class="forcas" id="forcas"></div>
+        </div>
+    </div>
+
+    <script>
+        function calcularMBTI() {
+            const form = document.getElementById('formTeste');
+            let valido = true;
+            const respostas = {};
+
+            for (let i = 1; i <= 60; i++) {
+                const sel = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!sel) { valido = false; break; }
+                respostas[i] = Number(sel.value);
+            }
+
+            if (!valido) {
+                alert("Por favor, responda todas as 60 perguntas!");
+                return;
+            }
+
+            // Cálculo das médias
+            const EI = Array.from({ length: 15 }, (_, i) => respostas[i + 1]).reduce((a, b) => a + b, 0) / 15;
+            const SN = Array.from({ length: 15 }, (_, i) => respostas[i + 16]).reduce((a, b) => a + b, 0) / 15;
+            const TF = Array.from({ length: 15 }, (_, i) => respostas[i + 31]).reduce((a, b) => a + b, 0) / 15;
+            const JP = Array.from({ length: 15 }, (_, i) => respostas[i + 46]).reduce((a, b) => a + b, 0) / 15;
+
+            let tipo = '';
+            tipo += (EI > 3) ? 'E' : 'I';
+            tipo += (SN > 3) ? 'N' : 'S';
+            tipo += (TF > 3) ? 'T' : 'F';
+            tipo += (JP > 3) ? 'J' : 'P';
+
+            // Porcentagens aproximadas
+            const percEI = Math.round(((EI - 1) / 4) * 100);
+            const percSN = Math.round(((SN - 1) / 4) * 100);
+            const percTF = Math.round(((TF - 1) / 4) * 100);
+            const percJP = Math.round(((JP - 1) / 4) * 100);
+
+            let porcHTML = `
+          <div class="porc">Extroversão/Introversão: ${tipo[0] === 'E' ? percEI : 100 - percEI}% ${tipo[0]}</div>
+          <div class="porc">Sensação/Intuição: ${tipo[1] === 'N' ? percSN : 100 - percSN}% ${tipo[1]}</div>
+          <div class="porc">Pensamento/Sentimento: ${tipo[2] === 'T' ? percTF : 100 - percTF}% ${tipo[2]}</div>
+          <div class="porc">Julgamento/Percepção: ${tipo[3] === 'J' ? percJP : 100 - percJP}% ${tipo[3]}</div>
+        `;
+
+            // Dados completos dos 16 tipos
+            const info = {
+                'INTJ': { nome: 'Arquiteto', desc: 'Visionários estratégicos e independentes. Planejam o futuro com precisão e buscam eficiência máxima. São analíticos, determinados e gostam de sistemas complexos.', forcas: 'Estratégia de longo prazo • Independência • Inteligência analítica • Determinação', areas: 'Engenharia (todas), Ciência da Computação, Direito, Administração Estratégica, Física, Pesquisa Científica, Arquitetura' },
+                'INTP': { nome: 'Lógico', desc: 'Pensadores analíticos e curiosos. Vivem para entender o universo através da lógica. São inventivos, flexíveis e adoram debater ideias abstratas.', forcas: 'Raciocínio lógico • Criatividade intelectual • Imparcialidade • Inovação', areas: 'Ciência da Computação, Física, Matemática, Filosofia, Engenharia de Software, Pesquisa Acadêmica' },
+                'ENTJ': { nome: 'Comandante', desc: 'Líderes natos com visão clara de objetivos. Motivam equipes e são ambiciosos, eficientes e diretos.', forcas: 'Liderança • Estratégia • Organização • Decisão rápida', areas: 'Administração, Direito Empresarial, Engenharia de Produção, Marketing Estratégico, Empreendedorismo, Ciências Políticas' },
+                'ENTP': { nome: 'Debatedor', desc: 'Inovadores rápidos e carismáticos. Adoram desafios intelectuais, debater ideias novas e questionar o status quo.', forcas: 'Criatividade • Persuasão • Adaptabilidade • Pensamento rápido', areas: 'Publicidade, Jornalismo, Direito, Marketing, Empreendedorismo, Design de Jogos' },
+                'INFJ': { nome: 'Advogado', desc: 'Idealistas intuitivos e empáticos. Buscam significado profundo e querem melhorar o mundo e ajudar os outros.', forcas: 'Empatia profunda • Visão de futuro • Integridade • Inspiração', areas: 'Psicologia, Serviço Social, Pedagogia, Direito Humanitário, Terapia, Produção Cultural' },
+                'INFP': { nome: 'Mediador', desc: 'Sonhadores autênticos guiados por valores fortes. Buscam um mundo mais bonito, justo e alinhado com seus ideais.', forcas: 'Criatividade • Empatia • Autenticidade • Flexibilidade moral', areas: 'Psicologia, Artes, Escrita Criativa, Serviço Social, Pedagogia, Música, Terapia' },
+                'ENFJ': { nome: 'Protagonista', desc: 'Líderes carismáticos e inspiradores. Motivam pessoas, criam harmonia e focam no desenvolvimento humano.', forcas: 'Carisma • Empatia • Liderança humanitária • Ensino', areas: 'Pedagogia, Psicologia, Marketing, Recursos Humanos, Direito, Administração de Equipes' },
+                'ENFP': { nome: 'Ativista', desc: 'Entusiastas criativos e cheios de energia. Amam novas ideias, conexões humanas e possibilidades infinitas.', forcas: 'Criatividade • Entusiasmo • Adaptabilidade • Conexão com pessoas', areas: 'Publicidade, Jornalismo, Marketing, Educação, Empreendedorismo Criativo, Artes' },
+                'ISTJ': { nome: 'Logístico', desc: 'Responsáveis, detalhistas e extremamente confiáveis. Valorizam ordem, dever e consistência.', forcas: 'Organização • Responsabilidade • Precisão • Lealdade', areas: 'Ciências Contábeis, Direito, Administração, Logística, Engenharia, Segurança do Trabalho' },
+                'ISFJ': { nome: 'Defensor', desc: 'Cuidadosos, leais e protetores. Dedicam-se aos outros com generosidade e atenção aos detalhes.', forcas: 'Empatia prática • Lealdade • Atenção aos detalhes • Memória excelente', areas: 'Enfermagem, Pedagogia, Serviço Social, Nutrição, Fonoaudiologia, Administração Hospitalar' },
+                'ESTJ': { nome: 'Executivo', desc: 'Organizados, diretos e eficientes. Lideram com regras claras e foco em resultados.', forcas: 'Gestão • Organização • Decisão rápida • Senso de justiça', areas: 'Administração, Direito, Engenharia de Produção, Logística, Contabilidade' },
+                'ESFJ': { nome: 'Cônsul', desc: 'Sociáveis, atenciosos e harmoniosos. Criam ambientes acolhedores e cuidam das pessoas ao redor.', forcas: 'Empatia • Organização social • Lealdade • Capacidade de cuidar', areas: 'Pedagogia, Enfermagem, Recursos Humanos, Marketing, Serviço Social, Hotelaria' },
+                'ISTP': { nome: 'Virtuoso', desc: 'Práticos, analíticos e mestres em resolver problemas com as mãos. Calmos em crises.', forcas: 'Habilidade técnica • Calma em crises • Independência • Lógica prática', areas: 'Engenharia Mecânica/Elétrica, TI, Mecânica, Design Industrial, Aviação, Bombeiro' },
+                'ISFP': { nome: 'Aventureiro', desc: 'Artísticos, sensíveis e flexíveis. Vivem o momento e valorizam beleza e liberdade pessoal.', forcas: 'Criatividade prática • Empatia • Adaptabilidade • Estética', areas: 'Design Gráfico, Artes Visuais, Fotografia, Moda, Terapia Ocupacional, Veterinária' },
+                'ESTP': { nome: 'Empresário', desc: 'Energéticos, ousados e práticos. Amam ação, risco calculado e desafios imediatos.', forcas: 'Coragem • Adaptabilidade rápida • Persuasão • Habilidade prática', areas: 'Marketing, Vendas, Empreendedorismo, Engenharia, Direito, Esportes, Aviação' },
+                'ESFP': { nome: 'Animador', desc: 'Espontâneos, divertidos e cheios de vida. Encantam as pessoas e vivem intensamente o presente.', forcas: 'Carisma • Presença • Adaptabilidade • Alegria contagiante', areas: 'Marketing, Publicidade, Turismo, Educação Física, Artes Cênicas, Relações Públicas, Hotelaria' }
+            };
+
+            const tipoInfo = info[tipo] || { nome: 'Tipo não identificado', desc: 'Resultado aproximado. Verifique se respondeu todas as perguntas.', forcas: '-', areas: '-' };
+
+            document.getElementById('codigo').innerHTML = `${tipo} – ${tipoInfo.nome}`;
+            document.getElementById('porcentagens').innerHTML = porcHTML;
+            document.getElementById('descricao').innerHTML = `<p>${tipoInfo.desc}</p>`;
+            document.getElementById('forcas').innerHTML = `
+          <h3>Forças principais</h3><p>${tipoInfo.forcas}</p>
+          <h3>Áreas e cursos que mais combinam</h3><p>${tipoInfo.areas}</p>
+          <p style="margin-top:20px; font-size:0.9rem; color:#555;">
+            <small>Este é um teste aproximado e indicativo. Para avaliação oficial do MBTI, procure um psicólogo credenciado.</small>
+          </p>
+        `;
+
+            document.getElementById('resultado').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('resultado').offsetTop - 60, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,710 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste RIASEC Completo – Orientação Vocacional</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .pergunta {
+            margin: 24px 0;
+            padding: 18px;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+            .pergunta p {
+                font-weight: 600;
+                margin: 0 0 12px 0;
+            }
+
+        .opcoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        label {
+            display: inline-flex;
+            align-items: center;
+            background: #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        input[type="radio"] {
+            margin-right: 6px;
+        }
+
+        label:hover {
+            background: #cbd5e1;
+        }
+
+        input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            margin: 40px auto 20px;
+            padding: 14px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+            button:hover {
+                background: #2563eb;
+            }
+
+        #resultado {
+            margin-top: 40px;
+            padding: 24px;
+            background: #eff6ff;
+            border-radius: 10px;
+            border: 1px solid #bfdbfe;
+            display: none;
+        }
+
+        .perfil {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 12px 0;
+            color: #1e40af;
+        }
+
+        .sugestao {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #dbeafe;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .opcoes {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            label {
+                justify-content: center;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Teste RIASEC Completo</h1>
+        <p style="text-align:center; color:#555; margin-bottom:32px;">
+            Responda com sinceridade o quanto você concorda com cada afirmação.<br>
+            <small>1 = Discordo totalmente • 5 = Concordo totalmente</small>
+        </p>
+
+        <form id="formTeste">
+
+            <!-- ==================== REALISTA (R) ==================== -->
+            <div class="pergunta">
+                <p>1. Gosto de consertar, montar ou desmontar objetos e máquinas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q1" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q1" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q1" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q1" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q1" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>2. Prefiro atividades práticas ao ar livre, com plantas, animais ou ferramentas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q2" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q2" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q2" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q2" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q2" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>3. Me sinto bem trabalhando com as mãos, construindo ou reparando coisas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q3" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q3" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q3" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q3" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q3" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>4. Gosto de atividades que envolvem esforço físico e contato com a natureza.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q4" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q4" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q4" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q4" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q4" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>5. Tenho facilidade para operar máquinas, veículos ou equipamentos pesados.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q5" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q5" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q5" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q5" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q5" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>6. Gosto de esportes ou hobbies que exigem coordenação motora e força.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q6" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q6" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q6" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q6" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q6" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>7. Prefiro profissões em que eu possa ver o resultado concreto do meu trabalho.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q7" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q7" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q7" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q7" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q7" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>8. Me atrai trabalhar em construção, mecânica, agricultura ou áreas técnicas manuais.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q8" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q8" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q8" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q8" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q8" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- ==================== INVESTIGATIVO (I) ==================== -->
+            <div class="pergunta">
+                <p>9. Gosto de resolver problemas científicos, fazer experimentos ou pesquisas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q9" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q9" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q9" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q9" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q9" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>10. Tenho curiosidade por entender como as coisas funcionam no nível teórico.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q10" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q10" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q10" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q10" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q10" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>11. Gosto de ler sobre temas científicos, tecnológicos ou filosóficos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q11" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q11" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q11" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q11" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q11" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>12. Prefiro atividades que envolvam análise, lógica e raciocínio.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q12" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q12" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q12" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q12" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q12" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>13. Me sinto motivado ao estudar ou investigar causas e efeitos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q13" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q13" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q13" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q13" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q13" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>14. Gosto de trabalhar com números, dados ou fórmulas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q14" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q14" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q14" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q14" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q14" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>15. Tenho interesse em descobrir novas teorias ou inventar soluções.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q15" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q15" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q15" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q15" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q15" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>16. Prefiro profissões que exijam estudo contínuo e pesquisa.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q16" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q16" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q16" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q16" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q16" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- ==================== ARTÍSTICO (A) ==================== -->
+            <div class="pergunta">
+                <p>17. Gosto de criar coisas originais, como desenhos, músicas ou textos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q17" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q17" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q17" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q17" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q17" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>18. Me expresso bem através da arte, teatro ou escrita criativa.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q18" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q18" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q18" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q18" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q18" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>19. Tenho imaginação fértil e gosto de pensar fora da caixa.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q19" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q19" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q19" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q19" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q19" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>20. Prefiro ambientes onde a criatividade seja valorizada.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q20" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q20" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q20" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q20" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q20" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>21. Gosto de apreciar e produzir obras de arte, filmes ou design.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q21" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q21" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q21" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q21" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q21" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>22. Me sinto bem em atividades que envolvam cores, formas e estética.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q22" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q22" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q22" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q22" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q22" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>23. Tenho facilidade para tocar instrumentos, dançar ou atuar.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q23" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q23" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q23" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q23" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q23" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>24. Prefiro profissões que permitam expressar minha individualidade.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q24" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q24" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q24" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q24" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q24" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- ==================== SOCIAL (S) ==================== -->
+            <div class="pergunta">
+                <p>25. Gosto de ajudar, ensinar ou aconselhar outras pessoas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q25" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q25" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q25" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q25" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q25" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>26. Me sinto realizado quando posso fazer a diferença na vida de alguém.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q26" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q26" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q26" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q26" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q26" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>27. Prefiro trabalhar em equipe e colaborar com grupos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q27" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q27" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q27" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q27" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q27" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>28. Tenho facilidade em entender sentimentos e necessidades dos outros.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q28" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q28" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q28" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q28" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q28" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>29. Gosto de atividades voluntárias ou de serviço comunitário.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q29" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q29" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q29" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q29" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q29" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>30. Me atrai profissões de cuidado, educação ou saúde.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q30" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q30" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q30" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q30" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q30" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>31. Gosto de ouvir e dar suporte emocional às pessoas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q31" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q31" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q31" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q31" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q31" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>32. Prefiro ambientes onde haja interação humana constante.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q32" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q32" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q32" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q32" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q32" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- ==================== EMPREENDEDOR (E) ==================== -->
+            <div class="pergunta">
+                <p>33. Gosto de liderar, convencer ou negociar com outras pessoas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q33" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q33" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q33" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q33" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q33" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>34. Tenho ambição e gosto de assumir riscos calculados.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q34" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q34" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q34" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q34" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q34" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>35. Prefiro assumir posições de comando ou iniciar projetos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q35" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q35" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q35" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q35" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q35" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>36. Gosto de vender ideias, produtos ou serviços.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q36" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q36" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q36" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q36" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q36" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>37. Me sinto motivado por desafios e objetivos de alto impacto.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q37" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q37" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q37" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q37" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q37" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>38. Tenho facilidade em organizar e motivar equipes.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q38" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q38" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q38" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q38" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q38" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>39. Gosto de ambientes competitivos e dinâmicos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q39" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q39" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q39" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q39" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q39" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>40. Prefiro profissões que envolvam poder de decisão e influência.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q40" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q40" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q40" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q40" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q40" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <!-- ==================== CONVENCIONAL (C) ==================== -->
+            <div class="pergunta">
+                <p>41. Gosto de organizar informações, arquivos, planilhas e seguir procedimentos exatos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q41" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q41" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q41" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q41" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q41" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>42. Me sinto confortável com rotinas estruturadas e regras claras.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q42" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q42" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q42" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q42" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q42" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>43. Gosto de trabalhar com dados, números e detalhes precisos.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q43" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q43" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q43" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q43" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q43" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>44. Prefiro tarefas que sigam um método passo a passo.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q44" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q44" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q44" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q44" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q44" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>45. Tenho facilidade em manter registros, contas ou inventários.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q45" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q45" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q45" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q45" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q45" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>46. Gosto de ambientes organizados, limpos e previsíveis.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q46" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q46" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q46" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q46" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q46" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>47. Prefiro profissões com horários fixos e responsabilidades definidas.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q47" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q47" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q47" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q47" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q47" value="5"><span>5</span></label>
+                </div>
+            </div>
+            <div class="pergunta">
+                <p>48. Me atrai trabalhar com sistemas administrativos, contabilidade ou burocracia.</p>
+                <div class="opcoes">
+                    <label><input type="radio" name="q48" value="1"><span>1</span></label>
+                    <label><input type="radio" name="q48" value="2"><span>2</span></label>
+                    <label><input type="radio" name="q48" value="3"><span>3</span></label>
+                    <label><input type="radio" name="q48" value="4"><span>4</span></label>
+                    <label><input type="radio" name="q48" value="5"><span>5</span></label>
+                </div>
+            </div>
+
+            <button type="button" onclick="calcularResultado()">Ver meu perfil RIASEC</button>
+        </form>
+
+        <div id="resultado">
+            <h2>Seu Perfil RIASEC</h2>
+            <div id="perfis"></div>
+            <div class="sugestao" id="sugestoes"></div>
+        </div>
+    </div>
+
+    <script>
+        function calcularResultado() {
+            const form = document.getElementById('formTeste');
+            const respostas = {};
+            let valido = true;
+
+            for (let i = 1; i <= 48; i++) {
+                const sel = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!sel) {
+                    valido = false;
+                    break;
+                }
+                respostas[`q${i}`] = Number(sel.value);
+            }
+
+            if (!valido) {
+                alert("Por favor, responda todas as 48 afirmações!");
+                return;
+            }
+
+            // Cálculo das médias (8 itens por tipo)
+            const pontuacao = {
+                R: (respostas.q1 + respostas.q2 + respostas.q3 + respostas.q4 + respostas.q5 + respostas.q6 + respostas.q7 + respostas.q8) / 8,
+                I: (respostas.q9 + respostas.q10 + respostas.q11 + respostas.q12 + respostas.q13 + respostas.q14 + respostas.q15 + respostas.q16) / 8,
+                A: (respostas.q17 + respostas.q18 + respostas.q19 + respostas.q20 + respostas.q21 + respostas.q22 + respostas.q23 + respostas.q24) / 8,
+                S: (respostas.q25 + respostas.q26 + respostas.q27 + respostas.q28 + respostas.q29 + respostas.q30 + respostas.q31 + respostas.q32) / 8,
+                E: (respostas.q33 + respostas.q34 + respostas.q35 + respostas.q36 + respostas.q37 + respostas.q38 + respostas.q39 + respostas.q40) / 8,
+                C: (respostas.q41 + respostas.q42 + respostas.q43 + respostas.q44 + respostas.q45 + respostas.q46 + respostas.q47 + respostas.q48) / 8
+            };
+
+            // Ordena do maior para o menor
+            const ordenado = Object.entries(pontuacao).sort(([, a], [, b]) => b - a);
+            const top3 = ordenado.slice(0, 3);
+
+            let html = '<p><strong>Seus três tipos mais fortes (Código Holland):</strong></p>';
+            top3.forEach(([tipo, nota]) => {
+                html += `<p class="perfil">${tipo} – ${nota.toFixed(1)} / 5</p>`;
+            });
+
+            // Sugestões de áreas e cursos (adaptado ao Brasil)
+            const sugestoes = {
+                R: "Engenharia Civil/Mecânica/Elétrica, Técnico em Mecânica/Edificações, Agronomia, Agropecuária, Arquitetura Paisagista, Veterinária, Design de Produto, Bombeiro",
+                I: "Medicina, Biomedicina, Farmácia, Biologia, Química, Física, Ciência da Computação, Engenharia (todas), Psicologia Experimental, Biotecnologia",
+                A: "Design Gráfico, Publicidade, Arquitetura, Design de Interiores, Moda, Cinema, Fotografia, Música, Artes Visuais, Jornalismo Criativo",
+                S: "Psicologia, Pedagogia, Serviço Social, Enfermagem, Fisioterapia, Nutrição, Fonoaudiologia, Terapia Ocupacional, Educação Física",
+                E: "Administração, Marketing, Ciências Econômicas, Direito Empresarial, Relações Internacionais, Empreendedorismo, Vendas, Comércio Exterior",
+                C: "Ciências Contábeis, Gestão Financeira, Logística, Recursos Humanos, Secretariado Executivo, Biblioteconomia, Administração Pública"
+            };
+
+            let htmlSug = '<h3>Áreas e cursos que mais combinam com seu perfil:</h3><ul>';
+            top3.forEach(([tipo]) => {
+                htmlSug += `<li><strong>${tipo}:</strong> ${sugestoes[tipo]}</li>`;
+            });
+            htmlSug += '</ul>';
+            htmlSug += '<p style="margin-top:20px; font-size:0.95rem; color:#555;"><small>Este teste é indicativo de interesses vocacionais. Para uma orientação completa e personalizada, consulte um(a) psicólogo(a) especialista em orientação profissional.</small></p>';
+
+            document.getElementById('perfis').innerHTML = html;
+            document.getElementById('sugestoes').innerHTML = htmlSug;
+            document.getElementById('resultado').style.display = 'block';
+
+            window.scrollTo({ top: document.getElementById('resultado').offsetTop - 60, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>

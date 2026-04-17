@@ -1,7 +1,7 @@
 ﻿const hamburgerButton = document.querySelector("#HamburgerButton");
 const closeButton = document.querySelector("#closeButton");
 const mobileMenu = document.querySelector("#MobileMenu");
-
+const API_URL = 'https://prontpsiback-production.up.railway.app';
 hamburgerButton.addEventListener("click", function () {
     mobileMenu.classList.add("ativo");
 });
