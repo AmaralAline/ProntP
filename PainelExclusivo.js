@@ -541,7 +541,7 @@ async function carregarHistoricoEvolucao(pacienteId) {
                 tbody.innerHTML = evolucoes.map(ev => `
                     <tr>
                         <td style="padding:10px; white-space:nowrap;">
-                            ${new Date(ev.data_hora).toLocaleDateString('pt-BR')}
+                            ${parseDateLocal(ev.data_hora).toLocaleDateString('pt-BR')}
                         </td>
                         <td style="padding:10px;">${ev.convenio || '-'}</td>
                         <td style="padding:10px;">${ev.cid10 || '-'}</td>
@@ -582,10 +582,12 @@ if (agendaForm) {
             return;
         }
 
-        // Calcula fim automaticamente
+        // Calcula fim automaticamente — usa horário LOCAL (não UTC)
         const inicio = new Date(data_hora_inicio);
         const fim = new Date(inicio.getTime() + parseInt(duracao) * 60000);
-        const data_hora_fim = fim.toISOString().slice(0, 16);
+        // toISOString() retorna UTC — usamos formatação local para preservar fuso do usuário
+        const pad = n => String(n).padStart(2, '0');
+        const data_hora_fim = `${fim.getFullYear()}-${pad(fim.getMonth() + 1)}-${pad(fim.getDate())}T${pad(fim.getHours())}:${pad(fim.getMinutes())}`;
 
         try {
             const res = await fetch(`${API_URL}/api/agenda`, {
@@ -608,10 +610,29 @@ if (agendaForm) {
     });
 }
 
+// Retorna "YYYY-MM-DD" no fuso LOCAL do browser (evita bug de UTC-3 virar dia anterior)
+function dataLocalStr(d) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+// Converte string do banco ("YYYY-MM-DD HH:MM:SS" ou "YYYY-MM-DDTHH:MM:SS")
+// para Date sem deslocar o fuso: trata sempre como horário local.
+function parseDateLocal(str) {
+    if (!str) return new Date(NaN);
+    // Substitui o separador T por espaço, remove frações de segundo e Z
+    const normalizada = str.replace('T', ' ').replace(/\.\d+/, '').replace('Z', '');
+    const [datePart, timePart = '00:00:00'] = normalizada.split(' ');
+    const [ano, mes, dia] = datePart.split('-').map(Number);
+    const [hora, min, seg] = timePart.split(':').map(Number);
+    return new Date(ano, mes - 1, dia, hora, min, seg);
+}
+
 async function carregarAgendaHoje() {
     const hoje = new Date();
-    const inicio = hoje.toISOString().split('T')[0] + ' 00:00:00';
-    const fim = hoje.toISOString().split('T')[0] + ' 23:59:59';
+    const diaStr = dataLocalStr(hoje);
+    const inicio = diaStr + ' 00:00:00';
+    const fim = diaStr + ' 23:59:59';
 
     try {
         const res = await fetch(`${API_URL}/api/agenda?inicio=${inicio}&fim=${fim}`, {
@@ -631,13 +652,15 @@ async function carregarAgendaHoje() {
             lista.innerHTML = consultas.map(c => {
                 const origemCor = c.origem === 'recorrente' ? '#a78bfa' : c.origem === 'online' ? '#60a5fa' : '#34d399';
                 const origemLabel = c.origem === 'recorrente' ? '🔁' : c.origem === 'online' ? '🌐' : '📅';
+                const dtInicio = parseDateLocal(c.data_hora_inicio);
+                const dtFim = parseDateLocal(c.data_hora_fim);
                 return `
         <div style="padding:10px; border-bottom:1px solid #1a2332;">
             <strong style="color:#e2e8f0;">${c.paciente_nome || 'Sem paciente'}</strong>
             <span style="margin-left:6px; font-size:11px; color:${origemCor};">${origemLabel} ${c.origem}</span><br>
             <span style="color:#a78bfa; font-size:13px;">
-                🕐 ${new Date(c.data_hora_inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                — ${new Date(c.data_hora_fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                🕐 ${dtInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                — ${dtFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
             </span>
             <span style="margin-left:8px; font-size:11px; color:#64748b;">${c.status}</span>
         </div>
@@ -651,8 +674,76 @@ async function carregarAgendaHoje() {
 }
 
 // ============================================================
-//  UTILITÁRIO — Feedback visual
+//  AGENDA — VER OUTRO DIA (estava sem implementação)
 // ============================================================
+async function carregarAgendaDia(dataStr) {
+    const inicio = dataStr + ' 00:00:00';
+    const fim = dataStr + ' 23:59:59';
+    const lista = document.getElementById('lista-agenda-dia');
+    if (!lista) return;
+
+    lista.innerHTML = '<p style="color:#64748b; font-size:13px;">Carregando...</p>';
+
+    try {
+        const res = await fetch(`${API_URL}/api/agenda?inicio=${encodeURIComponent(inicio)}&fim=${encodeURIComponent(fim)}`, {
+            headers: headersAuth()
+        });
+        if (!res.ok) { lista.innerHTML = '<p style="color:#f87171;">Erro ao buscar consultas.</p>'; return; }
+
+        const consultas = await res.json();
+
+        if (!consultas.length) {
+            lista.innerHTML = '<p style="color:#64748b; font-size:13px;">Nenhuma consulta neste dia.</p>';
+            return;
+        }
+
+        const origemLabel = o => o === 'recorrente' ? '🔁' : o === 'online' ? '🌐' : '📅';
+        const origemCor = o => o === 'recorrente' ? '#a78bfa' : o === 'online' ? '#60a5fa' : '#34d399';
+
+        lista.innerHTML = consultas.map(c => {
+            const dtI = parseDateLocal(c.data_hora_inicio);
+            const dtF = parseDateLocal(c.data_hora_fim);
+            return `
+            <div style="padding:10px 12px; border-bottom:1px solid #1a2332; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <strong style="color:#e2e8f0;">${c.paciente_nome || 'Sem paciente'}</strong>
+                    <span style="margin-left:6px; font-size:11px; color:${origemCor(c.origem)};">${origemLabel(c.origem)}</span><br>
+                    <span style="color:#a78bfa; font-size:13px;">
+                        🕐 ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                        — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </div>
+                <span style="font-size:11px; color:#64748b;">${c.status || 'agendado'}</span>
+            </div>`;
+        }).join('');
+    } catch (err) {
+        lista.innerHTML = '<p style="color:#f87171; font-size:13px;">Erro de conexão.</p>';
+    }
+}
+
+// Liga o botão "Buscar" do card "Ver outro dia"
+document.addEventListener('DOMContentLoaded', () => {
+    const btnVerDia = document.getElementById('btn-ver-dia');
+    if (btnVerDia) {
+        btnVerDia.addEventListener('click', () => {
+            const dataVal = document.getElementById('data-selecionada')?.value;
+            if (!dataVal) {
+                const lista = document.getElementById('lista-agenda-dia');
+                if (lista) lista.innerHTML = '<p style="color:#fbbf24; font-size:13px;">Selecione uma data.</p>';
+                return;
+            }
+            carregarAgendaDia(dataVal);
+        });
+    }
+
+    // Também dispara ao pressionar Enter no campo de data
+    const inputData = document.getElementById('data-selecionada');
+    if (inputData) {
+        inputData.addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('btn-ver-dia')?.click();
+        });
+    }
+});
 function mostrarFeedback(elementId, mensagem, tipo) {
     const el = document.getElementById(elementId);
     if (!el) return;
@@ -661,6 +752,71 @@ function mostrarFeedback(elementId, mensagem, tipo) {
     el.style.color = tipo === 'sucesso' ? '#4caf80' : '#e57373';
     if (tipo === 'erro') {
         setTimeout(() => { el.style.display = 'none'; }, 5000);
+    }
+}
+
+// Toast flutuante (usado no bug-report)
+function mostrarToast(mensagem, tipo = 'info') {
+    let toast = document.getElementById('prontpsi-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'prontpsi-toast';
+        toast.style.cssText = `
+            position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+            padding:12px 24px; border-radius:10px; font-size:14px;
+            font-family:'Roboto',sans-serif; z-index:9999;
+            box-shadow:0 4px 20px rgba(0,0,0,0.4); transition:opacity .3s;
+        `;
+        document.body.appendChild(toast);
+    }
+    const cores = { sucesso: '#34d399', erro: '#f87171', aviso: '#fbbf24', info: '#60a5fa' };
+    toast.style.background = tipo === 'sucesso' ? 'rgba(52,211,153,0.15)' :
+        tipo === 'erro' ? 'rgba(248,113,113,0.15)' :
+            tipo === 'aviso' ? 'rgba(251,191,36,0.15)' :
+                'rgba(96,165,250,0.15)';
+    toast.style.color = cores[tipo] || cores.info;
+    toast.style.border = `1px solid ${cores[tipo] || cores.info}44`;
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 3500);
+}
+
+// Preenche o painel lateral "Agenda de Hoje" (card aside do dashboard)
+async function carregarAgendaLateral() {
+    const container = document.getElementById('dash-lateral-agenda');
+    if (!container) return;
+
+    const hoje = new Date();
+    const diaStr = dataLocalStr(hoje);
+
+    try {
+        const res = await fetch(
+            `${API_URL}/api/agenda?inicio=${diaStr} 00:00:00&fim=${diaStr} 23:59:59`,
+            { headers: headersAuth() }
+        );
+        if (!res.ok) return;
+
+        const consultas = await res.json();
+
+        if (!consultas.length) {
+            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:12px 0;">Nenhuma consulta hoje.</p>';
+            return;
+        }
+
+        container.innerHTML = consultas.map(c => {
+            const dtI = parseDateLocal(c.data_hora_inicio);
+            const dtF = parseDateLocal(c.data_hora_fim);
+            const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+            return `
+            <div style="padding:8px 0; border-bottom:1px solid rgba(139,92,246,0.08);">
+                <div style="font-size:12px; color:#a78bfa; font-weight:500;">🕐 ${hora}</div>
+                <div style="font-size:13px; color:#e2e8f0; margin-top:2px;">${c.paciente_nome || 'Sem paciente'}</div>
+                <div style="font-size:11px; color:#64748b;">${c.status || 'agendado'}</div>
+            </div>`;
+        }).join('');
+    } catch (err) {
+        console.error('Erro ao carregar agenda lateral:', err);
     }
 }
 // ============================================================
@@ -691,6 +847,7 @@ async function carregarDashboard() {
 
     // Consultas de hoje
     await carregarConsultasHojeDashboard();
+    await carregarAgendaLateral();
 
     // Formulários pendentes e respondidos
     await carregarEstatisticasFormularios();
@@ -698,8 +855,9 @@ async function carregarDashboard() {
 
 async function carregarConsultasHojeDashboard() {
     const hoje = new Date();
-    const inicio = hoje.toISOString().split('T')[0] + ' 00:00:00';
-    const fim = hoje.toISOString().split('T')[0] + ' 23:59:59';
+    const diaStr = dataLocalStr(hoje);
+    const inicio = diaStr + ' 00:00:00';
+    const fim = diaStr + ' 23:59:59';
 
     try {
         const res = await fetch(`${API_URL}/api/agenda?inicio=${inicio}&fim=${fim}`, {
@@ -721,16 +879,19 @@ async function carregarConsultasHojeDashboard() {
             return;
         }
 
-        container.innerHTML = consultas.map(c => `
+        container.innerHTML = consultas.map(c => {
+            const dtInicio = parseDateLocal(c.data_hora_inicio);
+            const dtFim = parseDateLocal(c.data_hora_fim);
+            return `
             <div class="dash-consulta-item">
                 <span class="dash-consulta-hora">
-                    🕐 ${new Date(c.data_hora_inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                    — ${new Date(c.data_hora_fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    🕐 ${dtInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    — ${dtFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                 </span>
                 <span class="dash-consulta-nome">${c.paciente_nome || 'Sem paciente'}</span>
                 <span class="dash-consulta-status">${c.status || 'agendado'}</span>
             </div>
-        `).join('');
+        `}).join('');
 
     } catch (err) {
         console.error('Erro ao carregar agenda dashboard:', err);
@@ -931,7 +1092,7 @@ async function carregarTermos() {
         tbody.innerHTML = termos.map(t => `
             <tr>
                 <td style="padding:12px 16px; color:#e2e8f0;">${t.paciente_nome}</td>
-                <td style="padding:12px 16px; color:#94a3b8;">${new Date(t.criado_em).toLocaleDateString('pt-BR')}</td>
+                <td style="padding:12px 16px; color:#94a3b8;">${parseDateLocal(t.criado_em).toLocaleDateString('pt-BR')}</td>
                 <td style="padding:12px 16px;">
                     <span style="
                         padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500;
@@ -942,7 +1103,7 @@ async function carregarTermos() {
                     </span>
                 </td>
                 <td style="padding:12px 16px; color:#94a3b8;">
-                    ${t.assinado_em ? new Date(t.assinado_em).toLocaleString('pt-BR') : '-'}
+                    ${t.assinado_em ? parseDateLocal(t.assinado_em).toLocaleString('pt-BR') : '-'}
                 </td>
                 <td style="padding:12px 16px;">
                     <button onclick="baixarTermoPDF('${t.token}', '${t.paciente_nome}')" style="
@@ -1286,7 +1447,7 @@ async function carregarAgendamentosOnline() {
                     <div style="color:#e2e8f0; font-weight:500;">${a.paciente_nome}</div>
                     <div style="color:#64748b; font-size:12px;">${a.paciente_email}</div>
                 </td>
-                <td style="padding:12px 16px; color:#94a3b8;">${new Date(a.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                <td style="padding:12px 16px; color:#94a3b8;">${parseDateLocal(a.data_consulta + ' 00:00:00').toLocaleDateString('pt-BR')}</td>
                 <td style="padding:12px 16px; color:#94a3b8;">${a.hora_inicio.substring(0, 5)}</td>
                 <td style="padding:12px 16px; color:#34d399;">R$ ${parseFloat(a.valor).toFixed(2)}</td>
                 <td style="padding:12px 16px;">
@@ -1392,7 +1553,7 @@ async function carregarRecibos() {
             <tr>
                 <td style="padding:12px 16px; color:#a78bfa; font-weight:600;">${r.numero_recibo}</td>
                 <td style="padding:12px 16px; color:#e2e8f0;">${r.paciente_nome}</td>
-                <td style="padding:12px 16px; color:#94a3b8;">${new Date(r.data_consulta).toLocaleDateString('pt-BR')}</td>
+                <td style="padding:12px 16px; color:#94a3b8;">${parseDateLocal(r.data_consulta + ' 00:00:00').toLocaleDateString('pt-BR')}</td>
                 <td style="padding:12px 16px; color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</td>
                 <td style="padding:12px 16px; color:#94a3b8;">${r.forma_pagamento}</td>
                 <td style="padding:12px 16px;">
@@ -1629,7 +1790,7 @@ function atualizarStatusVerificacao(verificado, verificadoEm, status) {
             badge.style.display = 'flex';
             const dataEl = document.getElementById('badge-verificado-data');
             if (dataEl && verificadoEm) {
-                dataEl.textContent = 'Verificado em ' + new Date(verificadoEm).toLocaleDateString('pt-BR');
+                dataEl.textContent = 'Verificado em ' + parseDateLocal(verificadoEm).toLocaleDateString('pt-BR');
             }
         }
         if (blocoSolicitar) blocoSolicitar.style.display = 'none';
@@ -2185,7 +2346,7 @@ async function carregarFinanceiro() {
 
         // Filtra pelo mês/ano selecionado
         const filtrados = todos.filter(ag => {
-            const d = new Date(ag.data_consulta + 'T00:00:00');
+            const d = parseDateLocal(ag.data_consulta + ' 00:00:00');
             return d.getMonth() + 1 === mes && d.getFullYear() === ano;
         });
 
@@ -2209,7 +2370,7 @@ async function carregarFinanceiro() {
         const statusLabel = { confirmado: '✓ Confirmado', pendente: '⏳ Pendente', cancelado: '✗ Cancelado' };
 
         tbody.innerHTML = filtrados.map(ag => {
-            const data = new Date(ag.data_consulta + 'T00:00:00').toLocaleDateString('pt-BR');
+            const data = parseDateLocal(ag.data_consulta + ' 00:00:00').toLocaleDateString('pt-BR');
             const hora = ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : '';
             const cor = statusCor[ag.status] || '#64748b';
             const label = statusLabel[ag.status] || ag.status;
