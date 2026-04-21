@@ -758,7 +758,7 @@ function renderizarListaDia(consultas, diaStr, ehHoje) {
         const dtF = parseDateLocal(c.data_hora_fim);
         const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
         const statusInfo = getStatusInfo(c.status);
-        const origemLabel = c.origem === 'recorrente' ? '[R]' : c.origem === 'online' ? '[O]' : '[M]';
+        const origemLabel = c.origem === 'recorrente' ? '' : c.origem === 'online' ? '' : '';
 
         return `<div onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})"
             style="padding:12px; border-radius:8px; margin-bottom:8px; cursor:pointer;
@@ -3072,4 +3072,5 @@ function atualizarBadgeMenuVitrine(ativo) {
     const badge = document.getElementById('vitrine-badge-ativo');
     if (badge) badge.style.display = ativo ? 'inline' : 'none';
 }
+
 
