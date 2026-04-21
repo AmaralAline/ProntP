@@ -648,38 +648,36 @@ let consultaSelecionada = null;   // consulta no modal
 function inicializarAgenda() {
     agendaDataAtual = new Date();
     agendaVista = 'dia';
-    renderizarAgenda();
-    bindBotoesAgenda();
-}
 
-function bindBotoesAgenda() {
-    document.getElementById('agenda-btn-dia')?.addEventListener('click', () => {
-        agendaVista = 'dia';
-        atualizarBotoesVista();
-        renderizarAgenda();
-    });
-    document.getElementById('agenda-btn-semana')?.addEventListener('click', () => {
-        agendaVista = 'semana';
-        atualizarBotoesVista();
-        renderizarAgenda();
-    });
-    document.getElementById('agenda-btn-hoje')?.addEventListener('click', () => {
-        agendaDataAtual = new Date();
-        renderizarAgenda();
-    });
-    document.getElementById('agenda-nav-prev')?.addEventListener('click', () => {
+    // Usa onclick para evitar listeners duplicados ao navegar de volta
+    const btnDia = document.getElementById('agenda-btn-dia');
+    const btnSemana = document.getElementById('agenda-btn-semana');
+    const btnHoje = document.getElementById('agenda-btn-hoje');
+    const btnPrev = document.getElementById('agenda-nav-prev');
+    const btnNext = document.getElementById('agenda-nav-next');
+
+    if (btnDia) btnDia.onclick = () => { agendaVista = 'dia'; atualizarBotoesVista(); renderizarAgenda(); };
+    if (btnSemana) btnSemana.onclick = () => { agendaVista = 'semana'; atualizarBotoesVista(); renderizarAgenda(); };
+    if (btnHoje) btnHoje.onclick = () => { agendaDataAtual = new Date(); renderizarAgenda(); };
+    if (btnPrev) btnPrev.onclick = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() - 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() - 7);
         agendaDataAtual = new Date(agendaDataAtual);
         renderizarAgenda();
-    });
-    document.getElementById('agenda-nav-next')?.addEventListener('click', () => {
+    };
+    if (btnNext) btnNext.onclick = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() + 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() + 7);
         agendaDataAtual = new Date(agendaDataAtual);
         renderizarAgenda();
-    });
+    };
+
+    atualizarBotoesVista();
+    // Pequeno delay para garantir que a seção está visível no DOM
+    setTimeout(() => renderizarAgenda(), 50);
 }
+
+function bindBotoesAgenda() { /* descontinuado — lógica movida para inicializarAgenda */ }
 
 function atualizarBotoesVista() {
     const btnDia = document.getElementById('agenda-btn-dia');

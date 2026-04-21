@@ -2260,22 +2260,23 @@
                                     </div>
                                 </div>
 
-                                <!-- Lado direito -->
+                                <!-- Lado direito — Vista semana/dia -->
                                 <div class="agenda-side">
-                                    <div class="agenda-today-card">
-                                        <h3>Hoje</h3>
-                                        <div id="daily-agenda-list">
-                                            <p style="color:#64748b; font-size:13px;">Carregando...</p>
+                                    <!-- Controles de navegação -->
+                                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                                        <div style="display:flex; align-items:center; gap:6px;">
+                                            <button id="agenda-nav-prev" style="background:#1a2332; border:1px solid rgba(139,92,246,0.2); color:#a78bfa; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:13px;">←</button>
+                                            <span id="agenda-nav-label" style="font-size:13px; font-weight:600; color:#e2e8f0; min-width:140px; text-align:center;"></span>
+                                            <button id="agenda-nav-next" style="background:#1a2332; border:1px solid rgba(139,92,246,0.2); color:#a78bfa; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:13px;">→</button>
+                                        </div>
+                                        <div style="display:flex; gap:4px;">
+                                            <button id="agenda-btn-hoje" style="background:#1a2332; border:1px solid rgba(139,92,246,0.2); color:#64748b; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:12px;">Hoje</button>
+                                            <button id="agenda-btn-dia" style="background:#7c3aed; border:1px solid #7c3aed; color:#fff; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:12px;">Dia</button>
+                                            <button id="agenda-btn-semana" style="background:#1a2332; border:1px solid rgba(139,92,246,0.2); color:#64748b; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:12px;">Semana</button>
                                         </div>
                                     </div>
-                                    <div class="date-picker-card">
-                                        <h3>Ver outro dia</h3>
-                                        <div class="selecao-dia">
-                                            <input type="date" id="data-selecionada">
-                                            <button id="btn-ver-dia">Buscar</button>
-                                        </div>
-                                        <div id="lista-agenda-dia" style="margin-top:12px;"></div>
-                                    </div>
+                                    <!-- Container da vista -->
+                                    <div id="agenda-vista-container" style="min-height:200px;"></div>
                                 </div>
                             </div>
                         </section>
