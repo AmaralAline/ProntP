@@ -70,8 +70,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (btnAtivo) btnAtivo.classList.add('active');
 
         if (id === 'agenda-section') {
-            inicializarAgenda();
-            carregarRecorrentes();
+            setTimeout(() => {
+                inicializarAgenda();
+                carregarRecorrentes();
+            }, 100);
         }
         if (id === 'agenda-online-section') {
             carregarLinkAgendamento();
@@ -698,30 +700,36 @@ async function renderizarAgenda() {
 
     const hoje = new Date();
     const hojeStr = dataLocalStr(hoje);
+    const navLabel = document.getElementById('agenda-nav-label');
 
-    if (agendaVista === 'dia') {
-        const diaStr = dataLocalStr(agendaDataAtual);
-        const ehHoje = diaStr === hojeStr;
-        const label = ehHoje ? 'Hoje — ' + agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })
-            : agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
-        document.getElementById('agenda-nav-label').textContent = label.charAt(0).toUpperCase() + label.slice(1);
+    try {
+        if (agendaVista === 'dia') {
+            const diaStr = dataLocalStr(agendaDataAtual);
+            const ehHoje = diaStr === hojeStr;
+            const label = ehHoje
+                ? 'Hoje — ' + agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })
+                : agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+            if (navLabel) navLabel.textContent = label.charAt(0).toUpperCase() + label.slice(1);
 
-        const consultas = await buscarConsultasDia(diaStr);
-        container.innerHTML = renderizarListaDia(consultas, diaStr, ehHoje);
+            const consultas = await buscarConsultasDia(diaStr);
+            container.innerHTML = renderizarListaDia(consultas, diaStr, ehHoje);
 
-    } else {
-        // Vista semana — começa na segunda
-        const seg = new Date(agendaDataAtual);
-        seg.setDate(seg.getDate() - (seg.getDay() === 0 ? 6 : seg.getDay() - 1));
-        const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
-        document.getElementById('agenda-nav-label').textContent =
-            seg.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) + ' – ' +
-            dom.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+        } else {
+            const seg = new Date(agendaDataAtual);
+            seg.setDate(seg.getDate() - (seg.getDay() === 0 ? 6 : seg.getDay() - 1));
+            const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
+            if (navLabel) navLabel.textContent =
+                seg.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) + ' – ' +
+                dom.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 
-        const inicio = dataLocalStr(seg) + ' 00:00:00';
-        const fim = dataLocalStr(dom) + ' 23:59:59';
-        const consultas = await buscarConsultasPeriodo(inicio, fim);
-        container.innerHTML = renderizarSemana(seg, consultas, hojeStr);
+            const inicio = dataLocalStr(seg) + ' 00:00:00';
+            const fim = dataLocalStr(dom) + ' 23:59:59';
+            const consultas = await buscarConsultasPeriodo(inicio, fim);
+            container.innerHTML = renderizarSemana(seg, consultas, hojeStr);
+        }
+    } catch (e) {
+        console.error('Erro renderizarAgenda:', e);
+        container.innerHTML = '<p style="color:#f87171; font-size:13px;">Erro ao carregar agenda.</p>';
     }
 }
 
