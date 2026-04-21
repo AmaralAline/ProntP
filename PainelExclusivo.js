@@ -673,8 +673,7 @@ function inicializarAgenda() {
     };
 
     atualizarBotoesVista();
-    // Pequeno delay para garantir que a seção está visível no DOM
-    setTimeout(() => renderizarAgenda(), 50);
+    renderizarAgenda();
 }
 
 function bindBotoesAgenda() { /* descontinuado — lógica movida para inicializarAgenda */ }
