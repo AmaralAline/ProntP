@@ -1,23 +1,23 @@
-Ôªø// ============================================================
+// ============================================================
 //  ProntPsi - PainelExclusivo.js
-//  Vers√£o corrigida ‚Äî com JWT, rotas corretas e listagem
+//  Vers„o corrigida ó com JWT, rotas corretas e listagem
 // ============================================================
 
 const API_URL = 'https://prontpsiback-production.up.railway.app';
 
 // ------------------------------------------------------------
-//  AUTENTICA√á√ÉO ‚Äî pega token e dados do profissional logado
+//  AUTENTICA«√O ó pega token e dados do profissional logado
 // ------------------------------------------------------------
 const token = localStorage.getItem('token');
 const profissional = JSON.parse(localStorage.getItem('profissional') || '{}');
 
-// Se n√£o estiver logado, manda para o login
+// Se n„o estiver logado, manda para o login
 if (!token) {
-    alert('Sess√£o expirada. Fa√ßa login novamente.');
+    alert('Sess„o expirada. FaÁa login novamente.');
     window.location.href = 'login.html';
 }
 
-// Cabe√ßalho padr√£o com JWT para todas as requisi√ß√µes protegidas
+// CabeÁalho padr„o com JWT para todas as requisiÁıes protegidas
 function headersAuth() {
     return {
         'Content-Type': 'application/json',
@@ -26,14 +26,14 @@ function headersAuth() {
 }
 
 // ------------------------------------------------------------
-//  NAVEGA√á√ÉO DO PAINEL (mant√©m seu comportamento original)
+//  NAVEGA«√O DO PAINEL (mantÈm seu comportamento original)
 // ------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
     // Exibe nome do profissional logado se tiver elemento para isso
     const nomeEl = document.getElementById('nome-profissional');
     if (nomeEl) nomeEl.textContent = profissional.nome || 'Profissional';
 
-    // Bot√µes do menu lateral
+    // Botıes do menu lateral
     const botoes = [
         { btn: 'btn-clock', section: 'clock-section' },
         { btn: 'btn-agenda', section: 'agenda-section' },
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Bot√µes "Voltar ao In√≠cio"
+    // Botıes "Voltar ao InÌcio"
     document.querySelectorAll('.btn-back').forEach(btn => {
         btn.addEventListener('click', () => mostrarSecao('clock-section'));
     });
@@ -143,21 +143,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     await carregarPacientes();
     iniciarRelogio();
 
-    // Verifica pol√≠tica de privacidade
+    // Verifica polÌtica de privacidade
     await verificarPolitica();
 });
 
 // ============================================================
-//  POL√çTICA DE PRIVACIDADE
+//  POLÕTICA DE PRIVACIDADE
 // ============================================================
 async function verificarPolitica() {
-    // Vers√£o atual da pol√≠tica ‚Äî altere aqui quando atualizar os termos
+    // Vers„o atual da polÌtica ó altere aqui quando atualizar os termos
     const POLITICA_VERSAO_ATUAL = '2.0';
 
     const profId = profissional?.id || 'desconhecido';
     const chaveLocal = `politica_aceita_${profId}`;
 
-    // Se j√° aceitou a vers√£o atual localmente ‚Äî nada a fazer
+    // Se j· aceitou a vers„o atual localmente ó nada a fazer
     if (localStorage.getItem(chaveLocal) === POLITICA_VERSAO_ATUAL) return;
 
     try {
@@ -168,18 +168,18 @@ async function verificarPolitica() {
         const versaoOk = data.politica_aceita && data.politica_versao === POLITICA_VERSAO_ATUAL;
 
         if (versaoOk) {
-            // J√° aceitou a vers√£o atual no banco ‚Äî salva localmente
+            // J· aceitou a vers„o atual no banco ó salva localmente
             localStorage.setItem(chaveLocal, POLITICA_VERSAO_ATUAL);
             return;
         }
 
-        // Aceito vers√£o antiga ou n√£o aceito ainda ‚Äî mostra faixa
+        // Aceito vers„o antiga ou n„o aceito ainda ó mostra faixa
         const faixa = document.getElementById('faixa-politica');
         if (data.politica_aceita && data.politica_versao !== POLITICA_VERSAO_ATUAL) {
-            // J√° tinha aceito antes: avisa sobre atualiza√ß√£o dos termos
+            // J· tinha aceito antes: avisa sobre atualizaÁ„o dos termos
             const subtitulo = faixa?.querySelector('.faixa-subtitulo');
             if (subtitulo) {
-                subtitulo.innerHTML += ' <strong style="color:#fbbf24;">Atualizamos nossos termos ‚Äî inclu√≠mos agora a Vitrine de Profissionais. Por favor, releia e confirme.</strong>';
+                subtitulo.innerHTML += ' <strong style="color:#fbbf24;">Atualizamos nossos termos ó incluÌmos agora a Vitrine de Profissionais. Por favor, releia e confirme.</strong>';
             }
         }
 
@@ -187,7 +187,7 @@ async function verificarPolitica() {
         faixa.style.display = 'flex';
         document.querySelector('.main-content').style.paddingBottom = '100px';
     } catch (err) {
-        console.log('Verifica√ß√£o de pol√≠tica ignorada:', err.message);
+        console.log('VerificaÁ„o de polÌtica ignorada:', err.message);
     }
 }
 
@@ -217,11 +217,11 @@ async function aceitarPolitica() {
         });
 
         if (res.ok) {
-            // Salva no localStorage para n√£o perguntar de novo
+            // Salva no localStorage para n„o perguntar de novo
             localStorage.setItem(chaveLocal, POLITICA_VERSAO_ATUAL);
             liberarSistema();
 
-            // Envia email de confirma√ß√£o para o profissional
+            // Envia email de confirmaÁ„o para o profissional
             enviarEmailConfirmacaoPolitica();
         } else {
             btn.disabled = false;
@@ -231,7 +231,7 @@ async function aceitarPolitica() {
         // Mesmo com erro na API, salva localmente e libera
         localStorage.setItem(chaveLocal, POLITICA_VERSAO_ATUAL);
         liberarSistema();
-        console.log('Pol√≠tica aceita localmente');
+        console.log('PolÌtica aceita localmente');
     }
 }
 
@@ -249,7 +249,7 @@ async function enviarEmailConfirmacaoPolitica() {
             headers: headersAuth()
         });
     } catch (err) {
-        // Silencioso ‚Äî n√£o √© cr√≠tico
+        // Silencioso ó n„o È crÌtico
     }
 }
 
@@ -262,7 +262,7 @@ function fecharModalPolitica() {
 }
 
 // ------------------------------------------------------------
-//  REL√ìGIO
+//  REL”GIO
 // ------------------------------------------------------------
 function iniciarRelogio() {
     function atualizar() {
@@ -295,7 +295,7 @@ async function carregarPacientes() {
         });
 
         if (res.status === 401 || res.status === 403) {
-            alert('Sess√£o expirada. Fa√ßa login novamente.');
+            alert('Sess„o expirada. FaÁa login novamente.');
             window.location.href = 'login.html';
             return;
         }
@@ -314,7 +314,7 @@ async function carregarPacientes() {
                 pacientes.map(p => `<option value="${p.id}">${p.nome}</option>`).join('');
         }
     } catch (err) {
-        console.error('Erro de conex√£o:', err);
+        console.error('Erro de conex„o:', err);
     }
 }
 
@@ -337,7 +337,7 @@ function popularSelectsPacientes() {
     });
 }
 
-// Renderiza tabela/lista de pacientes na se√ß√£o de cadastro
+// Renderiza tabela/lista de pacientes na seÁ„o de cadastro
 function renderizarListaPacientes() {
     const container = document.getElementById('lista-pacientes');
     if (!container) return;
@@ -355,7 +355,7 @@ function renderizarListaPacientes() {
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Telefone</th>
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">E-mail</th>
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Pagamento</th>
-                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Relat√≥rio</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">RelatÛrio</th>
                 </tr>
             </thead>
             <tbody>
@@ -395,7 +395,7 @@ async function gerarRelatorioPDF(pacienteId, nomePaciente) {
         });
 
         if (!res.ok) {
-            alert('Erro ao gerar relat√≥rio.');
+            alert('Erro ao gerar relatÛrio.');
             return;
         }
 
@@ -411,7 +411,7 @@ async function gerarRelatorioPDF(pacienteId, nomePaciente) {
         window.URL.revokeObjectURL(url);
 
     } catch (err) {
-        alert('Erro de conex√£o ao gerar relat√≥rio.');
+        alert('Erro de conex„o ao gerar relatÛrio.');
         console.error(err);
     } finally {
         if (btn) {
@@ -446,7 +446,7 @@ if (cadastroForm) {
             });
 
             if (res.ok) {
-                mostrarFeedback('cadastro-error', '‚úÖ Paciente cadastrado com sucesso!', 'sucesso');
+                mostrarFeedback('cadastro-error', '? Paciente cadastrado com sucesso!', 'sucesso');
                 cadastroForm.reset();
                 await carregarPacientes();
             } else {
@@ -454,13 +454,13 @@ if (cadastroForm) {
                 mostrarFeedback('cadastro-error', err.erro || 'Erro ao cadastrar paciente.', 'erro');
             }
         } catch (err) {
-            mostrarFeedback('cadastro-error', 'Erro de conex√£o com o servidor.', 'erro');
+            mostrarFeedback('cadastro-error', 'Erro de conex„o com o servidor.', 'erro');
         }
     });
 }
 
 // ============================================================
-//  EVOLU√á√ÉO DO PACIENTE
+//  EVOLU«√O DO PACIENTE
 // ============================================================
 const evolucaoForm = document.getElementById('evolucao-form');
 if (evolucaoForm) {
@@ -497,7 +497,7 @@ if (evolucaoForm) {
             });
 
             if (res.ok) {
-                mostrarFeedback('evolucao-error', '‚úÖ Evolu√ß√£o salva com sucesso!', 'sucesso');
+                mostrarFeedback('evolucao-error', '? EvoluÁ„o salva com sucesso!', 'sucesso');
                 evolucaoForm.reset();
                 document.getElementById('duracao-minutos').value = 50;
                 const pacHist = document.getElementById('paciente-historico');
@@ -505,14 +505,14 @@ if (evolucaoForm) {
                     await carregarHistoricoEvolucao(pacienteId);
                 }
             } else {
-                mostrarFeedback('evolucao-error', 'Erro ao salvar evolu√ß√£o.', 'erro');
+                mostrarFeedback('evolucao-error', 'Erro ao salvar evoluÁ„o.', 'erro');
             }
         } catch (err) {
-            mostrarFeedback('evolucao-error', 'Erro de conex√£o com o servidor.', 'erro');
+            mostrarFeedback('evolucao-error', 'Erro de conex„o com o servidor.', 'erro');
         }
     });
 }
-// Hist√≥rico de evolu√ß√£o
+// HistÛrico de evoluÁ„o
 const selectHistorico = document.getElementById('paciente-historico');
 if (selectHistorico) {
     selectHistorico.addEventListener('change', async () => {
@@ -562,7 +562,7 @@ async function carregarHistoricoEvolucao(pacienteId) {
             if (vazio) vazio.style.display = 'none';
         }
     } catch (err) {
-        console.error('Erro ao carregar hist√≥rico:', err);
+        console.error('Erro ao carregar histÛrico:', err);
     }
 };
 
@@ -584,17 +584,17 @@ if (agendaForm) {
             return;
         }
 
-        // Calcula fim automaticamente ‚Äî usa hor√°rio LOCAL (n√£o UTC)
+        // Calcula fim automaticamente ó usa hor·rio LOCAL (n„o UTC)
         const inicio = new Date(data_hora_inicio);
         const fim = new Date(inicio.getTime() + parseInt(duracao) * 60000);
-        // toISOString() retorna UTC ‚Äî usamos formata√ß√£o local para preservar fuso do usu√°rio
+        // toISOString() retorna UTC ó usamos formataÁ„o local para preservar fuso do usu·rio
         const pad = n => String(n).padStart(2, '0');
         const data_hora_fim = `${fim.getFullYear()}-${pad(fim.getMonth() + 1)}-${pad(fim.getDate())}T${pad(fim.getHours())}:${pad(fim.getMinutes())}`;
 
-        // Verifica conflito de hor√°rio
+        // Verifica conflito de hor·rio
         const temConflito = await verificarConflito(data_hora_inicio, data_hora_fim);
         if (temConflito) {
-            mostrarFeedback('agenda-error', '‚ö†Ô∏è J√° existe uma consulta neste hor√°rio. Escolha outro hor√°rio.', 'erro');
+            mostrarFeedback('agenda-error', '?? J· existe uma consulta neste hor·rio. Escolha outro hor·rio.', 'erro');
             return;
         }
 
@@ -606,7 +606,7 @@ if (agendaForm) {
             });
 
             if (res.ok) {
-                mostrarFeedback('agenda-error', '‚úÖ Consulta agendada com sucesso!', 'sucesso');
+                mostrarFeedback('agenda-error', '? Consulta agendada com sucesso!', 'sucesso');
                 agendaForm.reset();
                 await renderizarAgenda();
                 await carregarRecorrentes();
@@ -614,7 +614,7 @@ if (agendaForm) {
                 mostrarFeedback('agenda-error', 'Erro ao agendar consulta.', 'erro');
             }
         } catch (err) {
-            mostrarFeedback('agenda-error', 'Erro de conex√£o com o servidor.', 'erro');
+            mostrarFeedback('agenda-error', 'Erro de conex„o com o servidor.', 'erro');
         }
     });
 }
@@ -626,10 +626,10 @@ function dataLocalStr(d) {
 }
 
 // Converte string do banco ("YYYY-MM-DD HH:MM:SS" ou "YYYY-MM-DDTHH:MM:SS")
-// para Date sem deslocar o fuso: trata sempre como hor√°rio local.
+// para Date sem deslocar o fuso: trata sempre como hor·rio local.
 function parseDateLocal(str) {
     if (!str) return new Date(NaN);
-    // Substitui o separador T por espa√ßo, remove fra√ß√µes de segundo e Z
+    // Substitui o separador T por espaÁo, remove fraÁıes de segundo e Z
     const normalizada = str.replace('T', ' ').replace(/\.\d+/, '').replace('Z', '');
     const [datePart, timePart = '00:00:00'] = normalizada.split(' ');
     const [ano, mes, dia] = datePart.split('-').map(Number);
@@ -638,14 +638,14 @@ function parseDateLocal(str) {
 }
 
 // ============================================================
-//  AGENDA ‚Äî ESTADO GLOBAL
+//  AGENDA ó ESTADO GLOBAL
 // ============================================================
 let agendaVista = 'dia';          // 'dia' | 'semana'
-let agendaDataAtual = new Date(); // data de refer√™ncia
+let agendaDataAtual = new Date(); // data de referÍncia
 let consultaSelecionada = null;   // consulta no modal
 
 // ============================================================
-//  AGENDA ‚Äî INICIALIZA√á√ÉO E NAVEGA√á√ÉO
+//  AGENDA ó INICIALIZA«√O E NAVEGA«√O
 // ============================================================
 function inicializarAgenda() {
     agendaDataAtual = new Date();
@@ -678,7 +678,7 @@ function inicializarAgenda() {
     renderizarAgenda();
 }
 
-function bindBotoesAgenda() { /* descontinuado ‚Äî l√≥gica movida para inicializarAgenda */ }
+function bindBotoesAgenda() { /* descontinuado ó lÛgica movida para inicializarAgenda */ }
 
 function atualizarBotoesVista() {
     const btnDia = document.getElementById('agenda-btn-dia');
@@ -693,7 +693,7 @@ function atualizarBotoesVista() {
     }
 }
 
-async function renderizarAgenda() {
+async function renderizarAgenda() /* v2 */ {
     const container = document.getElementById('agenda-vista-container');
     if (!container) return;
     container.innerHTML = '<p style="color:#64748b; font-size:13px; padding:12px 0;">Carregando...</p>';
@@ -707,7 +707,7 @@ async function renderizarAgenda() {
             const diaStr = dataLocalStr(agendaDataAtual);
             const ehHoje = diaStr === hojeStr;
             const label = ehHoje
-                ? 'Hoje ‚Äî ' + agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })
+                ? 'Hoje ó ' + agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })
                 : agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
             if (navLabel) navLabel.textContent = label.charAt(0).toUpperCase() + label.slice(1);
 
@@ -719,7 +719,7 @@ async function renderizarAgenda() {
             seg.setDate(seg.getDate() - (seg.getDay() === 0 ? 6 : seg.getDay() - 1));
             const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
             if (navLabel) navLabel.textContent =
-                seg.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) + ' ‚Äì ' +
+                seg.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) + ' ñ ' +
                 dom.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 
             const inicio = dataLocalStr(seg) + ' 00:00:00';
@@ -748,7 +748,7 @@ async function buscarConsultasPeriodo(inicio, fim) {
 }
 
 // ============================================================
-//  RENDERIZA√á√ÉO ‚Äî VISTA DIA
+//  RENDERIZA«√O ó VISTA DIA
 // ============================================================
 function renderizarListaDia(consultas, diaStr, ehHoje) {
     if (!consultas.length) return '<p style="color:#64748b; font-size:13px; padding:12px 0;">Nenhuma consulta neste dia.</p>';
@@ -756,9 +756,9 @@ function renderizarListaDia(consultas, diaStr, ehHoje) {
     return consultas.map(c => {
         const dtI = parseDateLocal(c.data_hora_inicio);
         const dtF = parseDateLocal(c.data_hora_fim);
-        const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} ‚Äî ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} ó ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
         const statusInfo = getStatusInfo(c.status);
-        const origemLabel = c.origem === 'recorrente' ? 'üîÅ' : c.origem === 'online' ? 'üåê' : 'üìÖ';
+        const origemLabel = c.origem === 'recorrente' ? '??' : c.origem === 'online' ? '??' : '??';
 
         return `<div onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})"
             style="padding:12px; border-radius:8px; margin-bottom:8px; cursor:pointer;
@@ -774,16 +774,16 @@ function renderizarListaDia(consultas, diaStr, ehHoje) {
                 </div>
                 <span style="font-size:11px; padding:2px 8px; border-radius:10px; background:${statusInfo.bg}; color:${statusInfo.cor}; white-space:nowrap;">${statusInfo.label}</span>
             </div>
-            <div style="color:#a78bfa; font-size:13px; margin-top:4px;">üïê ${hora}</div>
+            <div style="color:#a78bfa; font-size:13px; margin-top:4px;">?? ${hora}</div>
         </div>`;
     }).join('');
 }
 
 // ============================================================
-//  RENDERIZA√á√ÉO ‚Äî VISTA SEMANA
+//  RENDERIZA«√O ó VISTA SEMANA
 // ============================================================
 function renderizarSemana(seg, consultas, hojeStr) {
-    const diasNomes = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S√°b', 'Dom'];
+    const diasNomes = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S·b', 'Dom'];
     let html = '<div style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px;">';
 
     for (let i = 0; i < 7; i++) {
@@ -804,7 +804,7 @@ function renderizarSemana(seg, consultas, hojeStr) {
             </div>`;
 
         if (!consultasDia.length) {
-            html += `<div style="font-size:11px; color:#334155; text-align:center; padding:8px 0;">‚Äî</div>`;
+            html += `<div style="font-size:11px; color:#334155; text-align:center; padding:8px 0;">ó</div>`;
         } else {
             consultasDia.forEach(c => {
                 const dtI = parseDateLocal(c.data_hora_inicio);
@@ -843,7 +843,7 @@ function getStatusInfo(status) {
 }
 
 // ============================================================
-//  MODAL DE A√á√ïES DA CONSULTA
+//  MODAL DE A«’ES DA CONSULTA
 // ============================================================
 function abrirModalConsulta(c) {
     consultaSelecionada = c;
@@ -851,7 +851,7 @@ function abrirModalConsulta(c) {
     const dtF = parseDateLocal(c.data_hora_fim);
     document.getElementById('modal-consulta-nome').textContent = c.paciente_nome || 'Sem paciente';
     document.getElementById('modal-consulta-hora').textContent =
-        `üïê ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} ‚Äî ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}  ‚Ä¢  ${dtI.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}`;
+        `?? ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} ó ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}  ï  ${dtI.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}`;
     document.getElementById('modal-consulta-status-atual').textContent = `Status: ${getStatusInfo(c.status).label}`;
     document.getElementById('modal-consulta-feedback').style.display = 'none';
     document.getElementById('modal-consulta').style.display = 'flex';
@@ -891,7 +891,7 @@ async function acaoConsultaStatus(novoStatus) {
         const data = await res.json();
         if (res.ok) {
             fb.style.color = '#34d399';
-            fb.textContent = '‚úÖ ' + getStatusInfo(novoStatus).label.charAt(0).toUpperCase() + getStatusInfo(novoStatus).label.slice(1);
+            fb.textContent = '? ' + getStatusInfo(novoStatus).label.charAt(0).toUpperCase() + getStatusInfo(novoStatus).label.slice(1);
             setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171';
@@ -899,7 +899,7 @@ async function acaoConsultaStatus(novoStatus) {
         }
     } catch {
         fb.style.color = '#f87171';
-        fb.textContent = 'Erro de conex√£o.';
+        fb.textContent = 'Erro de conex„o.';
     }
 }
 
@@ -910,7 +910,7 @@ async function acaoConsultaCancelar() {
 
     let cancelarFuturas = false;
     if (ehRecorrente) {
-        cancelarFuturas = confirm('Esta consulta √© recorrente.\n\nClicar em OK cancela TODAS as consultas futuras desta recorr√™ncia.\nClicar em Cancelar cancela apenas esta sess√£o.');
+        cancelarFuturas = confirm('Esta consulta È recorrente.\n\nClicar em OK cancela TODAS as consultas futuras desta recorrÍncia.\nClicar em Cancelar cancela apenas esta sess„o.');
     } else {
         if (!confirm('Cancelar esta consulta?')) return;
     }
@@ -937,13 +937,13 @@ async function acaoConsultaCancelar() {
         });
         const data = await res.json();
         if (res.ok) {
-            fb.style.color = '#f87171'; fb.textContent = '‚úÖ Cancelado';
+            fb.style.color = '#f87171'; fb.textContent = '? Cancelado';
             setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171'; fb.textContent = data.erro || 'Erro ao cancelar.';
         }
     } catch {
-        fb.style.color = '#f87171'; fb.textContent = 'Erro de conex√£o.';
+        fb.style.color = '#f87171'; fb.textContent = 'Erro de conex„o.';
     }
 }
 
@@ -966,7 +966,7 @@ async function confirmarRemarcar() {
     const fb = document.getElementById('remarcar-feedback');
 
     if (!novaData || !novaHoraInicio) {
-        fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Preencha data e hor√°rio.';
+        fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Preencha data e hor·rio.';
         return;
     }
 
@@ -992,7 +992,7 @@ async function confirmarRemarcar() {
         });
         const data = await res.json();
         if (res.ok) {
-            fb.style.color = '#34d399'; fb.textContent = '‚úÖ Remarcado com sucesso!';
+            fb.style.color = '#34d399'; fb.textContent = '? Remarcado com sucesso!';
             setTimeout(() => {
                 document.getElementById('modal-remarcar').style.display = 'none';
                 fecharModalConsulta();
@@ -1003,16 +1003,16 @@ async function confirmarRemarcar() {
             fb.style.color = '#f87171'; fb.textContent = data.erro || 'Erro ao remarcar.';
         }
     } catch {
-        fb.style.color = '#f87171'; fb.textContent = 'Erro de conex√£o.';
+        fb.style.color = '#f87171'; fb.textContent = 'Erro de conex„o.';
     }
 }
 
 function acaoConsultaProntuario() {
     if (!consultaSelecionada) return;
     fecharModalConsulta();
-    // Navega para prontu√°rio e pr√©-seleciona o paciente
+    // Navega para prontu·rio e prÈ-seleciona o paciente
     const nomePaciente = consultaSelecionada.paciente_nome;
-    // Abre se√ß√£o evolu√ß√£o
+    // Abre seÁ„o evoluÁ„o
     document.querySelector('[aria-controls="evolucao-section"]')?.click();
     // Tenta selecionar o paciente pelo nome no select
     setTimeout(() => {
@@ -1040,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
-//  AGENDA ‚Äî VERIFICA√á√ÉO DE CONFLITO AO AGENDAR
+//  AGENDA ó VERIFICA«√O DE CONFLITO AO AGENDAR
 // ============================================================
 async function verificarConflito(data_hora_inicio, data_hora_fim) {
     try {
@@ -1053,7 +1053,7 @@ async function verificarConflito(data_hora_inicio, data_hora_fim) {
     return false;
 }
 
-// Mant√©m compatibilidade com fun√ß√µes antigas usadas no dashboard
+// MantÈm compatibilidade com funÁıes antigas usadas no dashboard
 async function carregarAgendaHoje() {
     agendaDataAtual = new Date();
     agendaVista = 'dia';
@@ -1129,10 +1129,10 @@ async function carregarAgendaLateral() {
         container.innerHTML = consultas.map(c => {
             const dtI = parseDateLocal(c.data_hora_inicio);
             const dtF = parseDateLocal(c.data_hora_fim);
-            const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} ‚Äî ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+            const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} ó ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
             return `
             <div style="padding:8px 0; border-bottom:1px solid rgba(139,92,246,0.08);">
-                <div style="font-size:12px; color:#a78bfa; font-weight:500;">üïê ${hora}</div>
+                <div style="font-size:12px; color:#a78bfa; font-weight:500;">?? ${hora}</div>
                 <div style="font-size:13px; color:#e2e8f0; margin-top:2px;">${c.paciente_nome || 'Sem paciente'}</div>
                 <div style="font-size:11px; color:#64748b;">${c.status || 'agendado'}</div>
             </div>`;
@@ -1153,14 +1153,14 @@ async function carregarDashboard() {
     const dataEl = document.getElementById('dashboard-data');
     if (dataEl) dataEl.textContent = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
 
-    // Sauda√ß√£o por hor√°rio
+    // SaudaÁ„o por hor·rio
     const hora = agora.getHours();
     const saudacao = hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';
     const tituloEl = document.querySelector('.dashboard-titulo');
     if (tituloEl) {
         const nomeSpan = document.getElementById('nome-profissional');
         const nome = nomeSpan?.textContent || profissional.nome || 'Profissional';
-        tituloEl.innerHTML = `${saudacao}, <span id="nome-profissional">${nome}</span> üëã`;
+        tituloEl.innerHTML = `${saudacao}, <span id="nome-profissional">${nome}</span> ??`;
     }
 
     // Total de pacientes
@@ -1171,7 +1171,7 @@ async function carregarDashboard() {
     await carregarConsultasHojeDashboard();
     await carregarAgendaLateral();
 
-    // Formul√°rios pendentes e respondidos
+    // Formul·rios pendentes e respondidos
     await carregarEstatisticasFormularios();
 }
 
@@ -1207,8 +1207,8 @@ async function carregarConsultasHojeDashboard() {
             return `
             <div class="dash-consulta-item">
                 <span class="dash-consulta-hora">
-                    üïê ${dtInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                    ‚Äî ${dtFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    ?? ${dtInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    ó ${dtFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                 </span>
                 <span class="dash-consulta-nome">${c.paciente_nome || 'Sem paciente'}</span>
                 <span class="dash-consulta-status">${c.status || 'agendado'}</span>
@@ -1244,25 +1244,25 @@ async function carregarEstatisticasFormularios() {
         }
 
     } catch (err) {
-        console.error('Erro ao carregar estat√≠sticas:', err);
+        console.error('Erro ao carregar estatÌsticas:', err);
     }
 }
 
-// Carrega dashboard ao clicar em In√≠cio
+// Carrega dashboard ao clicar em InÌcio
 const btnClock = document.getElementById('btn-clock');
 if (btnClock) {
     btnClock.addEventListener('click', () => carregarDashboard());
 }
 
-// Carrega dashboard na inicializa√ß√£o
+// Carrega dashboard na inicializaÁ„o
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => carregarDashboard(), 500);
 });
 // ============================================================
-//  RELAT√ìRIO DE PRODU√á√ÉO MENSAL
+//  RELAT”RIO DE PRODU«√O MENSAL
 // ============================================================
 // ============================================================
-//  RELAT√ìRIO DE PRODU√á√ÉO MENSAL
+//  RELAT”RIO DE PRODU«√O MENSAL
 // ============================================================
 async function carregarConvenios() {
     try {
@@ -1274,8 +1274,8 @@ async function carregarConvenios() {
         const select = document.getElementById('rel-convenio');
         if (!select) return;
 
-        // Mant√©m a op√ß√£o "Todos"
-        select.innerHTML = '<option value="">Todos (Relat√≥rio Geral)</option>';
+        // MantÈm a opÁ„o "Todos"
+        select.innerHTML = '<option value="">Todos (RelatÛrio Geral)</option>';
         convenios.forEach(c => {
             const opt = document.createElement('option');
             opt.value = c.convenio;
@@ -1283,7 +1283,7 @@ async function carregarConvenios() {
             select.appendChild(opt);
         });
     } catch (err) {
-        console.error('Erro ao carregar conv√™nios:', err);
+        console.error('Erro ao carregar convÍnios:', err);
     }
 }
 
@@ -1309,7 +1309,7 @@ async function gerarRelatorioProducao() {
         });
 
         if (!res.ok) {
-            alert('Erro ao gerar relat√≥rio.');
+            alert('Erro ao gerar relatÛrio.');
             return;
         }
 
@@ -1324,12 +1324,12 @@ async function gerarRelatorioProducao() {
         window.URL.revokeObjectURL(url);
 
     } catch (err) {
-        alert('Erro de conex√£o ao gerar relat√≥rio.');
+        alert('Erro de conex„o ao gerar relatÛrio.');
         console.error(err);
     }
 }
 
-// Carrega conv√™nios ao abrir prontu√°rio
+// Carrega convÍnios ao abrir prontu·rio
 const btnEvolucao = document.getElementById('btn-evolucao');
 if (btnEvolucao) {
     btnEvolucao.addEventListener('click', () => carregarConvenios());
@@ -1379,7 +1379,7 @@ async function gerarTermo() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '‚úÖ Termo enviado por email com sucesso!';
+            feedback.textContent = '? Termo enviado por email com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             await carregarTermos();
@@ -1389,7 +1389,7 @@ async function gerarTermo() {
             feedback.style.display = 'block';
         }
     } catch (err) {
-        feedback.textContent = 'Erro de conex√£o.';
+        feedback.textContent = 'Erro de conex„o.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     } finally {
@@ -1421,7 +1421,7 @@ async function carregarTermos() {
                         background:${t.assinado ? 'rgba(52,211,153,0.15)' : 'rgba(251,191,36,0.15)'};
                         color:${t.assinado ? '#34d399' : '#fbbf24'};
                     ">
-                        ${t.assinado ? '‚úì Assinado' : '‚è≥ Pendente'}
+                        ${t.assinado ? '? Assinado' : '? Pendente'}
                     </span>
                 </td>
                 <td style="padding:12px 16px; color:#94a3b8;">
@@ -1459,11 +1459,11 @@ async function baixarTermoPDF(token, nomePaciente) {
         a.remove();
         window.URL.revokeObjectURL(url);
     } catch (err) {
-        alert('Erro de conex√£o.');
+        alert('Erro de conex„o.');
     }
 }
 // ============================================================
-//  GR√ÅFICO DE EVOLU√á√ÉO DO PACIENTE
+//  GR¡FICO DE EVOLU«√O DO PACIENTE
 // ============================================================
 function popularSelectGrafico() {
     const select = document.getElementById('paciente-grafico');
@@ -1486,7 +1486,7 @@ async function carregarGraficos() {
         return;
     }
 
-    container.innerHTML = '<p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">‚è≥ Carregando...</p>';
+    container.innerHTML = '<p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">? Carregando...</p>';
 
     try {
         const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/evolucao-graficos`, {
@@ -1495,11 +1495,11 @@ async function carregarGraficos() {
         const data = await res.json();
 
         if (!Object.keys(data).length) {
-            container.innerHTML = '<p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">Nenhum question√°rio respondido ainda para este paciente.</p>';
+            container.innerHTML = '<p style="color:#64748b; font-size:14px; text-align:center; padding:20px;">Nenhum question·rio respondido ainda para este paciente.</p>';
             return;
         }
 
-        // Renderiza um gr√°fico para cada escala
+        // Renderiza um gr·fico para cada escala
         container.innerHTML = '';
         Object.entries(data).forEach(([escalaNome, pontuacoes]) => {
             if (pontuacoes.length < 1) return;
@@ -1543,7 +1543,7 @@ function renderizarGrafico(canvasId, escalaNome, pontuacoes) {
         data: {
             labels,
             datasets: [{
-                label: 'Pontua√ß√£o',
+                label: 'PontuaÁ„o',
                 data: valores,
                 borderColor: '#8b5cf6',
                 backgroundColor: 'rgba(139,92,246,0.1)',
@@ -1561,7 +1561,7 @@ function renderizarGrafico(canvasId, escalaNome, pontuacoes) {
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: ctx => `Pontua√ß√£o: ${ctx.parsed.y}`
+                        label: ctx => `PontuaÁ„o: ${ctx.parsed.y}`
                     }
                 }
             },
@@ -1585,7 +1585,7 @@ function renderizarGrafico(canvasId, escalaNome, pontuacoes) {
 // ============================================================
 //  AGENDA ONLINE
 // ============================================================
-const diasNomes = ['Domingo', 'Segunda', 'Ter√ßa', 'Quarta', 'Quinta', 'Sexta', 'S√°bado'];
+const diasNomes = ['Domingo', 'Segunda', 'TerÁa', 'Quarta', 'Quinta', 'Sexta', 'S·bado'];
 
 async function carregarLinkAgendamento() {
     try {
@@ -1617,7 +1617,7 @@ function renderizarDiasConfig() {
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
                 <span style="font-size:14px; font-weight:600; color:#e2e8f0;">${diasNomes[dia]}</span>
                 <button onclick="adicionarBloco(${dia})" style="background:rgba(139,92,246,0.15); color:#a78bfa; border:1px solid rgba(139,92,246,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">
-                    + Adicionar hor√°rio
+                    + Adicionar hor·rio
                 </button>
             </div>
             <div id="blocos-${dia}"></div>
@@ -1641,7 +1641,7 @@ function adicionarBloco(dia, inicio = '09:00', fim = '18:00', duracao = null, va
 
     bloco.innerHTML = `
         <div>
-            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">In√≠cio</label>
+            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">InÌcio</label>
             <input type="time" value="${inicio}" style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-inicio">
         </div>
         <div>
@@ -1649,7 +1649,7 @@ function adicionarBloco(dia, inicio = '09:00', fim = '18:00', duracao = null, va
             <input type="time" value="${fim}" style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-fim">
         </div>
         <div>
-            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Dura√ß√£o (min)</label>
+            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">DuraÁ„o (min)</label>
             <select style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-duracao">
                 <option value="30"  ${duracaoEfetiva === '30' ? 'selected' : ''}>30 min</option>
                 <option value="45"  ${duracaoEfetiva === '45' ? 'selected' : ''}>45 min</option>
@@ -1663,7 +1663,7 @@ function adicionarBloco(dia, inicio = '09:00', fim = '18:00', duracao = null, va
             <label style="font-size:11px; color:#64748b; display:block; margin-bottom:3px;">Valor (R$)</label>
             <input type="number" value="${valor || valorPadrao}" placeholder="150.00" step="0.01" style="width:100%; padding:6px 8px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:6px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;" class="bloco-valor">
         </div>
-        <button onclick="document.getElementById('bloco-${id}').remove()" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:6px 10px; cursor:pointer; font-size:13px; margin-top:16px;">‚úï</button>
+        <button onclick="document.getElementById('bloco-${id}').remove()" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:6px 10px; cursor:pointer; font-size:13px; margin-top:16px;">?</button>
     `;
 
     container.appendChild(bloco);
@@ -1690,7 +1690,7 @@ async function carregarDisponibilidade() {
             });
         });
 
-        // Preenche valor padr√£o com o primeiro encontrado
+        // Preenche valor padr„o com o primeiro encontrado
         const primeiro = data[0];
         if (primeiro) {
             const valorInput = document.getElementById('valor-padrao');
@@ -1735,7 +1735,7 @@ async function salvarDisponibilidade() {
             body: JSON.stringify({ horarios })
         });
         if (res.ok) {
-            feedback.textContent = '‚úÖ Disponibilidade salva com sucesso!';
+            feedback.textContent = '? Disponibilidade salva com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
         } else {
@@ -1744,7 +1744,7 @@ async function salvarDisponibilidade() {
             feedback.style.display = 'block';
         }
     } catch (err) {
-        feedback.textContent = 'Erro de conex√£o.';
+        feedback.textContent = 'Erro de conex„o.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     }
@@ -1776,7 +1776,7 @@ async function carregarAgendamentosOnline() {
                     <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500; background:${cores[a.status]}22; color:${cores[a.status]};">${a.status}</span>
                 </td>
                 <td style="padding:12px 16px;">
-                    ${a.status === 'confirmado' ? `<button onclick="cancelarAgendamentoOnline(${a.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">Cancelar</button>` : '‚Äî'}
+                    ${a.status === 'confirmado' ? `<button onclick="cancelarAgendamentoOnline(${a.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">Cancelar</button>` : 'ó'}
                 </td>
             </tr>
         `).join('');
@@ -1784,7 +1784,7 @@ async function carregarAgendamentosOnline() {
 }
 
 async function cancelarAgendamentoOnline(id) {
-    if (!confirm('Cancelar este agendamento? O reembolso ser√° processado conforme a pol√≠tica.')) return;
+    if (!confirm('Cancelar este agendamento? O reembolso ser· processado conforme a polÌtica.')) return;
     try {
         const res = await fetch(`${API_URL}/api/agendamentos-online/${id}/cancelar`, { method: 'POST', headers: headersAuth() });
         const data = await res.json();
@@ -1839,7 +1839,7 @@ async function gerarRecibo() {
         const data2 = await res.json();
 
         if (res.ok) {
-            feedback.textContent = `‚úÖ Recibo ${data2.numero} gerado com sucesso!${enviarEmail ? ' Email enviado!' : ''}`;
+            feedback.textContent = `? Recibo ${data2.numero} gerado com sucesso!${enviarEmail ? ' Email enviado!' : ''}`;
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             document.getElementById('recibo-paciente').value = '';
@@ -1853,7 +1853,7 @@ async function gerarRecibo() {
             feedback.style.display = 'block';
         }
     } catch (err) {
-        feedback.textContent = 'Erro de conex√£o.';
+        feedback.textContent = 'Erro de conex„o.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     }
@@ -1882,7 +1882,7 @@ async function carregarRecibos() {
                     <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500;
                         background:${r.enviado_email ? 'rgba(52,211,153,0.15)' : 'rgba(100,116,139,0.15)'};
                         color:${r.enviado_email ? '#34d399' : '#64748b'};">
-                        ${r.enviado_email ? '‚úì Enviado' : 'N√£o enviado'}
+                        ${r.enviado_email ? '? Enviado' : 'N„o enviado'}
                     </span>
                 </td>
                 <td style="padding:12px 16px; display:flex; gap:8px;">
@@ -1911,7 +1911,7 @@ async function baixarReciboPDF(id, numero) {
         a.remove();
         window.URL.revokeObjectURL(url);
     } catch (err) {
-        alert('Erro de conex√£o.');
+        alert('Erro de conex„o.');
     }
 }
 // ============================================================
@@ -1972,7 +1972,7 @@ async function salvarAssinatura() {
         });
 
         if (res.ok) {
-            feedback.textContent = '‚úÖ Assinatura salva com sucesso!';
+            feedback.textContent = '? Assinatura salva com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             document.getElementById('assinatura-preview').src = base64;
@@ -1983,7 +1983,7 @@ async function salvarAssinatura() {
             feedback.style.display = 'block';
         }
     } catch (err) {
-        feedback.textContent = 'Erro de conex√£o.';
+        feedback.textContent = 'Erro de conex„o.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     }
@@ -2020,7 +2020,7 @@ async function carregarDadosProfissionais() {
     if (prof.endereco) document.getElementById('perfil-endereco').value = prof.endereco || '';
     if (prof.cpf) document.getElementById('perfil-cpf').value = prof.cpf || '';
 
-    // Preenche campos de verifica√ß√£o com os mesmos dados
+    // Preenche campos de verificaÁ„o com os mesmos dados
     if (prof.crp_crm) document.getElementById('verif-crp').value = prof.crp_crm || '';
     if (prof.cpf) document.getElementById('verif-cpf').value = prof.cpf || '';
 
@@ -2039,7 +2039,7 @@ async function carregarDadosProfissionais() {
         if (data.crp_crm) document.getElementById('verif-crp').value = data.crp_crm || '';
         if (data.cpf) document.getElementById('verif-cpf').value = data.cpf || '';
 
-        // Verifica status de verifica√ß√£o
+        // Verifica status de verificaÁ„o
         atualizarStatusVerificacao(data.verificado, data.verificado_em, data.verificacao_status);
     } catch (err) { }
 }
@@ -2073,10 +2073,10 @@ async function salvarDadosProfissionais() {
             const nomeEl = document.getElementById('nome-profissional');
             if (nomeEl) nomeEl.textContent = nome;
 
-            feedback.textContent = '‚úÖ Dados salvos com sucesso!';
+            feedback.textContent = '? Dados salvos com sucesso!';
             feedback.style.color = '#34d399';
         } else {
-            feedback.textContent = '‚ö†Ô∏è Erro ao salvar. Verifique os dados.';
+            feedback.textContent = '?? Erro ao salvar. Verifique os dados.';
             feedback.style.color = '#f87171';
         }
     } catch (err) {
@@ -2090,7 +2090,7 @@ async function salvarDadosProfissionais() {
         const nomeEl = document.getElementById('nome-profissional');
         if (nomeEl) nomeEl.textContent = nome;
 
-        feedback.textContent = '‚úÖ Dados salvos localmente!';
+        feedback.textContent = '? Dados salvos localmente!';
         feedback.style.color = '#34d399';
     }
 
@@ -2099,7 +2099,7 @@ async function salvarDadosProfissionais() {
 }
 
 // ============================================================
-//  VERIFICA√á√ÉO PROFISSIONAL
+//  VERIFICA«√O PROFISSIONAL
 // ============================================================
 function atualizarStatusVerificacao(verificado, verificadoEm, status) {
     const badge = document.getElementById('badge-verificado');
@@ -2107,7 +2107,7 @@ function atualizarStatusVerificacao(verificado, verificadoEm, status) {
     const statusBox = document.getElementById('status-verificacao');
 
     if (verificado) {
-        // Mostra badge verde, oculta formul√°rio
+        // Mostra badge verde, oculta formul·rio
         if (badge) {
             badge.style.display = 'flex';
             const dataEl = document.getElementById('badge-verificado-data');
@@ -2119,7 +2119,7 @@ function atualizarStatusVerificacao(verificado, verificadoEm, status) {
         return;
     }
 
-    // N√£o verificado ‚Äî mostra status da solicita√ß√£o se houver
+    // N„o verificado ó mostra status da solicitaÁ„o se houver
     if (status === 'pendente') {
         if (statusBox) {
             statusBox.style.display = 'flex';
@@ -2128,8 +2128,8 @@ function atualizarStatusVerificacao(verificado, verificadoEm, status) {
             statusBox.innerHTML = `
                 <i class="fas fa-clock" style="color:#fbbf24; font-size:16px; flex-shrink:0;"></i>
                 <div>
-                    <p style="font-size:13px; font-weight:600; color:#fbbf24; margin:0;">Verifica√ß√£o em andamento</p>
-                    <p style="font-size:12px; color:#64748b; margin:2px 0 0;">Nossa equipe est√° analisando seus dados. Em at√© 48h voc√™ receber√° o selo.</p>
+                    <p style="font-size:13px; font-weight:600; color:#fbbf24; margin:0;">VerificaÁ„o em andamento</p>
+                    <p style="font-size:12px; color:#64748b; margin:2px 0 0;">Nossa equipe est· analisando seus dados. Em atÈ 48h vocÍ receber· o selo.</p>
                 </div>`;
             const btn = document.getElementById('btn-solicitar-verif');
             if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
@@ -2137,7 +2137,7 @@ function atualizarStatusVerificacao(verificado, verificadoEm, status) {
     }
 }
 
-// M√°scara CPF
+// M·scara CPF
 function mascaraCPF(input) {
     let v = input.value.replace(/\D/g, '').substring(0, 11);
     if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
@@ -2160,7 +2160,7 @@ function atualizarPreviewRegistro() {
     }
 }
 
-// Listeners para preview (adicionados ap√≥s DOM carregado)
+// Listeners para preview (adicionados apÛs DOM carregado)
 document.addEventListener('DOMContentLoaded', () => {
     ['verif-conselho', 'verif-regiao', 'verif-numero'].forEach(id => {
         const el = document.getElementById(id);
@@ -2178,7 +2178,7 @@ async function solicitarVerificacao() {
     const btn = document.getElementById('btn-solicitar-verif');
 
     if (!conselho || !regiao || !numero || !cpf) {
-        feedback.textContent = 'Preencha todos os campos para solicitar a verifica√ß√£o.';
+        feedback.textContent = 'Preencha todos os campos para solicitar a verificaÁ„o.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
@@ -2201,18 +2201,18 @@ async function solicitarVerificacao() {
 
         if (res.ok && data.verificado) {
             atualizarStatusVerificacao(true, new Date().toISOString(), null);
-            feedback.textContent = '‚úÖ Verificado automaticamente!';
+            feedback.textContent = '? Verificado automaticamente!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
         } else {
             atualizarStatusVerificacao(false, null, 'pendente');
-            feedback.textContent = '‚è≥ Solicita√ß√£o enviada! Nossa equipe verificar√° em at√© 48h.';
+            feedback.textContent = '? SolicitaÁ„o enviada! Nossa equipe verificar· em atÈ 48h.';
             feedback.style.color = '#fbbf24';
             feedback.style.display = 'block';
         }
     } catch (err) {
         atualizarStatusVerificacao(false, null, 'pendente');
-        feedback.textContent = '‚è≥ Solicita√ß√£o registrada! Nossa equipe verificar√° em at√© 48h.';
+        feedback.textContent = '? SolicitaÁ„o registrada! Nossa equipe verificar· em atÈ 48h.';
         feedback.style.color = '#fbbf24';
         feedback.style.display = 'block';
     }
@@ -2235,16 +2235,16 @@ async function carregarRecorrentes() {
     try {
         const res = await fetch(`${API_URL}/api/recorrentes`, { headers: headersAuth() });
         const data = await res.json();
-        const diasNomes = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S√°b'];
+        const diasNomes = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S·b'];
         if (!data.length) {
-            lista.innerHTML = '<span style="color:#64748b;">Nenhuma recorr√™ncia ativa.</span>';
+            lista.innerHTML = '<span style="color:#64748b;">Nenhuma recorrÍncia ativa.</span>';
             return;
         }
         lista.innerHTML = data.map(r => `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 10px; background:#0f1621; border-radius:6px; margin-bottom:6px;">
                 <div>
                     <span style="color:#e2e8f0; font-weight:500;">${r.paciente_nome}</span>
-                    <span style="color:#64748b; margin:0 6px;">‚Äî</span>
+                    <span style="color:#64748b; margin:0 6px;">ó</span>
                     <span style="color:#a78bfa;">${diasNomes[r.dia_semana]}</span>
                     <span style="color:#64748b; margin:0 4px;">${r.hora_inicio.substring(0, 5)}</span>
                     <span style="color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</span>
@@ -2271,7 +2271,7 @@ async function salvarRecorrente() {
     const horaFimCalc = `${String(Math.floor(totalMin / 60)).padStart(2, '0')}:${String(totalMin % 60).padStart(2, '0')}`;
 
     if (!pacienteId || diaSemana === '' || !horaInicio || !dataInicio) {
-        feedback.textContent = 'Preencha paciente, dia, hor√°rios e data de in√≠cio.';
+        feedback.textContent = 'Preencha paciente, dia, hor·rios e data de inÌcio.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
@@ -2294,26 +2294,26 @@ async function salvarRecorrente() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '‚úÖ Recorr√™ncia criada com sucesso!';
+            feedback.textContent = '? RecorrÍncia criada com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             document.getElementById('toggle-recorrente').checked = false;
             document.getElementById('campos-recorrente').style.display = 'none';
             await carregarRecorrentes();
         } else {
-            feedback.textContent = data.erro || 'Erro ao criar recorr√™ncia.';
+            feedback.textContent = data.erro || 'Erro ao criar recorrÍncia.';
             feedback.style.color = '#f87171';
             feedback.style.display = 'block';
         }
     } catch (err) {
-        feedback.textContent = 'Erro de conex√£o.';
+        feedback.textContent = 'Erro de conex„o.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     }
 }
 
 async function encerrarRecorrente(id) {
-    if (!confirm('Encerrar esta recorr√™ncia? As consultas futuras ser√£o canceladas.')) return;
+    if (!confirm('Encerrar esta recorrÍncia? As consultas futuras ser„o canceladas.')) return;
     try {
         const res = await fetch(`${API_URL}/api/recorrentes/${id}/encerrar`, {
             method: 'POST',
@@ -2325,30 +2325,30 @@ async function encerrarRecorrente(id) {
     } catch (err) { alert('Erro ao encerrar.'); }
 }
 // ---- JOGOS ---- //
-// Mapa de jogos dispon√≠veis
+// Mapa de jogos disponÌveis
 const JOGOS = {
     'memoria-emocoes': {
-        titulo: 'üé¥ Mem√≥ria das Emo√ß√µes',
+        titulo: '?? MemÛria das EmoÁıes',
         arquivo: 'jogo-memoria-emocoes.html'
     },
     'quem-sou-eu': {
-        titulo: 'ü™û Quem Sou Eu?',
+        titulo: '?? Quem Sou Eu?',
         arquivo: 'jogo-quem-sou-eu.html'
     },
     'termometro': {
-        titulo: 'üå°Ô∏è Term√¥metro das Emo√ß√µes',
+        titulo: '??? TermÙmetro das EmoÁıes',
         arquivo: 'jogo-termometro.html'
     },
     'memoria-comidas': {
-        titulo: 'ü•¶ Mem√≥ria Saud√°vel',
+        titulo: '?? MemÛria Saud·vel',
         arquivo: 'jogo-memoria-comidas.html'
     },
     'sete-erros': {
-        titulo: 'üîç Jogo dos 7 Erros',
+        titulo: '?? Jogo dos 7 Erros',
         arquivo: 'jogo-sete-erros.html'
     },
     'respiracao': {
-        titulo: 'ü´ß Bolha da Respira√ß√£o',
+        titulo: '?? Bolha da RespiraÁ„o',
         arquivo: 'jogo-respiracao.html'
     }
 };
@@ -2399,7 +2399,7 @@ function abrirModalBug() {
     document.querySelector('.modal-bug-body').style.display = 'flex';
     document.querySelector('.modal-bug-footer').style.display = 'flex';
 
-    // Preenche info t√©cnica
+    // Preenche info tÈcnica
     preencherInfoTecnica();
 
     // Reseta tipo selecionado
@@ -2423,8 +2423,8 @@ function preencherInfoTecnica() {
 
     const info = coletarInfoTecnica();
     preview.textContent = [
-        `P√°gina:      ${info.pagina}`,
-        `Se√ß√£o ativa: ${info.secao}`,
+        `P·gina:      ${info.pagina}`,
+        `SeÁ„o ativa: ${info.secao}`,
         `Navegador:   ${info.navegador}`,
         `Tela:        ${info.tela}`,
         `Data/Hora:   ${info.dataHora}`,
@@ -2433,17 +2433,17 @@ function preencherInfoTecnica() {
 }
 
 function coletarInfoTecnica() {
-    // Descobre qual se√ß√£o est√° ativa pelo bot√£o com class "active" na sidebar
+    // Descobre qual seÁ„o est· ativa pelo bot„o com class "active" na sidebar
     const btnAtivo = document.querySelector('.sidebar button.active');
     const secaoAtiva = btnAtivo ? btnAtivo.textContent.trim() : 'Desconhecida';
 
     // Tenta pegar nome do profissional logado
-    let nomeProfissional = 'N√£o identificado';
+    let nomeProfissional = 'N„o identificado';
     try {
         const token = localStorage.getItem('token');
         if (token) {
             const payload = JSON.parse(atob(token.split('.')[1]));
-            nomeProfissional = payload.nome || payload.email || 'N√£o identificado';
+            nomeProfissional = payload.nome || payload.email || 'N„o identificado';
         }
     } catch (_) { }
 
@@ -2457,7 +2457,7 @@ function coletarInfoTecnica() {
     };
 }
 
-// Sele√ß√£o de tipo de problema
+// SeleÁ„o de tipo de problema
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.bug-tipo-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2485,7 +2485,7 @@ async function enviarBugReport() {
 
     if (!titulo) {
         document.getElementById('bug-titulo').focus();
-        mostrarToast('Por favor, adicione um t√≠tulo para o problema.', 'aviso');
+        mostrarToast('Por favor, adicione um tÌtulo para o problema.', 'aviso');
         return;
     }
     if (!descricao) {
@@ -2527,15 +2527,15 @@ async function enviarBugReport() {
         document.getElementById('bug-sucesso').style.display = 'flex';
 
     } catch (err) {
-        mostrarToast('N√£o foi poss√≠vel enviar o relat√≥rio. Tente novamente.', 'erro');
+        mostrarToast('N„o foi possÌvel enviar o relatÛrio. Tente novamente.', 'erro');
     } finally {
         btnEnviar.disabled = false;
-        btnEnviar.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar relat√≥rio';
+        btnEnviar.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar relatÛrio';
     }
 }
 
 // ============================================================
-//  STRIPE ‚Äî Pagamentos online do profissional
+//  STRIPE ó Pagamentos online do profissional
 // ============================================================
 
 async function carregarStatusStripe() {
@@ -2564,14 +2564,14 @@ async function salvarChavesStripe() {
     const btn = document.getElementById('btn-salvar-stripe');
 
     if (!secretKey) {
-        feedback.textContent = '‚ùå A Secret Key √© obrigat√≥ria.';
+        feedback.textContent = '? A Secret Key È obrigatÛria.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
     }
 
     if (!secretKey.startsWith('sk_')) {
-        feedback.textContent = '‚ùå A Secret Key deve come√ßar com sk_live_ ou sk_test_';
+        feedback.textContent = '? A Secret Key deve comeÁar com sk_live_ ou sk_test_';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
@@ -2594,17 +2594,17 @@ async function salvarChavesStripe() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '‚úÖ ' + data.mensagem;
+            feedback.textContent = '? ' + data.mensagem;
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             setTimeout(() => carregarStatusStripe(), 800);
         } else {
-            feedback.textContent = '‚ùå ' + data.erro;
+            feedback.textContent = '? ' + data.erro;
             feedback.style.color = '#f87171';
             feedback.style.display = 'block';
         }
     } catch (err) {
-        feedback.textContent = '‚ùå Erro de conex√£o. Tente novamente.';
+        feedback.textContent = '? Erro de conex„o. Tente novamente.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     } finally {
@@ -2614,7 +2614,7 @@ async function salvarChavesStripe() {
 }
 
 async function removerChavesStripe() {
-    if (!confirm('Tem certeza? Seus pacientes n√£o poder√£o mais pagar online at√© voc√™ reconectar o Stripe.')) return;
+    if (!confirm('Tem certeza? Seus pacientes n„o poder„o mais pagar online atÈ vocÍ reconectar o Stripe.')) return;
 
     try {
         const res = await fetch(`${API_URL}/api/perfil/stripe`, {
@@ -2636,10 +2636,10 @@ function toggleVerStripe(inputId, btn) {
         : '<i class="fas fa-eye"></i>';
 }
 // ============================================================
-//  FINANCEIRO ‚Äî relat√≥rio de pagamentos recebidos via agenda online
+//  FINANCEIRO ó relatÛrio de pagamentos recebidos via agenda online
 // ============================================================
 
-// Inicializa o m√™s/ano atual ao carregar
+// Inicializa o mÍs/ano atual ao carregar
 document.addEventListener('DOMContentLoaded', () => {
     const agora = new Date();
     const selMes = document.getElementById('fin-mes');
@@ -2666,7 +2666,7 @@ async function carregarFinanceiro() {
         if (!res.ok) throw new Error('Erro ao buscar pagamentos');
         const todos = await res.json();
 
-        // Filtra pelo m√™s/ano selecionado
+        // Filtra pelo mÍs/ano selecionado
         const filtrados = todos.filter(ag => {
             const d = parseDateLocal(ag.data_consulta + ' 00:00:00');
             return d.getMonth() + 1 === mes && d.getFullYear() === ano;
@@ -2684,12 +2684,12 @@ async function carregarFinanceiro() {
         document.getElementById('fin-total-valor').textContent = `R$ ${totalValor.toFixed(2)}`;
 
         if (!filtrados.length) {
-            tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Nenhum pagamento neste per√≠odo.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Nenhum pagamento neste perÌodo.</td></tr>';
             return;
         }
 
         const statusCor = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171' };
-        const statusLabel = { confirmado: '‚úì Confirmado', pendente: '‚è≥ Pendente', cancelado: '‚úó Cancelado' };
+        const statusLabel = { confirmado: '? Confirmado', pendente: '? Pendente', cancelado: '? Cancelado' };
 
         tbody.innerHTML = filtrados.map(ag => {
             const data = parseDateLocal(ag.data_consulta + ' 00:00:00').toLocaleDateString('pt-BR');
@@ -2699,7 +2699,7 @@ async function carregarFinanceiro() {
             const stripeId = ag.stripe_payment_intent || ag.stripe_session_id || null;
             const stripeCell = stripeId
                 ? `<span title="${stripeId}" style="font-family:monospace; font-size:11px; color:#8b5cf6; cursor:help;">${stripeId.substring(0, 24)}...</span>`
-                : '<span style="color:#475569;">‚Äî</span>';
+                : '<span style="color:#475569;">ó</span>';
 
             return `<tr>
                 <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); color:#e2e8f0;">
@@ -2726,7 +2726,7 @@ async function carregarFinanceiro() {
     }
 }
 // ============================================================
-//  SAIR ‚Äî limpa sess√£o e redireciona para login
+//  SAIR ó limpa sess„o e redireciona para login
 // ============================================================
 function sair() {
     if (!confirm('Deseja sair do sistema?')) return;
@@ -2745,7 +2745,7 @@ async function carregarLinkVideo() {
         const input = document.getElementById('link-video');
         if (input && data.link_video) input.value = data.link_video;
     } catch (err) {
-        console.error('Erro ao carregar link de v√≠deo:', err);
+        console.error('Erro ao carregar link de vÌdeo:', err);
     }
 }
 
@@ -2764,16 +2764,16 @@ async function salvarLinkVideo() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '‚úÖ Link salvo com sucesso!';
+            feedback.textContent = '? Link salvo com sucesso!';
             feedback.style.color = '#34d399';
         } else {
-            feedback.textContent = '‚ùå ' + data.erro;
+            feedback.textContent = '? ' + data.erro;
             feedback.style.color = '#f87171';
         }
         feedback.style.display = 'block';
         setTimeout(() => { feedback.style.display = 'none'; }, 3000);
     } catch (err) {
-        feedback.textContent = '‚ùå Erro de conex√£o.';
+        feedback.textContent = '? Erro de conex„o.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     }
@@ -2783,11 +2783,11 @@ async function salvarLinkVideo() {
 //  VITRINE DE PROFISSIONAIS
 // ============================================================
 const ESPECIALIDADES_VITRINE = [
-    'Ansiedade', 'Depress√£o', 'TCC', 'Psican√°lise', 'Inf√¢ncia',
-    'Adolesc√™ncia', 'Casal', 'Fam√≠lia', 'Trauma', 'Luto',
+    'Ansiedade', 'Depress„o', 'TCC', 'Psican·lise', 'Inf‚ncia',
+    'AdolescÍncia', 'Casal', 'FamÌlia', 'Trauma', 'Luto',
     'TDAH', 'Autismo', 'Bipolaridade', 'TOC', 'Online',
-    'Transtorno Alimentar', 'Depend√™ncia Qu√≠mica', 'Neuropsicologia',
-    'Orienta√ß√£o Profissional', 'Psiquiatria'
+    'Transtorno Alimentar', 'DependÍncia QuÌmica', 'Neuropsicologia',
+    'OrientaÁ„o Profissional', 'Psiquiatria'
 ];
 
 let vitrineEspecialidadesSelecionadas = [];
@@ -2822,7 +2822,7 @@ async function carregarVitrine() {
         const prevSpec = document.getElementById('prev-spec');
         const prevCrp = document.getElementById('prev-crp');
         if (prevNome) prevNome.textContent = perf.nome || 'Seu nome';
-        if (prevSpec) prevSpec.textContent = `${perf.especialidade || 'Especialidade'} ¬∑ Cidade, Estado`;
+        if (prevSpec) prevSpec.textContent = `${perf.especialidade || 'Especialidade'} ∑ Cidade, Estado`;
         if (prevCrp) prevCrp.textContent = perf.crp_crm || 'CRP/CRM';
 
         const resV = await fetch(`${API_URL}/api/vitrine/perfil`, { headers: headersAuth() });
@@ -2894,7 +2894,7 @@ function aoMudarToggleVitrine(novoEstado) {
         const toggle = document.getElementById('vitrine-toggle');
         if (toggle) toggle.checked = false;
         atualizarToggleVisual(false);
-        mostrarFeedbackVitrine('Voc√™ precisa ter a verifica√ß√£o aprovada para ativar a vitrine.', false);
+        mostrarFeedbackVitrine('VocÍ precisa ter a verificaÁ„o aprovada para ativar a vitrine.', false);
         return;
     }
     vitrineAtivo = novoEstado;
@@ -2951,9 +2951,9 @@ function atualizarPreviewVitrine() {
 
     const prevSpec = document.getElementById('prev-spec');
     if (prevSpec) {
-        const esp = prevSpec.textContent.split('¬∑')[0].trim();
+        const esp = prevSpec.textContent.split('∑')[0].trim();
         const loc = cidade && estado ? `${cidade}, ${estado}` : cidade || estado || 'Cidade, Estado';
-        prevSpec.textContent = `${esp} ¬∑ ${loc}`;
+        prevSpec.textContent = `${esp} ∑ ${loc}`;
     }
 
     const prevBio = document.getElementById('prev-bio');
@@ -2989,12 +2989,12 @@ async function uploadFotoVitrine(input) {
         if (res.ok && d.url) {
             vitrineFotoUrl = d.url;
             exibirFotoVitrine(d.url);
-            if (fb) { fb.textContent = '‚úì Foto salva!'; fb.style.color = '#34d399'; }
+            if (fb) { fb.textContent = '? Foto salva!'; fb.style.color = '#34d399'; }
         } else {
             if (fb) { fb.textContent = d.erro || 'Erro ao enviar foto.'; fb.style.color = '#f87171'; }
         }
     } catch (err) {
-        if (fb) { fb.textContent = 'Erro de conex√£o.'; fb.style.color = '#f87171'; }
+        if (fb) { fb.textContent = 'Erro de conex„o.'; fb.style.color = '#f87171'; }
     }
 }
 
@@ -3013,7 +3013,7 @@ async function salvarVitrine() {
     const ativo = vitrineAtivo;
 
     if (ativo && !vitrineProfVerificado) {
-        mostrarFeedbackVitrine('Verifica√ß√£o profissional necess√°ria para ativar a vitrine.', false);
+        mostrarFeedbackVitrine('VerificaÁ„o profissional necess·ria para ativar a vitrine.', false);
         if (toggle) toggle.checked = false;
         atualizarToggleVisual(false);
         return;
@@ -3042,7 +3042,7 @@ async function salvarVitrine() {
         const d = await res.json();
         if (res.ok) {
             vitrineAtivo = ativo;
-            mostrarFeedbackVitrine('‚úì ' + d.mensagem, true);
+            mostrarFeedbackVitrine('? ' + d.mensagem, true);
             atualizarBadgeMenuVitrine(ativo && vitrineProfVerificado);
             atualizarToggleVisual(ativo);
         } else {
@@ -3053,7 +3053,7 @@ async function salvarVitrine() {
             }
         }
     } catch (err) {
-        mostrarFeedbackVitrine('Erro de conex√£o.', false);
+        mostrarFeedbackVitrine('Erro de conex„o.', false);
     }
 }
 
