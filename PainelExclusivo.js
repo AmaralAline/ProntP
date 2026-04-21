@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (btnAtivo) btnAtivo.classList.add('active');
 
         if (id === 'agenda-section') {
-            carregarAgendaHoje();
+            inicializarAgenda();
             carregarRecorrentes();
         }
         if (id === 'agenda-online-section') {
@@ -589,6 +589,13 @@ if (agendaForm) {
         const pad = n => String(n).padStart(2, '0');
         const data_hora_fim = `${fim.getFullYear()}-${pad(fim.getMonth() + 1)}-${pad(fim.getDate())}T${pad(fim.getHours())}:${pad(fim.getMinutes())}`;
 
+        // Verifica conflito de horário
+        const temConflito = await verificarConflito(data_hora_inicio, data_hora_fim);
+        if (temConflito) {
+            mostrarFeedback('agenda-error', '⚠️ Já existe uma consulta neste horário. Escolha outro horário.', 'erro');
+            return;
+        }
+
         try {
             const res = await fetch(`${API_URL}/api/agenda`, {
                 method: 'POST',
@@ -599,7 +606,7 @@ if (agendaForm) {
             if (res.ok) {
                 mostrarFeedback('agenda-error', '✅ Consulta agendada com sucesso!', 'sucesso');
                 agendaForm.reset();
-                await carregarAgendaHoje();
+                await renderizarAgenda();
                 await carregarRecorrentes();
             } else {
                 mostrarFeedback('agenda-error', 'Erro ao agendar consulta.', 'erro');
@@ -628,122 +635,432 @@ function parseDateLocal(str) {
     return new Date(ano, mes - 1, dia, hora, min, seg);
 }
 
-async function carregarAgendaHoje() {
+// ============================================================
+//  AGENDA — ESTADO GLOBAL
+// ============================================================
+let agendaVista = 'dia';          // 'dia' | 'semana'
+let agendaDataAtual = new Date(); // data de referência
+let consultaSelecionada = null;   // consulta no modal
+
+// ============================================================
+//  AGENDA — INICIALIZAÇÃO E NAVEGAÇÃO
+// ============================================================
+function inicializarAgenda() {
+    agendaDataAtual = new Date();
+    agendaVista = 'dia';
+    renderizarAgenda();
+    bindBotoesAgenda();
+}
+
+function bindBotoesAgenda() {
+    document.getElementById('agenda-btn-dia')?.addEventListener('click', () => {
+        agendaVista = 'dia';
+        atualizarBotoesVista();
+        renderizarAgenda();
+    });
+    document.getElementById('agenda-btn-semana')?.addEventListener('click', () => {
+        agendaVista = 'semana';
+        atualizarBotoesVista();
+        renderizarAgenda();
+    });
+    document.getElementById('agenda-btn-hoje')?.addEventListener('click', () => {
+        agendaDataAtual = new Date();
+        renderizarAgenda();
+    });
+    document.getElementById('agenda-nav-prev')?.addEventListener('click', () => {
+        if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() - 1);
+        else agendaDataAtual.setDate(agendaDataAtual.getDate() - 7);
+        agendaDataAtual = new Date(agendaDataAtual);
+        renderizarAgenda();
+    });
+    document.getElementById('agenda-nav-next')?.addEventListener('click', () => {
+        if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() + 1);
+        else agendaDataAtual.setDate(agendaDataAtual.getDate() + 7);
+        agendaDataAtual = new Date(agendaDataAtual);
+        renderizarAgenda();
+    });
+}
+
+function atualizarBotoesVista() {
+    const btnDia = document.getElementById('agenda-btn-dia');
+    const btnSemana = document.getElementById('agenda-btn-semana');
+    if (!btnDia || !btnSemana) return;
+    if (agendaVista === 'dia') {
+        btnDia.style.background = '#7c3aed'; btnDia.style.color = '#fff'; btnDia.style.border = '1px solid #7c3aed';
+        btnSemana.style.background = '#1a2332'; btnSemana.style.color = '#64748b'; btnSemana.style.border = '1px solid rgba(139,92,246,0.2)';
+    } else {
+        btnSemana.style.background = '#7c3aed'; btnSemana.style.color = '#fff'; btnSemana.style.border = '1px solid #7c3aed';
+        btnDia.style.background = '#1a2332'; btnDia.style.color = '#64748b'; btnDia.style.border = '1px solid rgba(139,92,246,0.2)';
+    }
+}
+
+async function renderizarAgenda() {
+    const container = document.getElementById('agenda-vista-container');
+    if (!container) return;
+    container.innerHTML = '<p style="color:#64748b; font-size:13px; padding:12px 0;">Carregando...</p>';
+
     const hoje = new Date();
-    const diaStr = dataLocalStr(hoje);
-    const inicio = diaStr + ' 00:00:00';
-    const fim = diaStr + ' 23:59:59';
+    const hojeStr = dataLocalStr(hoje);
 
-    try {
-        const res = await fetch(`${API_URL}/api/agenda?inicio=${inicio}&fim=${fim}`, {
-            headers: headersAuth()
-        });
+    if (agendaVista === 'dia') {
+        const diaStr = dataLocalStr(agendaDataAtual);
+        const ehHoje = diaStr === hojeStr;
+        const label = ehHoje ? 'Hoje — ' + agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })
+            : agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+        document.getElementById('agenda-nav-label').textContent = label.charAt(0).toUpperCase() + label.slice(1);
 
-        if (res.ok) {
-            const consultas = await res.json();
-            const lista = document.getElementById('daily-agenda-list');
-            if (!lista) return;
+        const consultas = await buscarConsultasDia(diaStr);
+        container.innerHTML = renderizarListaDia(consultas, diaStr, ehHoje);
 
-            if (!consultas.length) {
-                lista.innerHTML = '<p style="color:#aaa;">Nenhuma consulta hoje.</p>';
-                return;
-            }
+    } else {
+        // Vista semana — começa na segunda
+        const seg = new Date(agendaDataAtual);
+        seg.setDate(seg.getDate() - (seg.getDay() === 0 ? 6 : seg.getDay() - 1));
+        const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
+        document.getElementById('agenda-nav-label').textContent =
+            seg.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) + ' – ' +
+            dom.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 
-            lista.innerHTML = consultas.map(c => {
-                const origemCor = c.origem === 'recorrente' ? '#a78bfa' : c.origem === 'online' ? '#60a5fa' : '#34d399';
-                const origemLabel = c.origem === 'recorrente' ? '🔁' : c.origem === 'online' ? '🌐' : '📅';
-                const dtInicio = parseDateLocal(c.data_hora_inicio);
-                const dtFim = parseDateLocal(c.data_hora_fim);
-                return `
-        <div style="padding:10px; border-bottom:1px solid #1a2332;">
-            <strong style="color:#e2e8f0;">${c.paciente_nome || 'Sem paciente'}</strong>
-            <span style="margin-left:6px; font-size:11px; color:${origemCor};">${origemLabel} ${c.origem}</span><br>
-            <span style="color:#a78bfa; font-size:13px;">
-                🕐 ${dtInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                — ${dtFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-            </span>
-            <span style="margin-left:8px; font-size:11px; color:#64748b;">${c.status}</span>
-        </div>
-    `;
-
-            }).join('');
-        }
-    } catch (err) {
-        console.error('Erro ao carregar agenda:', err);
+        const inicio = dataLocalStr(seg) + ' 00:00:00';
+        const fim = dataLocalStr(dom) + ' 23:59:59';
+        const consultas = await buscarConsultasPeriodo(inicio, fim);
+        container.innerHTML = renderizarSemana(seg, consultas, hojeStr);
     }
 }
 
-// ============================================================
-//  AGENDA — VER OUTRO DIA (estava sem implementação)
-// ============================================================
-async function carregarAgendaDia(dataStr) {
-    const inicio = dataStr + ' 00:00:00';
-    const fim = dataStr + ' 23:59:59';
-    const lista = document.getElementById('lista-agenda-dia');
-    if (!lista) return;
-
-    lista.innerHTML = '<p style="color:#64748b; font-size:13px;">Carregando...</p>';
-
+async function buscarConsultasDia(diaStr) {
     try {
-        const res = await fetch(`${API_URL}/api/agenda?inicio=${encodeURIComponent(inicio)}&fim=${encodeURIComponent(fim)}`, {
-            headers: headersAuth()
-        });
-        if (!res.ok) { lista.innerHTML = '<p style="color:#f87171;">Erro ao buscar consultas.</p>'; return; }
+        const res = await fetch(`${API_URL}/api/agenda?inicio=${diaStr} 00:00:00&fim=${diaStr} 23:59:59`, { headers: headersAuth() });
+        return res.ok ? await res.json() : [];
+    } catch { return []; }
+}
 
-        const consultas = await res.json();
+async function buscarConsultasPeriodo(inicio, fim) {
+    try {
+        const res = await fetch(`${API_URL}/api/agenda?inicio=${encodeURIComponent(inicio)}&fim=${encodeURIComponent(fim)}`, { headers: headersAuth() });
+        return res.ok ? await res.json() : [];
+    } catch { return []; }
+}
 
-        if (!consultas.length) {
-            lista.innerHTML = '<p style="color:#64748b; font-size:13px;">Nenhuma consulta neste dia.</p>';
-            return;
-        }
+// ============================================================
+//  RENDERIZAÇÃO — VISTA DIA
+// ============================================================
+function renderizarListaDia(consultas, diaStr, ehHoje) {
+    if (!consultas.length) return '<p style="color:#64748b; font-size:13px; padding:12px 0;">Nenhuma consulta neste dia.</p>';
 
-        const origemLabel = o => o === 'recorrente' ? '🔁' : o === 'online' ? '🌐' : '📅';
-        const origemCor = o => o === 'recorrente' ? '#a78bfa' : o === 'online' ? '#60a5fa' : '#34d399';
+    return consultas.map(c => {
+        const dtI = parseDateLocal(c.data_hora_inicio);
+        const dtF = parseDateLocal(c.data_hora_fim);
+        const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        const statusInfo = getStatusInfo(c.status);
+        const origemLabel = c.origem === 'recorrente' ? '🔁' : c.origem === 'online' ? '🌐' : '📅';
 
-        lista.innerHTML = consultas.map(c => {
-            const dtI = parseDateLocal(c.data_hora_inicio);
-            const dtF = parseDateLocal(c.data_hora_fim);
-            return `
-            <div style="padding:10px 12px; border-bottom:1px solid #1a2332; display:flex; justify-content:space-between; align-items:center;">
+        return `<div onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})"
+            style="padding:12px; border-radius:8px; margin-bottom:8px; cursor:pointer;
+                   background:#0f1621; border:1px solid rgba(139,92,246,0.15);
+                   border-left:3px solid ${statusInfo.cor};
+                   transition:border-color 0.15s;"
+            onmouseover="this.style.borderColor='rgba(139,92,246,0.4)'"
+            onmouseout="this.style.borderLeft='3px solid ${statusInfo.cor}'; this.style.borderColor='rgba(139,92,246,0.15)'">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
-                    <strong style="color:#e2e8f0;">${c.paciente_nome || 'Sem paciente'}</strong>
-                    <span style="margin-left:6px; font-size:11px; color:${origemCor(c.origem)};">${origemLabel(c.origem)}</span><br>
-                    <span style="color:#a78bfa; font-size:13px;">
-                        🕐 ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                        — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                    </span>
+                    <strong style="color:#e2e8f0; font-size:14px;">${c.paciente_nome || 'Sem paciente'}</strong>
+                    <span style="margin-left:6px; font-size:11px; color:#64748b;">${origemLabel}</span>
                 </div>
-                <span style="font-size:11px; color:#64748b;">${c.status || 'agendado'}</span>
+                <span style="font-size:11px; padding:2px 8px; border-radius:10px; background:${statusInfo.bg}; color:${statusInfo.cor}; white-space:nowrap;">${statusInfo.label}</span>
+            </div>
+            <div style="color:#a78bfa; font-size:13px; margin-top:4px;">🕐 ${hora}</div>
+        </div>`;
+    }).join('');
+}
+
+// ============================================================
+//  RENDERIZAÇÃO — VISTA SEMANA
+// ============================================================
+function renderizarSemana(seg, consultas, hojeStr) {
+    const diasNomes = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+    let html = '<div style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px;">';
+
+    for (let i = 0; i < 7; i++) {
+        const dia = new Date(seg); dia.setDate(dia.getDate() + i);
+        const diaStr = dataLocalStr(dia);
+        const ehHoje = diaStr === hojeStr;
+        const consultasDia = consultas.filter(c => {
+            const d = parseDateLocal(c.data_hora_inicio);
+            return dataLocalStr(d) === diaStr;
+        }).sort((a, b) => parseDateLocal(a.data_hora_inicio) - parseDateLocal(b.data_hora_inicio));
+
+        html += `<div>
+            <div style="text-align:center; padding:6px 2px; border-radius:6px; margin-bottom:4px;
+                        background:${ehHoje ? 'rgba(139,92,246,0.2)' : '#0f1621'};
+                        border:1px solid ${ehHoje ? 'rgba(139,92,246,0.5)' : 'rgba(139,92,246,0.1)'};">
+                <div style="font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">${diasNomes[i]}</div>
+                <div style="font-size:14px; font-weight:600; color:${ehHoje ? '#a78bfa' : '#e2e8f0'};">${dia.getDate()}</div>
             </div>`;
-        }).join('');
-    } catch (err) {
-        lista.innerHTML = '<p style="color:#f87171; font-size:13px;">Erro de conexão.</p>';
+
+        if (!consultasDia.length) {
+            html += `<div style="font-size:11px; color:#334155; text-align:center; padding:8px 0;">—</div>`;
+        } else {
+            consultasDia.forEach(c => {
+                const dtI = parseDateLocal(c.data_hora_inicio);
+                const hora = dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                const statusInfo = getStatusInfo(c.status);
+                const nome = (c.paciente_nome || 'Paciente').split(' ')[0];
+                html += `<div onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})"
+                    style="padding:6px; border-radius:6px; margin-bottom:3px; cursor:pointer;
+                           background:rgba(139,92,246,0.1); border-left:2px solid ${statusInfo.cor};"
+                    onmouseover="this.style.background='rgba(139,92,246,0.2)'"
+                    onmouseout="this.style.background='rgba(139,92,246,0.1)'">
+                    <div style="font-size:11px; color:#a78bfa; font-weight:500;">${hora}</div>
+                    <div style="font-size:11px; color:#e2e8f0; margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${nome}</div>
+                    <div style="font-size:10px; color:${statusInfo.cor}; margin-top:1px;">${statusInfo.label}</div>
+                </div>`;
+            });
+        }
+        html += '</div>';
+    }
+    html += '</div>';
+    return html;
+}
+
+function getStatusInfo(status) {
+    const map = {
+        'confirmado': { cor: '#34d399', bg: 'rgba(52,211,153,0.1)', label: 'confirmado' },
+        'pendente': { cor: '#fbbf24', bg: 'rgba(251,191,36,0.1)', label: 'pendente' },
+        'agendado': { cor: '#34d399', bg: 'rgba(52,211,153,0.1)', label: 'agendado' },
+        'realizado': { cor: '#7c3aed', bg: 'rgba(139,92,246,0.1)', label: 'realizado' },
+        'cancelado': { cor: '#f87171', bg: 'rgba(248,113,113,0.1)', label: 'cancelado' },
+        'falta_remunerada': { cor: '#34d399', bg: 'rgba(52,211,153,0.08)', label: 'falta rem.' },
+        'falta_nao_remunerada': { cor: '#fbbf24', bg: 'rgba(251,191,36,0.08)', label: 'falta n/rem.' },
+        'remarcado': { cor: '#60a5fa', bg: 'rgba(96,165,250,0.1)', label: 'remarcado' },
+    };
+    return map[status] || { cor: '#64748b', bg: 'rgba(100,116,139,0.1)', label: status || 'agendado' };
+}
+
+// ============================================================
+//  MODAL DE AÇÕES DA CONSULTA
+// ============================================================
+function abrirModalConsulta(c) {
+    consultaSelecionada = c;
+    const dtI = parseDateLocal(c.data_hora_inicio);
+    const dtF = parseDateLocal(c.data_hora_fim);
+    document.getElementById('modal-consulta-nome').textContent = c.paciente_nome || 'Sem paciente';
+    document.getElementById('modal-consulta-hora').textContent =
+        `🕐 ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}  •  ${dtI.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}`;
+    document.getElementById('modal-consulta-status-atual').textContent = `Status: ${getStatusInfo(c.status).label}`;
+    document.getElementById('modal-consulta-feedback').style.display = 'none';
+    document.getElementById('modal-consulta').style.display = 'flex';
+}
+
+function fecharModalConsulta() {
+    document.getElementById('modal-consulta').style.display = 'none';
+    consultaSelecionada = null;
+}
+
+async function acaoConsultaStatus(novoStatus) {
+    if (!consultaSelecionada) return;
+    const fb = document.getElementById('modal-consulta-feedback');
+    fb.style.display = 'block';
+    fb.style.color = '#64748b';
+    fb.textContent = 'Salvando...';
+
+    const c = consultaSelecionada;
+    const dtI = parseDateLocal(c.data_hora_inicio);
+    const dataStr = dataLocalStr(dtI);
+    const horaStr = dtI.toTimeString().substring(0, 8);
+
+    try {
+        const res = await fetch(`${API_URL}/api/consulta/status`, {
+            method: 'PATCH',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                origem: c.origem,
+                id: c.id || null,
+                data_consulta: dataStr,
+                hora_inicio: horaStr,
+                novo_status: novoStatus,
+                recorrente_id: c.recorrente_id || null,
+                paciente_id: c.paciente_id || null
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            fb.style.color = '#34d399';
+            fb.textContent = '✅ ' + getStatusInfo(novoStatus).label.charAt(0).toUpperCase() + getStatusInfo(novoStatus).label.slice(1);
+            setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
+        } else {
+            fb.style.color = '#f87171';
+            fb.textContent = data.erro || 'Erro ao atualizar.';
+        }
+    } catch {
+        fb.style.color = '#f87171';
+        fb.textContent = 'Erro de conexão.';
     }
 }
 
-// Liga o botão "Buscar" do card "Ver outro dia"
-document.addEventListener('DOMContentLoaded', () => {
-    const btnVerDia = document.getElementById('btn-ver-dia');
-    if (btnVerDia) {
-        btnVerDia.addEventListener('click', () => {
-            const dataVal = document.getElementById('data-selecionada')?.value;
-            if (!dataVal) {
-                const lista = document.getElementById('lista-agenda-dia');
-                if (lista) lista.innerHTML = '<p style="color:#fbbf24; font-size:13px;">Selecione uma data.</p>';
-                return;
-            }
-            carregarAgendaDia(dataVal);
-        });
+async function acaoConsultaCancelar() {
+    if (!consultaSelecionada) return;
+    const c = consultaSelecionada;
+    const ehRecorrente = c.origem === 'recorrente';
+
+    let cancelarFuturas = false;
+    if (ehRecorrente) {
+        cancelarFuturas = confirm('Esta consulta é recorrente.\n\nClicar em OK cancela TODAS as consultas futuras desta recorrência.\nClicar em Cancelar cancela apenas esta sessão.');
+    } else {
+        if (!confirm('Cancelar esta consulta?')) return;
     }
 
-    // Também dispara ao pressionar Enter no campo de data
-    const inputData = document.getElementById('data-selecionada');
-    if (inputData) {
-        inputData.addEventListener('keydown', e => {
-            if (e.key === 'Enter') document.getElementById('btn-ver-dia')?.click();
+    const dtI = parseDateLocal(c.data_hora_inicio);
+    const dataStr = dataLocalStr(dtI);
+    const horaStr = dtI.toTimeString().substring(0, 8);
+    const fb = document.getElementById('modal-consulta-feedback');
+    fb.style.display = 'block'; fb.style.color = '#64748b'; fb.textContent = 'Cancelando...';
+
+    try {
+        const res = await fetch(`${API_URL}/api/consulta/status`, {
+            method: 'PATCH',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                origem: c.origem,
+                id: c.id || null,
+                data_consulta: dataStr,
+                hora_inicio: horaStr,
+                novo_status: 'cancelado',
+                cancelar_futuras: cancelarFuturas,
+                recorrente_id: c.recorrente_id || null
+            })
         });
+        const data = await res.json();
+        if (res.ok) {
+            fb.style.color = '#f87171'; fb.textContent = '✅ Cancelado';
+            setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
+        } else {
+            fb.style.color = '#f87171'; fb.textContent = data.erro || 'Erro ao cancelar.';
+        }
+    } catch {
+        fb.style.color = '#f87171'; fb.textContent = 'Erro de conexão.';
     }
+}
+
+function acaoConsultaRemarcar() {
+    if (!consultaSelecionada) return;
+    const dtI = parseDateLocal(consultaSelecionada.data_hora_inicio);
+    const dtF = parseDateLocal(consultaSelecionada.data_hora_fim);
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('remarcar-data').value = dataLocalStr(dtI);
+    document.getElementById('remarcar-hora-inicio').value = `${pad(dtI.getHours())}:${pad(dtI.getMinutes())}`;
+    document.getElementById('remarcar-hora-fim').value = `${pad(dtF.getHours())}:${pad(dtF.getMinutes())}`;
+    document.getElementById('remarcar-feedback').style.display = 'none';
+    document.getElementById('modal-remarcar').style.display = 'flex';
+}
+
+async function confirmarRemarcar() {
+    const novaData = document.getElementById('remarcar-data').value;
+    const novaHoraInicio = document.getElementById('remarcar-hora-inicio').value;
+    const novaHoraFim = document.getElementById('remarcar-hora-fim').value;
+    const fb = document.getElementById('remarcar-feedback');
+
+    if (!novaData || !novaHoraInicio) {
+        fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Preencha data e horário.';
+        return;
+    }
+
+    fb.style.display = 'block'; fb.style.color = '#64748b'; fb.textContent = 'Salvando...';
+    const c = consultaSelecionada;
+    const dtI = parseDateLocal(c.data_hora_inicio);
+
+    try {
+        const res = await fetch(`${API_URL}/api/consulta/status`, {
+            method: 'PATCH',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                origem: c.origem,
+                id: c.id || null,
+                data_consulta: dataLocalStr(dtI),
+                hora_inicio: dtI.toTimeString().substring(0, 8),
+                novo_status: 'remarcado',
+                nova_data: novaData,
+                nova_hora_inicio: novaHoraInicio,
+                nova_hora_fim: novaHoraFim,
+                recorrente_id: c.recorrente_id || null
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            fb.style.color = '#34d399'; fb.textContent = '✅ Remarcado com sucesso!';
+            setTimeout(() => {
+                document.getElementById('modal-remarcar').style.display = 'none';
+                fecharModalConsulta();
+                renderizarAgenda();
+                carregarConsultasHojeDashboard();
+            }, 1000);
+        } else {
+            fb.style.color = '#f87171'; fb.textContent = data.erro || 'Erro ao remarcar.';
+        }
+    } catch {
+        fb.style.color = '#f87171'; fb.textContent = 'Erro de conexão.';
+    }
+}
+
+function acaoConsultaProntuario() {
+    if (!consultaSelecionada) return;
+    fecharModalConsulta();
+    // Navega para prontuário e pré-seleciona o paciente
+    const nomePaciente = consultaSelecionada.paciente_nome;
+    // Abre seção evolução
+    document.querySelector('[aria-controls="evolucao-section"]')?.click();
+    // Tenta selecionar o paciente pelo nome no select
+    setTimeout(() => {
+        const sel = document.getElementById('paciente');
+        if (sel && nomePaciente) {
+            for (const opt of sel.options) {
+                if (opt.text.trim().toLowerCase() === nomePaciente.trim().toLowerCase()) {
+                    sel.value = opt.value;
+                    sel.dispatchEvent(new Event('change'));
+                    break;
+                }
+            }
+        }
+    }, 400);
+}
+
+// Fecha modais ao clicar fora
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('modal-consulta')?.addEventListener('click', e => {
+        if (e.target.id === 'modal-consulta') fecharModalConsulta();
+    });
+    document.getElementById('modal-remarcar')?.addEventListener('click', e => {
+        if (e.target.id === 'modal-remarcar') document.getElementById('modal-remarcar').style.display = 'none';
+    });
 });
+
+// ============================================================
+//  AGENDA — VERIFICAÇÃO DE CONFLITO AO AGENDAR
+// ============================================================
+async function verificarConflito(data_hora_inicio, data_hora_fim) {
+    try {
+        const res = await fetch(
+            `${API_URL}/api/agenda/conflito?data_hora_inicio=${encodeURIComponent(data_hora_inicio)}&data_hora_fim=${encodeURIComponent(data_hora_fim)}`,
+            { headers: headersAuth() }
+        );
+        if (res.ok) { const d = await res.json(); return d.conflito; }
+    } catch { }
+    return false;
+}
+
+// Mantém compatibilidade com funções antigas usadas no dashboard
+async function carregarAgendaHoje() {
+    agendaDataAtual = new Date();
+    agendaVista = 'dia';
+    await renderizarAgenda();
+}
+
+async function carregarAgendaDia(dataStr) {
+    const [ano, mes, dia] = dataStr.split('-').map(Number);
+    agendaDataAtual = new Date(ano, mes - 1, dia);
+    agendaVista = 'dia';
+    await renderizarAgenda();
+}
 function mostrarFeedback(elementId, mensagem, tipo) {
     const el = document.getElementById(elementId);
     if (!el) return;
