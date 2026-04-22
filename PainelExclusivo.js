@@ -681,22 +681,22 @@ function inicializarAgenda() {
     agendaVista = 'dia';
 
     // Usa onclick para evitar listeners duplicados ao navegar de volta
-    const btnDia    = document.getElementById('agenda-btn-dia');
+    const btnDia = document.getElementById('agenda-btn-dia');
     const btnSemana = document.getElementById('agenda-btn-semana');
-    const btnHoje   = document.getElementById('agenda-btn-hoje');
-    const btnPrev   = document.getElementById('agenda-nav-prev');
-    const btnNext   = document.getElementById('agenda-nav-next');
+    const btnHoje = document.getElementById('agenda-btn-hoje');
+    const btnPrev = document.getElementById('agenda-nav-prev');
+    const btnNext = document.getElementById('agenda-nav-next');
 
-    if (btnDia)    btnDia.onclick    = () => { agendaVista = 'dia';    atualizarBotoesVista(); renderizarAgendaVista(); };
+    if (btnDia) btnDia.onclick = () => { agendaVista = 'dia'; atualizarBotoesVista(); renderizarAgendaVista(); };
     if (btnSemana) btnSemana.onclick = () => { agendaVista = 'semana'; atualizarBotoesVista(); renderizarAgendaVista(); };
-    if (btnHoje)   btnHoje.onclick   = () => { agendaDataAtual = new Date(); renderizarAgendaVista(); };
-    if (btnPrev)   btnPrev.onclick   = () => {
+    if (btnHoje) btnHoje.onclick = () => { agendaDataAtual = new Date(); renderizarAgendaVista(); };
+    if (btnPrev) btnPrev.onclick = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() - 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() - 7);
         agendaDataAtual = new Date(agendaDataAtual);
         renderizarAgendaVista();
     };
-    if (btnNext)   btnNext.onclick   = () => {
+    if (btnNext) btnNext.onclick = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() + 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() + 7);
         agendaDataAtual = new Date(agendaDataAtual);
@@ -736,8 +736,8 @@ async function renderizarAgendaVista() {
             const diaStr = dataLocalStr(agendaDataAtual);
             const ehHoje = diaStr === hojeStr;
             const label = ehHoje
-                ? 'Hoje - ' + agendaDataAtual.toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'short' })
-                : agendaDataAtual.toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'long' });
+                ? 'Hoje - ' + agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })
+                : agendaDataAtual.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
             if (navLabel) navLabel.textContent = label.charAt(0).toUpperCase() + label.slice(1);
 
             const consultas = await buscarConsultasDia(diaStr);
@@ -748,15 +748,15 @@ async function renderizarAgendaVista() {
             seg.setDate(seg.getDate() - (seg.getDay() === 0 ? 6 : seg.getDay() - 1));
             const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
             if (navLabel) navLabel.textContent =
-                seg.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' }) + ' – ' +
-                dom.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+                seg.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) + ' – ' +
+                dom.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 
             const inicio = dataLocalStr(seg) + ' 00:00:00';
             const fim = dataLocalStr(dom) + ' 23:59:59';
             const consultas = await buscarConsultasPeriodo(inicio, fim);
             container.innerHTML = renderizarSemana(seg, consultas, hojeStr);
         }
-    } catch(e) {
+    } catch (e) {
         console.error('Erro renderizarAgenda:', e);
         container.innerHTML = '<p style="color:#f87171; font-size:13px;">Erro ao carregar agenda.</p>';
     }
@@ -785,7 +785,7 @@ function renderizarListaDia(consultas, diaStr, ehHoje) {
     return consultas.map(c => {
         const dtI = parseDateLocal(c.data_hora_inicio);
         const dtF = parseDateLocal(c.data_hora_fim);
-        const hora = `${dtI.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })}`;
+        const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
         const statusInfo = getStatusInfo(c.status);
         const origemLabel = c.origem === 'recorrente' ? '[R]' : c.origem === 'online' ? '[O]' : '[M]';
 
@@ -837,7 +837,7 @@ function renderizarSemana(seg, consultas, hojeStr) {
         } else {
             consultasDia.forEach(c => {
                 const dtI = parseDateLocal(c.data_hora_inicio);
-                const hora = dtI.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+                const hora = dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 const statusInfo = getStatusInfo(c.status);
                 const nome = (c.paciente_nome || 'Paciente').split(' ')[0];
                 html += `<div onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})"
@@ -859,14 +859,14 @@ function renderizarSemana(seg, consultas, hojeStr) {
 
 function getStatusInfo(status) {
     const map = {
-        'confirmado':          { cor: '#34d399', bg: 'rgba(52,211,153,0.1)',  label: 'confirmado' },
-        'pendente':            { cor: '#fbbf24', bg: 'rgba(251,191,36,0.1)',  label: 'pendente' },
-        'agendado':            { cor: '#34d399', bg: 'rgba(52,211,153,0.1)',  label: 'agendado' },
-        'realizado':           { cor: '#7c3aed', bg: 'rgba(139,92,246,0.1)', label: 'realizado' },
-        'cancelado':           { cor: '#f87171', bg: 'rgba(248,113,113,0.1)', label: 'cancelado' },
-        'falta_remunerada':    { cor: '#34d399', bg: 'rgba(52,211,153,0.08)', label: 'falta rem.' },
-        'falta_nao_remunerada':{ cor: '#fbbf24', bg: 'rgba(251,191,36,0.08)', label: 'falta n/rem.' },
-        'remarcado':           { cor: '#60a5fa', bg: 'rgba(96,165,250,0.1)',  label: 'remarcado' },
+        'confirmado': { cor: '#34d399', bg: 'rgba(52,211,153,0.1)', label: 'confirmado' },
+        'pendente': { cor: '#fbbf24', bg: 'rgba(251,191,36,0.1)', label: 'pendente' },
+        'agendado': { cor: '#34d399', bg: 'rgba(52,211,153,0.1)', label: 'agendado' },
+        'realizado': { cor: '#7c3aed', bg: 'rgba(139,92,246,0.1)', label: 'realizado' },
+        'cancelado': { cor: '#f87171', bg: 'rgba(248,113,113,0.1)', label: 'cancelado' },
+        'falta_remunerada': { cor: '#34d399', bg: 'rgba(52,211,153,0.08)', label: 'falta rem.' },
+        'falta_nao_remunerada': { cor: '#fbbf24', bg: 'rgba(251,191,36,0.08)', label: 'falta n/rem.' },
+        'remarcado': { cor: '#60a5fa', bg: 'rgba(96,165,250,0.1)', label: 'remarcado' },
     };
     return map[status] || { cor: '#64748b', bg: 'rgba(100,116,139,0.1)', label: status || 'agendado' };
 }
@@ -880,8 +880,18 @@ function abrirModalConsulta(c) {
     const dtF = parseDateLocal(c.data_hora_fim);
     document.getElementById('modal-consulta-nome').textContent = c.paciente_nome || 'Sem paciente';
     document.getElementById('modal-consulta-hora').textContent =
-        ` ${dtI.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })}  •  ${dtI.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' })}`;
+        ` ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}  •  ${dtI.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}`;
     document.getElementById('modal-consulta-status-atual').textContent = `Status: ${getStatusInfo(c.status).label}`;
+    // Mostra contato para agendamentos online
+    const contatoEl = document.getElementById('modal-consulta-contato');
+    if ((c.origem === 'online' || c.origem === 'recorrente') && (c.paciente_email || c.paciente_telefone)) {
+        const tel = c.paciente_telefone ? `📲 <a href="https://wa.me/55${c.paciente_telefone.replace(/\D/g, '')}" target="_blank" style="color:#34d399;text-decoration:none;">${c.paciente_telefone}</a>` : '';
+        const email = c.paciente_email ? `📧 <a href="mailto:${c.paciente_email}" style="color:#34d399;text-decoration:none;">${c.paciente_email}</a>` : '';
+        contatoEl.innerHTML = `🌐 Agendamento online &nbsp;&nbsp; ${[tel, email].filter(Boolean).join(' &nbsp;|&nbsp; ')}`;
+        contatoEl.style.display = 'block';
+    } else {
+        contatoEl.style.display = 'none';
+    }
     document.getElementById('modal-consulta-feedback').style.display = 'none';
     document.getElementById('modal-consulta').style.display = 'flex';
 }
@@ -1086,7 +1096,7 @@ async function verificarConflito(data_hora_inicio, data_hora_fim) {
             { headers: headersAuth() }
         );
         if (res.ok) { const d = await res.json(); return d.conflito; }
-    } catch {}
+    } catch { }
     return false;
 }
 
@@ -1221,22 +1231,22 @@ function inicializarAgendaDashboard() {
     dashDataAtual = new Date();
     dashVista = 'semana';
 
-    const btnDia    = document.getElementById('dash-btn-dia');
+    const btnDia = document.getElementById('dash-btn-dia');
     const btnSemana = document.getElementById('dash-btn-semana');
-    const btnHoje   = document.getElementById('dash-btn-hoje');
-    const btnPrev   = document.getElementById('dash-nav-prev');
-    const btnNext   = document.getElementById('dash-nav-next');
+    const btnHoje = document.getElementById('dash-btn-hoje');
+    const btnPrev = document.getElementById('dash-nav-prev');
+    const btnNext = document.getElementById('dash-nav-next');
 
-    if (btnDia)    btnDia.onclick    = () => { dashVista = 'dia';    atualizarBotoesVistaDash(); renderizarAgendaDashboard(); };
+    if (btnDia) btnDia.onclick = () => { dashVista = 'dia'; atualizarBotoesVistaDash(); renderizarAgendaDashboard(); };
     if (btnSemana) btnSemana.onclick = () => { dashVista = 'semana'; atualizarBotoesVistaDash(); renderizarAgendaDashboard(); };
-    if (btnHoje)   btnHoje.onclick   = () => { dashDataAtual = new Date(); renderizarAgendaDashboard(); };
-    if (btnPrev)   btnPrev.onclick   = () => {
+    if (btnHoje) btnHoje.onclick = () => { dashDataAtual = new Date(); renderizarAgendaDashboard(); };
+    if (btnPrev) btnPrev.onclick = () => {
         if (dashVista === 'dia') dashDataAtual.setDate(dashDataAtual.getDate() - 1);
         else dashDataAtual.setDate(dashDataAtual.getDate() - 7);
         dashDataAtual = new Date(dashDataAtual);
         renderizarAgendaDashboard();
     };
-    if (btnNext)   btnNext.onclick   = () => {
+    if (btnNext) btnNext.onclick = () => {
         if (dashVista === 'dia') dashDataAtual.setDate(dashDataAtual.getDate() + 1);
         else dashDataAtual.setDate(dashDataAtual.getDate() + 7);
         dashDataAtual = new Date(dashDataAtual);
@@ -1273,8 +1283,8 @@ async function renderizarAgendaDashboard() {
             const diaStr = dataLocalStr(dashDataAtual);
             const ehHoje = diaStr === hojeStr;
             const label = ehHoje
-                ? 'Hoje - ' + dashDataAtual.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'short' })
-                : dashDataAtual.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'short' });
+                ? 'Hoje - ' + dashDataAtual.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })
+                : dashDataAtual.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' });
             if (navLabel) navLabel.textContent = label.charAt(0).toUpperCase() + label.slice(1);
 
             const consultas = await buscarConsultasDia(diaStr);
@@ -1290,7 +1300,7 @@ async function renderizarAgendaDashboard() {
                 const dtF = parseDateLocal(c.data_hora_fim);
                 const statusInfo = getStatusInfo(c.status);
                 return `<div class="dash-consulta-item" onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})" style="cursor:pointer; border-left:3px solid ${statusInfo.cor}; padding-left:10px;">
-                    <span class="dash-consulta-hora">${dtI.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })}</span>
+                    <span class="dash-consulta-hora">${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
                     <span class="dash-consulta-nome">${c.paciente_nome || 'Sem paciente'}</span>
                     <span class="dash-consulta-status" style="color:${statusInfo.cor};">${statusInfo.label}</span>
                 </div>`;
@@ -1301,8 +1311,8 @@ async function renderizarAgendaDashboard() {
             seg.setDate(seg.getDate() - (seg.getDay() === 0 ? 6 : seg.getDay() - 1));
             const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
             if (navLabel) navLabel.textContent =
-                seg.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' }) + ' - ' +
-                dom.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
+                seg.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) + ' - ' +
+                dom.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
 
             const inicio = dataLocalStr(seg) + ' 00:00:00';
             const fim = dataLocalStr(dom) + ' 23:59:59';
@@ -1314,7 +1324,7 @@ async function renderizarAgendaDashboard() {
             }
             container.innerHTML = renderizarSemana(seg, consultas, hojeStr);
         }
-    } catch(e) {
+    } catch (e) {
         console.error('Erro renderizarAgendaDashboard:', e);
         container.innerHTML = '<p style="color:#f87171; font-size:13px;">Erro ao carregar agenda.</p>';
     }
