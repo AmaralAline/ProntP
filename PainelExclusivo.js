@@ -523,7 +523,7 @@ if (evolucaoForm) {
                                     origem: consultaDoPaciente.origem,
                                     id: consultaDoPaciente.id,
                                     data_consulta: dataConsulta,
-                                    hora_inicio: consultaDoPaciente.data_hora_inicio.split(' ')[1] || '',
+                                    hora_inicio: (consultaDoPaciente.data_hora_inicio.split(' ')[1] || '').substring(0, 8),
                                     novo_status: 'realizado',
                                     recorrente_id: consultaDoPaciente.recorrente_id || null
                                 })
