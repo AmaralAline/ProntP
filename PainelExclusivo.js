@@ -532,7 +532,8 @@ if (evolucaoForm) {
                             renderizarAgendaDashboard();
                         }
                     }
-                } catch(e) { console.log('Nao foi possivel marcar consulta como realizada:', e); } else {
+                } catch (e) { console.log('Nao foi possivel marcar consulta como realizada:', e); }
+            } else {
                 mostrarFeedback('evolucao-error', 'Erro ao salvar evolução.', 'erro');
             }
         } catch (err) {
