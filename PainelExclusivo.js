@@ -1307,6 +1307,11 @@ async function renderizarAgendaDashboard() {
             const inicio = dataLocalStr(seg) + ' 00:00:00';
             const fim = dataLocalStr(dom) + ' 23:59:59';
             const consultas = await buscarConsultasPeriodo(inicio, fim);
+            const countEl = document.getElementById('dash-consultas-hoje');
+            if (countEl) {
+                const hojeConsultas = consultas.filter(c => dataLocalStr(parseDateLocal(c.data_hora_inicio)) === hojeStr);
+                countEl.textContent = hojeConsultas.length;
+            }
             container.innerHTML = renderizarSemana(seg, consultas, hojeStr);
         }
     } catch(e) {
