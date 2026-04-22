@@ -1176,13 +1176,115 @@ async function carregarDashboard() {
     if (totalEl) totalEl.textContent = pacientes.length;
 
     // Consultas de hoje
-    await carregarConsultasHojeDashboard();
+    inicializarAgendaDashboard()
     await carregarAgendaLateral();
 
     // Formulários pendentes e respondidos
     await carregarEstatisticasFormularios();
 }
+// ============================================================
+//  DASHBOARD — AGENDA NAVEGÁVEL
+// ============================================================
+let dashVista = 'dia';
+let dashDataAtual = new Date();
 
+function inicializarAgendaDashboard() {
+    dashDataAtual = new Date();
+    dashVista = 'dia';
+
+    const btnDia    = document.getElementById('dash-btn-dia');
+    const btnSemana = document.getElementById('dash-btn-semana');
+    const btnHoje   = document.getElementById('dash-btn-hoje');
+    const btnPrev   = document.getElementById('dash-nav-prev');
+    const btnNext   = document.getElementById('dash-nav-next');
+
+    if (btnDia)    btnDia.onclick    = () => { dashVista = 'dia';    atualizarBotoesVistaDash(); renderizarAgendaDashboard(); };
+    if (btnSemana) btnSemana.onclick = () => { dashVista = 'semana'; atualizarBotoesVistaDash(); renderizarAgendaDashboard(); };
+    if (btnHoje)   btnHoje.onclick   = () => { dashDataAtual = new Date(); renderizarAgendaDashboard(); };
+    if (btnPrev)   btnPrev.onclick   = () => {
+        if (dashVista === 'dia') dashDataAtual.setDate(dashDataAtual.getDate() - 1);
+        else dashDataAtual.setDate(dashDataAtual.getDate() - 7);
+        dashDataAtual = new Date(dashDataAtual);
+        renderizarAgendaDashboard();
+    };
+    if (btnNext)   btnNext.onclick   = () => {
+        if (dashVista === 'dia') dashDataAtual.setDate(dashDataAtual.getDate() + 1);
+        else dashDataAtual.setDate(dashDataAtual.getDate() + 7);
+        dashDataAtual = new Date(dashDataAtual);
+        renderizarAgendaDashboard();
+    };
+    atualizarBotoesVistaDash();
+    renderizarAgendaDashboard();
+}
+
+function atualizarBotoesVistaDash() {
+    const btnDia = document.getElementById('dash-btn-dia');
+    const btnSemana = document.getElementById('dash-btn-semana');
+    if (!btnDia || !btnSemana) return;
+    if (dashVista === 'dia') {
+        btnDia.style.background = '#7c3aed'; btnDia.style.color = '#fff'; btnDia.style.border = '1px solid #7c3aed';
+        btnSemana.style.background = '#1a2332'; btnSemana.style.color = '#64748b'; btnSemana.style.border = '1px solid rgba(139,92,246,0.2)';
+    } else {
+        btnSemana.style.background = '#7c3aed'; btnSemana.style.color = '#fff'; btnSemana.style.border = '1px solid #7c3aed';
+        btnDia.style.background = '#1a2332'; btnDia.style.color = '#64748b'; btnDia.style.border = '1px solid rgba(139,92,246,0.2)';
+    }
+}
+
+async function renderizarAgendaDashboard() {
+    const container = document.getElementById('dashboard-agenda-hoje');
+    if (!container) return;
+    container.innerHTML = '<p style="color:#64748b; font-size:13px;">Carregando...</p>';
+
+    const hoje = new Date();
+    const hojeStr = dataLocalStr(hoje);
+    const navLabel = document.getElementById('dash-nav-label');
+
+    try {
+        if (dashVista === 'dia') {
+            const diaStr = dataLocalStr(dashDataAtual);
+            const ehHoje = diaStr === hojeStr;
+            const label = ehHoje
+                ? 'Hoje - ' + dashDataAtual.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'short' })
+                : dashDataAtual.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'short' });
+            if (navLabel) navLabel.textContent = label.charAt(0).toUpperCase() + label.slice(1);
+
+            const consultas = await buscarConsultasDia(diaStr);
+            const countEl = document.getElementById('dash-consultas-hoje');
+            if (countEl) countEl.textContent = consultas.length;
+
+            if (!consultas.length) {
+                container.innerHTML = '<p class="dash-vazio">Nenhuma consulta neste dia.</p>';
+                return;
+            }
+            container.innerHTML = consultas.map(c => {
+                const dtI = parseDateLocal(c.data_hora_inicio);
+                const dtF = parseDateLocal(c.data_hora_fim);
+                const statusInfo = getStatusInfo(c.status);
+                return `<div class="dash-consulta-item" onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})" style="cursor:pointer; border-left:3px solid ${statusInfo.cor}; padding-left:10px;">
+                    <span class="dash-consulta-hora">${dtI.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })}</span>
+                    <span class="dash-consulta-nome">${c.paciente_nome || 'Sem paciente'}</span>
+                    <span class="dash-consulta-status" style="color:${statusInfo.cor};">${statusInfo.label}</span>
+                </div>`;
+            }).join('');
+
+        } else {
+            const seg = new Date(dashDataAtual);
+            seg.setDate(seg.getDate() - (seg.getDay() === 0 ? 6 : seg.getDay() - 1));
+            const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
+            if (navLabel) navLabel.textContent =
+                seg.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' }) + ' - ' +
+                dom.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
+
+            const inicio = dataLocalStr(seg) + ' 00:00:00';
+            const fim = dataLocalStr(dom) + ' 23:59:59';
+            const consultas = await buscarConsultasPeriodo(inicio, fim);
+            container.innerHTML = renderizarSemana(seg, consultas, hojeStr);
+        }
+    } catch(e) {
+        console.error('Erro renderizarAgendaDashboard:', e);
+        container.innerHTML = '<p style="color:#f87171; font-size:13px;">Erro ao carregar agenda.</p>';
+    }
+}
 async function carregarConsultasHojeDashboard() {
     const hoje = new Date();
     const diaStr = dataLocalStr(hoje);
