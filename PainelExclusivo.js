@@ -608,7 +608,7 @@ if (agendaForm) {
             if (res.ok) {
                 mostrarFeedback('agenda-error', '? Consulta agendada com sucesso!', 'sucesso');
                 agendaForm.reset();
-                await renderizarAgendaVista();
+                await renderizarAgenda();
                 await carregarRecorrentes();
             } else {
                 mostrarFeedback('agenda-error', 'Erro ao agendar consulta.', 'erro');
@@ -658,24 +658,24 @@ function inicializarAgenda() {
     const btnPrev = document.getElementById('agenda-nav-prev');
     const btnNext = document.getElementById('agenda-nav-next');
 
-    if (btnDia) btnDia.onclick = () => { agendaVista = 'dia'; atualizarBotoesVista(); renderizarAgendaVista(); };
-    if (btnSemana) btnSemana.onclick = () => { agendaVista = 'semana'; atualizarBotoesVista(); renderizarAgendaVista(); };
-    if (btnHoje) btnHoje.onclick = () => { agendaDataAtual = new Date(); renderizarAgendaVista(); };
+    if (btnDia) btnDia.onclick = () => { agendaVista = 'dia'; atualizarBotoesVista(); renderizarAgenda(); };
+    if (btnSemana) btnSemana.onclick = () => { agendaVista = 'semana'; atualizarBotoesVista(); renderizarAgenda(); };
+    if (btnHoje) btnHoje.onclick = () => { agendaDataAtual = new Date(); renderizarAgenda(); };
     if (btnPrev) btnPrev.onclick = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() - 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() - 7);
         agendaDataAtual = new Date(agendaDataAtual);
-        renderizarAgendaVista();
+        renderizarAgenda();
     };
     if (btnNext) btnNext.onclick = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() + 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() + 7);
         agendaDataAtual = new Date(agendaDataAtual);
-        renderizarAgendaVista();
+        renderizarAgenda();
     };
 
     atualizarBotoesVista();
-    renderizarAgendaVista();
+    renderizarAgenda();
 }
 
 function bindBotoesAgenda() { /* descontinuado — lógica movida para inicializarAgenda */ }
@@ -693,7 +693,7 @@ function atualizarBotoesVista() {
     }
 }
 
-async function renderizarAgendaVista() {
+async function renderizarAgenda() {
     const container = document.getElementById('agenda-vista-container');
     if (!container) return;
     container.innerHTML = '<p style="color:#64748b; font-size:13px; padding:12px 0;">Carregando...</p>';
@@ -756,7 +756,7 @@ function renderizarListaDia(consultas, diaStr, ehHoje) {
     return consultas.map(c => {
         const dtI = parseDateLocal(c.data_hora_inicio);
         const dtF = parseDateLocal(c.data_hora_fim);
-        const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        const hora = `${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
         const statusInfo = getStatusInfo(c.status);
         const origemLabel = c.origem === 'recorrente' ? '' : c.origem === 'online' ? '' : '';
 
@@ -851,7 +851,7 @@ function abrirModalConsulta(c) {
     const dtF = parseDateLocal(c.data_hora_fim);
     document.getElementById('modal-consulta-nome').textContent = c.paciente_nome || 'Sem paciente';
     document.getElementById('modal-consulta-hora').textContent =
-        ` ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}  •  ${dtI.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}`;
+        ` ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}  •  ${dtI.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}`;
     document.getElementById('modal-consulta-status-atual').textContent = `Status: ${getStatusInfo(c.status).label}`;
     document.getElementById('modal-consulta-feedback').style.display = 'none';
     document.getElementById('modal-consulta').style.display = 'flex';
@@ -892,7 +892,7 @@ async function acaoConsultaStatus(novoStatus) {
         if (res.ok) {
             fb.style.color = '#34d399';
             fb.textContent = '? ' + getStatusInfo(novoStatus).label.charAt(0).toUpperCase() + getStatusInfo(novoStatus).label.slice(1);
-            setTimeout(() => { fecharModalConsulta(); renderizarAgendaVista(); carregarConsultasHojeDashboard(); }, 1000);
+            setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171';
             fb.textContent = data.erro || 'Erro ao atualizar.';
@@ -938,7 +938,7 @@ async function acaoConsultaCancelar() {
         const data = await res.json();
         if (res.ok) {
             fb.style.color = '#f87171'; fb.textContent = '? Cancelado';
-            setTimeout(() => { fecharModalConsulta(); renderizarAgendaVista(); carregarConsultasHojeDashboard(); }, 1000);
+            setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171'; fb.textContent = data.erro || 'Erro ao cancelar.';
         }
@@ -996,7 +996,7 @@ async function confirmarRemarcar() {
             setTimeout(() => {
                 document.getElementById('modal-remarcar').style.display = 'none';
                 fecharModalConsulta();
-                renderizarAgendaVista();
+                renderizarAgenda();
                 carregarConsultasHojeDashboard();
             }, 1000);
         } else {
@@ -1057,14 +1057,14 @@ async function verificarConflito(data_hora_inicio, data_hora_fim) {
 async function carregarAgendaHoje() {
     agendaDataAtual = new Date();
     agendaVista = 'dia';
-    await renderizarAgendaVista();
+    await renderizarAgenda();
 }
 
 async function carregarAgendaDia(dataStr) {
     const [ano, mes, dia] = dataStr.split('-').map(Number);
     agendaDataAtual = new Date(ano, mes - 1, dia);
     agendaVista = 'dia';
-    await renderizarAgendaVista();
+    await renderizarAgenda();
 }
 function mostrarFeedback(elementId, mensagem, tipo) {
     const el = document.getElementById(elementId);
@@ -3072,5 +3072,3 @@ function atualizarBadgeMenuVitrine(ativo) {
     const badge = document.getElementById('vitrine-badge-ativo');
     if (badge) badge.style.display = ativo ? 'inline' : 'none';
 }
-
-
