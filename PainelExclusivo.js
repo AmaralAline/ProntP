@@ -1018,24 +1018,23 @@ async function confirmarRemarcar() {
 
 function acaoConsultaProntuario() {
     if (!consultaSelecionada) return;
-    fecharModalConsulta();
-    // Navega para prontuário e pré-seleciona o paciente
     const nomePaciente = consultaSelecionada.paciente_nome;
-    // Abre seção evolução
-    document.querySelector('[aria-controls="evolucao-section"]')?.click();
-    // Tenta selecionar o paciente pelo nome no select
+    fecharModalConsulta();
     setTimeout(() => {
-        const sel = document.getElementById('paciente');
-        if (sel && nomePaciente) {
-            for (const opt of sel.options) {
-                if (opt.text.trim().toLowerCase() === nomePaciente.trim().toLowerCase()) {
-                    sel.value = opt.value;
-                    sel.dispatchEvent(new Event('change'));
-                    break;
+        document.querySelector('[aria-controls="evolucao-section"]')?.click();
+        setTimeout(() => {
+            const sel = document.getElementById('paciente');
+            if (sel && nomePaciente) {
+                for (const opt of sel.options) {
+                    if (opt.text.trim().toLowerCase() === nomePaciente.trim().toLowerCase()) {
+                        sel.value = opt.value;
+                        sel.dispatchEvent(new Event('change'));
+                        break;
+                    }
                 }
             }
-        }
-    }, 400);
+        }, 400);
+    }, 50);
 }
 
 // Fecha modais ao clicar fora
