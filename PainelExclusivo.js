@@ -377,13 +377,13 @@ function renderizarListaPacientes() {
                             </button>
                         </td>
                         <td style="padding:12px 16px;">
-                            <button onclick="confirmarArquivarPaciente(${p.id}, '${p.nome.replace(/'/g, & quot; \\'&quot;)}') "
-    style = "background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;" >
-        <i class="fas fa-archive"></i> Arquivar
-                            </button >
-                        </td >
-                    </tr >
-        `).join('')}
+                            <button onclick="confirmarArquivarPaciente(${p.id}, ${JSON.stringify(p.nome)})"
+                                style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-archive"></i> Arquivar
+                            </button>
+                        </td>
+                    </tr>
+                `).join('')}
             </tbody>
         </table>
     `;
