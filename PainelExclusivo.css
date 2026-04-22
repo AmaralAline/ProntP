@@ -1949,3 +1949,121 @@ body.politica-pendente #faixa-politica {
         -webkit-overflow-scrolling: touch;
     }
 }
+
+/* ============================================================
+   CORREÇÕES ESPECÍFICAS POR ABA — MOBILE (até 600px)
+   ============================================================ */
+@media (max-width: 600px) {
+
+    /* ── VITRINE ── */
+    /* Preview ao lado → embaixo */
+    #vitrine-section .vitrine-layout,
+    [id*="vitrine"] .two-col,
+    .vitrine-preview-col {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    /* ── PERFIL ── */
+    /* Grid de 2 colunas → 1 coluna */
+    #perfil-section .perfil-grid,
+    #perfil-section [style*="grid-template-columns"],
+    #perfil-section [style*="display: grid"],
+    #perfil-section [style*="display:grid"] {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* ── FINANCEIRO ── */
+    #financeiro-section [style*="grid-template-columns"],
+    #financeiro-section [style*="display: grid"],
+    #financeiro-section [style*="display:grid"] {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #financeiro-section [style*="display: flex"],
+    #financeiro-section [style*="display:flex"] {
+        flex-wrap: wrap !important;
+    }
+
+    /* ── RECIBOS ── */
+    #recibos-section [style*="grid-template-columns"],
+    #recibos-section [style*="display: grid"],
+    #recibos-section [style*="display:grid"] {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Tabela de recibos com scroll */
+    #recibos-section table,
+    #recibos-section [style*="overflow"] {
+        display: block !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-width: 100% !important;
+    }
+
+    /* ── RESULTADOS ── */
+    #resultados-section [style*="display: flex"],
+    #resultados-section [style*="display:flex"] {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    #resultados-section select,
+    #resultados-section button {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    #resultados-section table {
+        display: block !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* ── AGENDA ONLINE ── */
+    #agenda-online-section [style*="display: grid"],
+    #agenda-online-section [style*="display:grid"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    #agenda-online-section [style*="display: flex"],
+    #agenda-online-section [style*="display:flex"] {
+        flex-wrap: wrap !important;
+    }
+
+    #agenda-online-section input,
+    #agenda-online-section select {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
+    /* ── GERAL: qualquer grid de 2+ colunas vira 1 coluna ── */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="grid-template-columns:1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Textos que ultrapassam a tela */
+    p, span, div, td, th {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Botões que ultrapassam */
+    button {
+        max-width: 100% !important;
+        white-space: normal !important;
+    }
+
+    /* Inputs que ultrapassam */
+    input, select, textarea {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
