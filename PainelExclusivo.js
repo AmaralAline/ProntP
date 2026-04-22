@@ -3227,26 +3227,3 @@ function atualizarBadgeMenuVitrine(ativo) {
     const badge = document.getElementById('vitrine-badge-ativo');
     if (badge) badge.style.display = ativo ? 'inline' : 'none';
 }
-// ========== ENVIAR ESCALA VIA WHATSAPP ==========
-function enviarEscalaWhatsApp() {
-    const link = document.getElementById('url-link-gerado')?.value;
-    if (!link) return;
-
-    // Pega nome do paciente e da escala selecionados
-    const selectPaciente = document.getElementById('paciente-form');
-    const selectEscala = document.getElementById('tipo-formulario');
-    const nomePaciente = selectPaciente?.options[selectPaciente.selectedIndex]?.text || 'paciente';
-    const nomeEscala = selectEscala?.options[selectEscala.selectedIndex]?.text || 'questionário';
-
-    const msg = `Olá, ${nomePaciente}! 😊
-
-Sua psicóloga enviou um questionário para você responder: *${nomeEscala}*
-
-Clique no link abaixo para responder:
-${link}
-
-_Este link é pessoal e expira em 7 dias._`;
-
-    const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
-}
