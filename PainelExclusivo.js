@@ -133,9 +133,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hamburger = document.querySelector('.hamburger');
     const sidebar = document.querySelector('.sidebar');
     if (hamburger && sidebar) {
+        const overlay = document.getElementById('sidebar-overlay');
+
+        function abrirSidebar() {
+            sidebar.classList.add('open');
+            hamburger.setAttribute('aria-expanded', 'true');
+            if (overlay) overlay.classList.add('ativo');
+        }
+
+        function fecharSidebar() {
+            sidebar.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            if (overlay) overlay.classList.remove('ativo');
+        }
+
         hamburger.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            hamburger.setAttribute('aria-expanded', sidebar.classList.contains('open'));
+            sidebar.classList.contains('open') ? fecharSidebar() : abrirSidebar();
+        });
+
+        // Fecha sidebar ao tocar no overlay (mobile)
+        if (overlay) {
+            overlay.addEventListener('click', fecharSidebar);
+        }
+
+        // Fecha sidebar ao clicar em item do menu (mobile)
+        sidebar.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 900) fecharSidebar();
+            });
         });
     }
 

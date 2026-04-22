@@ -1787,3 +1787,165 @@ body.politica-pendente #faixa-politica {
 #clock-section .dashboard-section {
     width: 100%;
 }
+/* ============================================================
+   MOBILE — telas até 600px
+   ============================================================ */
+@media (max-width: 600px) {
+
+    /* Conteúdo principal com espaço pro hamburger */
+    .main-content {
+        margin-left: 0;
+        padding: 64px 12px 24px;
+    }
+
+    /* Dashboard cards: 2 colunas no mobile */
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .dash-card {
+        padding: 14px 12px;
+        gap: 10px;
+    }
+
+    .dash-card-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .dash-card-value {
+        font-size: 22px;
+    }
+
+    .dash-card-label {
+        font-size: 10px;
+    }
+
+    /* Dashboard header empilhado */
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-titulo {
+        font-size: 18px;
+    }
+
+    /* Seções do dashboard em coluna */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Agenda */
+    .agenda-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Vista semana da agenda: scroll horizontal */
+    .agenda-semana-grid {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Cadastro e evoluções */
+    .cadastro-layout,
+    .evolucao-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Tabelas com scroll horizontal */
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+    }
+
+    /* Cards gerais */
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modais ocupam tela toda */
+    .modal-content {
+        width: 96%;
+        padding: 16px;
+    }
+
+    /* Botões de ação em coluna */
+    .btn-group {
+        flex-direction: column;
+    }
+
+    /* Formulários com padding menor */
+    .form-section,
+    .card,
+    .section-card {
+        padding: 16px 12px;
+    }
+
+    /* Hamburger maior para toque */
+    .hamburger {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    /* Sidebar fecha ao clicar fora — overlay */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 99;
+    }
+
+        .sidebar-overlay.ativo {
+            display: block;
+        }
+
+    /* Sidebar ocupa mais espaço no mobile */
+    .sidebar {
+        width: 260px;
+    }
+
+    /* Textos menores em cabeçalhos */
+    h2, .section-title {
+        font-size: 16px !important;
+    }
+
+    /* Agenda vista dia: blocos empilhados */
+    .agenda-dia-col {
+        min-width: 100%;
+    }
+
+    /* Inputs e selects largura total */
+    input, select, textarea {
+        font-size: 16px !important; /* evita zoom automático no iOS */
+    }
+}
+
+/* ============================================================
+   TABLET — telas entre 601px e 900px
+   ============================================================ */
+@media (min-width: 601px) and (max-width: 900px) {
+
+    .main-content {
+        padding: 72px 20px 24px;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
