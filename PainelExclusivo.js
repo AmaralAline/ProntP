@@ -1776,7 +1776,7 @@ async function carregarAgendamentosOnline() {
                     <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500; background:${cores[a.status]}22; color:${cores[a.status]};">${a.status}</span>
                 </td>
                 <td style="padding:12px 16px;">
-                    ${a.status === 'confirmado' ? `<button onclick="cancelarAgendamentoOnline(${a.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">Cancelar</button>` : '—'}
+                    ${a.status === 'confirmado' ? `<button onclick="cancelarAgendamentoOnline(${a.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:5px 12px; cursor:pointer; font-size:12px; font-family:'Roboto',sans-serif;">Cancelar</button>` : '-'}
                 </td>
             </tr>
         `).join('');
