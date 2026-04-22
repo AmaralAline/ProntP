@@ -2067,3 +2067,198 @@ body.politica-pendente #faixa-politica {
         box-sizing: border-box !important;
     }
 }
+
+/* ============================================================
+   CLASSES DE GRID RESPONSIVAS (substituem estilos inline)
+   ============================================================ */
+
+/* Grid 2 colunas padrão */
+.grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Grid 3 colunas padrão */
+.grid-3col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+/* Grid vitrine: form + preview */
+.grid-vitrine {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Grid vitrine especialidades */
+.grid-vitrine-esp {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 12px;
+}
+
+/* Mobile: tudo vira 1 coluna */
+@media (max-width: 600px) {
+    .grid-2col,
+    .grid-3col,
+    .grid-vitrine,
+    .grid-vitrine-esp {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+}
+
+/* ============================================================
+   CORREÇÃO GLOBAL DE OVERFLOW — evita scroll horizontal na página
+   ============================================================ */
+html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+
+.main-content {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+}
+
+section {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+/* Filtros do financeiro, recibos etc — quebram em coluna no mobile */
+@media (max-width: 600px) {
+    /* Filtros com flex */
+    .form-card [style*="display:flex"],
+    .form-card [style*="display: flex"] {
+        flex-wrap: wrap !important;
+    }
+
+    .form-card select,
+    .form-card input[type="number"],
+    .form-card input[type="text"],
+    .form-card input[type="email"] {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Tabelas — scroll horizontal dentro do container */
+    .form-card table,
+    section table {
+        min-width: 500px;
+    }
+
+    [style*="overflow-x:auto"],
+    [style*="overflow-x: auto"] {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-width: 100% !important;
+    }
+
+    /* Página de perfil — max-width 100% */
+    .form-card {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Termos — tabela */
+    #termos-section table {
+        min-width: 400px;
+        display: block;
+        overflow-x: auto;
+    }
+
+    /* Resultados — select e botão em coluna */
+    #resultados-section [style*="display:flex"],
+    #resultados-section [style*="display: flex"] {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    #resultados-section select {
+        width: 100% !important;
+    }
+
+    #resultados-section button {
+        width: 100% !important;
+    }
+
+    /* Recibos — tabela com scroll */
+    #recibos-section [style*="overflow"] {
+        overflow-x: auto !important;
+    }
+
+    /* Agenda online — inputs lado a lado viram coluna */
+    #agenda-online-section [style*="display:flex"],
+    #agenda-online-section [style*="display: flex"] {
+        flex-wrap: wrap !important;
+    }
+
+    #agenda-online-section input,
+    #agenda-online-section select,
+    #agenda-online-section button {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* ============================================================
+   FORM-CARD E TABLE-CARD MOBILE
+   ============================================================ */
+@media (max-width: 600px) {
+
+    /* Remove max-width nos cards de formulário */
+    .form-card-mobile {
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Tabelas com scroll horizontal */
+    .table-card {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-width: 100% !important;
+    }
+
+        .table-card table {
+            min-width: 480px;
+        }
+
+    /* Financeiro: filtros empilham */
+    #financeiro-section .form-card [style*="display:flex"],
+    #financeiro-section .form-card [style*="display: flex"] {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    #financeiro-section select,
+    #financeiro-section input[type="number"] {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Pacientes: tabela de lista */
+    #cadastro-section table {
+        min-width: 600px;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Recibos: grid data/valor */
+    #recibos-section .grid-2col {
+        flex-direction: column !important;
+    }
+
+    /* Agenda online: blocos de horário */
+    #agenda-online-section [style*="display:flex; gap"],
+    #agenda-online-section [style*="display: flex; gap"] {
+        flex-direction: column !important;
+    }
+}
