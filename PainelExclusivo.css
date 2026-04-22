@@ -1757,3 +1757,19 @@ body.politica-pendente #faixa-politica {
     .bug-sucesso button:hover {
         background: rgba(5, 150, 105, 0.25);
     }
+
+/* Agenda navegável no dashboard — largura total */
+#clock-section .dashboard-section:last-child {
+    margin-top: 24px;
+}
+
+    #clock-section .dashboard-section:last-child #dashboard-agenda-hoje {
+        min-height: 300px;
+    }
+#clock-section.active-section {
+    max-width: 100%;
+}
+
+#clock-section .dashboard-section {
+    width: 100%;
+}
