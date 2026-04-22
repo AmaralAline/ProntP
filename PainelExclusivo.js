@@ -1168,7 +1168,7 @@ async function carregarDashboard() {
     if (tituloEl) {
         const nomeSpan = document.getElementById('nome-profissional');
         const nome = nomeSpan?.textContent || profissional.nome || 'Profissional';
-        tituloEl.innerHTML = `${saudacao}, <span id="nome-profissional">${nome}</span> ??`;
+        tituloEl.innerHTML = `${saudacao}, <span id="nome-profissional">${nome}</span>`;
     }
 
     // Total de pacientes
@@ -1212,14 +1212,15 @@ async function carregarConsultasHojeDashboard() {
         container.innerHTML = consultas.map(c => {
             const dtInicio = parseDateLocal(c.data_hora_inicio);
             const dtFim = parseDateLocal(c.data_hora_fim);
+            const statusInfo = getStatusInfo(c.status);
             return `
-            <div class="dash-consulta-item">
+            <div class="dash-consulta-item" onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})" style="cursor:pointer; border-left:3px solid ${statusInfo.cor}; padding-left:10px;">
                 <span class="dash-consulta-hora">
-                     ${dtInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    ${dtInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                     - ${dtFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                 </span>
                 <span class="dash-consulta-nome">${c.paciente_nome || 'Sem paciente'}</span>
-                <span class="dash-consulta-status">${c.status || 'agendado'}</span>
+                <span class="dash-consulta-status" style="color:${statusInfo.cor};">${statusInfo.label}</span>
             </div>
         `}).join('');
 
