@@ -608,7 +608,7 @@ if (agendaForm) {
             if (res.ok) {
                 mostrarFeedback('agenda-error', '? Consulta agendada com sucesso!', 'sucesso');
                 agendaForm.reset();
-                await renderizarAgenda();
+                await renderizarAgendaVista();
                 await carregarRecorrentes();
             } else {
                 mostrarFeedback('agenda-error', 'Erro ao agendar consulta.', 'erro');
@@ -658,24 +658,24 @@ function inicializarAgenda() {
     const btnPrev   = document.getElementById('agenda-nav-prev');
     const btnNext   = document.getElementById('agenda-nav-next');
 
-    if (btnDia)    btnDia.onclick    = () => { agendaVista = 'dia';    atualizarBotoesVista(); renderizarAgenda(); };
-    if (btnSemana) btnSemana.onclick = () => { agendaVista = 'semana'; atualizarBotoesVista(); renderizarAgenda(); };
-    if (btnHoje)   btnHoje.onclick   = () => { agendaDataAtual = new Date(); renderizarAgenda(); };
+    if (btnDia)    btnDia.onclick    = () => { agendaVista = 'dia';    atualizarBotoesVista(); renderizarAgendaVista(); };
+    if (btnSemana) btnSemana.onclick = () => { agendaVista = 'semana'; atualizarBotoesVista(); renderizarAgendaVista(); };
+    if (btnHoje)   btnHoje.onclick   = () => { agendaDataAtual = new Date(); renderizarAgendaVista(); };
     if (btnPrev)   btnPrev.onclick   = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() - 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() - 7);
         agendaDataAtual = new Date(agendaDataAtual);
-        renderizarAgenda();
+        renderizarAgendaVista();
     };
     if (btnNext)   btnNext.onclick   = () => {
         if (agendaVista === 'dia') agendaDataAtual.setDate(agendaDataAtual.getDate() + 1);
         else agendaDataAtual.setDate(agendaDataAtual.getDate() + 7);
         agendaDataAtual = new Date(agendaDataAtual);
-        renderizarAgenda();
+        renderizarAgendaVista();
     };
 
     atualizarBotoesVista();
-    renderizarAgenda();
+    renderizarAgendaVista();
 }
 
 function bindBotoesAgenda() { /* descontinuado - lógica movida para inicializarAgenda */ }
@@ -693,7 +693,7 @@ function atualizarBotoesVista() {
     }
 }
 
-async function renderizarAgenda() {
+async function renderizarAgendaVista() {
     const container = document.getElementById('agenda-vista-container');
     if (!container) return;
     container.innerHTML = '<p style="color:#64748b; font-size:13px; padding:12px 0;">Carregando...</p>';
@@ -804,7 +804,7 @@ function renderizarSemana(seg, consultas, hojeStr) {
             </div>`;
 
         if (!consultasDia.length) {
-            html += `<div style="font-size:11px; color:#334155; text-align:center; padding:8px 0;">—</div>`;
+            html += `<div style="font-size:11px; color:#334155; text-align:center; padding:8px 0;">-</div>`;
         } else {
             consultasDia.forEach(c => {
                 const dtI = parseDateLocal(c.data_hora_inicio);
@@ -892,7 +892,7 @@ async function acaoConsultaStatus(novoStatus) {
         if (res.ok) {
             fb.style.color = '#34d399';
             fb.textContent = '? ' + getStatusInfo(novoStatus).label.charAt(0).toUpperCase() + getStatusInfo(novoStatus).label.slice(1);
-            setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
+            setTimeout(() => { fecharModalConsulta(); renderizarAgendaVista(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171';
             fb.textContent = data.erro || 'Erro ao atualizar.';
@@ -938,7 +938,7 @@ async function acaoConsultaCancelar() {
         const data = await res.json();
         if (res.ok) {
             fb.style.color = '#f87171'; fb.textContent = '? Cancelado';
-            setTimeout(() => { fecharModalConsulta(); renderizarAgenda(); carregarConsultasHojeDashboard(); }, 1000);
+            setTimeout(() => { fecharModalConsulta(); renderizarAgendaVista(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171'; fb.textContent = data.erro || 'Erro ao cancelar.';
         }
@@ -996,7 +996,7 @@ async function confirmarRemarcar() {
             setTimeout(() => {
                 document.getElementById('modal-remarcar').style.display = 'none';
                 fecharModalConsulta();
-                renderizarAgenda();
+                renderizarAgendaVista();
                 carregarConsultasHojeDashboard();
             }, 1000);
         } else {
@@ -1057,14 +1057,14 @@ async function verificarConflito(data_hora_inicio, data_hora_fim) {
 async function carregarAgendaHoje() {
     agendaDataAtual = new Date();
     agendaVista = 'dia';
-    await renderizarAgenda();
+    await renderizarAgendaVista();
 }
 
 async function carregarAgendaDia(dataStr) {
     const [ano, mes, dia] = dataStr.split('-').map(Number);
     agendaDataAtual = new Date(ano, mes - 1, dia);
     agendaVista = 'dia';
-    await renderizarAgenda();
+    await renderizarAgendaVista();
 }
 function mostrarFeedback(elementId, mensagem, tipo) {
     const el = document.getElementById(elementId);
@@ -2244,7 +2244,7 @@ async function carregarRecorrentes() {
             <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 10px; background:#0f1621; border-radius:6px; margin-bottom:6px;">
                 <div>
                     <span style="color:#e2e8f0; font-weight:500;">${r.paciente_nome}</span>
-                    <span style="color:#64748b; margin:0 6px;">—</span>
+                    <span style="color:#64748b; margin:0 6px;">-</span>
                     <span style="color:#a78bfa;">${diasNomes[r.dia_semana]}</span>
                     <span style="color:#64748b; margin:0 4px;">${r.hora_inicio.substring(0, 5)}</span>
                     <span style="color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</span>
@@ -2699,7 +2699,7 @@ async function carregarFinanceiro() {
             const stripeId = ag.stripe_payment_intent || ag.stripe_session_id || null;
             const stripeCell = stripeId
                 ? `<span title="${stripeId}" style="font-family:monospace; font-size:11px; color:#8b5cf6; cursor:help;">${stripeId.substring(0, 24)}...</span>`
-                : '<span style="color:#475569;">—</span>';
+                : '<span style="color:#475569;">-</span>';
 
             return `<tr>
                 <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); color:#e2e8f0;">
