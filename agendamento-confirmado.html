@@ -290,7 +290,11 @@
                 if (!res.ok) { mostrarErro('Não foi possível carregar os detalhes.'); return; }
 
                 dadosConsulta = data;
-                const data_consulta = new Date(data.data_consulta + 'T00:00:00');
+                // Garante formato YYYY-MM-DD independente de como o banco retorna
+                const dataRaw = typeof data.data_consulta === 'string'
+                    ? data.data_consulta.substring(0, 10)
+                    : new Date(data.data_consulta).toISOString().substring(0, 10);
+                const data_consulta = new Date(dataRaw + 'T12:00:00');
                 const dia = diasSemana[data_consulta.getDay()];
                 const dataStr = `${dia}, ${data_consulta.toLocaleDateString('pt-BR')}`;
 
@@ -298,15 +302,15 @@
                 const statusText = data.status === 'confirmado' ? '✓ Confirmado' : '⏳ Processando...';
 
                 document.getElementById('info-box').innerHTML = `
-                        <div class="info-linha"><span>Paciente</span><span>${data.paciente_nome}</span></div>
-                        <div class="info-linha"><span>Data</span><span>${dataStr}</span></div>
-                        <div class="info-linha"><span>Horário</span><span>${data.hora_inicio.substring(0, 5)}</span></div>
-                        <div class="info-linha"><span>Valor pago</span><span>R$ ${parseFloat(data.valor).toFixed(2)}</span></div>
-                        <div class="info-linha">
-                            <span>Status</span>
-                            <span style="color:${statusColor};">${statusText}</span>
-                        </div>
-                    `;
+                            <div class="info-linha"><span>Paciente</span><span>${data.paciente_nome}</span></div>
+                            <div class="info-linha"><span>Data</span><span>${dataStr}</span></div>
+                            <div class="info-linha"><span>Horário</span><span>${data.hora_inicio.substring(0, 5)}</span></div>
+                            <div class="info-linha"><span>Valor pago</span><span>R$ ${parseFloat(data.valor).toFixed(2)}</span></div>
+                            <div class="info-linha">
+                                <span>Status</span>
+                                <span style="color:${statusColor};">${statusText}</span>
+                            </div>
+                        `;
 
                 // 3. Busca link de vídeo do profissional
                 try {
