@@ -511,7 +511,7 @@ if (cadastroForm) {
         const data_nascimento = document.getElementById('data-inicio')?.value;
         const queixa_inicial = document.getElementById('queixa')?.value.trim();
 
-        if (!nome || !telefone || !email || !modo_pagamento || !data_nascimento || !queixa_inicial) {
+        if (!nome || !telefone || !modo_pagamento || !data_nascimento || !queixa_inicial) {
             document.getElementById('cadastro-error').style.display = 'block';
             return;
         }
