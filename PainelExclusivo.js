@@ -910,7 +910,16 @@ async function acaoConsultaCancelar() {
 
     let cancelarFuturas = false;
     if (ehRecorrente) {
-        cancelarFuturas = confirm('Esta consulta é recorrente.\n\nClicar em OK cancela TODAS as consultas futuras desta recorrência.\nClicar em Cancelar cancela apenas esta sessão.');
+        cancelarFuturas = await new Promise(resolve => {
+            const m = document.createElement('div');
+            m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
+            m.innerHTML = '<div style="background:#141d2b;border:1px solid rgba(139,92,246,0.3);border-radius:12px;padding:24px;width:340px;max-width:92vw;"><h3 style="color:#e2e8f0;font-size:15px;margin:0 0 10px;">Cancelar consulta recorrente</h3><p style="color:#94a3b8;font-size:13px;margin:0 0 20px;">Deseja cancelar apenas esta sessao ou todas as futuras tambem?</p><div style="display:flex;flex-direction:column;gap:8px;"><button id="cancel-todas" style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);color:#f87171;border-radius:8px;padding:10px;cursor:pointer;font-size:13px;">Cancelar esta e todas as futuras</button><button id="cancel-uma" style="background:rgba(100,116,139,0.15);border:1px solid rgba(100,116,139,0.3);color:#94a3b8;border-radius:8px;padding:10px;cursor:pointer;font-size:13px;">Cancelar apenas esta sessao</button><button id="cancel-nao" style="background:transparent;border:none;color:#64748b;padding:8px;cursor:pointer;font-size:12px;">Nao cancelar</button></div></div>';
+            document.body.appendChild(m);
+            m.querySelector('#cancel-todas').onclick = () => { document.body.removeChild(m); resolve(true); };
+            m.querySelector('#cancel-uma').onclick = () => { document.body.removeChild(m); resolve(false); };
+            m.querySelector('#cancel-nao').onclick = () => { document.body.removeChild(m); resolve(null); };
+        });
+        if (cancelarFuturas === null) return;
     } else {
         if (!confirm('Cancelar esta consulta?')) return;
     }
