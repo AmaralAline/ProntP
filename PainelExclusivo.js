@@ -133,34 +133,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hamburger = document.querySelector('.hamburger');
     const sidebar = document.querySelector('.sidebar');
     if (hamburger && sidebar) {
-        const overlay = document.getElementById('sidebar-overlay');
-
-        function abrirSidebar() {
-            sidebar.classList.add('open');
-            hamburger.setAttribute('aria-expanded', 'true');
-            if (overlay) overlay.classList.add('ativo');
-        }
-
-        function fecharSidebar() {
-            sidebar.classList.remove('open');
-            hamburger.setAttribute('aria-expanded', 'false');
-            if (overlay) overlay.classList.remove('ativo');
-        }
-
         hamburger.addEventListener('click', () => {
-            sidebar.classList.contains('open') ? fecharSidebar() : abrirSidebar();
-        });
-
-        // Fecha sidebar ao tocar no overlay (mobile)
-        if (overlay) {
-            overlay.addEventListener('click', fecharSidebar);
-        }
-
-        // Fecha sidebar ao clicar em item do menu (mobile)
-        sidebar.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (window.innerWidth <= 900) fecharSidebar();
-            });
+            sidebar.classList.toggle('open');
+            hamburger.setAttribute('aria-expanded', sidebar.classList.contains('open'));
         });
     }
 
@@ -381,7 +356,6 @@ function renderizarListaPacientes() {
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">E-mail</th>
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Pagamento</th>
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Relatório</th>
-                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Arquivar</th>
                 </tr>
             </thead>
             <tbody>
@@ -401,24 +375,11 @@ function renderizarListaPacientes() {
                                 <i class="fas fa-file-pdf"></i> PDF
                             </button>
                         </td>
-                        <td style="padding:12px 16px;">
-                            <button class="btn-arquivar-pac" data-id="${p.id}" data-nome="${p.nome.replace(/"/g, '')}"
-                                style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-family:Roboto,sans-serif;">
-                                Arquivar
-                            </button>
-                        </td>
                     </tr>
                 `).join('')}
             </tbody>
         </table>
     `;
-
-    // Event delegation para botoes de arquivar
-    container.querySelectorAll('.btn-arquivar-pac').forEach(btn => {
-        btn.addEventListener('click', () => {
-            confirmarArquivarPaciente(btn.dataset.id, btn.dataset.nome);
-        });
-    });
 }
 
 async function gerarRelatorioPDF(pacienteId, nomePaciente) {
@@ -459,70 +420,6 @@ async function gerarRelatorioPDF(pacienteId, nomePaciente) {
         }
     }
 }
-
-// ========== ARQUIVAR PACIENTE ==========
-function confirmarArquivarPaciente(id, nome) {
-    const modal = document.createElement('div');
-    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;';
-    modal.innerHTML = `
-        <div style="background:#141d2b;border:1px solid rgba(248,113,113,0.4);border-radius:14px;padding:28px;width:100%;max-width:440px;">
-            <div style="font-size:32px;text-align:center;margin-bottom:12px;">⚠️</div>
-            <h3 style="color:#f87171;font-size:16px;margin:0 0 12px;text-align:center;">Arquivar paciente</h3>
-            <p style="color:#e2e8f0;font-size:14px;font-weight:600;text-align:center;margin-bottom:16px;">${nome}</p>
-            <div style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:14px;margin-bottom:16px;font-size:13px;color:#94a3b8;line-height:1.6;">
-                <p style="margin-bottom:8px;">Ao arquivar este paciente:</p>
-                <p>✅ O paciente será removido da sua lista ativa.</p>
-                <p>✅ Todos os prontuários e evoluções ficam preservados em segurança.</p>
-                <p>✅ Os dados <strong style="color:#e2e8f0;">não serão excluídos</strong> do sistema.</p>
-            </div>
-            <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.25);border-radius:8px;padding:14px;margin-bottom:20px;font-size:12px;color:#fbbf24;line-height:1.6;">
-                📜 <strong>Aviso legal:</strong> O CFP exige a guarda de prontuários por no mínimo 5 anos. Ao confirmar, você declara estar ciente dessa responsabilidade e que os registros deste paciente permanecem sob sua guarda profissional.
-            </div>
-            <div style="display:flex;gap:10px;">
-                <button id="btn-cancelar-arquivar" style="flex:1;padding:11px;border-radius:8px;border:1px solid rgba(139,92,246,0.3);background:transparent;color:#a78bfa;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">Cancelar</button>
-                <button id="btn-confirmar-arquivar" style="flex:1;padding:11px;border-radius:8px;border:none;background:#dc2626;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:'Roboto',sans-serif;">Confirmar arquivamento</button>
-            </div>
-            <p id="arquivar-feedback" style="display:none;text-align:center;font-size:12px;margin-top:12px;"></p>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    modal.querySelector('#btn-cancelar-arquivar').onclick = () => document.body.removeChild(modal);
-    modal.querySelector('#btn-confirmar-arquivar').onclick = async () => {
-        const btn = modal.querySelector('#btn-confirmar-arquivar');
-        const fb = modal.querySelector('#arquivar-feedback');
-        btn.disabled = true;
-        btn.textContent = 'Arquivando...';
-        try {
-            const res = await fetch(`${API_URL}/api/pacientes/${id}`, {
-                method: 'DELETE',
-                headers: headersAuth()
-            });
-            if (res.ok) {
-                fb.style.display = 'block';
-                fb.style.color = '#34d399';
-                fb.textContent = '✅ Paciente arquivado com sucesso!';
-                setTimeout(async () => {
-                    document.body.removeChild(modal);
-                    await carregarPacientes();
-                }, 1200);
-            } else {
-                const err = await res.json();
-                fb.style.display = 'block';
-                fb.style.color = '#f87171';
-                fb.textContent = err.erro || 'Erro ao arquivar.';
-                btn.disabled = false;
-                btn.textContent = 'Confirmar arquivamento';
-            }
-        } catch {
-            fb.style.display = 'block';
-            fb.style.color = '#f87171';
-            fb.textContent = 'Erro de conexão.';
-            btn.disabled = false;
-            btn.textContent = 'Confirmar arquivamento';
-        }
-    };
-}
-
 // ========== CADASTRO DE PACIENTE ==========
 const cadastroForm = document.getElementById('cadastro-form');
 if (cadastroForm) {
@@ -536,7 +433,7 @@ if (cadastroForm) {
         const data_nascimento = document.getElementById('data-inicio')?.value;
         const queixa_inicial = document.getElementById('queixa')?.value.trim();
 
-        if (!nome || !telefone || !modo_pagamento || !data_nascimento || !queixa_inicial) {
+        if (!nome || !telefone || !email || !modo_pagamento || !data_nascimento || !queixa_inicial) {
             document.getElementById('cadastro-error').style.display = 'block';
             return;
         }
@@ -3329,4 +3226,27 @@ function mostrarFeedbackVitrine(msg, sucesso) {
 function atualizarBadgeMenuVitrine(ativo) {
     const badge = document.getElementById('vitrine-badge-ativo');
     if (badge) badge.style.display = ativo ? 'inline' : 'none';
+}
+// ========== ENVIAR ESCALA VIA WHATSAPP ==========
+function enviarEscalaWhatsApp() {
+    const link = document.getElementById('url-link-gerado')?.value;
+    if (!link) return;
+
+    // Pega nome do paciente e da escala selecionados
+    const selectPaciente = document.getElementById('paciente-form');
+    const selectEscala = document.getElementById('tipo-formulario');
+    const nomePaciente = selectPaciente?.options[selectPaciente.selectedIndex]?.text || 'paciente';
+    const nomeEscala = selectEscala?.options[selectEscala.selectedIndex]?.text || 'questionário';
+
+    const msg = `Olá, ${nomePaciente}! 😊
+
+Sua psicóloga enviou um questionário para você responder: *${nomeEscala}*
+
+Clique no link abaixo para responder:
+${link}
+
+_Este link é pessoal e expira em 7 dias._`;
+
+    const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
 }
