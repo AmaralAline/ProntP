@@ -377,9 +377,9 @@ function renderizarListaPacientes() {
                             </button>
                         </td>
                         <td style="padding:12px 16px;">
-                            <button onclick="confirmarArquivarPaciente(${p.id}, ${JSON.stringify(p.nome)})"
-                                style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">
-                                <i class="fas fa-archive"></i> Arquivar
+                            <button class="btn-arquivar-pac" data-id="${p.id}" data-nome="${p.nome.replace(/"/g, '')}"
+                                style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-family:Roboto,sans-serif;">
+                                Arquivar
                             </button>
                         </td>
                     </tr>
@@ -387,6 +387,13 @@ function renderizarListaPacientes() {
             </tbody>
         </table>
     `;
+
+    // Event delegation para botoes de arquivar
+    container.querySelectorAll('.btn-arquivar-pac').forEach(btn => {
+        btn.addEventListener('click', () => {
+            confirmarArquivarPaciente(btn.dataset.id, btn.dataset.nome);
+        });
+    });
 }
 
 async function gerarRelatorioPDF(pacienteId, nomePaciente) {
