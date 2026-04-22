@@ -840,14 +840,20 @@ function renderizarSemana(seg, consultas, hojeStr) {
                 const hora = dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 const statusInfo = getStatusInfo(c.status);
                 const nome = (c.paciente_nome || 'Paciente').split(' ')[0];
+                const confirmadoPaciente = c.confirmado_paciente == 1;
+                const borderColor = confirmadoPaciente ? '#34d399' : statusInfo.cor;
+                const bgColor = confirmadoPaciente ? 'rgba(52,211,153,0.12)' : 'rgba(139,92,246,0.1)';
+                const bgHover = confirmadoPaciente ? 'rgba(52,211,153,0.2)' : 'rgba(139,92,246,0.2)';
                 html += `<div onclick="abrirModalConsulta(${JSON.stringify(c).replace(/"/g, '&quot;')})"
                     style="padding:6px; border-radius:6px; margin-bottom:3px; cursor:pointer;
-                           background:rgba(139,92,246,0.1); border-left:2px solid ${statusInfo.cor};"
-                    onmouseover="this.style.background='rgba(139,92,246,0.2)'"
-                    onmouseout="this.style.background='rgba(139,92,246,0.1)'">
+                           background:${bgColor}; border-left:3px solid ${borderColor};"
+                    onmouseover="this.style.background='${bgHover}'"
+                    onmouseout="this.style.background='${bgColor}'">
                     <div style="font-size:11px; color:#a78bfa; font-weight:500;">${hora}</div>
                     <div style="font-size:11px; color:#e2e8f0; margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${nome}</div>
-                    <div style="font-size:10px; color:${statusInfo.cor}; margin-top:1px;">${statusInfo.label}</div>
+                    <div style="font-size:10px; color:${borderColor}; margin-top:1px;">
+                        ${confirmadoPaciente ? '✅ confirmou' : statusInfo.label}
+                    </div>
                 </div>`;
             });
         }
@@ -882,6 +888,13 @@ function abrirModalConsulta(c) {
     document.getElementById('modal-consulta-hora').textContent =
         ` ${dtI.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${dtF.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}  •  ${dtI.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}`;
     document.getElementById('modal-consulta-status-atual').textContent = `Status: ${getStatusInfo(c.status).label}`;
+    // Indicador de confirmacao do paciente
+    const statusAtualEl = document.getElementById('modal-consulta-status-atual');
+    if (c.confirmado_paciente == 1) {
+        statusAtualEl.innerHTML = `Status: ${getStatusInfo(c.status).label} &nbsp; <span style="color:#34d399;font-weight:600;">✅ Paciente confirmou presença</span>`;
+    } else {
+        statusAtualEl.innerHTML = `Status: ${getStatusInfo(c.status).label} &nbsp; <span style="color:#fbbf24;font-size:11px;">⏳ Aguardando confirmação</span>`;
+    }
     // Mostra contato para agendamentos online
     const contatoEl = document.getElementById('modal-consulta-contato');
     if ((c.origem === 'online' || c.origem === 'recorrente') && (c.paciente_email || c.paciente_telefone)) {

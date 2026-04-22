@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Confirmar Consulta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0f1621;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: #1a2332;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+        }
+        .icone { font-size: 56px; margin-bottom: 20px; }
+        h1 { font-size: 22px; margin-bottom: 8px; }
+        p { font-size: 14px; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; }
+        .info-box {
+            background: #0f1621;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 14px;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px; height: 20px;
+            border: 2px solid rgba(139,92,246,0.3);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="card" id="card">
+        <div class="spinner"></div>
+        <p>Confirmando sua presença...</p>
+    </div>
+
+    <script>
+        const API_URL = 'https://prontpsiback-production.up.railway.app';
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        const tipo  = params.get('tipo') || 'manual';
+
+        async function confirmar() {
+            const card = document.getElementById('card');
+            if (!token) {
+                card.innerHTML = `<div class="icone">❌</div><h1 style="color:#f87171;">Link inválido</h1><p>Este link de confirmação não é válido.</p>`;
+                return;
+            }
+            try {
+                const res = await fetch(`${API_URL}/api/confirmar-consulta?token=${token}&tipo=${tipo}`);
+                const data = await res.json();
+
+                if (!res.ok) {
+                    card.innerHTML = `<div class="icone">❌</div><h1 style="color:#f87171;">Não encontrado</h1><p>${data.erro || 'Link inválido ou expirado.'}</p>`;
+                    return;
+                }
+
+                if (data.mensagem === 'ja_confirmado') {
+                    card.innerHTML = `
+                        <div class="icone">✅</div>
+                        <h1 style="color:#34d399;">Já confirmado!</h1>
+                        <p>Olá, <strong>${data.paciente_nome}</strong>! Sua presença já havia sido confirmada anteriormente.</p>
+                        <p style="margin-top:16px;">Até amanhã! 😊</p>
+                    `;
+                    return;
+                }
+
+                // Formata data/hora
+                let dataStr = '';
+                if (data.data_hora) {
+                    const dt = new Date(data.data_hora);
+                    dataStr = dt.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', timeZone: 'America/Sao_Paulo' });
+                    const hora = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
+                    dataStr += ` às ${hora}`;
+                } else if (data.data && data.hora) {
+                    const d = new Date(data.data + 'T12:00:00');
+                    dataStr = d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+                    dataStr += ` às ${data.hora.substring(0, 5)}`;
+                }
+
+                card.innerHTML = `
+                    <div class="icone">🎉</div>
+                    <h1 style="color:#34d399;">Presença confirmada!</h1>
+                    <p>Obrigado, <strong style="color:#e2e8f0;">${data.paciente_nome}</strong>!</p>
+                    <div class="info-box">
+                        <p style="color:#e2e8f0;">📅 ${dataStr}</p>
+                    </div>
+                    <p>Sua presença foi registrada. Até amanhã! 😊</p>
+                    <p style="font-size:12px; margin-top:24px;">Em caso de imprevisto, entre em contato com seu profissional com antecedência.</p>
+                `;
+            } catch (err) {
+                document.getElementById('card').innerHTML = `<div class="icone">❌</div><h1 style="color:#f87171;">Erro de conexão</h1><p>Tente novamente em alguns instantes.</p>`;
+            }
+        }
+
+        confirmar();
+    </script>
+</body>
+</html>
