@@ -577,6 +577,7 @@
                 background: linear-gradient(135deg, rgba(139,92,246,0.06) 0%, transparent 60%);
                 opacity: 0;
                 transition: opacity 0.3s;
+                pointer-events: none;
             }
 
             .gratis-card:hover::before {
@@ -1579,14 +1580,14 @@
                 </div>
 
                 <!-- Guia do Consultório -->
-                <div class="gratis-card fade-up">
+                <div class="gratis-card fade-up" onclick="window.location.href='guia.html'" style="cursor:pointer;">
                     <span class="gratis-tag">✦ Gratuito</span>
                     <span class="gratis-icon">📋</span>
                     <h3>Guia: Como Montar seu Consultório</h3>
                     <p>Do CNPJ à precificação. Um guia prático para profissionais recém-formados que querem começar com o pé direito.</p>
-                    <a href="guia.html" class="gratis-link" style="margin-top: 8px;">
+                    <span class="gratis-link" style="margin-top: 8px; display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--roxo-light); font-weight:600;">
                         Acessar guia gratuito <i class="fas fa-arrow-right"></i>
-                    </a>
+                    </span>
                     <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(16,185,129,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
