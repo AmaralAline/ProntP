@@ -509,7 +509,18 @@
                             <div class="grid-2col">
                                 <div>
                                     <label for="cid10">CID-10</label>
-                                    <input type="text" id="cid10" placeholder="Ex: F32.0">
+                                    <div style="position:relative;">
+                                        <input type="text" id="cid10" placeholder="Digite o código ou nome..." autocomplete="off"
+                                               oninput="buscarCID(this.value)"
+                                               onblur="setTimeout(()=>fecharCID(),200)"
+                                               style="width:100%;">
+                                        <div id="cid-dropdown" style="
+                                            display:none; position:absolute; top:100%; left:0; right:0; z-index:999;
+                                            background:#1a2235; border:1px solid rgba(139,92,246,0.3);
+                                            border-radius:8px; max-height:220px; overflow-y:auto;
+                                            box-shadow:0 8px 24px rgba(0,0,0,0.4); margin-top:4px;
+                                        "></div>
+                                    </div>
                                 </div>
                                 <div>
                                     <label for="codigo-procedimento">Cód. Procedimento</label>

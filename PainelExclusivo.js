@@ -5,6 +5,128 @@
 
 const API_URL = 'https://prontpsiback-production.up.railway.app';
 
+// ============================================================
+//  CID-10 — AUTOCOMPLETE (saúde mental e geral)
+// ============================================================
+const CID_DATA = [
+    // Transtornos mentais e comportamentais (F)
+    { codigo: 'F06.0', nome: 'Psicose orgânica' },
+    { codigo: 'F10.0', nome: 'Transtornos mentais por uso de álcool' },
+    { codigo: 'F20.0', nome: 'Esquizofrenia paranoide' },
+    { codigo: 'F20.1', nome: 'Esquizofrenia hebefrênica' },
+    { codigo: 'F20.9', nome: 'Esquizofrenia não especificada' },
+    { codigo: 'F25.0', nome: 'Transtorno esquizoafetivo tipo maníaco' },
+    { codigo: 'F25.1', nome: 'Transtorno esquizoafetivo tipo depressivo' },
+    { codigo: 'F29', nome: 'Psicose não orgânica não especificada' },
+    { codigo: 'F30.0', nome: 'Hipomania' },
+    { codigo: 'F30.1', nome: 'Mania sem sintomas psicóticos' },
+    { codigo: 'F30.2', nome: 'Mania com sintomas psicóticos' },
+    { codigo: 'F31.0', nome: 'Transtorno afetivo bipolar — episódio hipomaníaco' },
+    { codigo: 'F31.1', nome: 'Transtorno afetivo bipolar — episódio maníaco sem psicose' },
+    { codigo: 'F31.2', nome: 'Transtorno afetivo bipolar — episódio maníaco com psicose' },
+    { codigo: 'F31.3', nome: 'Transtorno afetivo bipolar — episódio depressivo leve/moderado' },
+    { codigo: 'F31.4', nome: 'Transtorno afetivo bipolar — episódio depressivo grave sem psicose' },
+    { codigo: 'F31.5', nome: 'Transtorno afetivo bipolar — episódio depressivo grave com psicose' },
+    { codigo: 'F31.9', nome: 'Transtorno afetivo bipolar não especificado' },
+    { codigo: 'F32.0', nome: 'Episódio depressivo leve' },
+    { codigo: 'F32.1', nome: 'Episódio depressivo moderado' },
+    { codigo: 'F32.2', nome: 'Episódio depressivo grave sem sintomas psicóticos' },
+    { codigo: 'F32.3', nome: 'Episódio depressivo grave com sintomas psicóticos' },
+    { codigo: 'F32.9', nome: 'Episódio depressivo não especificado' },
+    { codigo: 'F33.0', nome: 'Transtorno depressivo recorrente — episódio leve' },
+    { codigo: 'F33.1', nome: 'Transtorno depressivo recorrente — episódio moderado' },
+    { codigo: 'F33.2', nome: 'Transtorno depressivo recorrente — episódio grave sem psicose' },
+    { codigo: 'F33.9', nome: 'Transtorno depressivo recorrente não especificado' },
+    { codigo: 'F34.0', nome: 'Ciclotimia' },
+    { codigo: 'F34.1', nome: 'Distimia' },
+    { codigo: 'F40.0', nome: 'Agorafobia' },
+    { codigo: 'F40.1', nome: 'Fobias sociais' },
+    { codigo: 'F40.2', nome: 'Fobias específicas' },
+    { codigo: 'F41.0', nome: 'Transtorno de pânico' },
+    { codigo: 'F41.1', nome: 'Ansiedade generalizada' },
+    { codigo: 'F41.2', nome: 'Transtorno misto ansioso e depressivo' },
+    { codigo: 'F41.9', nome: 'Transtorno ansioso não especificado' },
+    { codigo: 'F42.0', nome: 'Transtorno obsessivo-compulsivo — TOC' },
+    { codigo: 'F43.0', nome: 'Reação aguda ao estresse' },
+    { codigo: 'F43.1', nome: 'Transtorno de estresse pós-traumático — TEPT' },
+    { codigo: 'F43.2', nome: 'Transtorno de adaptação' },
+    { codigo: 'F44.0', nome: 'Amnésia dissociativa' },
+    { codigo: 'F44.8', nome: 'Outros transtornos dissociativos' },
+    { codigo: 'F45.0', nome: 'Transtorno de somatização' },
+    { codigo: 'F48.0', nome: 'Neurastenia' },
+    { codigo: 'F50.0', nome: 'Anorexia nervosa' },
+    { codigo: 'F50.2', nome: 'Bulimia nervosa' },
+    { codigo: 'F51.0', nome: 'Insônia não orgânica' },
+    { codigo: 'F60.0', nome: 'Transtorno de personalidade paranoide' },
+    { codigo: 'F60.1', nome: 'Transtorno de personalidade esquizoide' },
+    { codigo: 'F60.3', nome: 'Transtorno de personalidade borderline' },
+    { codigo: 'F60.4', nome: 'Transtorno de personalidade histriônica' },
+    { codigo: 'F60.5', nome: 'Transtorno de personalidade anancástica (TOC)' },
+    { codigo: 'F60.6', nome: 'Transtorno de personalidade ansiosa' },
+    { codigo: 'F60.7', nome: 'Transtorno de personalidade dependente' },
+    { codigo: 'F63.0', nome: 'Jogo patológico' },
+    { codigo: 'F70', nome: 'Retardo mental leve' },
+    { codigo: 'F71', nome: 'Retardo mental moderado' },
+    { codigo: 'F80.0', nome: 'Transtorno específico da fala' },
+    { codigo: 'F81.0', nome: 'Dislexia' },
+    { codigo: 'F84.0', nome: 'Autismo infantil (TEA)' },
+    { codigo: 'F84.5', nome: 'Síndrome de Asperger' },
+    { codigo: 'F90.0', nome: 'Distúrbio de atividade e atenção — TDAH' },
+    { codigo: 'F90.1', nome: 'Transtorno hipercinético da conduta' },
+    { codigo: 'F91.0', nome: 'Transtorno de conduta' },
+    { codigo: 'F93.0', nome: 'Transtorno de ansiedade de separação' },
+    { codigo: 'F94.0', nome: 'Mutismo seletivo' },
+    { codigo: 'F98.0', nome: 'Enurese não orgânica' },
+    // Neurológicos relevantes
+    { codigo: 'G40.0', nome: 'Epilepsia' },
+    { codigo: 'G43.0', nome: 'Enxaqueca' },
+    { codigo: 'G47.0', nome: 'Insônia' },
+    { codigo: 'G47.3', nome: 'Apneia do sono' },
+    // Outros frequentes
+    { codigo: 'R45.1', nome: 'Agitação e inquietação' },
+    { codigo: 'R45.2', nome: 'Angústia e tensão psíquica' },
+    { codigo: 'R45.7', nome: 'Estado de choque emocional' },
+    { codigo: 'Z71.1', nome: 'Pessoa que teme estar doente' },
+    { codigo: 'Z73.0', nome: 'Síndrome de burn-out' },
+    { codigo: 'Z73.1', nome: 'Acentuação de traços de personalidade' },
+];
+
+function buscarCID(valor) {
+    const dropdown = document.getElementById('cid-dropdown');
+    if (!valor || valor.length < 2) { dropdown.style.display = 'none'; return; }
+
+    const q = valor.toLowerCase();
+    const resultados = CID_DATA.filter(c =>
+        c.codigo.toLowerCase().includes(q) || c.nome.toLowerCase().includes(q)
+    ).slice(0, 8);
+
+    if (!resultados.length) { dropdown.style.display = 'none'; return; }
+
+    dropdown.innerHTML = resultados.map(c => `
+        <div onclick="selecionarCID('${c.codigo}', '${c.nome.replace(/'/g, "&#39;")}')"
+            style="padding:10px 14px; cursor:pointer; border-bottom:1px solid rgba(139,92,246,0.1);
+                   transition:background 0.15s; font-size:13px;"
+            onmouseover="this.style.background='rgba(139,92,246,0.12)'"
+            onmouseout="this.style.background='transparent'">
+            <span style="color:#a78bfa; font-weight:600; font-size:12px;">${c.codigo}</span>
+            <span style="color:#e2e8f0; margin-left:8px;">${c.nome}</span>
+        </div>
+    `).join('');
+
+    dropdown.style.display = 'block';
+}
+
+function selecionarCID(codigo, nome) {
+    document.getElementById('cid10').value = `${codigo} — ${nome}`;
+    document.getElementById('cid-dropdown').style.display = 'none';
+}
+
+function fecharCID() {
+    const dropdown = document.getElementById('cid-dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+}
+
+
 // ------------------------------------------------------------
 //  AUTENTICAÇÃO - pega token e dados do profissional logado
 // ------------------------------------------------------------
@@ -472,7 +594,9 @@ if (evolucaoForm) {
         const texto_evolucao = document.getElementById('evolucao')?.value.trim();
         const duracao_minutos = document.getElementById('duracao-minutos')?.value;
         const valor_sessao = document.getElementById('valor-sessao')?.value;
-        const cid10 = document.getElementById('cid10')?.value.trim();
+        const cid10Raw = document.getElementById('cid10')?.value.trim();
+        // Se o usuário selecionou do autocomplete (ex: "F32.0 — Episódio depressivo leve"), pega só o código
+        const cid10 = cid10Raw.includes('—') ? cid10Raw.split('—')[0].trim() : cid10Raw;
         const codigo_procedimento = document.getElementById('codigo-procedimento')?.value.trim();
         const convenio = document.getElementById('convenio')?.value.trim();
 
