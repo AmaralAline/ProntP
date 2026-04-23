@@ -505,6 +505,12 @@ function renderizarListaPacientes() {
                                     font-size:12px; font-family:'Roboto',sans-serif;">
                                     <i class="fas fa-edit"></i> Editar
                                 </button>
+                                <button onclick="inativarPaciente(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
+                                    background:rgba(248,113,113,0.1); color:#f87171; border:1px solid rgba(248,113,113,0.25);
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-user-times"></i> Inativar
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -3478,6 +3484,25 @@ if (editarPacienteForm) {
 document.getElementById('modal-editar-paciente')?.addEventListener('click', function (e) {
     if (e.target === this) fecharEditarPaciente();
 });
+
+async function inativarPaciente(id, nome) {
+    if (!confirm(`Inativar o paciente "${nome}"?\n\nEle será removido da lista de ativos mas seus dados e prontuários serão mantidos.`)) return;
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes/${id}`, {
+            method: 'DELETE',
+            headers: headersAuth()
+        });
+        if (res.ok) {
+            await carregarPacientes();
+        } else {
+            const err = await res.json();
+            alert(err.erro || 'Erro ao inativar paciente.');
+        }
+    } catch (e) {
+        alert('Erro de conexão.');
+        console.error(e);
+    }
+}
 
 
 // Popula select de pacientes na seção prescrição
