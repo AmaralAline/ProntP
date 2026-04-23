@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-relatorio-convenio', section: 'relatorio-convenio-section' },
         { btn: 'btn-financeiro', section: 'financeiro-section' },
         { btn: 'btn-recursos-terapeuticos', section: 'recursos-terapeuticos-section' },
+        { btn: 'btn-prescricao', section: 'prescricao-section' },
     ];
     function mostrarSecao(id) {
         document.querySelectorAll('.active-section, .hidden-section').forEach(s => {
@@ -230,6 +231,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (id === 'vitrine-section') {
             carregarVitrine();
+        }
+        if (id === 'prescricao-section') {
+            iniciarPrescricao();
         }
         if (id === 'perfil-section') {
             inicializarCanvas();
