@@ -3364,3 +3364,131 @@ function atualizarBadgeMenuVitrine(ativo) {
     const badge = document.getElementById('vitrine-badge-ativo');
     if (badge) badge.style.display = ativo ? 'inline' : 'none';
 }
+// ============================================================
+//  PRESCRIÇÃO E MEDICAÇÕES
+// ============================================================
+
+// Popula select de pacientes na seção prescrição
+async function iniciarPrescricao() {
+    const sel = document.getElementById('prescricao-paciente');
+    if (!sel) return;
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes`, { headers: headersAuth() });
+        const pacientes = await res.json();
+        sel.innerHTML = '<option value="">Selecione um paciente</option>';
+        pacientes.forEach(p => {
+            sel.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+        });
+    } catch (e) { console.error('Erro ao carregar pacientes para prescrição:', e); }
+}
+
+async function carregarMedicacoes() {
+    const pacienteId = document.getElementById('prescricao-paciente').value;
+    const conteudo = document.getElementById('prescricao-conteudo');
+    if (!pacienteId) { conteudo.style.display = 'none'; return; }
+    conteudo.style.display = 'block';
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/medicacoes`, { headers: headersAuth() });
+        const meds = await res.json();
+        renderizarMedicacoes(meds);
+    } catch (e) { console.error('Erro ao carregar medicações:', e); }
+}
+
+function renderizarMedicacoes(meds) {
+    const lista = document.getElementById('medicacoes-lista');
+    if (!meds.length) {
+        lista.innerHTML = '<p style="color:#64748b;font-size:13px;">Nenhum medicamento registrado.</p>';
+        return;
+    }
+    const corStatus = { ativo: '#34d399', suspenso: '#f87171', concluido: '#94a3b8' };
+    const labelStatus = { ativo: 'Em uso', suspenso: 'Suspenso', concluido: 'Concluído' };
+    lista.innerHTML = meds.map(m => `
+        <div style="background:#0f1621;border:1px solid rgba(139,92,246,0.15);border-radius:10px;padding:14px 16px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+                <div style="flex:1;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <span style="font-size:15px;font-weight:600;color:#e2e8f0;">${m.nome}</span>
+                        <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(52,211,153,0.1);color:${corStatus[m.status] || '#94a3b8'};">
+                            ${labelStatus[m.status] || m.status}
+                        </span>
+                    </div>
+                    <div style="font-size:13px;color:#94a3b8;">
+                        <span>${m.dose}</span> · <span>${m.frequencia}</span>
+                        ${m.duracao ? ` · <span>${m.duracao}</span>` : ''}
+                    </div>
+                    ${m.observacoes ? `<div style="font-size:12px;color:#64748b;margin-top:4px;">${m.observacoes}</div>` : ''}
+                </div>
+                <button onclick="removerMedicacao(${m.id})" title="Remover"
+                    style="background:none;border:none;color:#64748b;cursor:pointer;font-size:14px;padding:4px;flex-shrink:0;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Formulário de nova medicação
+const medForm = document.getElementById('medicacao-form');
+if (medForm) {
+    medForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const pacienteId = document.getElementById('prescricao-paciente').value;
+        if (!pacienteId) return;
+        const body = {
+            nome: document.getElementById('med-nome').value.trim(),
+            dose: document.getElementById('med-dose').value.trim(),
+            frequencia: document.getElementById('med-frequencia').value,
+            duracao: document.getElementById('med-duracao').value.trim(),
+            observacoes: document.getElementById('med-observacoes').value.trim(),
+            status: document.getElementById('med-status').value,
+        };
+        try {
+            const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/medicacoes`, {
+                method: 'POST', headers: headersAuth(), body: JSON.stringify(body)
+            });
+            if (res.ok) {
+                medForm.reset();
+                document.getElementById('med-frequencia').value = '1x ao dia';
+                document.getElementById('med-status').value = 'ativo';
+                await carregarMedicacoes();
+            } else {
+                const err = await res.json();
+                const errEl = document.getElementById('medicacao-error');
+                errEl.textContent = err.erro || 'Erro ao salvar.';
+                errEl.style.display = 'block';
+                setTimeout(() => errEl.style.display = 'none', 3000);
+            }
+        } catch (e) { console.error('Erro:', e); }
+    });
+}
+
+async function removerMedicacao(id) {
+    if (!confirm('Remover este medicamento?')) return;
+    const pacienteId = document.getElementById('prescricao-paciente').value;
+    try {
+        await fetch(`${API_URL}/api/medicacoes/${id}`, { method: 'DELETE', headers: headersAuth() });
+        await carregarMedicacoes();
+    } catch (e) { console.error('Erro:', e); }
+}
+
+async function gerarPrescricaoPDF() {
+    const pacienteId = document.getElementById('prescricao-paciente').value;
+    if (!pacienteId) { alert('Selecione um paciente.'); return; }
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/prescricao-pdf`, {
+            headers: headersAuth()
+        });
+        if (!res.ok) { alert('Erro ao gerar PDF.'); return; }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const nomePaciente = document.getElementById('prescricao-paciente').selectedOptions[0].text.replace(/\s+/g, '_');
+        a.href = url; a.download = `prescricao_${nomePaciente}.pdf`;
+        a.click(); URL.revokeObjectURL(url);
+    } catch (e) { alert('Erro ao gerar PDF.'); console.error(e); }
+}
+
+// Inicializa prescrição quando a seção é aberta
+document.getElementById('btn-prescricao')?.addEventListener('click', () => {
+    iniciarPrescricao();
+});

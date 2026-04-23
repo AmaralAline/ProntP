@@ -66,6 +66,7 @@
                 <li><button id="btn-agenda-online" aria-controls="agenda-online-section"><i class="fas fa-link"></i> Agenda Online</button></li>
                 <li><button id="btn-cadastro" aria-controls="cadastro-section"><i class="fas fa-users"></i> Pacientes</button></li>
                 <li><button id="btn-evolucao" aria-controls="evolucao-section"><i class="fas fa-notes-medical"></i> Prontuário</button></li>
+                <li><button id="btn-prescricao" aria-controls="prescricao-section"><i class="fas fa-pills"></i> Prescrição</button></li>
                 <li class="menu-group-label">Recursos Terapêuticos</li>
                 <li>
                     <button id="btn-recursos-terapeuticos" aria-controls="recursos-terapeuticos-section">
@@ -561,6 +562,105 @@
                             <tbody></tbody>
                         </table>
                         <p id="evolucao-vazio" class="evolucao-vazio">Selecione um paciente para ver o histórico.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================
+            PRESCRIÇÃO E MEDICAÇÕES
+            ================================================ -->
+            <section id="prescricao-section" class="hidden-section">
+                <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
+                <div class="page-header">
+                    <h2><i class="fas fa-pills" style="color:#8b5cf6;margin-right:10px;"></i>Prescrição e Medicações</h2>
+                    <p>Registre medicamentos em uso e gere prescrições em PDF com seu carimbo e assinatura</p>
+                </div>
+
+                <!-- Selecionar paciente -->
+                <div class="form-card" style="margin-bottom:20px;">
+                    <label style="font-size:13px;color:#94a3b8;display:block;margin-bottom:8px;">Selecionar Paciente</label>
+                    <select id="prescricao-paciente" onchange="carregarMedicacoes()" style="width:100%;padding:10px 14px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;">
+                        <option value="">Selecione um paciente</option>
+                    </select>
+                </div>
+
+                <div id="prescricao-conteudo" style="display:none;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+                        <!-- Nova medicação -->
+                        <div class="form-card">
+                            <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;margin-bottom:20px;">
+                                <i class="fas fa-plus-circle" style="color:#8b5cf6;margin-right:8px;"></i>
+                                Adicionar Medicamento
+                            </h3>
+                            <form id="medicacao-form">
+                                <div style="display:flex;flex-direction:column;gap:14px;">
+                                    <div>
+                                        <label style="font-size:13px;color:#94a3b8;display:block;margin-bottom:6px;">Medicamento *</label>
+                                        <input type="text" id="med-nome" placeholder="Ex: Sertralina" required
+                                               style="width:100%;padding:10px 12px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;">
+                                    </div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                        <div>
+                                            <label style="font-size:13px;color:#94a3b8;display:block;margin-bottom:6px;">Dose *</label>
+                                            <input type="text" id="med-dose" placeholder="Ex: 50mg" required
+                                                   style="width:100%;padding:10px 12px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;">
+                                        </div>
+                                        <div>
+                                            <label style="font-size:13px;color:#94a3b8;display:block;margin-bottom:6px;">Frequência *</label>
+                                            <select id="med-frequencia" style="width:100%;padding:10px 12px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;">
+                                                <option value="1x ao dia">1x ao dia</option>
+                                                <option value="2x ao dia">2x ao dia</option>
+                                                <option value="3x ao dia">3x ao dia</option>
+                                                <option value="A cada 8h">A cada 8h</option>
+                                                <option value="A cada 12h">A cada 12h</option>
+                                                <option value="Ao dormir">Ao dormir</option>
+                                                <option value="Se necessário">Se necessário</option>
+                                                <option value="Uso contínuo">Uso contínuo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:13px;color:#94a3b8;display:block;margin-bottom:6px;">Duração do tratamento</label>
+                                        <input type="text" id="med-duracao" placeholder="Ex: 30 dias, uso contínuo"
+                                               style="width:100%;padding:10px 12px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:13px;color:#94a3b8;display:block;margin-bottom:6px;">Observações / Instruções</label>
+                                        <textarea id="med-observacoes" placeholder="Ex: Tomar após o café da manhã. Não interromper sem orientação médica."
+                                                  style="width:100%;padding:10px 12px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;min-height:80px;resize:vertical;font-family:'Roboto',sans-serif;"></textarea>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:13px;color:#94a3b8;display:block;margin-bottom:6px;">Status</label>
+                                        <select id="med-status" style="width:100%;padding:10px 12px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;">
+                                            <option value="ativo">Em uso (ativo)</option>
+                                            <option value="suspenso">Suspenso</option>
+                                            <option value="concluido">Tratamento concluído</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" style="background:#7c3aed;color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;">
+                                        <i class="fas fa-plus" style="margin-right:6px;"></i>Adicionar Medicamento
+                                    </button>
+                                    <p id="medicacao-error" style="display:none;font-size:13px;color:#f87171;"></p>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Lista de medicamentos + PDF -->
+                        <div class="form-card">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+                                <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;">
+                                    <i class="fas fa-list" style="color:#8b5cf6;margin-right:8px;"></i>
+                                    Medicamentos em Uso
+                                </h3>
+                                <button onclick="gerarPrescricaoPDF()" style="background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;display:flex;align-items:center;gap:6px;">
+                                    <i class="fas fa-file-pdf"></i> Gerar PDF
+                                </button>
+                            </div>
+                            <div id="medicacoes-lista" style="display:flex;flex-direction:column;gap:10px;">
+                                <p style="color:#64748b;font-size:13px;">Nenhum medicamento registrado.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
