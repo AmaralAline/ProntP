@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guia: Como Montar seu Consultório — ProntPsi</title>
-    <meta name="description" content="Guia completo e gratuito para psicólogos e psiquiatras montarem seu consultório. CNPJ, CRP/CRM, precificação, documentação e marketing ético.">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>ProntPsi — O sistema clínico do universo Psi</title>
+    <meta name="description" content="Agenda online com pagamento, prontuário eletrônico, 16 escalas clínicas validadas e recursos gratuitos para psicólogos e psiquiatras. O sistema clínico do universo Psi.">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         :root {
             --roxo: #6d28d9;
             --roxo-light: #8b5cf6;
+            --roxo-pale: #ede9fe;
+            --roxo-glow: rgba(109,40,217,0.18);
             --bg: #0a0d14;
             --bg2: #111827;
             --bg3: #1a2235;
@@ -20,747 +26,1869 @@
             --muted: #6b7280;
             --muted2: #9ca3af;
             --green: #10b981;
-            --amber: #f59e0b;
             --border: rgba(139,92,246,0.12);
         }
 
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.7;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* ── NAV ── */
         nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: rgba(10,13,20,0.92);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: rgba(10,13,20,0.85);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
-            padding: 0 40px; height: 60px;
-            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+
         .nav-logo {
-            font-family: 'Lora', serif;
-            font-size: 20px; color: #fff; text-decoration: none;
+            font-family: 'DM Serif Display', serif;
+            font-size: 22px;
+            color: #fff;
+            letter-spacing: -0.5px;
         }
-        .nav-logo span { color: var(--roxo-light); }
-        .nav-back {
-            display: flex; align-items: center; gap: 8px;
-            color: var(--muted2); text-decoration: none; font-size: 14px;
-            transition: color 0.2s;
+
+            .nav-logo span {
+                color: var(--roxo-light);
+            }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            align-items: center;
         }
-        .nav-back:hover { color: #fff; }
+
+            .nav-links a {
+                color: var(--muted2);
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                transition: color 0.2s;
+            }
+
+                .nav-links a:hover {
+                    color: #fff;
+                }
+
+        .nav-login {
+            color: var(--roxo-light) !important;
+            border: 1px solid rgba(139,92,246,0.35);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s !important;
+        }
+
+            .nav-login:hover {
+                background: rgba(139,92,246,0.1) !important;
+                border-color: var(--roxo-light) !important;
+            }
+
+        .nav-vitrine {
+            color: var(--muted2) !important;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500 !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s !important;
+        }
+
+            .nav-vitrine:hover {
+                color: #fff !important;
+                border-color: rgba(139,92,246,0.3) !important;
+            }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+
+        .nav-cta {
+            background: var(--roxo);
+            color: #fff !important;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            transition: background 0.2s, transform 0.2s !important;
+        }
+
+            .nav-cta:hover {
+                background: var(--roxo-light) !important;
+                transform: translateY(-1px);
+            }
 
         /* ── HERO ── */
         .hero {
-            padding: 120px 24px 80px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            position: relative; overflow: hidden;
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
         }
-        .hero::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(109,40,217,0.18) 0%, transparent 65%);
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(109,40,217,0.22) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 80% 80%, rgba(139,92,246,0.08) 0%, transparent 60%);
+                pointer-events: none;
+            }
+
+        .hero-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
             pointer-events: none;
         }
-        .hero-tag {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
-            color: #34d399; padding: 5px 16px; border-radius: 100px;
-            font-size: 12px; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 24px;
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(139,92,246,0.1);
+            border: 1px solid rgba(139,92,246,0.25);
+            color: #c4b5fd;
+            padding: 6px 18px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 28px;
+            position: relative;
         }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(0.8);
+            }
+        }
+
         .hero h1 {
-            font-family: 'Lora', serif;
-            font-size: clamp(32px, 5vw, 56px);
-            color: #f8faff; line-height: 1.15; letter-spacing: -0.5px;
-            max-width: 780px; margin: 0 auto 20px;
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(36px, 6vw, 68px);
+            line-height: 1.08;
+            letter-spacing: -1px;
+            color: #f8faff;
+            margin-bottom: 24px;
+            max-width: 860px;
+            position: relative;
         }
-        .hero h1 em { font-style: italic; color: var(--roxo-light); }
+
+            .hero h1 em {
+                font-style: italic;
+                color: var(--roxo-light);
+            }
+
         .hero-sub {
-            font-size: 17px; color: var(--muted2); max-width: 560px;
-            margin: 0 auto 48px; font-weight: 300;
-        }
-        .hero-meta {
-            display: flex; gap: 32px; justify-content: center;
-            flex-wrap: wrap; font-size: 13px; color: var(--muted);
-        }
-        .hero-meta span { display: flex; align-items: center; gap: 6px; }
-
-        /* ── ÍNDICE ── */
-        .indice-wrapper {
-            max-width: 860px; margin: 0 auto 80px;
-            padding: 0 24px;
-        }
-        .indice {
-            background: var(--bg2); border: 1px solid var(--border);
-            border-radius: 16px; padding: 32px;
-        }
-        .indice-title {
-            font-size: 13px; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 1.5px; color: var(--roxo-light); margin-bottom: 20px;
-        }
-        .indice-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-        .indice-list li a {
-            display: flex; align-items: center; gap: 12px;
-            color: var(--muted2); text-decoration: none; font-size: 14px;
-            padding: 8px 12px; border-radius: 8px; transition: all 0.2s;
-        }
-        .indice-list li a:hover { background: rgba(139,92,246,0.08); color: #f0f4ff; }
-        .indice-num {
-            width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
-            background: rgba(139,92,246,0.15); color: var(--roxo-light);
-            font-size: 11px; font-weight: 700;
-            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(16px, 2vw, 19px);
+            color: var(--muted2);
+            max-width: 560px;
+            margin: 0 auto 44px;
+            font-weight: 300;
+            line-height: 1.7;
         }
 
-        /* ── CONTEÚDO ── */
-        .content-wrapper {
-            max-width: 860px; margin: 0 auto;
-            padding: 0 24px 100px;
+            .hero-sub strong {
+                color: #d8b4fe;
+                font-weight: 600;
+            }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
         }
-        .capitulo {
-            margin-bottom: 80px; scroll-margin-top: 80px;
+
+        .btn-primary {
+            background: var(--roxo);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 0 24px rgba(109,40,217,0.4);
         }
-        .capitulo-header {
-            display: flex; align-items: flex-start; gap: 20px; margin-bottom: 32px;
+
+            .btn-primary:hover {
+                background: var(--roxo-light);
+                transform: translateY(-2px);
+                box-shadow: 0 0 36px rgba(139,92,246,0.5);
+            }
+
+        .btn-ghost {
+            background: transparent;
+            color: #c4b5fd;
+            border: 1px solid rgba(139,92,246,0.3);
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
         }
-        .capitulo-num {
-            width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
-            background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.2);
-            color: var(--roxo-light); font-size: 18px; font-weight: 700;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Lora', serif;
+
+            .btn-ghost:hover {
+                background: rgba(139,92,246,0.1);
+                border-color: rgba(139,92,246,0.5);
+            }
+
+        .hero-proof {
+            margin-top: 56px;
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
         }
-        .capitulo-header-text { flex: 1; }
-        .capitulo-eyebrow {
-            font-size: 11px; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 1.5px; color: var(--roxo-light); margin-bottom: 6px;
+
+        .proof-item {
+            text-align: center;
+        }
+
+        .proof-num {
+            font-family: 'DM Serif Display', serif;
+            font-size: 32px;
+            color: #fff;
             display: block;
         }
-        .capitulo h2 {
-            font-family: 'Lora', serif;
-            font-size: clamp(22px, 3vw, 30px); color: #f0f4ff;
-            line-height: 1.2; letter-spacing: -0.3px;
-        }
-        .capitulo-divider {
-            height: 1px; background: var(--border); margin-bottom: 32px;
+
+        .proof-label {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Texto */
-        .capitulo p {
-            font-size: 15px; color: var(--muted2); line-height: 1.8;
-            margin-bottom: 20px; font-weight: 300;
-        }
-        .capitulo p strong { color: #f0f4ff; font-weight: 600; }
-        .capitulo h3 {
-            font-family: 'Lora', serif;
-            font-size: 19px; color: #f0f4ff;
-            margin: 32px 0 12px;
-        }
-        .capitulo h4 {
-            font-size: 15px; font-weight: 600; color: #d8b4fe;
-            margin: 24px 0 8px;
+        /* ── COMO FUNCIONA ── */
+        .section {
+            padding: 100px 24px;
         }
 
-        /* Cards de info */
-        .info-card {
-            background: var(--bg2); border: 1px solid var(--border);
-            border-radius: 12px; padding: 24px; margin: 24px 0;
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
         }
-        .info-card.destaque {
-            background: rgba(109,40,217,0.08);
-            border-color: rgba(139,92,246,0.25);
-        }
-        .info-card.alerta {
-            background: rgba(245,158,11,0.06);
-            border-color: rgba(245,158,11,0.25);
-        }
-        .info-card.sucesso {
-            background: rgba(16,185,129,0.06);
-            border-color: rgba(16,185,129,0.25);
-        }
-        .info-card-title {
-            font-size: 13px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .info-card.destaque .info-card-title { color: var(--roxo-light); }
-        .info-card.alerta .info-card-title { color: var(--amber); }
-        .info-card.sucesso .info-card-title { color: var(--green); }
-        .info-card p { font-size: 14px; color: var(--muted2); margin-bottom: 8px; line-height: 1.7; }
-        .info-card p:last-child { margin-bottom: 0; }
 
-        /* Listas */
-        .check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
-        .check-list li {
-            display: flex; gap: 12px; align-items: flex-start;
-            font-size: 14px; color: var(--muted2); line-height: 1.6;
+        .section-eyebrow {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--roxo-light);
+            margin-bottom: 16px;
         }
-        .check-list li i { color: var(--green); margin-top: 3px; flex-shrink: 0; font-size: 12px; }
-        .check-list li strong { color: #f0f4ff; }
 
-        .step-list { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
-        .step-item {
-            display: flex; gap: 16px; align-items: flex-start;
-            background: var(--bg2); border: 1px solid var(--border);
-            border-radius: 12px; padding: 20px;
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(28px, 4vw, 44px);
+            color: #f0f4ff;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
         }
-        .step-bullet {
-            width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
-            background: rgba(139,92,246,0.12); color: var(--roxo-light);
-            font-size: 13px; font-weight: 700;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .step-item h4 { font-size: 14px; font-weight: 600; color: #f0f4ff; margin-bottom: 4px; }
-        .step-item p { font-size: 13px; color: var(--muted2); margin: 0; line-height: 1.6; }
 
-        /* Tabela de preços */
-        .tabela-wrapper { overflow-x: auto; margin: 20px 0; }
-        table {
-            width: 100%; border-collapse: collapse;
+        .section-sub {
+            font-size: 17px;
+            color: var(--muted2);
+            max-width: 520px;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* Steps */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            margin-top: 56px;
+            background: var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .step-card {
+            background: var(--bg2);
+            padding: 40px 32px;
+            position: relative;
+        }
+
+        .step-num {
+            font-family: 'DM Serif Display', serif;
+            font-size: 56px;
+            color: rgba(139,92,246,0.15);
+            line-height: 1;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(139,92,246,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .step-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f0f4ff;
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
             font-size: 14px;
+            color: var(--muted2);
+            line-height: 1.65;
         }
-        th {
-            background: var(--bg3); color: var(--roxo-light);
-            font-size: 11px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px; padding: 12px 16px; text-align: left;
+
+        .step-highlight {
+            background: linear-gradient(135deg, rgba(109,40,217,0.15), rgba(139,92,246,0.08));
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+
+        /* ── AGENDA DESTAQUE ── */
+        .agenda-section {
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
         }
-        td {
-            padding: 12px 16px; color: var(--muted2);
-            border-bottom: 1px solid rgba(139,92,246,0.06);
-        }
-        tr:hover td { background: rgba(139,92,246,0.04); }
-        td strong { color: #f0f4ff; }
 
-        /* CTA ── */
-        .cta-box {
-            background: linear-gradient(135deg, rgba(109,40,217,0.2), rgba(139,92,246,0.08));
-            border: 1px solid rgba(139,92,246,0.3);
-            border-radius: 16px; padding: 40px; text-align: center;
-            margin-top: 80px;
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
         }
-        .cta-box h2 {
-            font-family: 'Lora', serif;
-            font-size: 28px; color: #f0f4ff; margin-bottom: 12px;
+
+        .agenda-visual {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
         }
-        .cta-box p { font-size: 15px; color: var(--muted2); margin-bottom: 28px; }
-        .btn-primary {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: var(--roxo); color: #fff;
-            padding: 14px 28px; border-radius: 10px;
-            text-decoration: none; font-size: 15px; font-weight: 600;
+
+        .agenda-bar {
+            background: rgba(109,40,217,0.2);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .agenda-bar-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .agenda-bar span {
+            font-size: 12px;
+            color: var(--muted2);
+            margin-left: auto;
+        }
+
+        .agenda-slots {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slot {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .slot-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .slot-hora {
+            font-size: 15px;
+            font-weight: 600;
+            color: #f0f4ff;
+        }
+
+        .slot-nome {
+            font-size: 12px;
+            color: var(--muted2);
+        }
+
+        .slot-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .slot-pago {
+            background: rgba(16,185,129,0.15);
+            color: #34d399;
+        }
+
+        .slot-pendente {
+            background: rgba(251,191,36,0.15);
+            color: #fbbf24;
+        }
+
+        .slot-livre {
+            background: rgba(139,92,246,0.1);
+            color: var(--roxo-light);
+            cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 0 24px rgba(109,40,217,0.3);
         }
-        .btn-primary:hover { background: var(--roxo-light); transform: translateY(-2px); }
 
-        /* ── FADE ── */
+        .agenda-features {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 36px;
+        }
+
+        .agenda-feature {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .agenda-feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            background: rgba(139,92,246,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .agenda-feature h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #f0f4ff;
+            margin-bottom: 4px;
+        }
+
+        .agenda-feature p {
+            font-size: 13px;
+            color: var(--muted2);
+            line-height: 1.6;
+        }
+
+        /* ── RECURSOS GRATUITOS ── */
+        .gratuitos-section {
+            background: var(--bg);
+        }
+
+        .gratuitos-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .gratuitos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .gratis-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .gratis-card::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(139,92,246,0.06) 0%, transparent 60%);
+                opacity: 0;
+                transition: opacity 0.3s;
+                pointer-events: none;
+            }
+
+            .gratis-card:hover::before {
+                opacity: 1;
+            }
+
+            .gratis-card:hover {
+                border-color: rgba(139,92,246,0.3);
+                transform: translateY(-4px);
+            }
+
+        .gratis-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--green);
+            margin-bottom: 20px;
+        }
+
+        .gratis-icon {
+            font-size: 28px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .gratis-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #f0f4ff;
+            margin-bottom: 10px;
+        }
+
+        .gratis-card p {
+            font-size: 13px;
+            color: var(--muted2);
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .gratis-link {
+            font-size: 13px;
+            color: var(--roxo-light);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+
+            .gratis-link:hover {
+                gap: 10px;
+            }
+
+        /* Calculadora */
+        .calc-wrapper {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 16px;
+        }
+
+        .calc-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+            .calc-row label {
+                font-size: 12px;
+                color: var(--muted2);
+                font-weight: 500;
+            }
+
+            .calc-row input, .calc-row select {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                color: var(--text);
+                padding: 10px 12px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-family: 'DM Sans', sans-serif;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+
+                .calc-row input:focus, .calc-row select:focus {
+                    border-color: var(--roxo-light);
+                }
+
+                .calc-row select option {
+                    background: var(--bg2);
+                }
+
+        .calc-result {
+            background: rgba(139,92,246,0.1);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .calc-result-valor {
+            font-family: 'DM Serif Display', serif;
+            font-size: 28px;
+            color: #f0f4ff;
+            display: block;
+        }
+
+        .calc-result-label {
+            font-size: 12px;
+            color: var(--muted2);
+        }
+
+        .calc-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        .escalas-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-calc {
+            width: 100%;
+            background: var(--roxo);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.2s;
+            margin-top: 8px;
+            position: relative;
+            z-index: 3;
+        }
+
+            .btn-calc:hover {
+                background: var(--roxo-light);
+            }
+
+        /* Buscador de escalas */
+        .escalas-wrapper {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .escala-search {
+            width: 100%;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            outline: none;
+            margin-bottom: 14px;
+            transition: border-color 0.2s;
+        }
+
+            .escala-search:focus {
+                border-color: var(--roxo-light);
+            }
+
+        .escala-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .escala-item {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .escala-nome {
+            font-size: 13px;
+            color: #f0f4ff;
+            font-weight: 500;
+        }
+
+        .escala-tag {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: rgba(139,92,246,0.15);
+            color: var(--roxo-light);
+        }
+
+        /* ── O QUE VEM JUNTO ── */
+        .features-section {
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 56px;
+        }
+
+        .feature-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px 24px;
+            transition: all 0.3s;
+        }
+
+            .feature-card:hover {
+                border-color: rgba(139,92,246,0.3);
+            }
+
+        .feature-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            background: rgba(139,92,246,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f0f4ff;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--muted2);
+            line-height: 1.6;
+        }
+
+        /* ── QUEM CRIOU ── */
+        .criadora-section {
+            background: var(--bg);
+        }
+
+        .criadora-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .criadora-foto-wrapper {
+            position: relative;
+        }
+
+        .criadora-foto {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 20px;
+            border: 1px solid rgba(139,92,246,0.2);
+            filter: grayscale(20%);
+        }
+
+        .criadora-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .criadora-tag {
+            background: rgba(139,92,246,0.1);
+            color: #c4b5fd;
+            border: 1px solid rgba(139,92,246,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .criadora-content p {
+            font-size: 16px;
+            color: var(--muted2);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .criadora-quote {
+            border-left: 3px solid var(--roxo-light);
+            padding-left: 20px;
+            font-size: 17px;
+            color: #c4b5fd;
+            font-style: italic;
+            line-height: 1.7;
+            margin-top: 32px;
+        }
+
+        .criadora-name {
+            font-family: 'DM Serif Display', serif;
+            font-size: 26px;
+            color: #f0f4ff;
+            margin-bottom: 4px;
+        }
+
+        .criadora-crp {
+            font-size: 13px;
+            color: var(--roxo-light);
+            margin-bottom: 28px;
+        }
+
+        /* ── PLANOS ── */
+        .planos-section {
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+        }
+
+        .planos-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .planos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .plano-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px 28px;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .plano-card.destaque {
+                background: linear-gradient(135deg, rgba(109,40,217,0.2), rgba(139,92,246,0.08));
+                border-color: rgba(139,92,246,0.4);
+                position: relative;
+            }
+
+        .plano-top-badge {
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--roxo);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 16px;
+            border-radius: 100px;
+            white-space: nowrap;
+        }
+
+        .plano-nome {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .plano-preco {
+            font-family: 'DM Serif Display', serif;
+            font-size: 42px;
+            color: #f0f4ff;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+            .plano-preco span {
+                font-family: 'DM Sans', sans-serif;
+                font-size: 15px;
+                color: var(--muted2);
+            }
+
+        .plano-desc {
+            font-size: 13px;
+            color: var(--muted2);
+            margin-bottom: 28px;
+            margin-top: 8px;
+        }
+
+        .plano-divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 24px;
+        }
+
+        .plano-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            margin-bottom: 32px;
+        }
+
+            .plano-features li {
+                display: flex;
+                gap: 10px;
+                align-items: flex-start;
+                font-size: 14px;
+                color: var(--muted2);
+            }
+
+                .plano-features li i {
+                    color: var(--green);
+                    margin-top: 3px;
+                    font-size: 12px;
+                    flex-shrink: 0;
+                }
+
+                .plano-features li.destaque-item {
+                    color: #f0f4ff;
+                }
+
+        .btn-plano {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-plano-ghost {
+            border: 1px solid rgba(139,92,246,0.3);
+            color: var(--roxo-light);
+        }
+
+            .btn-plano-ghost:hover {
+                background: rgba(139,92,246,0.1);
+            }
+
+        .btn-plano-solid {
+            background: var(--roxo);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(109,40,217,0.3);
+        }
+
+            .btn-plano-solid:hover {
+                background: var(--roxo-light);
+                box-shadow: 0 0 30px rgba(139,92,246,0.4);
+            }
+
+        .btn-plano-outline {
+            border: 1px solid var(--border);
+            color: var(--muted2);
+        }
+
+            .btn-plano-outline:hover {
+                border-color: rgba(139,92,246,0.3);
+                color: var(--muted2);
+            }
+
+        .planos-note {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 24px;
+        }
+
+        /* ── FAQ ── */
+        .faq-section {
+            background: var(--bg);
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .faq-list {
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .faq-item {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .faq-pergunta {
+            padding: 18px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #f0f4ff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: color 0.2s;
+        }
+
+            .faq-pergunta:hover {
+                color: var(--roxo-light);
+            }
+
+        .faq-icon {
+            color: var(--muted);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+
+        .faq-resposta {
+            font-size: 14px;
+            color: var(--muted2);
+            line-height: 1.7;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+            padding: 0 24px;
+        }
+
+        .faq-item.aberto .faq-resposta {
+            max-height: 200px;
+            padding: 0 24px 20px;
+        }
+
+        .faq-item.aberto .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* ── CTA FINAL ── */
+        .cta-section {
+            padding: 120px 24px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .cta-section::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse 60% 70% at 50% 100%, rgba(109,40,217,0.2) 0%, transparent 65%);
+                pointer-events: none;
+            }
+
+            .cta-section h2 {
+                font-family: 'DM Serif Display', serif;
+                font-size: clamp(28px, 5vw, 50px);
+                color: #f0f4ff;
+                margin-bottom: 16px;
+                position: relative;
+            }
+
+            .cta-section p {
+                font-size: 17px;
+                color: var(--muted2);
+                margin-bottom: 40px;
+                position: relative;
+            }
+
+            .cta-section .btn-primary {
+                position: relative;
+            }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 48px 40px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+            .footer-links a {
+                color: var(--muted);
+                text-decoration: none;
+                font-size: 13px;
+                transition: color 0.2s;
+            }
+
+                .footer-links a:hover {
+                    color: var(--roxo-light);
+                }
+
+        .footer-copy {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ── MOBILE NAV ── */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--muted2);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(10,13,20,0.98);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+            .mobile-menu.ativo {
+                display: flex;
+            }
+
+            .mobile-menu a {
+                color: #f0f4ff;
+                text-decoration: none;
+                font-size: 22px;
+                font-weight: 500;
+            }
+
+        .mobile-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: var(--muted2);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .agenda-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .gratuitos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .criadora-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .criadora-foto {
+                max-width: 280px;
+            }
+
+            .planos-grid {
+                grid-template-columns: 1fr;
+                max-width: 440px;
+                margin: 0 auto;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-proof {
+                gap: 28px;
+            }
+
+            .section {
+                padding: 72px 20px;
+            }
+        }
+
+        /* ── ANIMAÇÕES DE ENTRADA ── */
         .fade-up {
-            opacity: 0; transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        /* ── PROGRESS BAR ── */
-        .progress-bar {
-            position: fixed; top: 60px; left: 0; right: 0; height: 2px;
-            background: rgba(139,92,246,0.1); z-index: 99;
-        }
-        .progress-fill {
-            height: 100%; background: var(--roxo-light);
-            width: 0%; transition: width 0.1s;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
-        @media (max-width: 768px) {
-            nav { padding: 0 20px; }
-            .hero { padding: 100px 20px 60px; }
-            .capitulo-header { flex-direction: column; gap: 12px; }
-        }
+            .fade-up.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
     </style>
 </head>
 <body>
 
-<nav>
-    <a href="home.html" class="nav-logo">Pront<span>Psi</span></a>
-    <a href="home.html" class="nav-back">
-        <i class="fas fa-arrow-left"></i> Voltar ao site
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">Pront<span>Psi</span></div>
+        <div class="nav-links">
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#gratuitos">Recursos gratuitos</a>
+            <a href="#planos">Planos</a>
+            <div class="nav-divider"></div>
+            <a href="profissionais.html" class="nav-vitrine"><i class="fas fa-search"></i> Encontre um Psi</a>
+            <a href="login.html" class="nav-login"><i class="fas fa-sign-in-alt"></i> Já sou cliente</a>
+            <a href="cadastro.html" class="nav-cta">Teste grátis</a>
+        </div>
+        <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.add('ativo')">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" onclick="document.getElementById('mobileMenu').classList.remove('ativo')">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="#como-funciona" onclick="document.getElementById('mobileMenu').classList.remove('ativo')">Como funciona</a>
+        <a href="#gratuitos" onclick="document.getElementById('mobileMenu').classList.remove('ativo')">Recursos gratuitos</a>
+        <a href="#planos" onclick="document.getElementById('mobileMenu').classList.remove('ativo')">Planos</a>
+        <a href="profissionais.html">🔍 Encontre um Psi</a>
+        <a href="login.html">🔐 Já sou cliente</a>
+        <a href="cadastro.html" class="nav-cta" style="padding:14px 32px; border-radius:10px;">Teste grátis</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            Psicólogos e psiquiatras — o universo Psi em um só lugar
+        </div>
+        <h1>Sua agenda online.<br>Seu paciente agenda <em>e paga.</em><br>Você só atende.</h1>
+        <p class="hero-sub">
+            O ProntPsi é o sistema clínico que <strong>se paga com uma sessão a mais por mês.</strong>
+            Agenda com pagamento integrado, prontuário eletrônico e 16 escalas validadas — tudo em um lugar.
+        </p>
+        <div class="hero-buttons">
+            <a href="cadastro.html" class="btn-primary">
+                <i class="fas fa-rocket"></i> Começar grátis por 7 dias
+            </a>
+            <a href="#como-funciona" class="btn-ghost">
+                <i class="fas fa-play-circle"></i> Ver como funciona
+            </a>
+        </div>
+        <div class="hero-proof">
+            <div class="proof-item">
+                <span class="proof-num">16</span>
+                <span class="proof-label">Escalas validadas</span>
+            </div>
+            <div class="proof-item">
+                <span class="proof-num">7</span>
+                <span class="proof-label">Dias grátis</span>
+            </div>
+            <div class="proof-item">
+                <span class="proof-num">R$47</span>
+                <span class="proof-label">Por mês</span>
+            </div>
+            <div class="proof-item">
+                <span class="proof-num">100%</span>
+                <span class="proof-label">Online, sem instalar</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section class="section" id="como-funciona">
+        <div class="container">
+            <span class="section-eyebrow">Como funciona</span>
+            <h2 class="section-title">Três passos para<br>receber sem esforço</h2>
+            <p class="section-sub">Configure uma vez. Seus pacientes agendam e pagam sozinhos. Você foca no que importa.</p>
+            <div class="steps-grid fade-up">
+                <div class="step-card step-highlight">
+                    <span class="step-num">01</span>
+                    <div class="step-icon">📅</div>
+                    <h3>Configure sua agenda</h3>
+                    <p>Defina seus horários disponíveis, valor da sessão e modalidade de atendimento. Leva menos de 5 minutos.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-num">02</span>
+                    <div class="step-icon">🔗</div>
+                    <h3>Compartilhe seu link</h3>
+                    <p>O sistema gera um link personalizado. Cole no WhatsApp, Instagram, site ou cartão de visitas — onde quiser.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-num">03</span>
+                    <div class="step-icon">💰</div>
+                    <h3>Receba e atenda</h3>
+                    <p>O paciente escolhe o horário e paga online. A consulta aparece na sua agenda automaticamente. Sem cobranças depois da sessão.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AGENDA DESTAQUE -->
+    <section class="section agenda-section">
+        <div class="container">
+            <div class="agenda-grid">
+                <div class="fade-up">
+                    <span class="section-eyebrow">Agenda online</span>
+                    <h2 class="section-title">O recurso que<br>se paga sozinho</h2>
+                    <p class="section-sub" style="margin-bottom:0;">Se você fechar apenas <strong style="color:#d8b4fe;">uma consulta a mais por mês</strong> pela agenda online, o ProntPsi já se pagou.</p>
+                    <div class="agenda-features">
+                        <div class="agenda-feature">
+                            <div class="agenda-feature-icon">💳</div>
+                            <div>
+                                <h4>Pagamento antes da sessão</h4>
+                                <p>Chega de cobrar no PIX depois. O paciente paga ao agendar — via cartão ou PIX.</p>
+                            </div>
+                        </div>
+                        <div class="agenda-feature">
+                            <div class="agenda-feature-icon">🔔</div>
+                            <div>
+                                <h4>Confirmação automática</h4>
+                                <p>O paciente recebe e-mail de confirmação. Você recebe a notificação. Ninguém fica no escuro.</p>
+                            </div>
+                        </div>
+                        <div class="agenda-feature">
+                            <div class="agenda-feature-icon">📲</div>
+                            <div>
+                                <h4>Link personalizável</h4>
+                                <p>Um link só para compartilhar onde quiser. Funciona perfeitamente no celular.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="agenda-visual fade-up">
+                    <div class="agenda-bar">
+                        <div class="agenda-bar-dot" style="background:#ef4444;"></div>
+                        <div class="agenda-bar-dot" style="background:#f59e0b;"></div>
+                        <div class="agenda-bar-dot" style="background:#10b981;"></div>
+                        <span>Minha agenda — hoje</span>
+                    </div>
+                    <div class="agenda-slots">
+                        <div class="slot">
+                            <div class="slot-info">
+                                <span class="slot-hora">08:00</span>
+                                <span class="slot-nome">Maria Fernanda</span>
+                            </div>
+                            <span class="slot-badge slot-pago">✓ Pago</span>
+                        </div>
+                        <div class="slot">
+                            <div class="slot-info">
+                                <span class="slot-hora">09:00</span>
+                                <span class="slot-nome">João Carlos</span>
+                            </div>
+                            <span class="slot-badge slot-pago">✓ Pago</span>
+                        </div>
+                        <div class="slot">
+                            <div class="slot-info">
+                                <span class="slot-hora">10:00</span>
+                                <span class="slot-nome">Ana Beatriz</span>
+                            </div>
+                            <span class="slot-badge slot-pendente">Pendente</span>
+                        </div>
+                        <div class="slot">
+                            <div class="slot-info">
+                                <span class="slot-hora">11:00</span>
+                                <span class="slot-nome">Horário livre</span>
+                            </div>
+                            <span class="slot-badge slot-livre">+ Agendar</span>
+                        </div>
+                        <div class="slot">
+                            <div class="slot-info">
+                                <span class="slot-hora">14:00</span>
+                                <span class="slot-nome">Pedro Henrique</span>
+                            </div>
+                            <span class="slot-badge slot-pago">✓ Pago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECURSOS GRATUITOS -->
+    <section class="section gratuitos-section" id="gratuitos">
+        <div class="container">
+            <div class="gratuitos-header fade-up">
+                <span class="section-eyebrow">Para todo o universo Psi</span>
+                <h2 class="section-title">Recursos gratuitos.<br>Sem cadastro.</h2>
+                <p class="section-sub" style="margin: 0 auto;">Ferramentas úteis para o dia a dia clínico, abertas para qualquer profissional Psi — mesmo quem ainda não assina o sistema.</p>
+            </div>
+            <div class="gratuitos-grid">
+                <!-- Calculadora -->
+                <div class="gratis-card fade-up">
+                    <span class="gratis-tag">✦ Gratuito</span>
+                    <span class="gratis-icon">🧮</span>
+                    <h3>Calculadora de Honorários</h3>
+                    <p>Descubra o valor justo para sua sessão baseado na sua região, especialidade e tempo de formado.</p>
+                    <div class="calc-wrapper">
+                        <div class="calc-row">
+                            <label>Tempo de formado</label>
+                            <select id="calc-tempo">
+                                <option value="1">Recém-formado (0–2 anos)</option>
+                                <option value="2">Em formação (3–5 anos)</option>
+                                <option value="3">Experiente (6–10 anos)</option>
+                                <option value="4">Sênior (10+ anos)</option>
+                            </select>
+                        </div>
+                        <div class="calc-row">
+                            <label>Região</label>
+                            <select id="calc-regiao">
+                                <option value="sp">São Paulo (Capital)</option>
+                                <option value="rj">Rio de Janeiro</option>
+                                <option value="sul">Sul (RS, SC, PR)</option>
+                                <option value="mg">Minas Gerais</option>
+                                <option value="ne">Nordeste</option>
+                                <option value="co">Centro-Oeste</option>
+                                <option value="norte">Norte</option>
+                            </select>
+                        </div>
+                        <div class="calc-row">
+                            <label>Modalidade</label>
+                            <select id="calc-modo">
+                                <option value="1">Presencial</option>
+                                <option value="0.9">Online</option>
+                            </select>
+                        </div>
+                        <button class="btn-calc" onclick="calcularHonorarios()">Calcular</button>
+                        <div class="calc-result" id="calc-result" style="display:none;">
+                            <span class="calc-result-valor" id="calc-valor"></span>
+                            <span class="calc-result-label">Faixa sugerida por sessão (50min)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buscador de Escalas -->
+                <div class="gratis-card fade-up">
+                    <span class="gratis-tag">✦ Gratuito</span>
+                    <span class="gratis-icon">🔍</span>
+                    <h3>Buscador de Escalas Validadas</h3>
+                    <p>Encontre rapidamente qual escala usar para cada situação clínica — todas validadas para o Brasil.</p>
+                    <div class="escalas-wrapper">
+                        <input class="escala-search" id="escala-busca" placeholder="Buscar: depressão, ansiedade, sono..." oninput="buscarEscala()" />
+                        <div class="escala-list" id="escala-lista"></div>
+                    </div>
+                </div>
+
+                <!-- Guia do Consultório -->
+                <div class="gratis-card fade-up" onclick="window.location.href='guia.html'" style="cursor:pointer;">
+                    <span class="gratis-tag">✦ Gratuito</span>
+                    <span class="gratis-icon">📋</span>
+                    <h3>Guia: Como Montar seu Consultório</h3>
+                    <p>Do CNPJ à precificação. Um guia prático para profissionais recém-formados que querem começar com o pé direito.</p>
+                    <span class="gratis-link" style="margin-top: 8px; display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--roxo-light); font-weight:600;">
+                        Acessar guia gratuito <i class="fas fa-arrow-right"></i>
+                    </span>
+                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(16,185,129,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
+                            <span style="font-size: 13px; color: var(--muted2);">Como abrir o CNPJ como profissional autônomo da saúde</span>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(16,185,129,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
+                            <span style="font-size: 13px; color: var(--muted2);">Precificação justa para cada fase da carreira</span>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(16,185,129,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
+                            <span style="font-size: 13px; color: var(--muted2);">Marketing ético para atrair pacientes</span>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(16,185,129,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
+                            <span style="font-size: 13px; color: var(--muted2);">Documentação clínica obrigatória pelo CFP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O QUE VEM JUNTO -->
+    <section class="section features-section">
+        <div class="container">
+            <span class="section-eyebrow">Funcionalidades</span>
+            <h2 class="section-title">Tudo que você precisa.<br>Nada que você não usa.</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-up">
+                    <div class="feature-card-icon">📝</div>
+                    <h3>Prontuário Eletrônico</h3>
+                    <p>Registre evoluções, CID-10, tempo de sessão com cronômetro integrado. Histórico completo do paciente.</p>
+                </div>
+                <div class="feature-card fade-up">
+                    <div class="feature-card-icon">📊</div>
+                    <h3>16 Escalas Clínicas</h3>
+                    <p>Beck BDI, Hamilton, MADRS, Pittsburgh PSQI, Epworth e mais. Envie por link, o paciente responde, o resultado aparece no prontuário.</p>
+                </div>
+                <div class="feature-card fade-up">
+                    <div class="feature-card-icon">🧠</div>
+                    <h3>Técnicas de TCC</h3>
+                    <p>Descatastrofização, Padrão Duplo, Tomada de Decisão e Agenda de Atividades — integradas ao prontuário.</p>
+                </div>
+                <div class="feature-card fade-up">
+                    <div class="feature-card-icon">🧾</div>
+                    <h3>Recibos e Relatórios</h3>
+                    <p>Gere recibos em PDF com um clique. Relatórios mensais por convênio com CID-10 para faturamento.</p>
+                </div>
+                <div class="feature-card fade-up">
+                    <div class="feature-card-icon">💾</div>
+                    <h3>Backup Automático</h3>
+                    <p>Todo dia de madrugada o sistema exporta seus dados e envia por email. Seus dados nunca se perdem.</p>
+                </div>
+                <div class="feature-card fade-up">
+                    <div class="feature-card-icon">🔒</div>
+                    <h3>Segurança e LGPD</h3>
+                    <p>Dados criptografados, cada profissional acessa só os seus pacientes. Em conformidade com a LGPD.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUEM CRIOU -->
+    <section class="section criadora-section">
+        <div class="container">
+            <div class="criadora-grid">
+                <div class="fade-up">
+                    <img src="alineamaral.JPG" alt="Aline Amaral" class="criadora-foto">
+                    <div class="criadora-tags">
+                        <span class="criadora-tag">Psicologia Hospitalar</span>
+                        <span class="criadora-tag">TCC</span>
+                        <span class="criadora-tag">MBA Gestão em Saúde</span>
+                    </div>
+                </div>
+                <div class="criadora-content fade-up">
+                    <span class="section-eyebrow">Quem está por trás do ProntPsi</span>
+                    <h2 class="criadora-name">Aline Amaral</h2>
+                    <p class="criadora-crp">CRP 06/142331 · Psicóloga clínica e criadora do ProntPsi</p>
+                    <p>Com quase 9 anos de atuação clínica — em home care, obesidade, pacientes pré e pós-bariátricos, doenças crônicas e atendimento infantojuvenil — vivi na pele a dificuldade de gerenciar prontuários, escalas e relatórios com ferramentas que simplesmente não foram feitas para a nossa realidade.</p>
+                    <p>O ProntPsi nasceu da minha necessidade como profissional de saúde mental. Mas rapidamente percebei que psiquiatras, psicopedagogos e toda a equipe Psi tinham as mesmas dores. Por isso o sistema foi pensado para acolher todo o universo da saúde mental.</p>
+                    <blockquote class="criadora-quote">
+                        "Quero que você gaste seu tempo e energia com o que realmente importa: seus pacientes."
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLANOS -->
+    <section class="section planos-section" id="planos">
+        <div class="container">
+            <div class="planos-header fade-up">
+                <span class="section-eyebrow">Planos</span>
+                <h2 class="section-title">Simples assim.</h2>
+                <p class="section-sub" style="margin: 0 auto;">Comece grátis por 7 dias. Sem cartão de crédito. Cancele quando quiser.</p>
+            </div>
+            <div class="planos-grid">
+                <!-- Trial -->
+                <div class="plano-card fade-up">
+                    <p class="plano-nome">Trial</p>
+                    <div class="plano-preco">Grátis <span>/ 7 dias</span></div>
+                    <p class="plano-desc">Explore tudo sem compromisso</p>
+                    <div class="plano-divider"></div>
+                    <ul class="plano-features">
+                        <li><i class="fas fa-check"></i> Todas as funcionalidades</li>
+                        <li><i class="fas fa-check"></i> Agenda online com pagamento</li>
+                        <li><i class="fas fa-check"></i> 16 escalas clínicas</li>
+                        <li><i class="fas fa-check"></i> Prontuário eletrônico</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-plano btn-plano-ghost">Começar grátis</a>
+                </div>
+                <!-- Individual -->
+                <div class="plano-card destaque fade-up">
+                    <span class="plano-top-badge">Mais popular</span>
+                    <p class="plano-nome">Individual</p>
+                    <div class="plano-preco">R$47 <span>/ mês</span></div>
+                    <p class="plano-desc">Para psicólogos e psiquiatras autônomos</p>
+                    <div class="plano-divider"></div>
+                    <ul class="plano-features">
+                        <li class="destaque-item"><i class="fas fa-check"></i> Agenda online com pagamento</li>
+                        <li class="destaque-item"><i class="fas fa-check"></i> Prontuário ilimitado</li>
+                        <li class="destaque-item"><i class="fas fa-check"></i> 16 escalas + TCC</li>
+                        <li class="destaque-item"><i class="fas fa-check"></i> Recibos e relatórios PDF</li>
+                        <li class="destaque-item"><i class="fas fa-check"></i> Backup automático diário</li>
+                        <li class="destaque-item"><i class="fas fa-check"></i> Suporte por email</li>
+                    </ul>
+                    <a href="cadastro.html" class="btn-plano btn-plano-solid">Assinar agora</a>
+                </div>
+                <!-- Clínica -->
+                <div class="plano-card fade-up">
+                    <p class="plano-nome">Clínica</p>
+                    <div class="plano-preco">R$197 <span>/ mês</span></div>
+                    <p class="plano-desc">Para clínicas e equipes multidisciplinares</p>
+                    <div class="plano-divider"></div>
+                    <ul class="plano-features">
+                        <li><i class="fas fa-check"></i> Tudo do Individual</li>
+                        <li><i class="fas fa-check"></i> Múltiplos profissionais (Psi + Psiquiatria)</li>
+                        <li><i class="fas fa-check"></i> Agenda compartilhada por equipe</li>
+                        <li><i class="fas fa-check"></i> Faturamento consolidado da clínica</li>
+                        <li><i class="fas fa-check"></i> Suporte prioritário</li>
+                    </ul>
+                    <a href="mailto:prontpsii@gmail.com" class="btn-plano btn-plano-outline">Falar com a equipe</a>
+                </div>
+            </div>
+            <p class="planos-note">💳 Pagamento seguro via cartão ou PIX. Cancele quando quiser, sem multa.</p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq-section" id="faq">
+        <div class="container">
+            <div class="faq-header fade-up">
+                <span class="section-eyebrow">Dúvidas</span>
+                <h2 class="section-title">Perguntas frequentes</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item fade-up">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Como funciona a agenda online com pagamento? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Você configura seus horários e valor da sessão. O sistema gera um link que você compartilha onde quiser. O paciente acessa, escolhe o horário e paga online via cartão ou PIX. A consulta aparece na sua agenda automaticamente — sem precisar confirmar nada.</div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Preciso instalar algum programa? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Não. O ProntPsi é 100% online. Funciona direto no navegador — computador, tablet ou celular. Sem instalação, sem configuração técnica.</div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Os dados dos meus pacientes são seguros? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim. Todos os dados são criptografados e armazenados com segurança. Cada profissional acessa apenas os dados dos seus próprios pacientes. O sistema está em conformidade com a LGPD e as boas práticas de segurança clínica.</div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Posso cancelar quando quiser? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim, sem burocracia e sem multa. Você pode cancelar a qualquer momento direto pelo painel. Seus dados ficam disponíveis até o fim do período pago.</div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        As escalas são validadas cientificamente? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim. Todas as 16 escalas são instrumentos validados e amplamente utilizados na prática clínica brasileira: Beck BDI, Hamilton HAM-A, MADRS, Pittsburgh PSQI, Epworth e outras. Você envia o link para o paciente, ele responde, e o resultado já aparece no prontuário com pontuação e interpretação.</div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="faq-pergunta" onclick="toggleFaq(this)">
+                        Funciona para quem atende por convênio? <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-resposta">Sim. O ProntPsi permite registrar convênio, CID-10 e código de procedimento em cada sessão, e gera relatórios mensais de produção por convênio em PDF para facilitar o faturamento.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Pronto para simplificar<br>sua clínica?</h2>
+            <p>Psicólogo, psiquiatra ou clínica — teste grátis por 7 dias. Sem cartão.</p>
+            <a href="cadastro.html" class="btn-primary" style="display:inline-flex; font-size:16px; padding:16px 36px;">
+                <i class="fas fa-rocket"></i> Criar minha conta grátis
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="footer-logo">ProntPsi</span>
+        <div class="footer-links">
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#gratuitos">Recursos gratuitos</a>
+            <a href="profissionais.html">Encontre um Psi</a>
+            <a href="#planos">Planos</a>
+            <a href="#faq">FAQ</a>
+            <a href="login.html">Entrar</a>
+            <a href="cadastro.html">Cadastrar</a>
+            <a href="mailto:prontpsii@gmail.com">Contato</a>
+        </div>
+        <p class="footer-copy">© 2026 ProntPsi — O sistema clínico do universo Psi.</p>
+    </footer>
+
+    <!-- WHATSAPP FLUTUANTE -->
+    <a href="https://wa.me/5511947454936" target="_blank" style="
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    background: #25D366; color: #fff; width: 56px; height: 56px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 26px; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    text-decoration: none; transition: transform 0.2s;
+" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <i class="fab fa-whatsapp"></i>
     </a>
-</nav>
 
-<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <script>
+        // ── ESCALAS DATA ──
+        const escalas = [
+            { nome: "Beck BDI-II", area: "Depressão" },
+            { nome: "Hamilton HAM-A", area: "Ansiedade" },
+            { nome: "Hamilton HAM-D", area: "Depressão" },
+            { nome: "MADRS", area: "Depressão" },
+            { nome: "PHQ-9", area: "Depressão" },
+            { nome: "GAD-7", area: "Ansiedade" },
+            { nome: "Pittsburgh PSQI", area: "Sono" },
+            { nome: "Epworth", area: "Sono" },
+            { nome: "BINGE (ECAP)", area: "Compulsão Alimentar" },
+            { nome: "AUDIT", area: "Álcool" },
+            { nome: "CAGE", area: "Álcool" },
+            { nome: "PCL-5", area: "Trauma / PTSD" },
+            { nome: "OCI-R", area: "TOC" },
+            { nome: "Young Mania Rating", area: "Mania" },
+            { nome: "SNAP-IV", area: "TDAH" },
+            { nome: "Columbia Suicide", area: "Risco de Suicídio" },
+        ];
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-tag">
-        <i class="fas fa-book-open"></i> Guia gratuito ProntPsi
-    </div>
-    <h1>Como montar seu consultório<br><em>do zero ao primeiro paciente</em></h1>
-    <p class="hero-sub">Tudo que você precisa saber sobre CNPJ, registro no CRP/CRM, precificação, documentação obrigatória e como atrair pacientes de forma ética.</p>
-    <div class="hero-meta">
-        <span><i class="fas fa-clock"></i> 15 min de leitura</span>
-        <span><i class="fas fa-calendar"></i> Atualizado em 2026</span>
-        <span><i class="fas fa-check-circle" style="color:var(--green)"></i> Gratuito, sem cadastro</span>
-    </div>
-</section>
-
-<!-- ÍNDICE -->
-<div class="indice-wrapper">
-    <div class="indice fade-up">
-        <p class="indice-title">Neste guia</p>
-        <ul class="indice-list">
-            <li><a href="#cap1"><span class="indice-num">1</span> Registro profissional — CRP e CRM</a></li>
-            <li><a href="#cap2"><span class="indice-num">2</span> Abertura do CNPJ</a></li>
-            <li><a href="#cap3"><span class="indice-num">3</span> Estrutura do consultório</a></li>
-            <li><a href="#cap4"><span class="indice-num">4</span> Documentação clínica obrigatória</a></li>
-            <li><a href="#cap5"><span class="indice-num">5</span> Precificação justa</a></li>
-            <li><a href="#cap6"><span class="indice-num">6</span> Marketing ético</a></li>
-            <li><a href="#cap7"><span class="indice-num">7</span> Gestão financeira</a></li>
-        </ul>
-    </div>
-</div>
-
-<!-- CONTEÚDO -->
-<div class="content-wrapper">
-
-    <!-- CAP 1 -->
-    <div class="capitulo fade-up" id="cap1">
-        <div class="capitulo-header">
-            <div class="capitulo-num">1</div>
-            <div class="capitulo-header-text">
-                <span class="capitulo-eyebrow">Primeiro passo</span>
-                <h2>Registro profissional — CRP e CRM</h2>
+        function buscarEscala() {
+            const q = document.getElementById('escala-busca').value.toLowerCase();
+            const lista = document.getElementById('escala-lista');
+            const filtradas = q ? escalas.filter(e =>
+                e.nome.toLowerCase().includes(q) || e.area.toLowerCase().includes(q)
+            ) : escalas.slice(0, 6);
+            lista.innerHTML = filtradas.map(e => `
+            <div class="escala-item">
+                <span class="escala-nome">${e.nome}</span>
+                <span class="escala-tag">${e.area}</span>
             </div>
-        </div>
-        <div class="capitulo-divider"></div>
+        `).join('');
+        }
+        buscarEscala();
 
-        <p>Antes de qualquer outra coisa, o registro no conselho de classe é <strong>obrigatório por lei</strong> para o exercício legal da profissão no Brasil. Sem ele, qualquer atendimento clínico configura exercício ilegal da profissão, sujeito a sanções penais e civis.</p>
+        // ── CALCULADORA ──
+        function calcularHonorarios() {
+            const tempo = parseInt(document.getElementById('calc-tempo').value);
+            const regiao = document.getElementById('calc-regiao').value;
+            const modo = parseFloat(document.getElementById('calc-modo').value);
 
-        <h3>Para psicólogos — CRP</h3>
-        <p>O Conselho Regional de Psicologia (CRP) é o órgão responsável pelo registro e fiscalização dos psicólogos. O registro é feito no CRP do estado onde você irá exercer a profissão.</p>
+            const base = { sp: 180, rj: 160, sul: 150, mg: 140, ne: 110, co: 130, norte: 100 };
+            const multiplicador = [1, 1.3, 1.7, 2.2];
 
-        <div class="step-list">
-            <div class="step-item">
-                <div class="step-bullet">1</div>
-                <div>
-                    <h4>Diploma reconhecido pelo MEC</h4>
-                    <p>Seu curso de graduação em Psicologia precisa ser reconhecido pelo Ministério da Educação. Verifique no portal do MEC antes de solicitar o registro.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet">2</div>
-                <div>
-                    <h4>Documentação para o CRP</h4>
-                    <p>Diploma original e cópia, histórico escolar, RG, CPF, comprovante de residência e foto 3x4. Alguns CRPs exigem a certidão de conclusão emitida pela IES.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet">3</div>
-                <div>
-                    <h4>Pagamento da anuidade</h4>
-                    <p>A anuidade do CRP varia por regional. Em São Paulo (CRP-06), o valor em 2026 é em torno de R$500 para profissionais com renda acima de 3 salários mínimos. Há isenção e desconto para recém-formados — verifique no site do seu CRP.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet">4</div>
-                <div>
-                    <h4>Carteira profissional</h4>
-                    <p>Após aprovação, você receberá a carteira com seu número de CRP — esse número deverá constar em toda documentação clínica, receitas e materiais de divulgação.</p>
-                </div>
-            </div>
-        </div>
+            const min = Math.round(base[regiao] * multiplicador[tempo - 1] * modo / 10) * 10;
+            const max = Math.round(min * 1.4 / 10) * 10;
 
-        <h3>Para psiquiatras — CRM e RQE</h3>
-        <p>O psiquiatra é médico especialista. Além do CRM (Conselho Regional de Medicina), precisa do <strong>RQE — Registro de Qualificação de Especialista</strong> em Psiquiatria para atuar e divulgar a especialidade legalmente.</p>
+            document.getElementById('calc-valor').textContent = `R$${min} – R$${max}`;
+            document.getElementById('calc-result').style.display = 'block';
+        }
 
-        <ul class="check-list">
-            <li><i class="fas fa-check"></i> <span><strong>CRM:</strong> registro no Conselho Regional de Medicina do estado de atuação. Exige diploma de medicina reconhecido pelo MEC.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Residência médica em psiquiatria</strong> (mínimo 3 anos) ou <strong>título de especialista</strong> pela Associação Brasileira de Psiquiatria (ABP) para obter o RQE.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>RQE:</strong> solicitado no próprio CRM mediante comprovação da especialidade. Sem o RQE, é vedado divulgar-se como psiquiatra.</span></li>
-        </ul>
+        // ── FAQ ──
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const aberto = item.classList.contains('aberto');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('aberto'));
+            if (!aberto) item.classList.add('aberto');
+        }
 
-        <div class="info-card alerta">
-            <p class="info-card-title"><i class="fas fa-exclamation-triangle"></i> Atenção</p>
-            <p>O atendimento em outro estado exige visto de exercício temporário no CRP/CRM daquele estado. Para atendimento online em todo o Brasil, o CFP e o CFM possuem regulamentações específicas — consulte as resoluções vigentes.</p>
-        </div>
-    </div>
-
-    <!-- CAP 2 -->
-    <div class="capitulo fade-up" id="cap2">
-        <div class="capitulo-header">
-            <div class="capitulo-num">2</div>
-            <div class="capitulo-header-text">
-                <span class="capitulo-eyebrow">Formalização</span>
-                <h2>Abertura do CNPJ</h2>
-            </div>
-        </div>
-        <div class="capitulo-divider"></div>
-
-        <p>Atender como pessoa física (CPF) é legal, mas traz desvantagens tributárias significativas. A abertura do CNPJ como <strong>Microempreendedor Individual (MEI)</strong> ou <strong>Simples Nacional</strong> reduz a carga tributária e profissionaliza sua gestão financeira.</p>
-
-        <h3>MEI — Microempreendedor Individual</h3>
-        <p>O MEI é a opção mais simples, mas <strong>psicólogos e psiquiatras não podem ser MEI</strong> — as atividades de saúde regulamentadas são vedadas pelo CGSN (Comitê Gestor do Simples Nacional). Essa é uma dúvida muito comum entre recém-formados.</p>
-
-        <div class="info-card alerta">
-            <p class="info-card-title"><i class="fas fa-exclamation-triangle"></i> Importante</p>
-            <p>Psicólogos (CBO 2515) e médicos/psiquiatras (CBO 2251) são categorias vedadas ao MEI por lei. Abrir MEI nessa situação pode gerar multas e cancelamento do CNPJ.</p>
-        </div>
-
-        <h3>A opção certa: Simples Nacional</h3>
-        <p>A alternativa correta é abrir uma <strong>empresa individual ou EIRELI</strong> optante pelo Simples Nacional, na categoria de serviços de saúde. A tributação pelo Simples pode variar de <strong>6% a 17,42%</strong> sobre o faturamento, dependendo da faixa — muito abaixo dos 27,5% do IRPF para pessoa física.</p>
-
-        <div class="step-list">
-            <div class="step-item">
-                <div class="step-bullet">1</div>
-                <div>
-                    <h4>Escolha o tipo societário</h4>
-                    <p>Para quem atende sozinho: Empresário Individual (EI) ou Sociedade Unipessoal de Advocacia (não se aplica) — use EI ou SLU (Sociedade Limitada Unipessoal). Para quem vai ter sócio: Sociedade Limitada (LTDA).</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet">2</div>
-                <div>
-                    <h4>Registro na Junta Comercial</h4>
-                    <p>Faça o registro na Junta Comercial do seu estado (ex: JUCESP em São Paulo). Hoje é possível fazer online em muitos estados pelo Portal Integrado de Abertura de Empresas (gov.br).</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet">3</div>
-                <div>
-                    <h4>CNAE correto</h4>
-                    <p>Para psicólogos: <strong>CNAE 8650-0/06</strong> — Atividades de psicologia e psicanálise. Para psiquiatras: <strong>CNAE 8630-5/04</strong> — Atividades de serviços de complementação diagnóstica e terapêutica.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet">4</div>
-                <div>
-                    <h4>Alvará de funcionamento</h4>
-                    <p>Necessário na prefeitura do município onde o consultório estará localizado. Para atendimento online, o alvará é emitido no endereço da sede da empresa.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet">5</div>
-                <div>
-                    <h4>Registro no CRP/CRM como pessoa jurídica</h4>
-                    <p>Após abrir o CNPJ, registre a pessoa jurídica no conselho de classe. O CRP e o CRM exigem registro da empresa além do registro do profissional.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-card sucesso">
-            <p class="info-card-title"><i class="fas fa-lightbulb"></i> Dica Sebrae</p>
-            <p>O Sebrae oferece consultoria gratuita para abertura de empresas. Acesse <strong>sebrae.com.br</strong> ou vá a uma unidade física para orientação personalizada sobre o enquadramento tributário mais vantajoso para o seu caso.</p>
-            <p>Também considere contratar um contador — o custo mensal (em torno de R$150–250 para empresas simples) se paga na economia tributária e na tranquilidade fiscal.</p>
-        </div>
-    </div>
-
-    <!-- CAP 3 -->
-    <div class="capitulo fade-up" id="cap3">
-        <div class="capitulo-header">
-            <div class="capitulo-num">3</div>
-            <div class="capitulo-header-text">
-                <span class="capitulo-eyebrow">Estrutura física e online</span>
-                <h2>Estrutura do consultório</h2>
-            </div>
-        </div>
-        <div class="capitulo-divider"></div>
-
-        <p>Você não precisa de um espaço próprio para começar. Muitos profissionais iniciam alugando salas por hora em clínicas compartilhadas — o que reduz o custo fixo significativamente.</p>
-
-        <h3>Consultório físico</h3>
-        <ul class="check-list">
-            <li><i class="fas fa-check"></i> <span><strong>Sala própria vs. aluguel por hora:</strong> sala própria oferece identidade mas tem custo fixo alto. Aluguel por hora (R$30–100/h em grandes cidades) é ideal para quem está começando.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Isolamento acústico:</strong> fundamental para o sigilo das sessões. Portas e janelas com bom isolamento são indispensáveis.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Ambiente acolhedor:</strong> iluminação suave, temperatura agradável e ausência de ruídos externos contribuem para o vínculo terapêutico.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Sala de espera:</strong> se possível, com acesso independente para que pacientes não se cruzem ao entrar e sair.</span></li>
-        </ul>
-
-        <h3>Atendimento online</h3>
-        <p>O atendimento psicológico online foi regulamentado pelo CFP pela <strong>Resolução CFP nº 11/2018</strong> e atualizado pela <strong>Resolução CFP nº 4/2020</strong>. Para psiquiatras, o CFM regulamentou a telemedicina pela <strong>Resolução CFM nº 2.314/2022</strong>.</p>
-
-        <ul class="check-list">
-            <li><i class="fas fa-check"></i> <span>Use plataformas seguras com criptografia ponta a ponta (não use WhatsApp para sessões).</span></li>
-            <li><i class="fas fa-check"></i> <span>O paciente deve estar em local privativo durante a sessão.</span></li>
-            <li><i class="fas fa-check"></i> <span>Registre no prontuário que a sessão foi realizada de forma remota.</span></li>
-            <li><i class="fas fa-check"></i> <span>Para psicólogos: é vedado o atendimento online em situações de risco iminente de vida.</span></li>
-        </ul>
-
-        <div class="info-card destaque">
-            <p class="info-card-title"><i class="fas fa-star"></i> Equipamentos essenciais para online</p>
-            <p>Câmera com boa resolução (webcam Full HD ou superior), microfone externo ou headset, iluminação frontal (ring light ou luz natural), conexão estável de internet (mínimo 10 Mbps upload) e fundo neutro ou desfocado.</p>
-        </div>
-    </div>
-
-    <!-- CAP 4 -->
-    <div class="capitulo fade-up" id="cap4">
-        <div class="capitulo-header">
-            <div class="capitulo-num">4</div>
-            <div class="capitulo-header-text">
-                <span class="capitulo-eyebrow">Obrigações legais</span>
-                <h2>Documentação clínica obrigatória</h2>
-            </div>
-        </div>
-        <div class="capitulo-divider"></div>
-
-        <p>A documentação clínica é uma obrigação ética e legal. O <strong>Código de Ética Profissional do Psicólogo</strong> (Resolução CFP nº 10/2005) e o <strong>Código de Ética Médica</strong> (Resolução CFM nº 2.217/2018) estabelecem deveres específicos de registro.</p>
-
-        <h3>Prontuário clínico</h3>
-        <p>O prontuário é o principal documento clínico e deve ser mantido por <strong>no mínimo 5 anos</strong> após o encerramento do atendimento (para adultos) ou até 3 anos após o paciente completar a maioridade (para crianças e adolescentes), conforme orientações do CFP.</p>
-
-        <ul class="check-list">
-            <li><i class="fas fa-check"></i> <span><strong>Dados de identificação</strong> do paciente: nome completo, data de nascimento, contato de emergência.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Data e duração</strong> de cada sessão.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Evolução clínica:</strong> registro do conteúdo relevante de cada sessão.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Hipótese diagnóstica</strong> ou CID-10 (obrigatório para psiquiatras e recomendado para psicólogos em contextos de convênio).</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>Intercorrências</strong> relevantes e encaminhamentos realizados.</span></li>
-        </ul>
-
-        <h3>Termo de Consentimento Livre e Esclarecido (TCLE)</h3>
-        <p>Obrigatório antes do início do atendimento. Deve conter:</p>
-
-        <ul class="check-list">
-            <li><i class="fas fa-check"></i> <span>Natureza, objetivos e duração estimada do atendimento.</span></li>
-            <li><i class="fas fa-check"></i> <span>Sigilo profissional e suas exceções legais (risco de vida, determinação judicial).</span></li>
-            <li><i class="fas fa-check"></i> <span>Política de cancelamento e cobrança de sessões não comparecidas.</span></li>
-            <li><i class="fas fa-check"></i> <span>Honorários e forma de pagamento.</span></li>
-            <li><i class="fas fa-check"></i> <span>Autorização para uso de recursos tecnológicos (para atendimento online).</span></li>
-        </ul>
-
-        <h3>LGPD — Lei Geral de Proteção de Dados</h3>
-        <p>Dados de saúde são considerados <strong>dados sensíveis</strong> pela LGPD (Lei nº 13.709/2018) e merecem proteção reforçada. Como profissional de saúde, você é responsável pelo tratamento seguro desses dados.</p>
-
-        <div class="info-card alerta">
-            <p class="info-card-title"><i class="fas fa-shield-alt"></i> Suas obrigações pela LGPD</p>
-            <p>Informe ao paciente quais dados coleta e para quê. Armazene prontuários em sistemas seguros, com criptografia. Não compartilhe dados sem autorização. Em caso de vazamento, comunique o paciente e a ANPD.</p>
-        </div>
-
-        <h3>Nota fiscal de serviços</h3>
-        <p>Com CNPJ ativo, você é obrigado a emitir Nota Fiscal de Serviços Eletrônica (NFS-e) para cada consulta. A emissão é feita no site da prefeitura do seu município. O não cumprimento sujeita a multas.</p>
-    </div>
-
-    <!-- CAP 5 -->
-    <div class="capitulo fade-up" id="cap5">
-        <div class="capitulo-header">
-            <div class="capitulo-num">5</div>
-            <div class="capitulo-header-text">
-                <span class="capitulo-eyebrow">Quanto cobrar</span>
-                <h2>Precificação justa</h2>
-            </div>
-        </div>
-        <div class="capitulo-divider"></div>
-
-        <p>Precificar é um dos maiores desafios para profissionais recém-formados. Cobrar muito barato desvaloriza a profissão e coloca em risco a sustentabilidade do seu negócio. Cobrar muito caro pode afastar pacientes. O equilíbrio está no <strong>cálculo real dos seus custos</strong>.</p>
-
-        <h3>Fórmula básica de precificação</h3>
-
-        <div class="info-card destaque">
-            <p class="info-card-title"><i class="fas fa-calculator"></i> Como calcular seu honorário mínimo</p>
-            <p><strong>1. Some seus custos fixos mensais:</strong> aluguel de sala, contador, anuidade CRP/CRM, sistema clínico, internet, telefone, materiais.</p>
-            <p><strong>2. Adicione seus custos pessoais:</strong> moradia, alimentação, transporte, saúde, lazer, reserva de emergência.</p>
-            <p><strong>3. Defina quantas sessões fará por mês</strong> (ex: 60 sessões = 3 por dia, 5 dias, 4 semanas).</p>
-            <p><strong>4. Divida o total pelo número de sessões.</strong> Esse é seu piso mínimo.</p>
-            <p><strong>5. Adicione a margem de lucro</strong> para reinvestimento e crescimento (recomendado: 20–30%).</p>
-        </div>
-
-        <h3>Referências de mercado por região (2026)</h3>
-
-        <div class="tabela-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Região</th>
-                        <th>Recém-formado</th>
-                        <th>3–5 anos</th>
-                        <th>6–10 anos</th>
-                        <th>10+ anos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>São Paulo (capital)</strong></td>
-                        <td>R$150–200</td>
-                        <td>R$200–280</td>
-                        <td>R$280–380</td>
-                        <td>R$380–600+</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Rio de Janeiro</strong></td>
-                        <td>R$130–180</td>
-                        <td>R$180–260</td>
-                        <td>R$260–350</td>
-                        <td>R$350–550+</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Sul (RS, SC, PR)</strong></td>
-                        <td>R$120–170</td>
-                        <td>R$170–240</td>
-                        <td>R$240–320</td>
-                        <td>R$320–500+</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Minas Gerais</strong></td>
-                        <td>R$110–160</td>
-                        <td>R$160–230</td>
-                        <td>R$230–300</td>
-                        <td>R$300–450+</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Nordeste</strong></td>
-                        <td>R$80–130</td>
-                        <td>R$130–180</td>
-                        <td>R$180–250</td>
-                        <td>R$250–380+</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Centro-Oeste</strong></td>
-                        <td>R$100–150</td>
-                        <td>R$150–210</td>
-                        <td>R$210–280</td>
-                        <td>R$280–420+</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <p style="font-size:12px; color:var(--muted); margin-top:8px;">* Valores de referência para sessão individual de 50 minutos. Psiquiatras geralmente praticam valores 30–50% acima. Fonte: referências de mercado e tabelas CFP regionais.</p>
-
-        <h3>Escala deslizante</h3>
-        <p>A <strong>escala deslizante</strong> é uma prática ética que permite oferecer valores diferenciados a pacientes de menor renda sem desvalorizar seu trabalho. Você define um valor mínimo (que cobre seus custos) e um máximo (seu honorário cheio), e o paciente escolhe quanto pode pagar dentro dessa faixa — de forma transparente e sem julgamento.</p>
-
-        <div class="info-card sucesso">
-            <p class="info-card-title"><i class="fas fa-heart"></i> Política de cancelamento</p>
-            <p>Defina e comunique claramente sua política de cancelamento no TCLE. O mais comum é cobrar integralmente sessões canceladas com menos de 24–48h de antecedência. Isso protege sua renda e educa o paciente sobre o valor do seu tempo.</p>
-        </div>
-    </div>
-
-    <!-- CAP 6 -->
-    <div class="capitulo fade-up" id="cap6">
-        <div class="capitulo-header">
-            <div class="capitulo-num">6</div>
-            <div class="capitulo-header-text">
-                <span class="capitulo-eyebrow">Atrair pacientes</span>
-                <h2>Marketing ético</h2>
-            </div>
-        </div>
-        <div class="capitulo-divider"></div>
-
-        <p>O marketing para profissionais de saúde é regulado pelo CFP (Resolução CFP nº 6/2019) e pelo CFM (Resolução CFM nº 1.974/2011 e Código de Ética Médica). Existem limites claros sobre o que pode e não pode ser divulgado.</p>
-
-        <h3>O que é permitido</h3>
-        <ul class="check-list">
-            <li><i class="fas fa-check"></i> <span>Divulgar nome completo, número de registro (CRP/CRM + RQE), especialidade e endereço de atendimento.</span></li>
-            <li><i class="fas fa-check"></i> <span>Informar abordagens terapêuticas utilizadas (TCC, psicanálise, EMDR etc.).</span></li>
-            <li><i class="fas fa-check"></i> <span>Produzir conteúdo educativo sobre saúde mental — artigos, vídeos, posts informativos.</span></li>
-            <li><i class="fas fa-check"></i> <span>Ter site profissional e perfis em redes sociais com informações da clínica.</span></li>
-            <li><i class="fas fa-check"></i> <span>Divulgar títulos acadêmicos e de especialização comprovados.</span></li>
-        </ul>
-
-        <h3>O que é vedado</h3>
-        <ul class="check-list">
-            <li><i class="fas fa-check" style="color:#ef4444"></i> <span>Garantir resultados ou cura de transtornos específicos.</span></li>
-            <li><i class="fas fa-check" style="color:#ef4444"></i> <span>Usar depoimentos de pacientes — mesmo com autorização, é vedado pelo CFP.</span></li>
-            <li><i class="fas fa-check" style="color:#ef4444"></i> <span>Comparar seus serviços ou competência com os de outros profissionais.</span></li>
-            <li><i class="fas fa-check" style="color:#ef4444"></i> <span>Divulgar casos clínicos com identificação do paciente sem autorização expressa.</span></li>
-            <li><i class="fas fa-check" style="color:#ef4444"></i> <span>Anunciar consultas com preço fixo em publicidade (para médicos, pelo CFM).</span></li>
-        </ul>
-
-        <h3>Estratégias que funcionam</h3>
-
-        <div class="step-list">
-            <div class="step-item">
-                <div class="step-bullet"><i class="fab fa-google" style="font-size:12px"></i></div>
-                <div>
-                    <h4>Google Meu Negócio</h4>
-                    <p>Cadastre seu consultório gratuitamente no Google Meu Negócio. Pacientes que buscam "psicólogo perto de mim" vão te encontrar. Preencha todas as informações, adicione fotos e solicite avaliações de forma ética.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet"><i class="fas fa-pen" style="font-size:12px"></i></div>
-                <div>
-                    <h4>Conteúdo educativo</h4>
-                    <p>Posts sobre saúde mental, ansiedade, relacionamentos, desenvolvimento pessoal — conteúdo que educa e gera identificação. Não fale de pacientes, fale de situações universais. Isso constrói autoridade ao longo do tempo.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet"><i class="fas fa-users" style="font-size:12px"></i></div>
-                <div>
-                    <h4>Rede de encaminhamentos</h4>
-                    <p>Construa relacionamento com médicos clínicos gerais, neurologistas, pediatras e outros profissionais de saúde. O encaminhamento entre profissionais é uma das fontes mais qualificadas de novos pacientes.</p>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-bullet"><i class="fas fa-link" style="font-size:12px"></i></div>
-                <div>
-                    <h4>Plataformas de busca de terapeutas</h4>
-                    <p>Cadastre-se em plataformas como Zenklub, Vittude ou similar — mas avalie as condições contratuais. Algumas plataformas cobram comissão alta e definem o preço da sessão.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- CAP 7 -->
-    <div class="capitulo fade-up" id="cap7">
-        <div class="capitulo-header">
-            <div class="capitulo-num">7</div>
-            <div class="capitulo-header-text">
-                <span class="capitulo-eyebrow">Sustentabilidade</span>
-                <h2>Gestão financeira</h2>
-            </div>
-        </div>
-        <div class="capitulo-divider"></div>
-
-        <p>A maioria dos profissionais de saúde tem ótima formação clínica mas pouca educação financeira. Separar as finanças pessoais das profissionais desde o início é fundamental para a sustentabilidade do consultório.</p>
-
-        <h3>Separação de contas</h3>
-        <p>Abra uma conta bancária PJ (pessoa jurídica) separada da sua conta pessoal. Todo recebimento entra na conta PJ, todo pagamento de despesa do consultório sai dela. Você se "paga" com um pró-labore mensal fixo.</p>
-
-        <h3>Reserva de emergência</h3>
-        <p>Para autônomos, a recomendação do Sebrae é manter reserva equivalente a <strong>6 meses de custos fixos</strong>. Férias, doenças e períodos de baixa demanda fazem parte da realidade do consultório independente.</p>
-
-        <h3>Impostos e obrigações fiscais</h3>
-        <ul class="check-list">
-            <li><i class="fas fa-check"></i> <span><strong>DAS (Simples Nacional):</strong> pagamento mensal até o dia 20, gerado no portal da Receita Federal (PGDAS-D).</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>INSS:</strong> contribuição para previdência social. Como autônomo/empresário individual, você precisa contribuir ativamente — não há desconto automático.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>IRPF:</strong> mesmo com CNPJ, pode haver necessidade de declaração de IRPF. Consulte seu contador.</span></li>
-            <li><i class="fas fa-check"></i> <span><strong>NFS-e:</strong> emita nota fiscal para cada sessão — é obrigação legal e protege você em caso de fiscalização.</span></li>
-        </ul>
-
-        <div class="info-card sucesso">
-            <p class="info-card-title"><i class="fas fa-chart-line"></i> Indicadores para acompanhar mensalmente</p>
-            <p><strong>Taxa de ocupação:</strong> quantas sessões realizou vs. quantas poderia realizar. Meta: acima de 70%.</p>
-            <p><strong>Taxa de cancelamento:</strong> sessões canceladas sobre o total agendado. Meta: abaixo de 15%.</p>
-            <p><strong>Receita vs. custos:</strong> margem líquida saudável para consultório autônomo: 50–65% da receita bruta.</p>
-        </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="cta-box fade-up">
-        <h2>Organize seu consultório com o ProntPsi</h2>
-        <p>Agenda online com pagamento, prontuário eletrônico, escalas clínicas e muito mais — tudo em um sistema feito para o universo Psi.</p>
-        <a href="cadastro.html" class="btn-primary">
-            <i class="fas fa-rocket"></i> Testar grátis por 7 dias
-        </a>
-    </div>
-
-</div>
-
-<script>
-// Progress bar
-window.addEventListener('scroll', () => {
-    const total = document.body.scrollHeight - window.innerHeight;
-    const progress = (window.scrollY / total) * 100;
-    document.getElementById('progress').style.width = progress + '%';
-});
-
-// Fade up
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-</script>
+        // ── FADE UP SCROLL ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
 
 </body>
 </html>
