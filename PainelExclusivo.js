@@ -481,7 +481,7 @@ function renderizarListaPacientes() {
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Telefone</th>
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">E-mail</th>
                     <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Pagamento</th>
-                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Relatório</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -492,14 +492,20 @@ function renderizarListaPacientes() {
                         <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.email || '-'}</td>
                         <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.modo_pagamento || '-'}</td>
                         <td style="padding:12px 16px;">
-                            <button onclick="gerarRelatorioPDF(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
-                                background:#7c3aed; color:#fff; border:none;
-                                border-radius:6px; padding:6px 14px; cursor:pointer;
-                                font-size:12px; font-family:'Roboto',sans-serif;
-                                transition:background 0.2s;
-                            ">
-                                <i class="fas fa-file-pdf"></i> PDF
-                            </button>
+                            <div style="display:flex;gap:8px;">
+                                <button onclick="gerarRelatorioPDF(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
+                                    background:#7c3aed; color:#fff; border:none;
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button onclick="abrirEditarPaciente(${p.id})" style="
+                                    background:rgba(139,92,246,0.15); color:#a78bfa; border:1px solid rgba(139,92,246,0.3);
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `).join('')}
@@ -559,7 +565,7 @@ if (cadastroForm) {
         const data_nascimento = document.getElementById('data-inicio')?.value;
         const queixa_inicial = document.getElementById('queixa')?.value.trim();
 
-        if (!nome || !telefone || !email || !modo_pagamento || !data_nascimento || !queixa_inicial) {
+        if (!nome || !telefone) {
             document.getElementById('cadastro-error').style.display = 'block';
             return;
         }
@@ -2545,9 +2551,14 @@ async function carregarRecorrentes() {
                     <span style="color:#64748b; margin:0 4px;">${r.hora_inicio.substring(0, 5)}</span>
                     <span style="color:#34d399;">R$ ${parseFloat(r.valor).toFixed(2)}</span>
                 </div>
-                <button onclick="encerrarRecorrente(${r.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px; font-family:'Roboto',sans-serif;">
-                    Encerrar
-                </button>
+                <div style="display:flex;gap:6px;">
+                    <button onclick="reprocessarRecorrente(${r.id})" style="background:rgba(52,211,153,0.1); color:#34d399; border:1px solid rgba(52,211,153,0.3); border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px; font-family:'Roboto',sans-serif;" title="Regenerar consultas na agenda">
+                        <i class="fas fa-sync"></i> Regenerar
+                    </button>
+                    <button onclick="encerrarRecorrente(${r.id})" style="background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3); border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px; font-family:'Roboto',sans-serif;">
+                        Encerrar
+                    </button>
+                </div>
             </div>
         `).join('');
     } catch (err) { if (lista) lista.innerHTML = '<span style="color:#f87171;">Erro ao carregar.</span>'; }
@@ -2619,6 +2630,21 @@ async function encerrarRecorrente(id) {
         alert(data.mensagem || 'Encerrado.');
         carregarRecorrentes();
     } catch (err) { alert('Erro ao encerrar.'); }
+}
+
+async function reprocessarRecorrente(id) {
+    try {
+        const res = await fetch(`${API_URL}/api/recorrentes/${id}/reprocessar`, {
+            method: 'POST',
+            headers: headersAuth()
+        });
+        const data = await res.json();
+        if (res.ok) {
+            alert('✅ Consultas regeneradas! Verifique sua agenda.');
+        } else {
+            alert(data.erro || 'Erro ao reprocessar.');
+        }
+    } catch (err) { alert('Erro ao reprocessar.'); }
 }
 // ---- JOGOS ---- //
 // Mapa de jogos disponíveis
@@ -3369,8 +3395,90 @@ function atualizarBadgeMenuVitrine(ativo) {
     if (badge) badge.style.display = ativo ? 'inline' : 'none';
 }
 // ============================================================
-//  PRESCRIÇÃO E MEDICAÇÕES
+//  IDADE DO PACIENTE NO PRONTUÁRIO
 // ============================================================
+function mostrarIdadePaciente(pacienteId) {
+    const infoDiv = document.getElementById('paciente-idade-info');
+    const textoEl = document.getElementById('paciente-idade-texto');
+    if (!infoDiv || !textoEl) return;
+    if (!pacienteId) { infoDiv.style.display = 'none'; return; }
+
+    const p = pacientes.find(x => String(x.id) === String(pacienteId));
+    if (!p || !p.data_nascimento) { infoDiv.style.display = 'none'; return; }
+
+    const nasc = new Date(p.data_nascimento);
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - nasc.getFullYear();
+    const m = hoje.getMonth() - nasc.getMonth();
+    if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+
+    const nascFormatado = nasc.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    textoEl.textContent = `👤 ${p.nome} · ${idade} anos · Nascido em ${nascFormatado}`;
+    infoDiv.style.display = 'block';
+}
+
+// ============================================================
+//  EDITAR PACIENTE
+// ============================================================
+function abrirEditarPaciente(id) {
+    const p = pacientes.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('editar-paciente-id').value = p.id;
+    document.getElementById('editar-nome').value = p.nome || '';
+    document.getElementById('editar-telefone').value = p.telefone || '';
+    document.getElementById('editar-email').value = p.email || '';
+    document.getElementById('editar-pagamento').value = p.modo_pagamento || 'dinheiro';
+    document.getElementById('editar-convenio').value = p.convenio || '';
+    document.getElementById('editar-queixa').value = p.queixa_inicial || '';
+    document.getElementById('editar-observacoes').value = p.observacoes || '';
+    if (p.data_nascimento) {
+        document.getElementById('editar-data-nascimento').value = p.data_nascimento.substring(0, 10);
+    }
+    const modal = document.getElementById('modal-editar-paciente');
+    modal.style.display = 'flex';
+}
+
+function fecharEditarPaciente() {
+    document.getElementById('modal-editar-paciente').style.display = 'none';
+}
+
+const editarPacienteForm = document.getElementById('editar-paciente-form');
+if (editarPacienteForm) {
+    editarPacienteForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const id = document.getElementById('editar-paciente-id').value;
+        const body = {
+            nome: document.getElementById('editar-nome').value.trim(),
+            telefone: document.getElementById('editar-telefone').value.trim(),
+            email: document.getElementById('editar-email').value.trim(),
+            modo_pagamento: document.getElementById('editar-pagamento').value,
+            convenio: document.getElementById('editar-convenio').value.trim(),
+            queixa_inicial: document.getElementById('editar-queixa').value.trim(),
+            observacoes: document.getElementById('editar-observacoes').value.trim(),
+            data_nascimento: document.getElementById('editar-data-nascimento').value,
+        };
+        try {
+            const res = await fetch(`${API_URL}/api/pacientes/${id}`, {
+                method: 'PUT', headers: headersAuth(), body: JSON.stringify(body)
+            });
+            if (res.ok) {
+                fecharEditarPaciente();
+                await carregarPacientes();
+            } else {
+                const err = await res.json();
+                const errEl = document.getElementById('editar-paciente-error');
+                errEl.textContent = err.erro || 'Erro ao salvar.';
+                errEl.style.display = 'block';
+            }
+        } catch (e) { console.error('Erro ao editar paciente:', e); }
+    });
+}
+
+// Fechar modal clicando fora
+document.getElementById('modal-editar-paciente')?.addEventListener('click', function (e) {
+    if (e.target === this) fecharEditarPaciente();
+});
+
 
 // Popula select de pacientes na seção prescrição
 async function iniciarPrescricao() {
