@@ -566,7 +566,6 @@
             border-radius: 16px;
             padding: 32px;
             transition: all 0.3s;
-            cursor: pointer;
             position: relative;
             overflow: hidden;
         }
@@ -697,6 +696,16 @@
             color: var(--muted2);
         }
 
+        .calc-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        .escalas-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
         .btn-calc {
             width: 100%;
             background: var(--roxo);
@@ -710,6 +719,8 @@
             font-family: 'DM Sans', sans-serif;
             transition: background 0.2s;
             margin-top: 8px;
+            position: relative;
+            z-index: 3;
         }
 
             .btn-calc:hover {
