@@ -36,12 +36,19 @@ body {
     overflow-y: auto;
     z-index: 100;
     transition: transform 0.3s ease;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: rgba(139, 92, 246, 0.4) transparent; /* Firefox */
+    scrollbar-width: none; /* Firefox — oculta por padrão */
 }
 
+    /* Aparece ao passar o mouse — Firefox */
+    .sidebar:hover {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(139, 92, 246, 0.5) transparent;
+    }
+
     .sidebar::-webkit-scrollbar {
-        width: 4px; /* Chrome/Safari */
+        width: 4px;
+        opacity: 0;
+        transition: opacity 0.3s;
     }
 
     .sidebar::-webkit-scrollbar-track {
@@ -49,12 +56,18 @@ body {
     }
 
     .sidebar::-webkit-scrollbar-thumb {
-        background: rgba(139, 92, 246, 0.4);
+        background: transparent;
         border-radius: 4px;
+        transition: background 0.3s;
     }
 
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(139, 92, 246, 0.7);
+    /* Chrome/Safari — aparece ao passar o mouse */
+    .sidebar:hover::-webkit-scrollbar-thumb {
+        background: rgba(139, 92, 246, 0.5);
+    }
+
+        .sidebar:hover::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.8);
         }
 
     .sidebar h2 {
