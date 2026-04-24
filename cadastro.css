@@ -1,98 +1,214 @@
-﻿
-body {
-    background: linear-gradient(135deg, #68a0cf, #1f3c88);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-.logo {
-    font-size: 50px;
-    color: rgba(176, 171, 171, 0.9); /* Melhor prática: usar 'rgba' para opacidade */
-    -webkit-text-stroke: 1px rgba(114, 44, 134, 0.9);
-    font-family: 'Times New Roman';
-    display: flex; /* Define o contêiner como flexível */
-    align-items: center; /* Alinha os itens no centro verticalmente */
-    white-space: nowrap; /* Impede quebra de linha no texto */
-    margin-bottom: -20px;
+﻿/* ============================================================
+   ProntPsi - cadastro.css
+   Padrão visual: escuro, roxo (#7c3aed / #a78bfa), Roboto
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    margin-top: -20px;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0f1621;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+/* ============================================================
+   CONTAINER CENTRAL
+   ============================================================ */
+.cadastro-form {
+    width: 100%;
+    max-width: 440px;
+    background: #1a2332;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 16px;
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+.logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
 }
 
 .logo-img {
-    width: 100px; /* ajuste o tamanho conforme necessário */
+    max-width: 140px;
+    height: auto;
     display: block;
-    margin: 0 auto;
-    margin-left: 120px;
 }
 
-
-.cadastro-form {
-    background: #fff;
-    padding: 30px 35px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    width: 350px;
+/* ============================================================
+   TÍTULOS
+   ============================================================ */
+.cadastro-form h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
     text-align: center;
-    color: #1f3c88;
+    margin-bottom: 0;
 }
 
-    .cadastro-form h1 {
-        margin-bottom: 8px;
-        font-weight: 700;
-        font-size: 28px;
+.cadastro-form p {
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+/* ============================================================
+   INPUTS E SELECT
+   ============================================================ */
+.cadastro-form input[type="text"],
+.cadastro-form input[type="email"],
+.cadastro-form input[type="tel"],
+.cadastro-form input[type="password"],
+.cadastro-form select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #0f1621;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.cadastro-form input::placeholder {
+    color: #475569;
+}
+
+.cadastro-form input:focus,
+.cadastro-form select:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.cadastro-form select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+    .cadastro-form select option {
+        background: #1a2332;
+        color: #e2e8f0;
     }
 
-    .cadastro-form p {
-        margin-bottom: 25px;
-        font-weight: 500;
-        color: #555;
+/* ============================================================
+   BOTÃO CADASTRAR
+   ============================================================ */
+.cadastro-form button[type="submit"],
+.cadastro-form #btnCadastrar {
+    width: 100%;
+    padding: 12px;
+    background: #7c3aed;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 4px;
+}
+
+    .cadastro-form button[type="submit"]:hover,
+    .cadastro-form #btnCadastrar:hover {
+        background: #6d28d9;
     }
 
-    .cadastro-form input {
-        width: 100%;
-        padding: 12px 14px;
-        margin-bottom: 20px;
-        border: 1.8px solid #68a0cf;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: border-color 0.3s ease;
+    .cadastro-form button[type="submit"]:active,
+    .cadastro-form #btnCadastrar:active {
+        transform: scale(0.98);
     }
 
-        .cadastro-form input:focus {
-            border-color: #1f3c88;
-            outline: none;
+/* ============================================================
+   LINK VOLTAR AO LOGIN
+   ============================================================ */
+.cadastro-form .voltar-login {
+    font-size: 13px;
+    color: #8b5cf6;
+    text-decoration: none;
+    text-align: center;
+    transition: color 0.2s;
+    display: block;
+}
+
+    .cadastro-form .voltar-login:hover {
+        color: #a78bfa;
+        text-decoration: underline;
+    }
+
+/* ============================================================
+   MENSAGEM DE ERRO / SUCESSO
+   ============================================================ */
+#spnErro {
+    font-size: 13px;
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    display: none;
+}
+
+    #spnErro.erro {
+        color: #f87171;
+        background: rgba(248, 113, 113, 0.08);
+        border: 1px solid rgba(248, 113, 113, 0.2);
+    }
+
+    #spnErro.sucesso {
+        color: #34d399;
+        background: rgba(52, 211, 153, 0.08);
+        border: 1px solid rgba(52, 211, 153, 0.2);
+    }
+
+/* ============================================================
+   RESPONSIVO — MOBILE
+   ============================================================ */
+@media (max-width: 480px) {
+    body {
+        padding: 20px 12px;
+        align-items: flex-start;
+    }
+
+    .cadastro-form {
+        padding: 28px 20px;
+        border-radius: 12px;
+    }
+
+        .cadastro-form h1 {
+            font-size: 20px;
         }
 
-    .cadastro-form button {
-        background: #1f3c88;
-        color: white;
-        border: none;
-        width: 100%;
-        padding: 14px;
-        font-size: 18px;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.3s ease;
+    .logo-img {
+        max-width: 120px;
     }
-
-        .cadastro-form button:hover {
-            background: #16306b;
-        }
-
-    .cadastro-form .voltar-login {
-        display: inline-block;
-        margin-top: 18px;
-        font-size: 14px;
-        color: #68a0cf;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-        .cadastro-form .voltar-login:hover {
-            color: #1f3c88;
-        }
+}
