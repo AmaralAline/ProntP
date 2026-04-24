@@ -512,6 +512,81 @@
             </div>
         </div>
 
+        <!-- =====================================================
+             AVISO DO SISTEMA
+        ====================================================== -->
+        <div style="margin-top:40px; margin-bottom:32px;">
+            <p class="section-title">
+                <i class="fas fa-bullhorn" style="color:#f87171; margin-right:8px;"></i>
+                Aviso do Sistema
+            </p>
+
+            <div style="background:#1a2332; border:1px solid rgba(248,113,113,0.25); border-radius:12px; padding:24px;">
+                <p style="font-size:13px; color:#94a3b8; margin-bottom:20px;">
+                    Escreva um aviso que aparecerá automaticamente para todos os usuários ao fazer login.
+                    Use para informar manutenções, bugs conhecidos ou novidades.
+                </p>
+
+                <!-- Toggle ativo/inativo -->
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+                    <span style="font-size:13px; color:#94a3b8;">Status do aviso:</span>
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                        <div style="position:relative; width:48px; height:26px;" onclick="toggleAviso()">
+                            <input type="checkbox" id="aviso-ativo" style="opacity:0; width:0; height:0; position:absolute;">
+                            <span id="aviso-track" style="position:absolute; inset:0; background:#1e293b; border:1px solid rgba(248,113,113,0.3); border-radius:20px; transition:all 0.3s;"></span>
+                            <span id="aviso-thumb" style="position:absolute; top:3px; left:3px; width:18px; height:18px; background:#475569; border-radius:50%; transition:all 0.3s;"></span>
+                        </div>
+                        <span id="aviso-status-label" style="font-size:13px; color:#475569; font-weight:500;">Inativo</span>
+                    </label>
+                </div>
+
+                <!-- Tipo do aviso -->
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Tipo</label>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#94a3b8;">
+                            <input type="radio" name="aviso-tipo" value="aviso" checked style="accent-color:#fbbf24;">
+                            <span style="background:rgba(251,191,36,0.15); color:#fbbf24; padding:3px 10px; border-radius:20px; font-size:12px;">⚠️ Aviso</span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#94a3b8;">
+                            <input type="radio" name="aviso-tipo" value="erro" style="accent-color:#f87171;">
+                            <span style="background:rgba(248,113,113,0.15); color:#f87171; padding:3px 10px; border-radius:20px; font-size:12px;">🐛 Bug / Instabilidade</span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#94a3b8;">
+                            <input type="radio" name="aviso-tipo" value="manutencao" style="accent-color:#60a5fa;">
+                            <span style="background:rgba(96,165,250,0.15); color:#60a5fa; padding:3px 10px; border-radius:20px; font-size:12px;">🔧 Manutenção</span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#94a3b8;">
+                            <input type="radio" name="aviso-tipo" value="info" style="accent-color:#34d399;">
+                            <span style="background:rgba(52,211,153,0.15); color:#34d399; padding:3px 10px; border-radius:20px; font-size:12px;">✨ Novidade</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Mensagem -->
+                <div style="margin-bottom:20px;">
+                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Mensagem</label>
+                    <textarea id="aviso-mensagem" rows="3" placeholder="Ex: Estamos realizando manutenção no servidor. O sistema pode apresentar lentidão nas próximas 2 horas."
+                              style="width:100%; padding:12px 14px; background:#141d2b; border:1px solid rgba(248,113,113,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; resize:vertical; outline:none; line-height:1.5;"></textarea>
+                </div>
+
+                <!-- Botão salvar -->
+                <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+                    <button onclick="salvarAviso()"
+                            style="padding:10px 24px; background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.35); border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; font-weight:500; transition:all 0.2s;">
+                        <i class="fas fa-save" style="margin-right:6px;"></i>Salvar aviso
+                    </button>
+                    <span id="aviso-feedback" style="font-size:13px; display:none;"></span>
+                </div>
+
+                <!-- Preview -->
+                <div id="aviso-preview" style="display:none; margin-top:20px; border-top:1px solid rgba(139,92,246,0.1); padding-top:20px;">
+                    <p style="font-size:11px; color:#475569; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px;">Preview — como vai aparecer no login:</p>
+                    <div id="aviso-preview-box" style="padding:14px 18px; border-radius:10px; font-size:14px; line-height:1.5; border-left:4px solid;"></div>
+                </div>
+            </div>
+        </div>
+
     </div><!-- fim .main -->
     <!-- MODAL AVALIAÇÃO -->
     <div id="modal-avaliacao" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; overflow-y:auto; padding:40px 20px;">
@@ -583,32 +658,32 @@
             }
 
             tbody.innerHTML = profissionais.map(p => `
-                    <tr id="row-${p.id}">
-                        <td>
-                            <strong style="color:#f1f5f9;">${p.nome}</strong>
-                            ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
-                            ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
-                        </td>
-                        <td>${p.email}</td>
-                        <td>${p.especialidade || '-'}</td>
-                        <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
-                        <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
-                        <td>${p.total_pacientes}</td>
-                        <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
-                        <td>
-                            ${!p.is_admin ? `
-                                ${p.ativo
+                        <tr id="row-${p.id}">
+                            <td>
+                                <strong style="color:#f1f5f9;">${p.nome}</strong>
+                                ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
+                                ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
+                            </td>
+                            <td>${p.email}</td>
+                            <td>${p.especialidade || '-'}</td>
+                            <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
+                            <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
+                            <td>${p.total_pacientes}</td>
+                            <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
+                            <td>
+                                ${!p.is_admin ? `
+                                    ${p.ativo
                         ? `<button class="btn-acao btn-suspender" onclick="suspender(${p.id})">Suspender</button>`
                         : `<button class="btn-acao btn-ativar" onclick="ativar(${p.id})">Ativar</button>`
                     }
-                                ${p.plano !== 'pago'
+                                    ${p.plano !== 'pago'
                         ? `<button class="btn-acao btn-pago" onclick="tornarPago(${p.id})">Tornar pago</button>`
                         : ''
                     }
-                            ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
-                        </td>
-                    </tr>
-                `).join('');
+                                ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
+                            </td>
+                        </tr>
+                    `).join('');
         }
 
         function filtrar(tipo, btn) {
@@ -683,22 +758,22 @@
                 badge.textContent = data.length + ' pendente' + (data.length > 1 ? 's' : '');
 
                 tbody.innerHTML = data.map(v => `
-                        <tr id="verif-row-${v.id}">
-                            <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
-                            <td style="color:#94a3b8;">${v.email}</td>
-                            <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
-                            <td style="color:#94a3b8;">${v.cpf || '—'}</td>
-                            <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
-                            <td>
-                                <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
-                                    <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
-                                </button>
-                                <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
-                                    <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
+                            <tr id="verif-row-${v.id}">
+                                <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
+                                <td style="color:#94a3b8;">${v.email}</td>
+                                <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
+                                <td style="color:#94a3b8;">${v.cpf || '—'}</td>
+                                <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
+                                <td>
+                                    <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
+                                        <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
+                                    </button>
+                                    <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
+                                        <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('');
             } catch (err) {
                 console.error('Erro ao carregar verificações:', err);
             }
@@ -831,20 +906,20 @@
                     : '<span style="color:#475569;">—</span>';
 
                 return `<tr>
-                        <td><strong style="color:#f1f5f9;">${ag.profissional_nome || '—'}</strong></td>
-                        <td>
-                            <span style="color:#cbd5e1;">${ag.paciente_nome}</span><br>
-                            <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
-                        </td>
-                        <td style="color:#94a3b8;">${dataConsulta}<br>
-                            <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
-                        </td>
-                        <td style="font-weight:600; color:#a78bfa;">R$ ${parseFloat(ag.valor || 0).toFixed(2)}</td>
-                        <td><span style="color:${cor}; font-size:12px; font-weight:500;">${label}</span></td>
-                        <td>${reembolso}</td>
-                        <td>${stripeCell}</td>
-                        <td style="color:#64748b; font-size:12px;">${criadoEm}</td>
-                    </tr>`;
+                            <td><strong style="color:#f1f5f9;">${ag.profissional_nome || '—'}</strong></td>
+                            <td>
+                                <span style="color:#cbd5e1;">${ag.paciente_nome}</span><br>
+                                <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
+                            </td>
+                            <td style="color:#94a3b8;">${dataConsulta}<br>
+                                <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
+                            </td>
+                            <td style="font-weight:600; color:#a78bfa;">R$ ${parseFloat(ag.valor || 0).toFixed(2)}</td>
+                            <td><span style="color:${cor}; font-size:12px; font-weight:500;">${label}</span></td>
+                            <td>${reembolso}</td>
+                            <td>${stripeCell}</td>
+                            <td style="color:#64748b; font-size:12px;">${criadoEm}</td>
+                        </tr>`;
             }).join('');
         }
 
@@ -929,8 +1004,8 @@
                     } else if (diasRestantes !== null) {
                         const cor = diasRestantes <= 3 ? '#f87171' : diasRestantes <= 7 ? '#fbbf24' : '#34d399';
                         statusBadge = `<span class="badge" style="background:rgba(52,211,153,0.1);color:${cor};">
-                                ${diasRestantes > 0 ? diasRestantes + 'd restantes' : 'Expira hoje'}
-                            </span>`;
+                                    ${diasRestantes > 0 ? diasRestantes + 'd restantes' : 'Expira hoje'}
+                                </span>`;
                     }
 
                     const formularioBadge = u.teste_formulario_respondido
@@ -944,47 +1019,47 @@
                     } else if (u.teste_formulario_respondido) {
                         extensaoBadge = `<span class="badge" style="background:rgba(96,165,250,0.15);color:#60a5fa;">Pronto p/ enviar</span>`;
                         btnExtensao = `<button class="btn-acao" onclick="enviarEmailExtensao(${u.id}, '${u.nome}')"
-                                style="background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);">
-                                <i class="fas fa-paper-plane" style="margin-right:3px;"></i>Enviar +6 meses
-                            </button>`;
+                                    style="background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);">
+                                    <i class="fas fa-paper-plane" style="margin-right:3px;"></i>Enviar +6 meses
+                                </button>`;
                     } else {
                         extensaoBadge = `<span style="color:#475569;font-size:12px;">—</span>`;
                     }
 
                     const uso = `<span style="font-size:11px;color:#64748b;">
-                            ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
-                        </span>`;
+                                ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
+                            </span>`;
 
                     return `<tr id="teste-row-${u.id}">
-                            <td>
-                                <strong style="color:#f1f5f9;">${u.nome}</strong><br>
-                                <span style="font-size:11px;color:#64748b;">${u.email}</span>
-                            </td>
-                            <td style="color:#64748b;font-size:12px;">${inicio}</td>
-                            <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
-                            <td>${statusBadge}</td>
-                            <td>
-                                ${formularioBadge}
-                                ${u.teste_formulario_respondido
+                                <td>
+                                    <strong style="color:#f1f5f9;">${u.nome}</strong><br>
+                                    <span style="font-size:11px;color:#64748b;">${u.email}</span>
+                                </td>
+                                <td style="color:#64748b;font-size:12px;">${inicio}</td>
+                                <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
+                                <td>${statusBadge}</td>
+                                <td>
+                                    ${formularioBadge}
+                                    ${u.teste_formulario_respondido
                             ? `<br><button class="btn-acao" onclick="verAvaliacao(${u.id})"
-                                        style="margin-top:4px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);">
-                                        <i class="fas fa-eye" style="margin-right:3px;"></i>Ver
-                                       </button>`
+                                            style="margin-top:4px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);">
+                                            <i class="fas fa-eye" style="margin-right:3px;"></i>Ver
+                                           </button>`
                             : ''
                         }
-                            </td>
-                            <td>${extensaoBadge}</td>
-                            <td>${uso}<br>
-                                <span style="font-size:10px;color:#475569;">pac/evol/agenda</span>
-                            </td>
-                            <td>
-                                ${btnExtensao}
-                                ${!u.ativo
+                                </td>
+                                <td>${extensaoBadge}</td>
+                                <td>${uso}<br>
+                                    <span style="font-size:10px;color:#475569;">pac/evol/agenda</span>
+                                </td>
+                                <td>
+                                    ${btnExtensao}
+                                    ${!u.ativo
                             ? `<button class="btn-acao btn-ativar" onclick="ativar(${u.id})">Reativar</button>`
                             : `<button class="btn-acao btn-suspender" onclick="suspender(${u.id})">Suspender</button>`
                         }
-                            </td>
-                        </tr>`;
+                                </td>
+                            </tr>`;
                 }).join('');
 
             } catch (err) {
@@ -1023,52 +1098,52 @@
                 const sim_nao = (v) => v ? '<span style="color:#34d399;">✓ Sim</span>' : '<span style="color:#f87171;">✗ Não</span>';
 
                 document.getElementById('conteudo-avaliacao').innerHTML = `
-                        <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.15);">
-                            <p style="color:#94a3b8; font-size:13px; margin-bottom:4px;">Profissional</p>
-                            <p style="color:#f1f5f9; font-size:15px; font-weight:500;">${a.nome} — <span style="color:#64748b; font-size:13px;">${a.email}</span></p>
-                            <p style="color:#64748b; font-size:12px;">Respondido em ${new Date(a.respondido_em).toLocaleString('pt-BR')}</p>
-                        </div>
-                        <p style="color:#a78bfa; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Notas gerais</p>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
-                            ${[['Usabilidade', a.usabilidade], ['Funcionalidades', a.funcionalidades], ['Desempenho', a.desempenho],
+                            <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.15);">
+                                <p style="color:#94a3b8; font-size:13px; margin-bottom:4px;">Profissional</p>
+                                <p style="color:#f1f5f9; font-size:15px; font-weight:500;">${a.nome} — <span style="color:#64748b; font-size:13px;">${a.email}</span></p>
+                                <p style="color:#64748b; font-size:12px;">Respondido em ${new Date(a.respondido_em).toLocaleString('pt-BR')}</p>
+                            </div>
+                            <p style="color:#a78bfa; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Notas gerais</p>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                                ${[['Usabilidade', a.usabilidade], ['Funcionalidades', a.funcionalidades], ['Desempenho', a.desempenho],
                     ['Prontuário', a.prontuario_nota], ['Agenda', a.agenda_nota], ['Formulários', a.formularios_nota],
                     ['Recibos', a.recibos_nota], ['Relatório', a.relatorio_nota]].map(([label, nota]) => `
-                                <div style="background:#141d2b; border-radius:8px; padding:10px 14px;">
-                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">${label}</p>
-                                    <p style="color:#fbbf24; font-size:16px; margin:0;">${estrelas(nota)}</p>
-                                </div>`).join('')}
-                        </div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
-                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Recomendaria?</p>
-                                <p style="margin:0;">${sim_nao(a.recomendaria)}</p>
+                                    <div style="background:#141d2b; border-radius:8px; padding:10px 14px;">
+                                        <p style="color:#64748b; font-size:11px; margin-bottom:4px;">${label}</p>
+                                        <p style="color:#fbbf24; font-size:16px; margin:0;">${estrelas(nota)}</p>
+                                    </div>`).join('')}
                             </div>
-                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Quer continuar?</p>
-                                <p style="margin:0;">${sim_nao(a.continuar_usando)}</p>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Recomendaria?</p>
+                                    <p style="margin:0;">${sim_nao(a.recomendaria)}</p>
+                                </div>
+                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Quer continuar?</p>
+                                    <p style="margin:0;">${sim_nao(a.continuar_usando)}</p>
+                                </div>
+                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Usou tudo?</p>
+                                    <p style="margin:0;">${sim_nao(a.usou_todas_funcionalidades)}</p>
+                                </div>
+                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Favorita</p>
+                                    <p style="margin:0; color:#e2e8f0; font-size:13px;">${a.funcionalidade_favorita || '—'}</p>
+                                </div>
                             </div>
-                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Usou tudo?</p>
-                                <p style="margin:0;">${sim_nao(a.usou_todas_funcionalidades)}</p>
-                            </div>
-                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Favorita</p>
-                                <p style="margin:0; color:#e2e8f0; font-size:13px;">${a.funcionalidade_favorita || '—'}</p>
-                            </div>
-                        </div>
-                        ${a.sugestao_melhoria ? `<div style="background:#141d2b; border-radius:8px; padding:14px; margin-bottom:12px;">
-                            <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Sugestão de melhoria</p>
-                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.sugestao_melhoria}</p>
-                        </div>` : ''}
-                        ${a.bug_encontrado ? `<div style="background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); border-radius:8px; padding:14px; margin-bottom:12px;">
-                            <p style="color:#f87171; font-size:11px; margin-bottom:6px;">Bug encontrado</p>
-                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.bug_encontrado}</p>
-                        </div>` : ''}
-                        ${a.comentario_livre ? `<div style="background:#141d2b; border-radius:8px; padding:14px;">
-                            <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Comentário livre</p>
-                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.comentario_livre}</p>
-                        </div>` : ''}
-                    `;
+                            ${a.sugestao_melhoria ? `<div style="background:#141d2b; border-radius:8px; padding:14px; margin-bottom:12px;">
+                                <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Sugestão de melhoria</p>
+                                <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.sugestao_melhoria}</p>
+                            </div>` : ''}
+                            ${a.bug_encontrado ? `<div style="background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); border-radius:8px; padding:14px; margin-bottom:12px;">
+                                <p style="color:#f87171; font-size:11px; margin-bottom:6px;">Bug encontrado</p>
+                                <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.bug_encontrado}</p>
+                            </div>` : ''}
+                            ${a.comentario_livre ? `<div style="background:#141d2b; border-radius:8px; padding:14px;">
+                                <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Comentário livre</p>
+                                <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.comentario_livre}</p>
+                            </div>` : ''}
+                        `;
 
                 document.getElementById('modal-avaliacao').style.display = 'block';
             } catch (err) {
@@ -1081,6 +1156,118 @@
         }
 
         carregarUsuariosTeste();
+
+        // ============================================================
+        //  AVISO DO SISTEMA
+        // ============================================================
+        const CORES_AVISO = {
+            aviso: { bg: 'rgba(251,191,36,0.1)', border: '#fbbf24', color: '#fbbf24' },
+            erro: { bg: 'rgba(248,113,113,0.1)', border: '#f87171', color: '#f87171' },
+            manutencao: { bg: 'rgba(96,165,250,0.1)', border: '#60a5fa', color: '#60a5fa' },
+            info: { bg: 'rgba(52,211,153,0.1)', border: '#34d399', color: '#34d399' },
+        };
+
+        async function carregarAviso() {
+            try {
+                const res = await fetch(`${API_URL}/api/aviso-sistema`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+
+                document.getElementById('aviso-mensagem').value = data.mensagem || '';
+                document.getElementById('aviso-ativo').checked = !!data.ativo;
+                atualizarToggleVisual(!!data.ativo);
+
+                const tipo = data.tipo || 'aviso';
+                const radioEl = document.querySelector(`input[name="aviso-tipo"][value="${tipo}"]`);
+                if (radioEl) radioEl.checked = true;
+
+                atualizarPreview();
+            } catch (err) {
+                console.error('Erro ao carregar aviso:', err);
+            }
+        }
+
+        function toggleAviso() {
+            const cb = document.getElementById('aviso-ativo');
+            cb.checked = !cb.checked;
+            atualizarToggleVisual(cb.checked);
+            atualizarPreview();
+        }
+
+        function atualizarToggleVisual(ativo) {
+            const track = document.getElementById('aviso-track');
+            const thumb = document.getElementById('aviso-thumb');
+            const label = document.getElementById('aviso-status-label');
+            if (ativo) {
+                track.style.background = 'rgba(248,113,113,0.2)';
+                track.style.borderColor = 'rgba(248,113,113,0.5)';
+                thumb.style.background = '#f87171';
+                thumb.style.left = '27px';
+                label.style.color = '#f87171';
+                label.textContent = 'Ativo — aparecerá no login';
+            } else {
+                track.style.background = '#1e293b';
+                track.style.borderColor = 'rgba(248,113,113,0.3)';
+                thumb.style.background = '#475569';
+                thumb.style.left = '3px';
+                label.style.color = '#475569';
+                label.textContent = 'Inativo';
+            }
+        }
+
+        function atualizarPreview() {
+            const mensagem = document.getElementById('aviso-mensagem').value.trim();
+            const ativo = document.getElementById('aviso-ativo').checked;
+            const tipo = document.querySelector('input[name="aviso-tipo"]:checked')?.value || 'aviso';
+            const preview = document.getElementById('aviso-preview');
+            const box = document.getElementById('aviso-preview-box');
+
+            if (!mensagem || !ativo) { preview.style.display = 'none'; return; }
+
+            const c = CORES_AVISO[tipo];
+            box.style.background = c.bg;
+            box.style.borderLeftColor = c.border;
+            box.style.color = c.color;
+            box.textContent = mensagem;
+            preview.style.display = 'block';
+        }
+
+        // Atualiza preview ao digitar ou mudar tipo
+        document.getElementById('aviso-mensagem').addEventListener('input', atualizarPreview);
+        document.querySelectorAll('input[name="aviso-tipo"]').forEach(r => r.addEventListener('change', atualizarPreview));
+
+        async function salvarAviso() {
+            const mensagem = document.getElementById('aviso-mensagem').value.trim();
+            const ativo = document.getElementById('aviso-ativo').checked;
+            const tipo = document.querySelector('input[name="aviso-tipo"]:checked')?.value || 'aviso';
+            const feedback = document.getElementById('aviso-feedback');
+
+            try {
+                const res = await fetch(`${API_URL}/api/aviso-sistema`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ ativo, mensagem, tipo })
+                });
+                const data = await res.json();
+                feedback.style.display = 'inline';
+                if (res.ok) {
+                    feedback.style.color = '#34d399';
+                    feedback.textContent = '✅ Aviso salvo com sucesso!';
+                } else {
+                    feedback.style.color = '#f87171';
+                    feedback.textContent = '❌ ' + (data.erro || 'Erro ao salvar.');
+                }
+                setTimeout(() => feedback.style.display = 'none', 3000);
+            } catch (err) {
+                feedback.style.display = 'inline';
+                feedback.style.color = '#f87171';
+                feedback.textContent = '❌ Erro de conexão.';
+            }
+        }
+
+        carregarAviso();
 
     </script>
 </body>
