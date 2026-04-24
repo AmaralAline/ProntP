@@ -1248,6 +1248,50 @@
                         Para alterar os dados do carimbo, atualize seu cadastro de profissional.
                     </p>
                 </div>
+
+                <!-- EXPORTAR PRONTUÁRIOS -->
+                <div class="form-card form-card-mobile" style="max-width:600px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                        <i class="fas fa-file-export" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Exportar Meus Prontuários
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Solicite um PDF com todos os prontuários e evoluções de um período. O arquivo será enviado para o seu e-mail cadastrado.
+                    </p>
+                    <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+                        <div>
+                            <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
+                            <select id="export-mes" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
+                            <select id="export-ano" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                            </select>
+                        </div>
+                        <button onclick="solicitarExporteProntuarios()" id="btn-exportar-prontuarios" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif; display:flex; align-items:center; gap:8px;">
+                            <i class="fas fa-envelope"></i> Enviar por e-mail
+                        </button>
+                    </div>
+                    <p id="export-feedback" style="display:none; font-size:13px; margin-top:12px;"></p>
+                    <p style="font-size:11px; color:#475569; margin-top:14px;">
+                        <i class="fas fa-info-circle" style="margin-right:4px;"></i>
+                        O arquivo pode levar alguns minutos para chegar. Recomendamos solicitar um mês por vez.
+                    </p>
+                </div>
+
             </section>
 
             <!-- ================================================

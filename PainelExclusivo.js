@@ -241,6 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             carregarDadosProfissionais();
             carregarStatusStripe();
             carregarLinkVideo();
+            inicializarExporteProntuarios();
         }
     }
     botoes.forEach(({ btn, section }) => {
@@ -2404,6 +2405,61 @@ async function salvarDadosProfissionais() {
 
     feedback.style.display = 'block';
     setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+}
+
+// ============================================================
+//  EXPORTAR PRONTUÁRIOS
+// ============================================================
+function inicializarExporteProntuarios() {
+    const selectAno = document.getElementById('export-ano');
+    if (!selectAno || selectAno.options.length > 0) return;
+
+    const anoAtual = new Date().getFullYear();
+    for (let a = anoAtual; a >= anoAtual - 5; a--) {
+        const opt = document.createElement('option');
+        opt.value = a;
+        opt.textContent = a;
+        selectAno.appendChild(opt);
+    }
+
+    // Seleciona o mês atual por padrão
+    const mesAtual = new Date().getMonth() + 1;
+    document.getElementById('export-mes').value = mesAtual;
+}
+
+async function solicitarExporteProntuarios() {
+    const mes = document.getElementById('export-mes').value;
+    const ano = document.getElementById('export-ano').value;
+    const btn = document.getElementById('btn-exportar-prontuarios');
+    const feedback = document.getElementById('export-feedback');
+    const mesesNomes = ['', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
+    feedback.style.display = 'none';
+
+    try {
+        const res = await fetch(`${API_URL}/api/prontuarios/exportar?mes=${mes}&ano=${ano}`, {
+            headers: headersAuth()
+        });
+
+        if (res.ok) {
+            feedback.textContent = `✅ PDF de ${mesesNomes[mes]}/${ano} enviado para seu e-mail! Pode levar alguns minutos.`;
+            feedback.style.color = '#34d399';
+        } else {
+            const err = await res.json();
+            feedback.textContent = err.erro || 'Erro ao gerar exportação.';
+            feedback.style.color = '#f87171';
+        }
+    } catch (e) {
+        feedback.textContent = 'Erro de conexão. Tente novamente.';
+        feedback.style.color = '#f87171';
+    }
+
+    feedback.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-envelope"></i> Enviar por e-mail';
 }
 
 // ============================================================
