@@ -2763,9 +2763,22 @@ const JOGOS = {
     },
 };
 
+const RECURSOS_ADULTOS = [
+    'respiracao-adulto', 'roda-emocoes', 'escala-intensidade',
+    'reestruturacao-cognitiva', 'relaxamento-progressivo', 'semaforo-emocional'
+];
+
 function abrirJogo(id) {
     const jogo = JOGOS[id];
     if (!jogo) return;
+
+    // Recursos adultos: abre em nova aba (sem restrições de iframe)
+    if (RECURSOS_ADULTOS.includes(id)) {
+        window.open(jogo.arquivo, '_blank');
+        return;
+    }
+
+    // Jogos infantis: mantém modal com iframe
     const modal = document.getElementById('jogo-modal');
     const iframe = document.getElementById('jogo-iframe');
     const titulo = document.getElementById('jogo-titulo-modal');
