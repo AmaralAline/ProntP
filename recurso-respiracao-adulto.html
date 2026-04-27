@@ -340,112 +340,113 @@
     </div>
 
     <script>
-        const CYCLES_TOTAL = 4;
-        const PHASES = [
-            { id: 'inhale', label: 'INSPIRE', dur: 4, cls: 'inhale', dot: 'dot-inhale' },
-            { id: 'hold', label: 'RETENHA', dur: 7, cls: 'hold', dot: 'dot-hold' },
-            { id: 'exhale', label: 'EXPIRE', dur: 8, cls: 'exhale', dot: 'dot-exhale' },
-        ];
+        document.addEventListener('DOMContentLoaded', () => {
+            const CYCLES_TOTAL = 4;
+            const PHASES = [
+                { id: 'inhale', label: 'INSPIRE', dur: 4, cls: 'inhale', dot: 'dot-inhale' },
+                { id: 'hold', label: 'RETENHA', dur: 7, cls: 'hold', dot: 'dot-hold' },
+                { id: 'exhale', label: 'EXPIRE', dur: 8, cls: 'exhale', dot: 'dot-exhale' },
+            ];
 
-        const TOTAL_PHASE = 4 + 7 + 8; // 19s por ciclo
-        const CIRC = 2 * Math.PI * 95; // 596.9
+            const TOTAL_PHASE = 4 + 7 + 8; // 19s por ciclo
+            const CIRC = 2 * Math.PI * 95; // 596.9
 
-        let running = false, currentCycle = 0, phaseIdx = 0;
-        let countdown = 0, interval = null, startTime = null;
+            let running = false, currentCycle = 0, phaseIdx = 0;
+            let countdown = 0, interval = null, startTime = null;
 
-        const orb = document.getElementById('orb');
-        const countDisplay = document.getElementById('countDisplay');
-        const phaseLabel = document.getElementById('phaseLabel');
-        const cycleDisplay = document.getElementById('cycleDisplay');
-        const btnStart = document.getElementById('btnIniciar');
-        const doneMsg = document.getElementById('doneMsg');
-        const prog = document.getElementById('prog');
+            const orb = document.getElementById('orb');
+            const countDisplay = document.getElementById('countDisplay');
+            const phaseLabel = document.getElementById('phaseLabel');
+            const cycleDisplay = document.getElementById('cycleDisplay');
+            const btnStart = document.getElementById('btnIniciar');
+            const doneMsg = document.getElementById('doneMsg');
+            const prog = document.getElementById('prog');
 
-        function setDot(dotId) {
-            document.querySelectorAll('.phase-dot').forEach(d => d.classList.remove('active'));
-            document.getElementById(dotId)?.classList.add('active');
-        }
-
-        function setPhase(ph) {
-            orb.className = 'orb ' + ph.cls;
-            phaseLabel.textContent = ph.label;
-            setDot(ph.dot);
-            countdown = ph.dur;
-            startTime = Date.now();
-            animatePhase(ph);
-        }
-
-        function animatePhase(ph) {
-            if (interval) clearInterval(interval);
-            const total = ph.dur * 1000;
-
-            interval = setInterval(() => {
-                if (!running) return clearInterval(interval);
-
-                const elapsed = Date.now() - startTime;
-                const remaining = Math.max(0, ph.dur - elapsed / 1000);
-                countDisplay.textContent = Math.ceil(remaining);
-
-                // Progresso do anel (por fase, não ciclo total)
-                const pct = elapsed / total;
-                prog.style.strokeDashoffset = CIRC * (1 - Math.min(pct, 1));
-
-                if (elapsed >= total) {
-                    clearInterval(interval);
-                    nextPhase();
-                }
-            }, 50);
-        }
-
-        function nextPhase() {
-            phaseIdx++;
-            if (phaseIdx >= PHASES.length) {
-                phaseIdx = 0;
-                currentCycle++;
-                if (currentCycle >= CYCLES_TOTAL) {
-                    terminar();
-                    return;
-                }
+            function setDot(dotId) {
+                document.querySelectorAll('.phase-dot').forEach(d => d.classList.remove('active'));
+                document.getElementById(dotId)?.classList.add('active');
             }
-            cycleDisplay.textContent = `${currentCycle + 1} / ${CYCLES_TOTAL} ciclos`;
-            setPhase(PHASES[phaseIdx]);
-        }
 
-        function iniciar() {
-            running = true;
-            currentCycle = 0;
-            phaseIdx = 0;
-            btnStart.style.display = 'none';
-            doneMsg.classList.remove('visible');
-            cycleDisplay.textContent = `1 / ${CYCLES_TOTAL} ciclos`;
-            setPhase(PHASES[0]);
-        }
+            function setPhase(ph) {
+                orb.className = 'orb ' + ph.cls;
+                phaseLabel.textContent = ph.label;
+                setDot(ph.dot);
+                countdown = ph.dur;
+                startTime = Date.now();
+                animatePhase(ph);
+            }
 
-        function terminar() {
-            running = false;
-            orb.className = 'orb';
-            countDisplay.textContent = '✓';
-            phaseLabel.textContent = 'concluído';
-            prog.style.strokeDashoffset = 0;
-            document.querySelectorAll('.phase-dot').forEach(d => d.classList.remove('active'));
-            doneMsg.classList.add('visible');
-            cycleDisplay.textContent = `${CYCLES_TOTAL} / ${CYCLES_TOTAL} ciclos`;
-        }
+            function animatePhase(ph) {
+                if (interval) clearInterval(interval);
+                const total = ph.dur * 1000;
 
-        function reiniciar() {
-            doneMsg.classList.remove('visible');
-            prog.style.strokeDashoffset = CIRC;
-            orb.className = 'orb';
-            countDisplay.textContent = '—';
-            phaseLabel.textContent = 'aguardando';
-            cycleDisplay.textContent = '— / 4 ciclos';
-            btnStart.style.display = 'inline-block';
-        }
+                interval = setInterval(() => {
+                    if (!running) return clearInterval(interval);
 
-        // Bind buttons via addEventListener (CSP safe)
-        document.getElementById('btnIniciar')?.addEventListener('click', iniciar);
-        document.getElementById('btnReiniciar')?.addEventListener('click', reiniciar);
+                    const elapsed = Date.now() - startTime;
+                    const remaining = Math.max(0, ph.dur - elapsed / 1000);
+                    countDisplay.textContent = Math.ceil(remaining);
 
+                    // Progresso do anel (por fase, não ciclo total)
+                    const pct = elapsed / total;
+                    prog.style.strokeDashoffset = CIRC * (1 - Math.min(pct, 1));
+
+                    if (elapsed >= total) {
+                        clearInterval(interval);
+                        nextPhase();
+                    }
+                }, 50);
+            }
+
+            function nextPhase() {
+                phaseIdx++;
+                if (phaseIdx >= PHASES.length) {
+                    phaseIdx = 0;
+                    currentCycle++;
+                    if (currentCycle >= CYCLES_TOTAL) {
+                        terminar();
+                        return;
+                    }
+                }
+                cycleDisplay.textContent = `${currentCycle + 1} / ${CYCLES_TOTAL} ciclos`;
+                setPhase(PHASES[phaseIdx]);
+            }
+
+            function iniciar() {
+                running = true;
+                currentCycle = 0;
+                phaseIdx = 0;
+                btnStart.style.display = 'none';
+                doneMsg.classList.remove('visible');
+                cycleDisplay.textContent = `1 / ${CYCLES_TOTAL} ciclos`;
+                setPhase(PHASES[0]);
+            }
+
+            function terminar() {
+                running = false;
+                orb.className = 'orb';
+                countDisplay.textContent = '✓';
+                phaseLabel.textContent = 'concluído';
+                prog.style.strokeDashoffset = 0;
+                document.querySelectorAll('.phase-dot').forEach(d => d.classList.remove('active'));
+                doneMsg.classList.add('visible');
+                cycleDisplay.textContent = `${CYCLES_TOTAL} / ${CYCLES_TOTAL} ciclos`;
+            }
+
+            function reiniciar() {
+                doneMsg.classList.remove('visible');
+                prog.style.strokeDashoffset = CIRC;
+                orb.className = 'orb';
+                countDisplay.textContent = '—';
+                phaseLabel.textContent = 'aguardando';
+                cycleDisplay.textContent = '— / 4 ciclos';
+                btnStart.style.display = 'inline-block';
+            }
+
+            // Bind buttons via addEventListener (CSP safe)
+            document.getElementById('btnIniciar')?.addEventListener('click', iniciar);
+            document.getElementById('btnReiniciar')?.addEventListener('click', reiniciar);
+        }); // fim DOMContentLoaded
     </script>
 </body>
 </html>
