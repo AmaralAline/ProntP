@@ -2732,9 +2732,35 @@ const JOGOS = {
         arquivo: 'jogo-sete-erros.html'
     },
     'respiracao': {
-        titulo: '?? Bolha da Respiração',
+        titulo: '🫧 Bolha da Respiração',
         arquivo: 'jogo-respiracao.html'
-    }
+    },
+
+    // ── Recursos para Adultos ──────────────────────────────
+    'respiracao-adulto': {
+        titulo: '🫁 Respiração 4·7·8',
+        arquivo: 'recurso-respiracao-adulto.html'
+    },
+    'roda-emocoes': {
+        titulo: '🎡 Roda das Emoções',
+        arquivo: 'recurso-roda-emocoes-adulto.html'
+    },
+    'escala-intensidade': {
+        titulo: '📊 Escala de Intensidade Emocional',
+        arquivo: 'recurso-escala-intensidade.html'
+    },
+    'reestruturacao-cognitiva': {
+        titulo: '🧠 Reestruturação Cognitiva (TCC)',
+        arquivo: 'recurso-reestruturacao-cognitiva.html'
+    },
+    'relaxamento-progressivo': {
+        titulo: '🌿 Relaxamento Muscular Progressivo',
+        arquivo: 'recurso-relaxamento-progressivo.html'
+    },
+    'semaforo-emocional': {
+        titulo: '🚦 Semáforo Emocional',
+        arquivo: 'recurso-semaforo-emocional.html'
+    },
 };
 
 function abrirJogo(id) {

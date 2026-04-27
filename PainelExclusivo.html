@@ -1851,11 +1851,15 @@
             <section id="recursos-terapeuticos-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
-                    <h2><i class="fas fa-gamepad" style="color:#8b5cf6; margin-right:10px;"></i>Recursos Terapêuticos — Atendimento Online Infantil</h2>
-                    <p>Compartilhe sua tela e use estes jogos interativos com seus pacientes durante a sessão online</p>
+                    <h2><i class="fas fa-gamepad" style="color:#8b5cf6; margin-right:10px;"></i>Recursos Terapêuticos — Atendimento Online</h2>
+                    <p>Compartilhe sua tela e use estes recursos interativos com seus pacientes durante a sessão online</p>
                 </div>
 
                 <!-- GRID DE JOGOS -->
+                <div style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(139,92,246,0.6); margin-bottom:16px; display:flex; align-items:center; gap:12px;">
+                    <span>Recursos Infantis</span>
+                    <div style="flex:1; height:1px; background:rgba(139,92,246,0.15);"></div>
+                </div>
                 <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:32px;">
 
                     <!-- Memória das Emoções -->
@@ -1966,6 +1970,138 @@
                         <iframe id="jogo-iframe" style="width:100%; height:100%; border:none; background:#0a0f1a;"></iframe>
                     </div>
                 </div>
+
+                <!-- Separador de seção -->
+                <div style="
+    border-top: 1px solid rgba(139,92,246,0.15);
+    margin: 32px 0 24px;
+    padding-top: 24px;
+">
+                    <div style="
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(139,92,246,0.6);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    ">
+                        <span>Recursos para Adultos</span>
+                        <div style="flex:1; height:1px; background:rgba(139,92,246,0.15);"></div>
+                    </div>
+
+                    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 14px;
+    ">
+
+                        <!-- Respiração 4-7-8 -->
+                        <button onclick="abrirJogo('respiracao-adulto')" style="
+            background: rgba(91,155,213,0.08);
+            border: 1px solid rgba(91,155,213,0.2);
+            border-radius: 12px;
+            padding: 18px 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            color: #e2e8f0;
+        " onmouseover="this.style.background='rgba(91,155,213,0.15)'"
+                                onmouseout="this.style.background='rgba(91,155,213,0.08)'">
+                            <div style="font-size:24px; margin-bottom:8px;">🫁</div>
+                            <div style="font-size:14px; font-weight:500; color:#7eb8e8; margin-bottom:4px;">Respiração 4·7·8</div>
+                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Regulação do sistema nervoso autônomo via respiração controlada</div>
+                        </button>
+
+                        <!-- Roda das Emoções -->
+                        <button onclick="abrirJogo('roda-emocoes')" style="
+            background: rgba(245,200,66,0.06);
+            border: 1px solid rgba(245,200,66,0.2);
+            border-radius: 12px;
+            padding: 18px 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            color: #e2e8f0;
+        " onmouseover="this.style.background='rgba(245,200,66,0.12)'"
+                                onmouseout="this.style.background='rgba(245,200,66,0.06)'">
+                            <div style="font-size:24px; margin-bottom:8px;">🎡</div>
+                            <div style="font-size:14px; font-weight:500; color:#f5c842; margin-bottom:4px;">Roda das Emoções</div>
+                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Identificação emocional baseada no modelo de Plutchik</div>
+                        </button>
+
+                        <!-- Escala de Intensidade -->
+                        <button onclick="abrirJogo('escala-intensidade')" style="
+            background: rgba(224,92,75,0.06);
+            border: 1px solid rgba(224,92,75,0.2);
+            border-radius: 12px;
+            padding: 18px 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            color: #e2e8f0;
+        " onmouseover="this.style.background='rgba(224,92,75,0.12)'"
+                                onmouseout="this.style.background='rgba(224,92,75,0.06)'">
+                            <div style="font-size:24px; margin-bottom:8px;">📊</div>
+                            <div style="font-size:14px; font-weight:500; color:#e05c4b; margin-bottom:4px;">Escala de Intensidade</div>
+                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Mensuração visual da intensidade de ansiedade, tristeza, raiva e outros</div>
+                        </button>
+
+                        <!-- Reestruturação Cognitiva -->
+                        <button onclick="abrirJogo('reestruturacao-cognitiva')" style="
+            background: rgba(139,92,246,0.06);
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 12px;
+            padding: 18px 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            color: #e2e8f0;
+        " onmouseover="this.style.background='rgba(139,92,246,0.12)'"
+                                onmouseout="this.style.background='rgba(139,92,246,0.06)'">
+                            <div style="font-size:24px; margin-bottom:8px;">🧠</div>
+                            <div style="font-size:14px; font-weight:500; color:#a78bfa; margin-bottom:4px;">Reestruturação Cognitiva</div>
+                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Registro de pensamento automático — técnica central da TCC</div>
+                        </button>
+
+                        <!-- Relaxamento Muscular -->
+                        <button onclick="abrirJogo('relaxamento-progressivo')" style="
+            background: rgba(92,122,62,0.08);
+            border: 1px solid rgba(92,122,62,0.25);
+            border-radius: 12px;
+            padding: 18px 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            color: #e2e8f0;
+        " onmouseover="this.style.background='rgba(92,122,62,0.15)'"
+                                onmouseout="this.style.background='rgba(92,122,62,0.08)'">
+                            <div style="font-size:24px; margin-bottom:8px;">🌿</div>
+                            <div style="font-size:14px; font-weight:500; color:#8bc48c; margin-bottom:4px;">Relaxamento Progressivo</div>
+                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Técnica de Jacobson — tensão e relaxamento de grupos musculares</div>
+                        </button>
+
+                        <!-- Semáforo Emocional -->
+                        <button onclick="abrirJogo('semaforo-emocional')" style="
+            background: rgba(196,154,60,0.06);
+            border: 1px solid rgba(196,154,60,0.2);
+            border-radius: 12px;
+            padding: 18px 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            color: #e2e8f0;
+        " onmouseover="this.style.background='rgba(196,154,60,0.12)'"
+                                onmouseout="this.style.background='rgba(196,154,60,0.06)'">
+                            <div style="font-size:24px; margin-bottom:8px;">🚦</div>
+                            <div style="font-size:14px; font-weight:500; color:#c49a3c; margin-bottom:4px;">Semáforo Emocional</div>
+                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Identificação do nível de regulação e estratégias contextuais</div>
+                        </button>
+
+                    </div>
+                </div>
+
 
             </section>
 
