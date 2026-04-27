@@ -1,378 +1,412 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roda das Emoções</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roda das Emoções</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
 
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: #111318;
-    font-family: 'DM Sans', sans-serif;
-    color: #f0ebe3;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(20px, 4vw, 60px);
-    padding: 20px;
-    flex-wrap: wrap;
-    overflow: hidden;
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .bg-glow {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse at 20% 50%, rgba(255,180,80,0.04) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 50%, rgba(80,140,255,0.04) 0%, transparent 50%);
-  }
+        body {
+            background: #111318;
+            font-family: 'DM Sans', sans-serif;
+            color: #f0ebe3;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(20px, 4vw, 60px);
+            padding: 20px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
 
-  /* Painel esquerdo */
-  .left-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+        .bg-glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 20% 50%, rgba(255,180,80,0.04) 0%, transparent 50%), radial-gradient(ellipse at 80% 50%, rgba(80,140,255,0.04) 0%, transparent 50%);
+        }
 
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(18px, 2.5vw, 26px);
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    color: rgba(240,235,227,0.8);
-    text-align: center;
-    margin-bottom: 4px;
-  }
-  .tagline {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: rgba(240,235,227,0.3);
-    text-align: center;
-    margin-bottom: clamp(16px, 3vw, 30px);
-  }
+        /* Painel esquerdo */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-  /* Roda SVG */
-  .wheel-wrap {
-    position: relative;
-    width: clamp(260px, 40vw, 420px);
-    height: clamp(260px, 40vw, 420px);
-  }
-  .wheel-wrap svg { width:100%; height:100%; cursor: pointer; }
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(18px, 2.5vw, 26px);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: rgba(240,235,227,0.8);
+            text-align: center;
+            margin-bottom: 4px;
+        }
 
-  .center-label {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    pointer-events: none;
-  }
-  .center-emoji { font-size: clamp(22px, 4vw, 36px); line-height: 1; }
-  .center-name {
-    font-size: clamp(9px, 1.4vw, 12px);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(240,235,227,0.5);
-    margin-top: 4px;
-    max-width: 80px;
-    text-align: center;
-    line-height: 1.3;
-  }
+        .tagline {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            color: rgba(240,235,227,0.3);
+            text-align: center;
+            margin-bottom: clamp(16px, 3vw, 30px);
+        }
 
-  /* Painel direito */
-  .right-panel {
-    width: clamp(240px, 30vw, 320px);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+        /* Roda SVG */
+        .wheel-wrap {
+            position: relative;
+            width: clamp(260px, 40vw, 420px);
+            height: clamp(260px, 40vw, 420px);
+        }
 
-  .selected-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-    padding: 20px;
-    min-height: 100px;
-    transition: border-color 0.3s ease;
-  }
-  .selected-card.lit {
-    border-color: var(--sel-color, rgba(255,255,255,0.15));
-    box-shadow: 0 0 30px var(--sel-glow, transparent);
-  }
-  .sel-emoji { font-size: 32px; margin-bottom: 8px; }
-  .sel-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: rgba(240,235,227,0.9);
-    margin-bottom: 4px;
-  }
-  .sel-core {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(240,235,227,0.35);
-    margin-bottom: 10px;
-  }
-  .sel-desc {
-    font-size: 13px;
-    font-weight: 300;
-    line-height: 1.6;
-    color: rgba(240,235,227,0.55);
-  }
+            .wheel-wrap svg {
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
 
-  .placeholder-txt {
-    font-size: 13px;
-    color: rgba(240,235,227,0.25);
-    line-height: 1.6;
-    font-style: italic;
-  }
+        .center-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
 
-  .history-label {
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(240,235,227,0.3);
-    margin-bottom: 6px;
-  }
-  .history-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    min-height: 28px;
-  }
-  .chip {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 11px;
-    color: rgba(240,235,227,0.5);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .chip:hover { background: rgba(255,255,255,0.1); }
+        .center-emoji {
+            font-size: clamp(22px, 4vw, 36px);
+            line-height: 1;
+        }
 
-  .btn-limpar {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: rgba(240,235,227,0.3);
-    padding: 8px 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s;
-    align-self: flex-start;
-  }
-  .btn-limpar:hover { border-color: rgba(255,255,255,0.2); color: rgba(240,235,227,0.6); }
-</style>
+        .center-name {
+            font-size: clamp(9px, 1.4vw, 12px);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(240,235,227,0.5);
+            margin-top: 4px;
+            max-width: 80px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* Painel direito */
+        .right-panel {
+            width: clamp(240px, 30vw, 320px);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .selected-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 100px;
+            transition: border-color 0.3s ease;
+        }
+
+            .selected-card.lit {
+                border-color: var(--sel-color, rgba(255,255,255,0.15));
+                box-shadow: 0 0 30px var(--sel-glow, transparent);
+            }
+
+        .sel-emoji {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .sel-name {
+            font-family: 'DM Serif Display', serif;
+            font-size: 22px;
+            color: rgba(240,235,227,0.9);
+            margin-bottom: 4px;
+        }
+
+        .sel-core {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(240,235,227,0.35);
+            margin-bottom: 10px;
+        }
+
+        .sel-desc {
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 1.6;
+            color: rgba(240,235,227,0.55);
+        }
+
+        .placeholder-txt {
+            font-size: 13px;
+            color: rgba(240,235,227,0.25);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .history-label {
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(240,235,227,0.3);
+            margin-bottom: 6px;
+        }
+
+        .history-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            min-height: 28px;
+        }
+
+        .chip {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            color: rgba(240,235,227,0.5);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .chip:hover {
+                background: rgba(255,255,255,0.1);
+            }
+
+        .btn-limpar {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(240,235,227,0.3);
+            padding: 8px 16px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            align-self: flex-start;
+        }
+
+            .btn-limpar:hover {
+                border-color: rgba(255,255,255,0.2);
+                color: rgba(240,235,227,0.6);
+            }
+    </style>
 </head>
 <body>
-<div class="bg-glow"></div>
+    <div class="bg-glow"></div>
 
-<div class="left-panel">
-  <h1>Roda das Emoções</h1>
-  <div class="tagline">Plutchik · Adaptada para adultos</div>
+    <div class="left-panel">
+        <h1>Roda das Emoções</h1>
+        <div class="tagline">Plutchik · Adaptada para adultos</div>
 
-  <div class="wheel-wrap">
-    <svg id="wheel" viewBox="-220 -220 440 440" xmlns="http://www.w3.org/2000/svg"></svg>
-    <div class="center-label">
-      <div class="center-emoji" id="cEmoji">○</div>
-      <div class="center-name" id="cName">toque para explorar</div>
+        <div class="wheel-wrap">
+            <svg id="wheel" viewBox="-220 -220 440 440" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div class="center-label">
+                <div class="center-emoji" id="cEmoji">○</div>
+                <div class="center-name" id="cName">toque para explorar</div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="right-panel">
-  <div class="selected-card" id="selCard">
-    <div class="placeholder-txt">Clique em qualquer emoção na roda para conhecer sua descrição e família emocional.</div>
-  </div>
+    <div class="right-panel">
+        <div class="selected-card" id="selCard">
+            <div class="placeholder-txt">Clique em qualquer emoção na roda para conhecer sua descrição e família emocional.</div>
+        </div>
 
-  <div>
-    <div class="history-label">emoções exploradas</div>
-    <div class="history-chips" id="chips"></div>
-  </div>
-  <button class="btn-limpar" onclick="limpar()">limpar</button>
-</div>
+        <div>
+            <div class="history-label">emoções exploradas</div>
+            <div class="history-chips" id="chips"></div>
+        </div>
+        <button class="btn-limpar" onclick="limpar()">limpar</button>
+    </div>
 
-<script>
-// Plutchik adaptado — 8 núcleos, 3 anéis (intensidade)
-const EMOCOES = [
-  {
-    core: 'Alegria', emoji: '😊', color: '#f5c842', glow: 'rgba(245,200,66,0.12)',
-    inner: { nome: 'Êxtase', emoji: '🤩', desc: 'Alegria intensa, sensação de plenitude e euforia que transborda. Sinaliza satisfação máxima.' },
-    mid:   { nome: 'Alegria', emoji: '😊', desc: 'Sentimento de prazer e bem-estar. Indica que algo importante está indo bem na sua vida.' },
-    outer: { nome: 'Serenidade', emoji: '😌', desc: 'Calma agradável, contentamento tranquilo. Um prazer suave e duradouro.' },
-  },
-  {
-    core: 'Confiança', emoji: '🤝', color: '#62c46a', glow: 'rgba(98,196,106,0.12)',
-    inner: { nome: 'Admiração', emoji: '🤩', desc: 'Respeito profundo misturado com maravilha. Reconhecimento genuíno do valor do outro.' },
-    mid:   { nome: 'Confiança', emoji: '🤝', desc: 'Sensação de segurança e credibilidade em si ou no outro. Fundamento das relações saudáveis.' },
-    outer: { nome: 'Aceitação', emoji: '🙏', desc: 'Abertura receptiva. Disposição de acolher o que é sem resistência.' },
-  },
-  {
-    core: 'Medo', emoji: '😨', color: '#5b9bd5', glow: 'rgba(91,155,213,0.12)',
-    inner: { nome: 'Terror', emoji: '😱', desc: 'Medo extremo com sensação de perigo iminente. Ativa fortemente o sistema de sobrevivência.' },
-    mid:   { nome: 'Medo', emoji: '😨', desc: 'Resposta a ameaça percebida. Prepara o corpo para proteção — é adaptativo quando proporcional.' },
-    outer: { nome: 'Apreensão', emoji: '😟', desc: 'Inquietação leve sobre algo incerto. Um aviso interno de que algo merece atenção.' },
-  },
-  {
-    core: 'Surpresa', emoji: '😲', color: '#9b72d4', glow: 'rgba(155,114,212,0.12)',
-    inner: { nome: 'Espanto', emoji: '🫨', desc: 'Surpresa intensa que paralisa brevemente. O inesperado superou completamente as expectativas.' },
-    mid:   { nome: 'Surpresa', emoji: '😲', desc: 'Reação ao inesperado. Neutra em si — o que vem depois depende do contexto.' },
-    outer: { nome: 'Distração', emoji: '😶', desc: 'Atenção subitamente redirecionada. Momento de reorientação antes de processar.' },
-  },
-  {
-    core: 'Tristeza', emoji: '😢', color: '#7eb8e8', glow: 'rgba(126,184,232,0.12)',
-    inner: { nome: 'Angústia', emoji: '😭', desc: 'Dor emocional intensa, frequentemente ligada a perda profunda. Sinaliza necessidade de suporte.' },
-    mid:   { nome: 'Tristeza', emoji: '😢', desc: 'Resposta natural a perdas, decepções ou separações. Faz parte do ciclo emocional humano.' },
-    outer: { nome: 'Pensatividade', emoji: '🤔', desc: 'Reflexão melancólica leve. Um estado introspectivo que pode levar à elaboração.' },
-  },
-  {
-    core: 'Repulsa', emoji: '😤', color: '#c4a244', glow: 'rgba(196,162,68,0.12)',
-    inner: { nome: 'Aversão', emoji: '🤢', desc: 'Repulsa intensa a algo percebido como contaminante — físico ou moral. Reação de proteção extrema.' },
-    mid:   { nome: 'Repulsa', emoji: '😤', desc: 'Rejeição de algo que viola valores ou sensibilidades. Pode ser sinal de limite saudável.' },
-    outer: { nome: 'Tédio', emoji: '😑', desc: 'Desinteresse por falta de estímulo significativo. Sinaliza necessidade de sentido ou mudança.' },
-  },
-  {
-    core: 'Raiva', emoji: '😠', color: '#e05c4b', glow: 'rgba(224,92,75,0.12)',
-    inner: { nome: 'Fúria', emoji: '🤬', desc: 'Raiva extrema que pode comprometer o julgamento. Sinal de que um limite foi fortemente violado.' },
-    mid:   { nome: 'Raiva', emoji: '😠', desc: 'Resposta a injustiça, ameaça ou frustração. Energia para agir — pode ser construtiva.' },
-    outer: { nome: 'Aborrecimento', emoji: '😒', desc: 'Irritação leve, contrariedade. Um aviso precoce de que algo não está alinhado com as expectativas.' },
-  },
-  {
-    core: 'Antecipação', emoji: '🙂', color: '#e8874d', glow: 'rgba(232,135,77,0.12)',
-    inner: { nome: 'Vigilância', emoji: '👀', desc: 'Atenção intensa voltada ao futuro. Estado de prontidão máxima para o que virá.' },
-    mid:   { nome: 'Antecipação', emoji: '🙂', desc: 'Expectativa orientada ao futuro. Motivação para planejar e agir.' },
-    outer: { nome: 'Interesse', emoji: '🧐', desc: 'Curiosidade suave, abertura receptiva. O início do engajamento com algo novo.' },
-  },
-];
+    <script>
+        // Plutchik adaptado — 8 núcleos, 3 anéis (intensidade)
+        const EMOCOES = [
+            {
+                core: 'Alegria', emoji: '😊', color: '#f5c842', glow: 'rgba(245,200,66,0.12)',
+                inner: { nome: 'Êxtase', emoji: '🤩', desc: 'Alegria intensa, sensação de plenitude e euforia que transborda. Sinaliza satisfação máxima.' },
+                mid: { nome: 'Alegria', emoji: '😊', desc: 'Sentimento de prazer e bem-estar. Indica que algo importante está indo bem na sua vida.' },
+                outer: { nome: 'Serenidade', emoji: '😌', desc: 'Calma agradável, contentamento tranquilo. Um prazer suave e duradouro.' },
+            },
+            {
+                core: 'Confiança', emoji: '🤝', color: '#62c46a', glow: 'rgba(98,196,106,0.12)',
+                inner: { nome: 'Admiração', emoji: '🤩', desc: 'Respeito profundo misturado com maravilha. Reconhecimento genuíno do valor do outro.' },
+                mid: { nome: 'Confiança', emoji: '🤝', desc: 'Sensação de segurança e credibilidade em si ou no outro. Fundamento das relações saudáveis.' },
+                outer: { nome: 'Aceitação', emoji: '🙏', desc: 'Abertura receptiva. Disposição de acolher o que é sem resistência.' },
+            },
+            {
+                core: 'Medo', emoji: '😨', color: '#5b9bd5', glow: 'rgba(91,155,213,0.12)',
+                inner: { nome: 'Terror', emoji: '😱', desc: 'Medo extremo com sensação de perigo iminente. Ativa fortemente o sistema de sobrevivência.' },
+                mid: { nome: 'Medo', emoji: '😨', desc: 'Resposta a ameaça percebida. Prepara o corpo para proteção — é adaptativo quando proporcional.' },
+                outer: { nome: 'Apreensão', emoji: '😟', desc: 'Inquietação leve sobre algo incerto. Um aviso interno de que algo merece atenção.' },
+            },
+            {
+                core: 'Surpresa', emoji: '😲', color: '#9b72d4', glow: 'rgba(155,114,212,0.12)',
+                inner: { nome: 'Espanto', emoji: '🫨', desc: 'Surpresa intensa que paralisa brevemente. O inesperado superou completamente as expectativas.' },
+                mid: { nome: 'Surpresa', emoji: '😲', desc: 'Reação ao inesperado. Neutra em si — o que vem depois depende do contexto.' },
+                outer: { nome: 'Distração', emoji: '😶', desc: 'Atenção subitamente redirecionada. Momento de reorientação antes de processar.' },
+            },
+            {
+                core: 'Tristeza', emoji: '😢', color: '#7eb8e8', glow: 'rgba(126,184,232,0.12)',
+                inner: { nome: 'Angústia', emoji: '😭', desc: 'Dor emocional intensa, frequentemente ligada a perda profunda. Sinaliza necessidade de suporte.' },
+                mid: { nome: 'Tristeza', emoji: '😢', desc: 'Resposta natural a perdas, decepções ou separações. Faz parte do ciclo emocional humano.' },
+                outer: { nome: 'Pensatividade', emoji: '🤔', desc: 'Reflexão melancólica leve. Um estado introspectivo que pode levar à elaboração.' },
+            },
+            {
+                core: 'Repulsa', emoji: '😤', color: '#c4a244', glow: 'rgba(196,162,68,0.12)',
+                inner: { nome: 'Aversão', emoji: '🤢', desc: 'Repulsa intensa a algo percebido como contaminante — físico ou moral. Reação de proteção extrema.' },
+                mid: { nome: 'Repulsa', emoji: '😤', desc: 'Rejeição de algo que viola valores ou sensibilidades. Pode ser sinal de limite saudável.' },
+                outer: { nome: 'Tédio', emoji: '😑', desc: 'Desinteresse por falta de estímulo significativo. Sinaliza necessidade de sentido ou mudança.' },
+            },
+            {
+                core: 'Raiva', emoji: '😠', color: '#e05c4b', glow: 'rgba(224,92,75,0.12)',
+                inner: { nome: 'Fúria', emoji: '🤬', desc: 'Raiva extrema que pode comprometer o julgamento. Sinal de que um limite foi fortemente violado.' },
+                mid: { nome: 'Raiva', emoji: '😠', desc: 'Resposta a injustiça, ameaça ou frustração. Energia para agir — pode ser construtiva.' },
+                outer: { nome: 'Aborrecimento', emoji: '😒', desc: 'Irritação leve, contrariedade. Um aviso precoce de que algo não está alinhado com as expectativas.' },
+            },
+            {
+                core: 'Antecipação', emoji: '🙂', color: '#e8874d', glow: 'rgba(232,135,77,0.12)',
+                inner: { nome: 'Vigilância', emoji: '👀', desc: 'Atenção intensa voltada ao futuro. Estado de prontidão máxima para o que virá.' },
+                mid: { nome: 'Antecipação', emoji: '🙂', desc: 'Expectativa orientada ao futuro. Motivação para planejar e agir.' },
+                outer: { nome: 'Interesse', emoji: '🧐', desc: 'Curiosidade suave, abertura receptiva. O início do engajamento com algo novo.' },
+            },
+        ];
 
-const svg = document.getElementById('wheel');
-const R_INNER = 55, R_MID = 110, R_OUTER = 170;
-const SEG = EMOCOES.length;
-const ANG = (2 * Math.PI) / SEG;
-let history = [];
+        const svg = document.getElementById('wheel');
+        const R_INNER = 55, R_MID = 110, R_OUTER = 170;
+        const SEG = EMOCOES.length;
+        const ANG = (2 * Math.PI) / SEG;
+        let history = [];
 
-function polarToCart(r, angle) {
-  return [r * Math.cos(angle), r * Math.sin(angle)];
-}
+        function polarToCart(r, angle) {
+            return [r * Math.cos(angle), r * Math.sin(angle)];
+        }
 
-function makeSlice(r1, r2, startA, endA, color, opacity) {
-  const [x1, y1] = polarToCart(r1, startA);
-  const [x2, y2] = polarToCart(r2, startA);
-  const [x3, y3] = polarToCart(r2, endA);
-  const [x4, y4] = polarToCart(r1, endA);
-  const large = endA - startA > Math.PI ? 1 : 0;
-  return `M ${x1} ${y1} L ${x2} ${y2} A ${r2} ${r2} 0 ${large} 1 ${x3} ${y3} L ${x4} ${y4} A ${r1} ${r1} 0 ${large} 0 ${x1} ${y1} Z`;
-}
+        function makeSlice(r1, r2, startA, endA, color, opacity) {
+            const [x1, y1] = polarToCart(r1, startA);
+            const [x2, y2] = polarToCart(r2, startA);
+            const [x3, y3] = polarToCart(r2, endA);
+            const [x4, y4] = polarToCart(r1, endA);
+            const large = endA - startA > Math.PI ? 1 : 0;
+            return `M ${x1} ${y1} L ${x2} ${y2} A ${r2} ${r2} 0 ${large} 1 ${x3} ${y3} L ${x4} ${y4} A ${r1} ${r1} 0 ${large} 0 ${x1} ${y1} Z`;
+        }
 
-function renderWheel() {
-  let svgContent = '';
-  EMOCOES.forEach((em, i) => {
-    const startA = i * ANG - Math.PI / 2;
-    const endA = startA + ANG;
-    const midA = (startA + endA) / 2;
-    const gap = 0.025;
+        function renderWheel() {
+            let svgContent = '';
+            EMOCOES.forEach((em, i) => {
+                const startA = i * ANG - Math.PI / 2;
+                const endA = startA + ANG;
+                const midA = (startA + endA) / 2;
+                const gap = 0.025;
 
-    const rings = [
-      { r1: 30, r2: R_INNER, data: em.inner, op: 0.9 },
-      { r1: R_INNER + 2, r2: R_MID, data: em.mid, op: 0.7 },
-      { r1: R_MID + 2, r2: R_OUTER, data: em.outer, op: 0.5 },
-    ];
+                const rings = [
+                    { r1: 30, r2: R_INNER, data: em.inner, op: 0.9 },
+                    { r1: R_INNER + 2, r2: R_MID, data: em.mid, op: 0.7 },
+                    { r1: R_MID + 2, r2: R_OUTER, data: em.outer, op: 0.5 },
+                ];
 
-    rings.forEach(({ r1, r2, data, op }) => {
-      const dPath = makeSlice(r1, r2, startA + gap, endA - gap);
-      const cx = ((r1 + r2) / 2) * Math.cos(midA);
-      const cy = ((r1 + r2) / 2) * Math.sin(midA);
-      const rot = (midA * 180 / Math.PI) + 90;
+                const ringKeys = ['inner', 'mid', 'outer'];
+                rings.forEach(({ r1, r2, data, op }, j) => {
+                    const dPath = makeSlice(r1, r2, startA + gap, endA - gap);
+                    const cx = ((r1 + r2) / 2) * Math.cos(midA);
+                    const cy = ((r1 + r2) / 2) * Math.sin(midA);
+                    const rot = (midA * 180 / Math.PI) + 90;
+                    const ringKey = ringKeys[j];
 
-      svgContent += `
-        <g class="slice-g" onclick="selectEmotion(${i}, '${['inner','mid','outer'][rings.indexOf({r1,r2,data,op})]}')">
-          <path d="${dPath}"
-            fill="${em.color}"
-            fill-opacity="${op * 0.55}"
-            stroke="rgba(17,19,24,0.8)"
-            stroke-width="1.5"
-            style="cursor:pointer; transition: fill-opacity 0.2s"
-            onmouseover="this.setAttribute('fill-opacity','${op * 0.85}')"
-            onmouseout="this.setAttribute('fill-opacity','${op * 0.55}')"
-            data-i="${i}" data-ring="${['inner','mid','outer'][rings.indexOf({r1,r2,data,op})]}"/>
-          <text x="${cx}" y="${cy}"
-            text-anchor="middle" dominant-baseline="middle"
-            transform="rotate(${rot}, ${cx}, ${cy})"
-            font-family="DM Sans, sans-serif"
-            font-size="${r2 - r1 < 60 ? 8 : 9}"
-            fill="rgba(255,255,255,0.75)"
-            pointer-events="none">
-            ${data.nome}
-          </text>
-        </g>`;
-    });
-  });
+                    svgContent += `
+            <g class="slice-g">
+              <path d="${dPath}"
+                fill="${em.color}"
+                fill-opacity="${op * 0.55}"
+                stroke="rgba(17,19,24,0.8)"
+                stroke-width="1.5"
+                style="cursor:pointer; transition: fill-opacity 0.2s"
+                onmouseover="this.setAttribute('fill-opacity','${op * 0.85}')"
+                onmouseout="this.setAttribute('fill-opacity','${op * 0.55}')"
+                data-i="${i}" data-ring="${ringKey}"/>
+              <text x="${cx}" y="${cy}"
+                text-anchor="middle" dominant-baseline="middle"
+                transform="rotate(${rot}, ${cx}, ${cy})"
+                font-family="DM Sans, sans-serif"
+                font-size="${r2 - r1 < 60 ? 8 : 9}"
+                fill="rgba(255,255,255,0.75)"
+                pointer-events="none">
+                ${data.nome}
+              </text>
+            </g>`;
+                });
+            });
 
-  // Gaps e linha central
-  svgContent += `<circle cx="0" cy="0" r="29" fill="#111318" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>`;
-  svg.innerHTML = svgContent;
+            // Gaps e linha central
+            svgContent += `<circle cx="0" cy="0" r="29" fill="#111318" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>`;
+            svg.innerHTML = svgContent;
 
-  // Fix ring indexOf por rearranjo
-  svg.querySelectorAll('[data-i]').forEach(el => {
-    el.addEventListener('click', () => {
-      const i = parseInt(el.dataset.i);
-      const ring = el.dataset.ring;
-      selectEmotion(i, ring);
-    });
-  });
-}
+            // Fix ring indexOf por rearranjo
+            svg.querySelectorAll('[data-i]').forEach(el => {
+                el.addEventListener('click', () => {
+                    const i = parseInt(el.dataset.i);
+                    const ring = el.dataset.ring;
+                    selectEmotion(i, ring);
+                });
+            });
+        }
 
-function selectEmotion(i, ring) {
-  const em = EMOCOES[i];
-  const data = em[ring];
-  const card = document.getElementById('selCard');
-  card.style.setProperty('--sel-color', em.color + '33');
-  card.style.setProperty('--sel-glow', em.glow);
-  card.classList.add('lit');
+        function selectEmotion(i, ring) {
+            const em = EMOCOES[i];
+            const data = em[ring];
+            const card = document.getElementById('selCard');
+            card.style.setProperty('--sel-color', em.color + '33');
+            card.style.setProperty('--sel-glow', em.glow);
+            card.classList.add('lit');
 
-  card.innerHTML = `
-    <div class="sel-emoji">${data.emoji}</div>
-    <div class="sel-name">${data.nome}</div>
-    <div class="sel-core">Família · ${em.core}</div>
-    <div class="sel-desc">${data.desc}</div>
-  `;
+            card.innerHTML = `
+        <div class="sel-emoji">${data.emoji}</div>
+        <div class="sel-name">${data.nome}</div>
+        <div class="sel-core">Família · ${em.core}</div>
+        <div class="sel-desc">${data.desc}</div>
+      `;
 
-  document.getElementById('cEmoji').textContent = data.emoji;
-  document.getElementById('cName').textContent = data.nome;
+            document.getElementById('cEmoji').textContent = data.emoji;
+            document.getElementById('cName').textContent = data.nome;
 
-  // Histórico
-  if (!history.find(h => h.nome === data.nome)) {
-    history.push({ nome: data.nome, emoji: data.emoji, color: em.color });
-    renderChips();
-  }
-}
+            // Histórico
+            if (!history.find(h => h.nome === data.nome)) {
+                history.push({ nome: data.nome, emoji: data.emoji, color: em.color });
+                renderChips();
+            }
+        }
 
-function renderChips() {
-  const container = document.getElementById('chips');
-  container.innerHTML = history.map(h =>
-    `<div class="chip" style="border-color:${h.color}44; color:${h.color};">${h.emoji} ${h.nome}</div>`
-  ).join('');
-}
+        function renderChips() {
+            const container = document.getElementById('chips');
+            container.innerHTML = history.map(h =>
+                `<div class="chip" style="border-color:${h.color}44; color:${h.color};">${h.emoji} ${h.nome}</div>`
+            ).join('');
+        }
 
-function limpar() {
-  history = [];
-  renderChips();
-  const card = document.getElementById('selCard');
-  card.classList.remove('lit');
-  card.innerHTML = '<div class="placeholder-txt">Clique em qualquer emoção na roda para conhecer sua descrição e família emocional.</div>';
-  document.getElementById('cEmoji').textContent = '○';
-  document.getElementById('cName').textContent = 'toque para explorar';
-}
+        function limpar() {
+            history = [];
+            renderChips();
+            const card = document.getElementById('selCard');
+            card.classList.remove('lit');
+            card.innerHTML = '<div class="placeholder-txt">Clique em qualquer emoção na roda para conhecer sua descrição e família emocional.</div>';
+            document.getElementById('cEmoji').textContent = '○';
+            document.getElementById('cName').textContent = 'toque para explorar';
+        }
 
-renderWheel();
-</script>
+        renderWheel();
+    </script>
 </body>
 </html>
