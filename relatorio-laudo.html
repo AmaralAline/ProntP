@@ -1,332 +1,582 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relatório / Laudo — ProntPsi</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@300;400&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório / Laudo — ProntPsi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@300;400&display=swap');
 
-  * { margin:0; padding:0; box-sizing:border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  body {
-    background: #0d1117;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
-    color: #e2e8f0;
-    min-height: 100vh;
-    padding: clamp(20px,4vw,48px);
-  }
+        body {
+            background: #0d1117;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: clamp(20px,4vw,48px);
+        }
 
-  .page { max-width: 780px; margin: 0 auto; }
+        .page {
+            max-width: 780px;
+            margin: 0 auto;
+        }
 
-  /* ── Header ── */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(139,92,246,0.2);
-    padding-bottom: 20px;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .header-left .tag {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #a78bfa;
-    margin-bottom: 6px;
-  }
-  .header-left h1 { font-size: clamp(18px,3vw,24px); font-weight: 400; }
-  .header-left p  { font-size: 13px; color: #64748b; margin-top: 4px; }
+        /* ── Header ── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(139,92,246,0.2);
+            padding-bottom: 20px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
 
-  /* ── Profissional card ── */
-  .prof-card {
-    background: #141d2b;
-    border: 1px solid rgba(139,92,246,0.12);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .prof-avatar {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: rgba(139,92,246,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .prof-nome  { font-size: 15px; font-weight: 500; color: #e2e8f0; }
-  .prof-crp   { font-size: 12px; color: #a78bfa; margin-top: 2px; font-family: 'Roboto Mono', monospace; }
-  .prof-esp   { font-size: 11px; color: #64748b; margin-top: 2px; }
+        .header-left .tag {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #a78bfa;
+            margin-bottom: 6px;
+        }
 
-  /* ── Seções ── */
-  .section {
-    background: #141d2b;
-    border: 1px solid rgba(139,92,246,0.12);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #a78bfa;
-    margin-bottom: 14px;
-  }
+        .header-left h1 {
+            font-size: clamp(18px,3vw,24px);
+            font-weight: 400;
+        }
 
-  /* ── Inputs ── */
-  input[type=text], input[type=email], select, textarea {
-    width: 100%;
-    background: #0d1117;
-    border: 1px solid rgba(139,92,246,0.15);
-    border-radius: 8px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
-    font-size: 14px;
-    color: #e2e8f0;
-    padding: 10px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: rgba(139,92,246,0.5);
-  }
-  input::placeholder, textarea::placeholder { color: #334155; }
-  textarea { resize: vertical; min-height: 200px; line-height: 1.7; }
-  select option { background: #141d2b; }
+        .header-left p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
 
-  .field-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .field-row.single { grid-template-columns: 1fr; }
-  .field-label {
-    font-size: 11px;
-    color: #64748b;
-    margin-bottom: 6px;
-    letter-spacing: 0.05em;
-  }
+        /* ── Profissional card ── */
+        .prof-card {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.12);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
 
-  /* ── Tipo do documento ── */
-  .tipo-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 4px;
-  }
-  .tipo-btn {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(139,92,246,0.15);
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
-    color: #94a3b8;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .tipo-btn:hover { border-color: rgba(139,92,246,0.35); color: #e2e8f0; }
-  .tipo-btn.active {
-    background: rgba(124,58,237,0.15);
-    border-color: #7c3aed;
-    color: #a78bfa;
-  }
+        .prof-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(139,92,246,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
 
-  /* ── Canvas assinatura ── */
-  .canvas-wrap {
-    position: relative;
-    background: #0d1117;
-    border: 1px solid rgba(139,92,246,0.15);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 10px;
-  }
-  canvas#assinatura {
-    display: block;
-    width: 100%;
-    height: 140px;
-    cursor: crosshair;
-    touch-action: none;
-  }
-  .canvas-placeholder {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-    font-size: 12px;
-    color: #334155;
-    pointer-events: none;
-    text-align: center;
-    line-height: 1.5;
-  }
-  .canvas-hint {
-    font-size: 11px;
-    color: #475569;
-    margin-top: 4px;
-  }
+        .prof-nome {
+            font-size: 15px;
+            font-weight: 500;
+            color: #e2e8f0;
+        }
 
-  /* ── Preview ── */
-  .preview-wrap {
-    display: none;
-    background: #fff;
-    border-radius: 8px;
-    padding: 32px;
-    color: #1a1a1a;
-    font-family: 'Times New Roman', serif;
-    line-height: 1.7;
-    margin-bottom: 16px;
-  }
-  .preview-wrap.show { display: block; }
-  .preview-header { text-align: center; border-bottom: 2px solid #7c3aed; padding-bottom: 16px; margin-bottom: 20px; }
-  .preview-logo   { font-size: 22px; font-weight: bold; color: #7c3aed; letter-spacing: 0.05em; }
-  .preview-tipo   { font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; color: #1a1a1a; }
-  .preview-meta   { font-size: 12px; color: #555; margin-top: 4px; }
-  .preview-body   { font-size: 13px; white-space: pre-wrap; margin: 20px 0; min-height: 100px; }
-  .preview-footer { border-top: 1px solid #ddd; padding-top: 16px; margin-top: 20px; display: flex; justify-content: flex-end; flex-direction: column; align-items: flex-end; gap: 4px; }
-  .preview-assinatura { max-height: 70px; }
-  .preview-prof   { font-size: 12px; font-weight: bold; }
-  .preview-crp    { font-size: 11px; color: #555; }
-  .preview-data   { font-size: 11px; color: #888; }
+        .prof-crp {
+            font-size: 12px;
+            color: #a78bfa;
+            margin-top: 2px;
+            font-family: 'Roboto Mono', monospace;
+        }
 
-  /* ── Botões ── */
-  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-  .btn {
-    padding: 11px 24px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 13px; font-weight: 400;
-    border-radius: 8px; cursor: pointer;
-    transition: all 0.2s; border: none;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .btn-primary   { background: #7c3aed; color: #fff; }
-  .btn-primary:hover { background: #6d28d9; }
-  .btn-secondary { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(139,92,246,0.2); }
-  .btn-secondary:hover { border-color: rgba(139,92,246,0.4); color: #e2e8f0; }
-  .btn-success   { background: #065f46; color: #6ee7b7; }
-  .btn-success:hover { background: #047857; }
-  .btn:disabled  { opacity: 0.5; cursor: not-allowed; }
+        .prof-esp {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
 
-  /* ── Toast ── */
-  .toast {
-    position: fixed;
-    bottom: 24px; right: 24px;
-    background: #141d2b;
-    border: 1px solid rgba(139,92,246,0.3);
-    border-radius: 10px;
-    padding: 14px 20px;
-    font-size: 13px;
-    color: #e2e8f0;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    transform: translateY(80px);
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 9999;
-    max-width: 320px;
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.ok   { border-color: rgba(52,211,153,0.4); }
-  .toast.erro { border-color: rgba(248,113,113,0.4); }
+        /* ── Seções ── */
+        .section {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.12);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
 
-  /* ── Status ── */
-  .status-bar {
-    display: none;
-    background: rgba(124,58,237,0.08);
-    border: 1px solid rgba(139,92,246,0.2);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: #a78bfa;
-    margin-top: 12px;
-    align-items: center;
-    gap: 10px;
-  }
-  .status-bar.show { display: flex; }
-  .spinner {
-    width: 16px; height: 16px;
-    border: 2px solid rgba(139,92,246,0.3);
-    border-top-color: #a78bfa;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    flex-shrink: 0;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-</style>
+        .section-title {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #a78bfa;
+            margin-bottom: 14px;
+        }
+
+        /* ── Inputs ── */
+        input[type=text], input[type=email], select, textarea {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: #e2e8f0;
+            padding: 10px 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: rgba(139,92,246,0.5);
+            }
+
+            input::placeholder, textarea::placeholder {
+                color: #334155;
+            }
+
+        textarea {
+            resize: vertical;
+            min-height: 200px;
+            line-height: 1.7;
+        }
+
+        select option {
+            background: #141d2b;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+            .field-row.single {
+                grid-template-columns: 1fr;
+            }
+
+        .field-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Tipo do documento ── */
+        .tipo-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+
+        .tipo-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .tipo-btn:hover {
+                border-color: rgba(139,92,246,0.35);
+                color: #e2e8f0;
+            }
+
+            .tipo-btn.active {
+                background: rgba(124,58,237,0.15);
+                border-color: #7c3aed;
+                color: #a78bfa;
+            }
+
+        /* ── Canvas assinatura ── */
+        .canvas-wrap {
+            position: relative;
+            background: #0d1117;
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        canvas#assinatura {
+            display: block;
+            width: 100%;
+            height: 140px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .canvas-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 12px;
+            color: #334155;
+            pointer-events: none;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .canvas-hint {
+            font-size: 11px;
+            color: #475569;
+            margin-top: 4px;
+        }
+
+        /* ── Preview ── */
+        .preview-wrap {
+            display: none;
+            background: #fff;
+            border-radius: 8px;
+            padding: 32px;
+            color: #1a1a1a;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+            .preview-wrap.show {
+                display: block;
+            }
+
+        .preview-header {
+            text-align: center;
+            border-bottom: 2px solid #7c3aed;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .preview-logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #7c3aed;
+            letter-spacing: 0.05em;
+        }
+
+        .preview-tipo {
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 6px;
+            color: #1a1a1a;
+        }
+
+        .preview-meta {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        .preview-body {
+            font-size: 13px;
+            white-space: pre-wrap;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+
+        .preview-footer {
+            border-top: 1px solid #ddd;
+            padding-top: 16px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .preview-assinatura-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .preview-assinatura {
+            max-height: 60px;
+        }
+
+        .preview-linha-ass {
+            width: 200px;
+            height: 1px;
+            background: #ccc;
+        }
+
+        .preview-prof {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .preview-crp {
+            font-size: 11px;
+            color: #555;
+            text-align: center;
+        }
+
+        .preview-data {
+            font-size: 10px;
+            color: #888;
+            text-align: center;
+        }
+
+        .preview-carimbo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid #7c3aed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+            .preview-carimbo::before {
+                content: '';
+                position: absolute;
+                inset: 5px;
+                border-radius: 50%;
+                border: 0.5px solid #7c3aed;
+            }
+
+        .preview-carimbo-nome {
+            font-size: 7px;
+            font-weight: bold;
+            color: #7c3aed;
+            text-align: center;
+            max-width: 70px;
+            line-height: 1.2;
+        }
+
+        .preview-carimbo-crp {
+            font-size: 6px;
+            color: #7c3aed;
+            text-align: center;
+            max-width: 70px;
+            margin-top: 2px;
+        }
+
+        .preview-carimbo-esp {
+            font-size: 5.5px;
+            color: #7c3aed;
+            text-align: center;
+            max-width: 70px;
+        }
+
+        .preview-carimbo-sys {
+            font-size: 5px;
+            color: #7c3aed;
+            margin-top: 2px;
+        }
+
+        /* ── Botões ── */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .btn {
+            padding: 11px 24px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #7c3aed;
+            color: #fff;
+        }
+
+            .btn-primary:hover {
+                background: #6d28d9;
+            }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #94a3b8;
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+
+            .btn-secondary:hover {
+                border-color: rgba(139,92,246,0.4);
+                color: #e2e8f0;
+            }
+
+        .btn-success {
+            background: #065f46;
+            color: #6ee7b7;
+        }
+
+            .btn-success:hover {
+                background: #047857;
+            }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            max-width: 320px;
+        }
+
+            .toast.show {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .toast.ok {
+                border-color: rgba(52,211,153,0.4);
+            }
+
+            .toast.erro {
+                border-color: rgba(248,113,113,0.4);
+            }
+
+        /* ── Status ── */
+        .status-bar {
+            display: none;
+            background: rgba(124,58,237,0.08);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #a78bfa;
+            margin-top: 12px;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .status-bar.show {
+                display: flex;
+            }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(139,92,246,0.3);
+            border-top-color: #a78bfa;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="page">
+    <div class="page">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="header-left">
-      <div class="tag">ProntPsi · Documentos Clínicos</div>
-      <h1>Gerador de Relatório / Laudo</h1>
-      <p>Escreva, assine digitalmente e envie por e-mail ao paciente</p>
-    </div>
-  </div>
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="tag">ProntPsi · Documentos Clínicos</div>
+                <h1>Gerador de Relatório / Laudo</h1>
+                <p>Escreva, assine digitalmente e envie por e-mail ao paciente</p>
+            </div>
+        </div>
 
-  <!-- Profissional (preenchido automaticamente) -->
-  <div class="prof-card" id="profCard">
-    <div class="prof-avatar">👤</div>
-    <div>
-      <div class="prof-nome" id="profNome">Carregando...</div>
-      <div class="prof-crp"  id="profCrp">—</div>
-      <div class="prof-esp"  id="profEsp">—</div>
-    </div>
-  </div>
+        <!-- Profissional (preenchido automaticamente) -->
+        <div class="prof-card" id="profCard">
+            <div class="prof-avatar">👤</div>
+            <div>
+                <div class="prof-nome" id="profNome">Carregando...</div>
+                <div class="prof-crp" id="profCrp">—</div>
+                <div class="prof-esp" id="profEsp">—</div>
+            </div>
+        </div>
 
-  <!-- Tipo do documento -->
-  <div class="section">
-    <div class="section-title">01 · Tipo de documento</div>
-    <div class="tipo-row" id="tipoRow">
-      <button class="tipo-btn active" data-tipo="Relatório Psicológico">Relatório Psicológico</button>
-      <button class="tipo-btn" data-tipo="Laudo Psicológico">Laudo Psicológico</button>
-      <button class="tipo-btn" data-tipo="Declaração">Declaração</button>
-      <button class="tipo-btn" data-tipo="Atestado">Atestado</button>
-      <button class="tipo-btn" data-tipo="Encaminhamento">Encaminhamento</button>
-      <button class="tipo-btn" data-tipo="Parecer Psicológico">Parecer Psicológico</button>
-    </div>
-  </div>
+        <!-- Tipo do documento -->
+        <div class="section">
+            <div class="section-title">01 · Tipo de documento</div>
+            <div class="tipo-row" id="tipoRow">
+                <button class="tipo-btn active" data-tipo="Relatório Psicológico">Relatório Psicológico</button>
+                <button class="tipo-btn" data-tipo="Laudo Psicológico">Laudo Psicológico</button>
+                <button class="tipo-btn" data-tipo="Declaração">Declaração</button>
+                <button class="tipo-btn" data-tipo="Atestado">Atestado</button>
+                <button class="tipo-btn" data-tipo="Encaminhamento">Encaminhamento</button>
+                <button class="tipo-btn" data-tipo="Parecer Psicológico">Parecer Psicológico</button>
+            </div>
+        </div>
 
-  <!-- Dados do paciente -->
-  <div class="section">
-    <div class="section-title">02 · Dados do paciente</div>
-    <div class="field-row">
-      <div>
-        <div class="field-label">Nome completo *</div>
-        <input type="text" id="pacNome" placeholder="Nome do paciente">
-      </div>
-      <div>
-        <div class="field-label">E-mail para envio *</div>
-        <input type="email" id="pacEmail" placeholder="email@paciente.com">
-      </div>
-    </div>
-    <div class="field-row">
-      <div>
-        <div class="field-label">Data de nascimento</div>
-        <input type="text" id="pacNasc" placeholder="DD/MM/AAAA">
-      </div>
-      <div>
-        <div class="field-label">Finalidade / Destino</div>
-        <input type="text" id="finalidade" placeholder="Ex: Uso escolar, INSS, fins legais...">
-      </div>
-    </div>
-  </div>
+        <!-- Dados do paciente -->
+        <div class="section">
+            <div class="section-title">02 · Dados do paciente</div>
+            <div class="field-row">
+                <div>
+                    <div class="field-label">Nome completo *</div>
+                    <input type="text" id="pacNome" placeholder="Nome do paciente">
+                </div>
+                <div>
+                    <div class="field-label">E-mail para envio *</div>
+                    <input type="email" id="pacEmail" placeholder="email@paciente.com">
+                </div>
+            </div>
+            <div class="field-row">
+                <div>
+                    <div class="field-label">Data de nascimento</div>
+                    <input type="text" id="pacNasc" placeholder="DD/MM/AAAA">
+                </div>
+                <div>
+                    <div class="field-label">Finalidade / Destino</div>
+                    <input type="text" id="finalidade" placeholder="Ex: Uso escolar, INSS, fins legais...">
+                </div>
+            </div>
+        </div>
 
-  <!-- Conteúdo do documento -->
-  <div class="section">
-    <div class="section-title">03 · Conteúdo do documento</div>
-    <div class="field-row single" style="margin-bottom:0">
-      <div>
-        <div class="field-label" style="margin-bottom:8px;">Escreva o texto completo do documento</div>
-        <textarea id="conteudo" placeholder="Escreva aqui o conteúdo completo do relatório ou laudo...
+        <!-- Conteúdo do documento -->
+        <div class="section">
+            <div class="section-title">03 · Conteúdo do documento</div>
+            <div class="field-row single" style="margin-bottom:0">
+                <div>
+                    <div class="field-label" style="margin-bottom:8px;">Escreva o texto completo do documento</div>
+                    <textarea id="conteudo" placeholder="Escreva aqui o conteúdo completo do relatório ou laudo...
 
 Você pode incluir:
 • Dados de identificação
@@ -334,235 +584,251 @@ Você pode incluir:
 • Procedimentos utilizados
 • Análise e conclusões
 • Recomendações"></textarea>
-      </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assinatura digital -->
+        <div class="section">
+            <div class="section-title">04 · Assinatura digital</div>
+            <div class="canvas-wrap">
+                <canvas id="assinatura" width="720" height="140"></canvas>
+                <div class="canvas-placeholder" id="canvasPlaceholder">
+                    ✍️ Assine aqui com o mouse ou dedo
+                </div>
+            </div>
+            <div class="canvas-hint">Pressione e arraste para assinar · </div>
+            <div class="btn-row" style="margin-top:10px;">
+                <button class="btn btn-secondary" onclick="limparAssinatura()">🗑️ Limpar assinatura</button>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="section">
+            <div class="section-title">05 · Visualizar e enviar</div>
+
+            <div class="preview-wrap" id="previewWrap">
+                <div class="preview-header">
+                    <div class="preview-logo">ProntPsi</div>
+                    <div class="preview-tipo" id="pvTipo">Relatório Psicológico</div>
+                    <div class="preview-meta" id="pvMeta"></div>
+                </div>
+                <div class="preview-body" id="pvBody"></div>
+                <div class="preview-footer">
+                    <div class="preview-assinatura-wrap">
+                        <img id="pvAssinatura" class="preview-assinatura" src="" alt="assinatura" style="display:none;">
+                        <div class="preview-linha-ass"></div>
+                        <div class="preview-prof" id="pvProf"></div>
+                        <div class="preview-crp" id="pvCrp"></div>
+                        <div class="preview-data" id="pvData"></div>
+                    </div>
+                    <div class="preview-carimbo" id="pvCarimbo" style="display:none;">
+                        <div class="preview-carimbo-nome" id="pvCarimboNome"></div>
+                        <div class="preview-carimbo-crp" id="pvCarimboCrp"></div>
+                        <div class="preview-carimbo-esp" id="pvCarimboEsp"></div>
+                        <div class="preview-carimbo-sys">ProntPsi</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="gerarPreview()">👁️ Visualizar</button>
+                <button class="btn btn-primary" id="btnEnviar" onclick="enviarRelatorio()">
+                    📧 Gerar PDF e enviar por e-mail
+                </button>
+            </div>
+
+            <div class="status-bar" id="statusBar">
+                <div class="spinner"></div>
+                <span id="statusTxt">Gerando PDF e enviando e-mail...</span>
+            </div>
+        </div>
+
     </div>
-  </div>
 
-  <!-- Assinatura digital -->
-  <div class="section">
-    <div class="section-title">04 · Assinatura digital</div>
-    <div class="canvas-wrap">
-      <canvas id="assinatura" width="720" height="140"></canvas>
-      <div class="canvas-placeholder" id="canvasPlaceholder">
-        ✍️ Assine aqui com o mouse ou dedo
-      </div>
-    </div>
-    <div class="canvas-hint">Pressione e arraste para assinar · </div>
-    <div class="btn-row" style="margin-top:10px;">
-      <button class="btn btn-secondary" onclick="limparAssinatura()">🗑️ Limpar assinatura</button>
-    </div>
-  </div>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
-  <!-- Preview -->
-  <div class="section">
-    <div class="section-title">05 · Visualizar e enviar</div>
+    <script>
+        // ── Config ────────────────────────────────────────────────────
+        const API = 'https://prontpsiback-production.up.railway.app';
+        const token = localStorage.getItem('token');
 
-    <div class="preview-wrap" id="previewWrap">
-      <div class="preview-header">
-        <div class="preview-logo">ProntPsi</div>
-        <div class="preview-tipo" id="pvTipo">Relatório Psicológico</div>
-        <div class="preview-meta" id="pvMeta"></div>
-      </div>
-      <div class="preview-body" id="pvBody"></div>
-      <div class="preview-footer">
-        <img id="pvAssinatura" class="preview-assinatura" src="" alt="assinatura" style="display:none;">
-        <div class="preview-prof" id="pvProf"></div>
-        <div class="preview-crp"  id="pvCrp"></div>
-        <div class="preview-data" id="pvData"></div>
-      </div>
-    </div>
+        let tipoSelecionado = 'Relatório Psicológico';
+        let assinado = false;
 
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="gerarPreview()">👁️ Visualizar</button>
-      <button class="btn btn-primary"   id="btnEnviar" onclick="enviarRelatorio()">
-        📧 Gerar PDF e enviar por e-mail
-      </button>
-    </div>
+        // ── Carregar dados do profissional ────────────────────────────
+        async function carregarProfissional() {
+            if (!token) { mostrarToast('Você precisa estar logado.', 'erro'); return; }
+            try {
+                const r = await fetch(`${API}/api/perfil`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (!r.ok) throw new Error();
+                const d = await r.json();
+                document.getElementById('profNome').textContent = d.nome || '—';
+                document.getElementById('profCrp').textContent = d.crp_crm || '—';
+                document.getElementById('profEsp').textContent = d.especialidade || '—';
+            } catch {
+                document.getElementById('profNome').textContent = 'Erro ao carregar perfil';
+            }
+        }
+        carregarProfissional();
 
-    <div class="status-bar" id="statusBar">
-      <div class="spinner"></div>
-      <span id="statusTxt">Gerando PDF e enviando e-mail...</span>
-    </div>
-  </div>
+        // ── Tipo do documento ─────────────────────────────────────────
+        document.getElementById('tipoRow').querySelectorAll('.tipo-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                tipoSelecionado = btn.dataset.tipo;
+            });
+        });
 
-</div>
+        // ── Canvas de assinatura ──────────────────────────────────────
+        const canvas = document.getElementById('assinatura');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+        let lastX = 0, lastY = 0;
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
+        // Escala para resolução retina
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            const ratio = window.devicePixelRatio || 1;
+            canvas.width = rect.width * ratio;
+            canvas.height = rect.height * ratio;
+            ctx.scale(ratio, ratio);
+            ctx.strokeStyle = '#a78bfa';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+        resizeCanvas();
 
-<script>
-// ── Config ────────────────────────────────────────────────────
-const API = 'https://prontpsiback-production.up.railway.app';
-const token = localStorage.getItem('token');
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const src = e.touches ? e.touches[0] : e;
+            return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+        }
 
-let tipoSelecionado = 'Relatório Psicológico';
-let assinado = false;
+        canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); lastX = p.x; lastY = p.y; });
+        canvas.addEventListener('mousemove', e => {
+            if (!drawing) return;
+            const p = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+            lastX = p.x; lastY = p.y;
+            assinado = true;
+            document.getElementById('canvasPlaceholder').style.display = 'none';
+        });
+        canvas.addEventListener('mouseup', () => drawing = false);
+        canvas.addEventListener('mouseleave', () => drawing = false);
 
-// ── Carregar dados do profissional ────────────────────────────
-async function carregarProfissional() {
-  if (!token) { mostrarToast('Você precisa estar logado.', 'erro'); return; }
-  try {
-    const r = await fetch(`${API}/api/perfil`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!r.ok) throw new Error();
-    const d = await r.json();
-    document.getElementById('profNome').textContent = d.nome || '—';
-    document.getElementById('profCrp').textContent  = d.crp_crm ? `CRP/CRM ${d.crp_crm}` : '—';
-    document.getElementById('profEsp').textContent  = d.especialidade || '—';
-  } catch {
-    document.getElementById('profNome').textContent = 'Erro ao carregar perfil';
-  }
-}
-carregarProfissional();
+        canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); lastX = p.x; lastY = p.y; }, { passive: false });
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            if (!drawing) return;
+            const p = getPos(e);
+            ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+            lastX = p.x; lastY = p.y; assinado = true;
+            document.getElementById('canvasPlaceholder').style.display = 'none';
+        }, { passive: false });
+        canvas.addEventListener('touchend', () => drawing = false);
 
-// ── Tipo do documento ─────────────────────────────────────────
-document.getElementById('tipoRow').querySelectorAll('.tipo-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    tipoSelecionado = btn.dataset.tipo;
-  });
-});
+        function limparAssinatura() {
+            const rect = canvas.getBoundingClientRect();
+            ctx.clearRect(0, 0, rect.width, rect.height);
+            assinado = false;
+            document.getElementById('canvasPlaceholder').style.display = 'block';
+        }
 
-// ── Canvas de assinatura ──────────────────────────────────────
-const canvas = document.getElementById('assinatura');
-const ctx    = canvas.getContext('2d');
-let drawing  = false;
-let lastX = 0, lastY = 0;
+        // ── Preview ───────────────────────────────────────────────────
+        function gerarPreview() {
+            const nome = document.getElementById('profNome').textContent;
+            const crp = document.getElementById('profCrp').textContent;
+            const pacNome = document.getElementById('pacNome').value;
+            const conteudo = document.getElementById('conteudo').value;
+            const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 
-// Escala para resolução retina
-function resizeCanvas() {
-  const rect = canvas.getBoundingClientRect();
-  const ratio = window.devicePixelRatio || 1;
-  canvas.width  = rect.width  * ratio;
-  canvas.height = rect.height * ratio;
-  ctx.scale(ratio, ratio);
-  ctx.strokeStyle = '#a78bfa';
-  ctx.lineWidth   = 2;
-  ctx.lineCap     = 'round';
-  ctx.lineJoin    = 'round';
-}
-resizeCanvas();
+            document.getElementById('pvTipo').textContent = tipoSelecionado.toUpperCase();
+            document.getElementById('pvMeta').textContent = `Paciente: ${pacNome || '—'} · ${hoje}`;
+            document.getElementById('pvBody').textContent = conteudo || '(sem conteúdo)';
+            document.getElementById('pvProf').textContent = nome;
+            document.getElementById('pvCrp').textContent = crp; // já vem sem prefixo duplicado
+            document.getElementById('pvData').textContent = hoje;
 
-function getPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  const src  = e.touches ? e.touches[0] : e;
-  return { x: src.clientX - rect.left, y: src.clientY - rect.top };
-}
+            // Carimbo
+            const carimbo = document.getElementById('pvCarimbo');
+            carimbo.style.display = 'flex';
+            document.getElementById('pvCarimboNome').textContent = nome;
+            document.getElementById('pvCarimboCrp').textContent = crp;
+            document.getElementById('pvCarimboEsp').textContent = document.getElementById('profEsp').textContent;
 
-canvas.addEventListener('mousedown',  e => { drawing = true; const p = getPos(e); lastX=p.x; lastY=p.y; });
-canvas.addEventListener('mousemove',  e => {
-  if (!drawing) return;
-  const p = getPos(e);
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-  lastX = p.x; lastY = p.y;
-  assinado = true;
-  document.getElementById('canvasPlaceholder').style.display = 'none';
-});
-canvas.addEventListener('mouseup',   () => drawing = false);
-canvas.addEventListener('mouseleave',() => drawing = false);
+            if (assinado) {
+                const img = document.getElementById('pvAssinatura');
+                img.src = canvas.toDataURL('image/png');
+                img.style.display = 'block';
+            }
 
-canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); lastX=p.x; lastY=p.y; }, { passive:false });
-canvas.addEventListener('touchmove',  e => {
-  e.preventDefault();
-  if (!drawing) return;
-  const p = getPos(e);
-  ctx.beginPath(); ctx.moveTo(lastX,lastY); ctx.lineTo(p.x,p.y); ctx.stroke();
-  lastX=p.x; lastY=p.y; assinado=true;
-  document.getElementById('canvasPlaceholder').style.display='none';
-}, { passive:false });
-canvas.addEventListener('touchend', () => drawing = false);
+            document.getElementById('previewWrap').classList.add('show');
+            document.getElementById('previewWrap').scrollIntoView({ behavior: 'smooth' });
+        }
 
-function limparAssinatura() {
-  const rect = canvas.getBoundingClientRect();
-  ctx.clearRect(0, 0, rect.width, rect.height);
-  assinado = false;
-  document.getElementById('canvasPlaceholder').style.display = 'block';
-}
+        // ── Enviar ────────────────────────────────────────────────────
+        async function enviarRelatorio() {
+            const pacNome = document.getElementById('pacNome').value.trim();
+            const pacEmail = document.getElementById('pacEmail').value.trim();
+            const conteudo = document.getElementById('conteudo').value.trim();
 
-// ── Preview ───────────────────────────────────────────────────
-function gerarPreview() {
-  const nome     = document.getElementById('profNome').textContent;
-  const crp      = document.getElementById('profCrp').textContent;
-  const pacNome  = document.getElementById('pacNome').value;
-  const conteudo = document.getElementById('conteudo').value;
-  const hoje     = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+            if (!pacNome) return mostrarToast('Informe o nome do paciente.', 'erro');
+            if (!pacEmail) return mostrarToast('Informe o e-mail do paciente.', 'erro');
+            if (!conteudo) return mostrarToast('Escreva o conteúdo do documento.', 'erro');
+            if (!assinado) return mostrarToast('Assine o documento antes de enviar.', 'erro');
 
-  document.getElementById('pvTipo').textContent = tipoSelecionado.toUpperCase();
-  document.getElementById('pvMeta').textContent = `Paciente: ${pacNome || '—'} · ${hoje}`;
-  document.getElementById('pvBody').textContent = conteudo || '(sem conteúdo)';
-  document.getElementById('pvProf').textContent = nome;
-  document.getElementById('pvCrp').textContent  = crp;
-  document.getElementById('pvData').textContent = hoje;
+            const btn = document.getElementById('btnEnviar');
+            btn.disabled = true;
+            document.getElementById('statusBar').classList.add('show');
+            document.getElementById('statusTxt').textContent = 'Gerando PDF e enviando e-mail...';
 
-  if (assinado) {
-    const img = document.getElementById('pvAssinatura');
-    img.src = canvas.toDataURL('image/png');
-    img.style.display = 'block';
-  }
+            try {
+                const payload = {
+                    tipo: tipoSelecionado,
+                    pacNome,
+                    pacEmail,
+                    pacNasc: document.getElementById('pacNasc').value,
+                    finalidade: document.getElementById('finalidade').value,
+                    conteudo,
+                    assinatura: canvas.toDataURL('image/png'),
+                };
 
-  document.getElementById('previewWrap').classList.add('show');
-  document.getElementById('previewWrap').scrollIntoView({ behavior: 'smooth' });
-}
+                const r = await fetch(`${API}/api/relatorio/enviar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
 
-// ── Enviar ────────────────────────────────────────────────────
-async function enviarRelatorio() {
-  const pacNome  = document.getElementById('pacNome').value.trim();
-  const pacEmail = document.getElementById('pacEmail').value.trim();
-  const conteudo = document.getElementById('conteudo').value.trim();
+                const data = await r.json();
+                if (!r.ok) throw new Error(data.erro || 'Erro ao enviar');
 
-  if (!pacNome)  return mostrarToast('Informe o nome do paciente.', 'erro');
-  if (!pacEmail) return mostrarToast('Informe o e-mail do paciente.', 'erro');
-  if (!conteudo) return mostrarToast('Escreva o conteúdo do documento.', 'erro');
-  if (!assinado) return mostrarToast('Assine o documento antes de enviar.', 'erro');
+                document.getElementById('statusBar').classList.remove('show');
+                mostrarToast(`✅ ${tipoSelecionado} enviado para ${pacEmail}`, 'ok');
+                btn.disabled = false;
 
-  const btn = document.getElementById('btnEnviar');
-  btn.disabled = true;
-  document.getElementById('statusBar').classList.add('show');
-  document.getElementById('statusTxt').textContent = 'Gerando PDF e enviando e-mail...';
+            } catch (err) {
+                document.getElementById('statusBar').classList.remove('show');
+                mostrarToast(`❌ ${err.message}`, 'erro');
+                btn.disabled = false;
+            }
+        }
 
-  try {
-    const payload = {
-      tipo:        tipoSelecionado,
-      pacNome,
-      pacEmail,
-      pacNasc:     document.getElementById('pacNasc').value,
-      finalidade:  document.getElementById('finalidade').value,
-      conteudo,
-      assinatura:  canvas.toDataURL('image/png'),
-    };
-
-    const r = await fetch(`${API}/api/relatorio/enviar`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body:    JSON.stringify(payload)
-    });
-
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.erro || 'Erro ao enviar');
-
-    document.getElementById('statusBar').classList.remove('show');
-    mostrarToast(`✅ ${tipoSelecionado} enviado para ${pacEmail}`, 'ok');
-    btn.disabled = false;
-
-  } catch (err) {
-    document.getElementById('statusBar').classList.remove('show');
-    mostrarToast(`❌ ${err.message}`, 'erro');
-    btn.disabled = false;
-  }
-}
-
-// ── Toast ─────────────────────────────────────────────────────
-function mostrarToast(msg, tipo='ok') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className   = `toast ${tipo} show`;
-  setTimeout(() => t.classList.remove('show'), 4000);
-}
-</script>
+        // ── Toast ─────────────────────────────────────────────────────
+        function mostrarToast(msg, tipo = 'ok') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${tipo} show`;
+            setTimeout(() => t.classList.remove('show'), 4000);
+        }
+    </script>
 </body>
 </html>
