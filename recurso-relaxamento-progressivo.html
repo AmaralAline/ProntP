@@ -22,9 +22,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: clamp(20px,4vh,50px);
+            padding-bottom: 30px;
             padding: 20px;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .ambient {
@@ -57,7 +59,7 @@
         .body-figure {
             position: relative;
             width: clamp(180px, 25vw, 240px);
-            height: clamp(280px, 40vw, 380px);
+            height: clamp(200px, 32vw, 320px);
             margin-bottom: clamp(24px, 4vw, 40px);
         }
 
@@ -90,7 +92,9 @@
 
         .phase-indicator {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: clamp(20px,4vh,50px);
+            padding-bottom: 30px;
             gap: 8px;
             margin-bottom: 20px;
         }
@@ -219,7 +223,7 @@
             background: rgba(232,224,210,0.08);
             border-radius: 1px;
             margin: 16px auto 0;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .progress-bar-fill {
