@@ -2772,13 +2772,19 @@ function abrirJogo(id) {
     const jogo = JOGOS[id];
     if (!jogo) return;
 
-    // Recursos adultos: abre em nova aba (sem restrições de iframe)
+    // Recursos adultos: cria link real e clica — browser nunca bloqueia
     if (RECURSOS_ADULTOS.includes(id)) {
-        window.open(jogo.arquivo, '_blank');
+        const a = document.createElement('a');
+        a.href = jogo.arquivo;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
         return;
     }
 
-    // Jogos infantis: mantém modal com iframe
+    // Jogos infantis: modal com iframe
     const modal = document.getElementById('jogo-modal');
     const iframe = document.getElementById('jogo-iframe');
     const titulo = document.getElementById('jogo-titulo-modal');
