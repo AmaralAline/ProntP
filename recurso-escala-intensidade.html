@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escala de Intensidade</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=Syne+Mono&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #0d0d12;
+    font-family: 'Syne', sans-serif;
+    color: #f2f0ec;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .noise {
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 150px;
+    pointer-events: none;
+  }
+
+  h1 {
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(242,240,236,0.7);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .sub {
+    font-family: 'Syne Mono', monospace;
+    font-size: 11px;
+    color: rgba(242,240,236,0.3);
+    letter-spacing: 0.1em;
+    margin-bottom: clamp(30px, 5vw, 60px);
+    text-align: center;
+  }
+
+  /* Seletor de emoção */
+  .emo-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: clamp(24px, 4vw, 40px);
+    max-width: 640px;
+  }
+  .emo-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    color: rgba(242,240,236,0.5);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .emo-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: rgba(242,240,236,0.9);
+  }
+  .emo-btn.active {
+    border-color: var(--ec);
+    background: rgba(255,255,255,0.06);
+    color: var(--ec);
+    box-shadow: 0 0 12px var(--eg);
+  }
+
+  /* Escala principal */
+  .scale-wrap {
+    width: min(600px, 90vw);
+    position: relative;
+  }
+
+  /* Barra de fundo gradiente */
+  .scale-track {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(to right, #1e3a5f, #2a5298, #c9a227, #c45215, #8b1a1a);
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  /* Handle */
+  .handle {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f2f0ec;
+    cursor: grab;
+    transition: left 0.05s, box-shadow 0.2s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    z-index: 2;
+  }
+  .handle:active { cursor: grabbing; }
+  .handle-inner {
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--hc, #555);
+    transition: background 0.3s;
+  }
+
+  /* Marcadores de nível */
+  .scale-marks {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0 0;
+  }
+  .mark { text-align: center; }
+  .mark-num {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: rgba(242,240,236,0.25);
+    display: block;
+  }
+
+  /* Display central */
+  .value-display {
+    text-align: center;
+    margin: clamp(30px, 5vw, 50px) 0 clamp(16px, 3vw, 30px);
+  }
+  .value-num {
+    font-size: clamp(60px, 12vw, 100px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--vc, rgba(242,240,236,0.1));
+    transition: color 0.3s ease;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-label {
+    font-size: clamp(12px, 2vw, 16px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(242,240,236,0.4);
+    margin-top: 6px;
+    min-height: 22px;
+    transition: color 0.3s;
+  }
+  .value-desc {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(242,240,236,0.35);
+    margin-top: 10px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    min-height: 44px;
+    transition: all 0.3s;
+  }
+
+  /* Corpo/sensações */
+  .body-section {
+    margin-top: clamp(20px, 4vw, 40px);
+    width: min(600px, 90vw);
+  }
+  .body-title {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(242,240,236,0.3);
+    margin-bottom: 10px;
+  }
+  .body-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .body-chip {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: rgba(242,240,236,0.35);
+    transition: all 0.25s;
+  }
+  .body-chip.show {
+    background: rgba(255,255,255,0.06);
+    border-color: var(--vc, rgba(255,255,255,0.15));
+    color: rgba(242,240,236,0.7);
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<h1>Escala de Intensidade Emocional</h1>
+<div class="sub">O profissional usa a escala · o paciente observa e identifica</div>
+
+<!-- Seleção de emoção -->
+<div class="emo-row" id="emoRow"></div>
+
+<!-- Display numérico -->
+<div class="value-display">
+  <div class="value-num" id="valueNum">—</div>
+  <div class="value-label" id="valueLabel">selecione uma emoção</div>
+  <div class="value-desc" id="valueDesc"></div>
+</div>
+
+<!-- Escala -->
+<div class="scale-wrap">
+  <div class="scale-track" id="track">
+    <div class="handle" id="handle">
+      <div class="handle-inner" id="handleInner"></div>
+    </div>
+  </div>
+  <div class="scale-marks">
+    <span class="mark"><span class="mark-num">0</span></span>
+    <span class="mark"><span class="mark-num">2</span></span>
+    <span class="mark"><span class="mark-num">4</span></span>
+    <span class="mark"><span class="mark-num">6</span></span>
+    <span class="mark"><span class="mark-num">8</span></span>
+    <span class="mark"><span class="mark-num">10</span></span>
+  </div>
+</div>
+
+<!-- Sensações corporais -->
+<div class="body-section">
+  <div class="body-title">Possíveis sensações corporais</div>
+  <div class="body-chips" id="bodyChips"></div>
+</div>
+
+<script>
+const EMOCOES = [
+  { nome: 'Ansiedade', emoji: '😰', color: '#5b9bd5', glow: 'rgba(91,155,213,0.15)',
+    sensacoes: ['Aperto no peito', 'Respiração curta', 'Tensão muscular', 'Coração acelerado', 'Formigamento', 'Boca seca', 'Agitação interna'],
+    niveis: ['Tranquilo', 'Levemente preocupado', 'Inquieto', 'Ansioso', 'Muito ansioso', 'Incontrolável'],
+    descs: [
+      'Nenhuma preocupação presente. Estado de paz.',
+      'Uma leve inquietação que não interfere no funcionamento.',
+      'Pensamentos acelerados, dificuldade de se concentrar.',
+      'Preocupação persistente, o corpo começa a responder.',
+      'Forte sensação de perigo, dificuldade de raciocinar.',
+      'Estado de alarme máximo, pode se sentir paralisado.',
+    ]
+  },
+  { nome: 'Tristeza', emoji: '😢', color: '#7eb8e8', glow: 'rgba(126,184,232,0.15)',
+    sensacoes: ['Peso nos ombros', 'Cansaço', 'Vontade de chorar', 'Falta de energia', 'Garganta apertada', 'Vazio no peito'],
+    niveis: ['Neutro', 'Melancolia suave', 'Tristeza presente', 'Muito triste', 'Angustiado', 'Profunda dor'],
+    descs: [
+      'Estado emocional equilibrado, sem peso emocional.',
+      'Um leve azul que flutua ao fundo da consciência.',
+      'Tristeza clara, presente. Algo foi perdido ou frustrou.',
+      'Dificuldade de se animar. O peso é sentido no corpo.',
+      'Angústia intensa. Choro frequente, isolamento.',
+      'Dor emocional profunda que impacta toda a capacidade de funcionar.',
+    ]
+  },
+  { nome: 'Raiva', emoji: '😠', color: '#e05c4b', glow: 'rgba(224,92,75,0.15)',
+    sensacoes: ['Calor no rosto', 'Tensão na mandíbula', 'Punhos fechados', 'Respiração presa', 'Pressão na cabeça'],
+    niveis: ['Calmo', 'Levemente irritado', 'Contrariado', 'Raivoso', 'Furioso', 'Fora de controle'],
+    descs: [
+      'Nenhuma irritação. Estado de equilíbrio interno.',
+      'Uma pequena fricção, algo que incomodou levemente.',
+      'Clareza de que algo não está certo. Limite sendo testado.',
+      'Raiva presente, com esforço para conter.',
+      'Dificuldade de pensar com clareza. Vontade de agir impulsivamente.',
+      'Estado de fúria. Alto risco de comportamento reativo.',
+    ]
+  },
+  { nome: 'Culpa', emoji: '😔', color: '#9b72d4', glow: 'rgba(155,114,212,0.15)',
+    sensacoes: ['Peso no estômago', 'Dificuldade de olhar nos olhos', 'Ruminação', 'Autocrítica', 'Cabeça baixa'],
+    niveis: ['Leve remorso', 'Arrependimento', 'Culpa presente', 'Culpa intensa', 'Autocondenação', 'Vergonha tóxica'],
+    descs: [
+      'Reconhecimento leve de que algo poderia ter sido diferente.',
+      'Arrependimento genuíno — sinalizador saudável para reparação.',
+      'Culpa persistente que ocupa espaço mental.',
+      'Autocrítica intensa. Dificulta o autocuidado.',
+      'Sensação de ser mau ou errado como pessoa.',
+      'Vergonha profunda que compromete a identidade e autoestima.',
+    ]
+  },
+  { nome: 'Medo', emoji: '😨', color: '#4ea8c4', glow: 'rgba(78,168,196,0.15)',
+    sensacoes: ['Frio na espinha', 'Músculos travados', 'Tremor', 'Olhos arregalados', 'Urgência de fugir'],
+    niveis: ['Seguro', 'Apreensivo', 'Preocupado', 'Com medo', 'Aterrorizado', 'Pânico'],
+    descs: [
+      'Sensação de segurança e proteção.',
+      'Um aviso suave — algo merece atenção.',
+      'Medo presente, mas gerenciável.',
+      'Ativação do sistema de defesa. Dificulta o raciocínio.',
+      'Medo extremo com dificuldade de mover-se ou agir.',
+      'Estado de pânico completo.',
+    ]
+  },
+];
+
+let currentEmo = null;
+let currentValue = 5;
+
+// Render botões de emoção
+const emoRow = document.getElementById('emoRow');
+EMOCOES.forEach((em, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'emo-btn';
+  btn.style.setProperty('--ec', em.color);
+  btn.style.setProperty('--eg', em.glow);
+  btn.innerHTML = `${em.emoji} ${em.nome}`;
+  btn.onclick = () => selectEmo(i);
+  emoRow.appendChild(btn);
+});
+
+// Render sensações
+function renderSensacoes(em, value) {
+  const container = document.getElementById('bodyChips');
+  const count = Math.ceil((value / 10) * em.sensacoes.length);
+  container.innerHTML = em.sensacoes.map((s, i) =>
+    `<div class="body-chip ${i < count ? 'show' : ''}">${s}</div>`
+  ).join('');
+}
+
+function selectEmo(i) {
+  currentEmo = i;
+  document.querySelectorAll('.emo-btn').forEach((b, j) => {
+    b.classList.toggle('active', i === j);
+  });
+  updateDisplay();
+}
+
+// Cores da escala por valor
+function getColor(v) {
+  if (v <= 2) return { c: '#4682b4', g: 'rgba(70,130,180,0.2)' };
+  if (v <= 4) return { c: '#7bae7f', g: 'rgba(123,174,127,0.2)' };
+  if (v <= 6) return { c: '#c9a227', g: 'rgba(201,162,39,0.2)' };
+  if (v <= 8) return { c: '#c45215', g: 'rgba(196,82,21,0.2)' };
+  return { c: '#c0392b', g: 'rgba(192,57,43,0.2)' };
+}
+
+function updateDisplay() {
+  const v = currentValue;
+  const emo = currentEmo !== null ? EMOCOES[currentEmo] : null;
+  const col = getColor(v);
+
+  document.getElementById('valueNum').style.color = col.c;
+  document.documentElement.style.setProperty('--vc', col.c);
+  document.documentElement.style.setProperty('--vg', col.g);
+  document.getElementById('handleInner').style.background = col.c;
+
+  if (emo) {
+    const idx = Math.min(Math.floor(v / 2), 5);
+    document.getElementById('valueNum').textContent = v;
+    document.getElementById('valueLabel').textContent = emo.niveis[idx];
+    document.getElementById('valueDesc').textContent = emo.descs[idx];
+    renderSensacoes(emo, v);
+  } else {
+    document.getElementById('valueNum').textContent = v;
+    document.getElementById('valueLabel').textContent = 'selecione uma emoção acima';
+    document.getElementById('valueDesc').textContent = '';
+    document.getElementById('bodyChips').innerHTML = '';
+  }
+}
+
+// Slider
+const track = document.getElementById('track');
+const handle = document.getElementById('handle');
+let dragging = false;
+
+function valueFromX(clientX) {
+  const rect = track.getBoundingClientRect();
+  const pct = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+  return Math.round(pct * 10);
+}
+
+function setHandleFromValue(v) {
+  const pct = v / 10;
+  handle.style.left = `${pct * 100}%`;
+}
+
+function onMove(x) {
+  currentValue = valueFromX(x);
+  setHandleFromValue(currentValue);
+  updateDisplay();
+}
+
+track.addEventListener('mousedown', e => {
+  dragging = true;
+  onMove(e.clientX);
+});
+document.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
+document.addEventListener('mouseup', () => dragging = false);
+
+track.addEventListener('touchstart', e => {
+  dragging = true;
+  onMove(e.touches[0].clientX);
+}, { passive: true });
+document.addEventListener('touchmove', e => {
+  if (dragging) onMove(e.touches[0].clientX);
+}, { passive: true });
+document.addEventListener('touchend', () => dragging = false);
+
+// Init
+setHandleFromValue(currentValue);
+updateDisplay();
+</script>
+</body>
+</html>

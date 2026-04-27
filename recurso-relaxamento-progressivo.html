@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relaxamento Progressivo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400&family=Mulish:wght@200;300;400&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #1a1410;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    color: #e8e0d2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .ambient {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(120,80,40,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 0%, rgba(80,60,30,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(16px, 2.5vw, 24px);
+    color: rgba(232,224,210,0.7);
+    text-align: center;
+    margin-bottom: 4px;
+    letter-spacing: 0.04em;
+  }
+  .method {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(232,224,210,0.3);
+    text-align: center;
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  /* Figura corporal */
+  .body-figure {
+    position: relative;
+    width: clamp(180px, 25vw, 240px);
+    height: clamp(280px, 40vw, 380px);
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  svg#bodySvg {
+    width: 100%; height: 100%;
+  }
+
+  .body-part {
+    transition: all 0.5s ease;
+    cursor: default;
+  }
+  .body-part.active {
+    fill-opacity: 1 !important;
+    filter: drop-shadow(0 0 8px rgba(180,130,60,0.5));
+  }
+  .body-part.done {
+    fill: #3d6b3d !important;
+    fill-opacity: 0.7 !important;
+  }
+
+  /* Painel central */
+  .center-panel {
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .phase-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .ph-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(232,224,210,0.15);
+    transition: all 0.3s;
+  }
+  .ph-dot.active { background: #c49a3c; width: 20px; border-radius: 3px; }
+  .ph-dot.done { background: rgba(60,120,60,0.6); }
+
+  .current-muscle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 300;
+    color: rgba(232,224,210,0.9);
+    margin-bottom: 8px;
+    min-height: 40px;
+    transition: all 0.4s ease;
+  }
+
+  .instruction {
+    font-size: clamp(13px, 2vw, 16px);
+    color: rgba(232,224,210,0.45);
+    line-height: 1.6;
+    min-height: 50px;
+    margin-bottom: 20px;
+    transition: all 0.4s ease;
+  }
+
+  /* Timer visual */
+  .timer-wrap {
+    position: relative;
+    width: 80px; height: 80px;
+    margin: 0 auto 24px;
+  }
+  .timer-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .timer-track {
+    fill: none;
+    stroke: rgba(232,224,210,0.06);
+    stroke-width: 3;
+  }
+  .timer-fill {
+    fill: none;
+    stroke: #c49a3c;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear;
+  }
+  .timer-num {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: rgba(232,224,210,0.8);
+  }
+
+  /* Action label */
+  .action-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(232,224,210,0.3);
+    margin-bottom: 24px;
+    min-height: 14px;
+    transition: color 0.3s;
+  }
+  .action-label.tensionar { color: #c49a3c; }
+  .action-label.relaxar { color: #5a9b5a; }
+
+  /* Botão */
+  .btn-start {
+    background: transparent;
+    border: 1px solid rgba(232,224,210,0.2);
+    color: rgba(232,224,210,0.6);
+    padding: 12px 36px;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .btn-start:hover {
+    border-color: rgba(232,224,210,0.4);
+    color: rgba(232,224,210,0.9);
+  }
+
+  /* Progresso geral */
+  .progress-bar-wrap {
+    width: 100%;
+    max-width: 300px;
+    height: 2px;
+    background: rgba(232,224,210,0.08);
+    border-radius: 1px;
+    margin: 16px auto 0;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, #c49a3c, #8bc48c);
+    border-radius: 1px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .done-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+  .done-screen.show { display: flex; }
+  .done-icon { font-size: 36px; }
+  .done-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: rgba(232,224,210,0.8);
+  }
+  .done-sub { font-size: 13px; color: rgba(232,224,210,0.35); }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+
+<h1>Relaxamento Muscular Progressivo</h1>
+<div class="method">Técnica de Jacobson · Adultos</div>
+
+<!-- Figura corporal SVG estilizada -->
+<div class="body-figure">
+  <svg id="bodySvg" viewBox="0 0 120 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Cabeça -->
+    <ellipse id="bp-head" class="body-part" cx="60" cy="22" rx="18" ry="20"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <!-- Pescoço -->
+    <rect id="bp-neck" class="body-part" x="52" y="40" width="16" height="12" rx="4"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <!-- Ombros -->
+    <path id="bp-shoulders" class="body-part"
+      d="M 20 58 Q 20 52 30 52 L 90 52 Q 100 52 100 58 L 98 68 Q 90 65 60 65 Q 30 65 22 68 Z"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <!-- Tórax / peito -->
+    <rect id="bp-chest" class="body-part" x="30" y="68" width="60" height="40" rx="6"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <!-- Abdômen -->
+    <rect id="bp-abdomen" class="body-part" x="32" y="110" width="56" height="35" rx="6"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <!-- Coxas -->
+    <rect id="bp-thighs" class="body-part" x="28" y="150" width="25" height="50" rx="6"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <rect id="bp-thighs2" class="body-part" x="67" y="150" width="25" height="50" rx="6"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <!-- Panturrilhas -->
+    <rect id="bp-calves" class="body-part" x="30" y="205" width="22" height="45" rx="5"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <rect id="bp-calves2" class="body-part" x="68" y="205" width="22" height="45" rx="5"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <!-- Pés -->
+    <ellipse id="bp-feet" class="body-part" cx="41" cy="258" rx="12" ry="6"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+    <ellipse id="bp-feet2" class="body-part" cx="79" cy="258" rx="12" ry="6"
+      fill="#c49a3c" fill-opacity="0.15" stroke="rgba(196,154,60,0.25)" stroke-width="1"/>
+  </svg>
+</div>
+
+<!-- Painel central -->
+<div class="center-panel" id="mainPanel">
+  <!-- Dots de fase -->
+  <div class="phase-indicator" id="phaseDots"></div>
+
+  <div class="current-muscle" id="muscleName">Pronto para começar</div>
+  <div class="instruction" id="instruction">
+    Sente-se confortavelmente. Feche os olhos.<br>
+    O profissional irá guiar cada grupo muscular.
+  </div>
+
+  <div class="timer-wrap">
+    <svg class="timer-svg" viewBox="0 0 80 80">
+      <circle class="timer-track" cx="40" cy="40" r="34"/>
+      <circle class="timer-fill" id="timerFill" cx="40" cy="40" r="34"
+        stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+    </svg>
+    <div class="timer-num" id="timerNum">—</div>
+  </div>
+
+  <div class="action-label" id="actionLabel"></div>
+
+  <button class="btn-start" id="btnStart" onclick="iniciar()">iniciar sessão</button>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<div class="done-screen" id="doneScreen">
+  <div class="done-icon">🌿</div>
+  <div class="done-title">Sessão Concluída</div>
+  <div class="done-sub">Todos os grupos musculares foram trabalhados.<br>Permaneça neste estado por alguns momentos.</div>
+  <button class="btn-start" style="margin-top:16px" onclick="reiniciar()">nova sessão</button>
+</div>
+
+<script>
+const GRUPOS = [
+  {
+    nome: 'Pés e dedos',
+    partes: ['bp-feet','bp-feet2'],
+    instrucaoTensao: 'Dobre os dedos dos pés com força, como se quisesse agarrar o chão.',
+    instrucaoRelaxo: 'Solte completamente. Sinta o calor e o formigamento nos pés.',
+    tensao: 7, relaxo: 15,
+  },
+  {
+    nome: 'Panturrilhas',
+    partes: ['bp-calves','bp-calves2'],
+    instrucaoTensao: 'Contraia as panturrilhas puxando os pés em sua direção.',
+    instrucaoRelaxo: 'Libere. Observe a diferença entre a tensão e o relaxamento.',
+    tensao: 7, relaxo: 15,
+  },
+  {
+    nome: 'Coxas',
+    partes: ['bp-thighs','bp-thighs2'],
+    instrucaoTensao: 'Pressione as coxas juntas, ativando toda a musculatura das pernas.',
+    instrucaoRelaxo: 'Solte suavemente. Deixe as pernas afundarem.',
+    tensao: 7, relaxo: 15,
+  },
+  {
+    nome: 'Abdômen',
+    partes: ['bp-abdomen'],
+    instrucaoTensao: 'Contraia o abdômen para dentro, como se fosse receber um golpe leve.',
+    instrucaoRelaxo: 'Solte completamente. Sinta o abdômen se expandir com a respiração.',
+    tensao: 7, relaxo: 15,
+  },
+  {
+    nome: 'Peito e respiração',
+    partes: ['bp-chest'],
+    instrucaoTensao: 'Inspire fundo, encha o peito e prenda por um momento.',
+    instrucaoRelaxo: 'Expire lentamente. Deixe os pulmões esvaziarem naturalmente.',
+    tensao: 6, relaxo: 16,
+  },
+  {
+    nome: 'Ombros',
+    partes: ['bp-shoulders'],
+    instrucaoTensao: 'Eleve os ombros em direção às orelhas com força.',
+    instrucaoRelaxo: 'Deixe cair. Sinta a tensão saindo completamente dos ombros.',
+    tensao: 7, relaxo: 15,
+  },
+  {
+    nome: 'Pescoço',
+    partes: ['bp-neck'],
+    instrucaoTensao: 'Pressione suavemente a cabeça para trás contra a cadeira.',
+    instrucaoRelaxo: 'Solte. Deixe o pescoço ceder e afundar.',
+    tensao: 5, relaxo: 15,
+  },
+  {
+    nome: 'Rosto e cabeça',
+    partes: ['bp-head'],
+    instrucaoTensao: 'Franzr toda a testa, cerrar os olhos e comprimir os lábios.',
+    instrucaoRelaxo: 'Solte tudo. Sinta seu rosto completamente suave e pesado.',
+    tensao: 6, relaxo: 16,
+  },
+];
+
+const CIRC = 2 * Math.PI * 34; // 213.6
+let running = false;
+let currentGroup = 0;
+let phase = 'tension'; // 'tension' | 'relax'
+let timeLeft = 0;
+let ticker = null;
+let startTime = null;
+let phaseDur = 0;
+
+// Gera dots
+const dotsContainer = document.getElementById('phaseDots');
+GRUPOS.forEach(() => {
+  const d = document.createElement('div');
+  d.className = 'ph-dot';
+  dotsContainer.appendChild(d);
+});
+
+function updateDots() {
+  document.querySelectorAll('.ph-dot').forEach((d, i) => {
+    d.className = 'ph-dot' + (i < currentGroup ? ' done' : i === currentGroup ? ' active' : '');
+  });
+}
+
+function activateParts(group, state) {
+  // Reset all
+  document.querySelectorAll('.body-part').forEach(el => {
+    el.classList.remove('active');
+  });
+  // Mark done
+  for (let i = 0; i < currentGroup; i++) {
+    GRUPOS[i].partes.forEach(p => {
+      const el = document.getElementById(p);
+      if (el) el.classList.add('done');
+    });
+  }
+  // Active
+  group.partes.forEach(p => {
+    const el = document.getElementById(p);
+    if (el) { el.classList.add('active'); el.classList.remove('done'); }
+  });
+}
+
+function startPhase(grpIdx, ph) {
+  const grp = GRUPOS[grpIdx];
+  phase = ph;
+  phaseDur = ph === 'tension' ? grp.tensao : grp.relaxo;
+  timeLeft = phaseDur;
+  startTime = Date.now();
+
+  document.getElementById('muscleName').textContent = grp.nome;
+
+  const lbl = document.getElementById('actionLabel');
+  if (ph === 'tension') {
+    document.getElementById('instruction').innerHTML = grp.instrucaoTensao;
+    lbl.textContent = '▲ tensionar';
+    lbl.className = 'action-label tensionar';
+  } else {
+    document.getElementById('instruction').innerHTML = grp.instrucaoRelaxo;
+    lbl.textContent = '▼ relaxar';
+    lbl.className = 'action-label relaxar';
+  }
+
+  activateParts(grp, ph);
+  updateDots();
+
+  if (ticker) clearInterval(ticker);
+  ticker = setInterval(() => {
+    if (!running) return clearInterval(ticker);
+    const elapsed = (Date.now() - startTime) / 1000;
+    const rem = Math.max(0, phaseDur - elapsed);
+    const pct = elapsed / phaseDur;
+
+    document.getElementById('timerNum').textContent = Math.ceil(rem);
+    document.getElementById('timerFill').style.strokeDashoffset = CIRC * (1 - Math.min(pct, 1));
+
+    if (elapsed >= phaseDur) {
+      clearInterval(ticker);
+      nextPhase();
+    }
+  }, 100);
+}
+
+function nextPhase() {
+  if (phase === 'tension') {
+    startPhase(currentGroup, 'relax');
+  } else {
+    currentGroup++;
+    if (currentGroup >= GRUPOS.length) {
+      terminar();
+    } else {
+      // Progresso
+      document.getElementById('progressFill').style.width = `${(currentGroup / GRUPOS.length) * 100}%`;
+      startPhase(currentGroup, 'tension');
+    }
+  }
+}
+
+function iniciar() {
+  running = true;
+  currentGroup = 0;
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('progressFill').style.width = '0%';
+  startPhase(0, 'tension');
+}
+
+function terminar() {
+  running = false;
+  document.getElementById('progressFill').style.width = '100%';
+  document.querySelectorAll('.body-part').forEach(el => {
+    el.classList.add('done');
+    el.classList.remove('active');
+  });
+  document.getElementById('mainPanel').style.display = 'none';
+  document.getElementById('doneScreen').classList.add('show');
+}
+
+function reiniciar() {
+  running = false;
+  if (ticker) clearInterval(ticker);
+  currentGroup = 0;
+  document.querySelectorAll('.body-part').forEach(el => {
+    el.classList.remove('done', 'active');
+  });
+  document.querySelectorAll('.ph-dot').forEach(d => d.className = 'ph-dot');
+  document.getElementById('doneScreen').classList.remove('show');
+  document.getElementById('mainPanel').style.display = 'flex';
+  document.getElementById('mainPanel').style.flexDirection = 'column';
+  document.getElementById('mainPanel').style.alignItems = 'center';
+  document.getElementById('btnStart').style.display = 'inline-block';
+  document.getElementById('muscleName').textContent = 'Pronto para começar';
+  document.getElementById('instruction').innerHTML = 'Sente-se confortavelmente. Feche os olhos.<br>O profissional irá guiar cada grupo muscular.';
+  document.getElementById('timerNum').textContent = '—';
+  document.getElementById('timerFill').style.strokeDashoffset = CIRC;
+  document.getElementById('actionLabel').textContent = '';
+  document.getElementById('progressFill').style.width = '0%';
+}
+</script>
+</body>
+</html>

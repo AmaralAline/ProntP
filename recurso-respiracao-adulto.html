@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Respiração 4-7-8</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@200;300;400&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: #0a0f14;
+    color: #e8e0d5;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* Fundo com partículas suaves */
+  .bg {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(100,160,180,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(120,100,160,0.06) 0%, transparent 60%);
+  }
+
+  .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(232,224,213,0.6);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: rgba(232,224,213,0.3);
+    margin-bottom: clamp(30px, 6vw, 60px);
+    text-align: center;
+  }
+
+  /* Círculo principal */
+  .circle-wrap {
+    position: relative;
+    width: clamp(200px, 35vw, 300px);
+    height: clamp(200px, 35vw, 300px);
+    display: flex; align-items:center; justify-content:center;
+  }
+
+  .ring-outer {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(232,224,213,0.08);
+  }
+
+  svg.progress-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .progress-track {
+    fill: none;
+    stroke: rgba(232,224,213,0.05);
+    stroke-width: 2;
+  }
+  .progress-fill {
+    fill: none;
+    stroke: rgba(140,200,220,0.7);
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear;
+  }
+
+  .orb {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(140,200,220,0.25), rgba(80,120,160,0.1));
+    border: 1px solid rgba(140,200,220,0.2);
+    display: flex; align-items:center; justify-content:center;
+    flex-direction: column;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1),
+                box-shadow 0.4s ease,
+                background 0.4s ease;
+    box-shadow: 0 0 40px rgba(100,160,200,0.1), inset 0 0 30px rgba(100,160,200,0.05);
+  }
+  .orb.inhale {
+    transform: scale(1.2);
+    background: radial-gradient(circle at 35% 35%, rgba(140,200,220,0.4), rgba(80,120,160,0.2));
+    box-shadow: 0 0 60px rgba(100,160,200,0.2), inset 0 0 40px rgba(100,160,200,0.1);
+  }
+  .orb.hold {
+    transform: scale(1.2);
+    background: radial-gradient(circle at 35% 35%, rgba(180,160,220,0.35), rgba(100,80,160,0.15));
+    box-shadow: 0 0 60px rgba(150,120,200,0.2), inset 0 0 40px rgba(150,120,200,0.1);
+  }
+  .orb.exhale {
+    transform: scale(0.9);
+    background: radial-gradient(circle at 35% 35%, rgba(140,200,180,0.25), rgba(80,140,120,0.1));
+    box-shadow: 0 0 40px rgba(100,180,160,0.1), inset 0 0 30px rgba(100,180,160,0.05);
+  }
+
+  .count-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 300;
+    color: rgba(232,224,213,0.9);
+    line-height: 1;
+  }
+  .phase-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(232,224,213,0.4);
+    margin-top: 6px;
+  }
+
+  /* Info abaixo */
+  .info-row {
+    display: flex;
+    gap: clamp(20px, 4vw, 50px);
+    margin-top: clamp(30px, 5vw, 50px);
+    margin-bottom: clamp(20px, 4vw, 40px);
+  }
+  .info-item {
+    text-align: center;
+  }
+  .info-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 300;
+    color: rgba(232,224,213,0.7);
+  }
+  .info-txt {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(232,224,213,0.3);
+    margin-top: 2px;
+  }
+
+  /* Ciclo atual */
+  .cycle-display {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(232,224,213,0.35);
+    margin-bottom: clamp(20px, 4vw, 40px);
+  }
+
+  /* Botão */
+  .btn-start {
+    background: transparent;
+    border: 1px solid rgba(232,224,213,0.2);
+    color: rgba(232,224,213,0.7);
+    padding: 12px 40px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  .btn-start:hover {
+    background: rgba(232,224,213,0.05);
+    border-color: rgba(232,224,213,0.4);
+    color: rgba(232,224,213,0.9);
+  }
+
+  /* Fases laterais */
+  .phases-guide {
+    position: fixed;
+    right: clamp(20px, 4vw, 50px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .phase-dot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.3;
+    transition: opacity 0.4s ease;
+  }
+  .phase-dot.active { opacity: 1; }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(140,200,220,0.7);
+    flex-shrink: 0;
+  }
+  .phase-dot:nth-child(2) .dot { background: rgba(180,160,220,0.7); }
+  .phase-dot:nth-child(3) .dot { background: rgba(140,200,180,0.7); }
+  .phase-txt {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(232,224,213,0.6);
+    white-space: nowrap;
+  }
+
+  .done-msg {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+  .done-msg.visible { display: flex; }
+  .done-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: rgba(232,224,213,0.8);
+  }
+  .done-sub {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(232,224,213,0.35);
+  }
+
+  @media (max-width: 500px) {
+    .phases-guide { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<div class="title">Respiração 4 · 7 · 8</div>
+<div class="subtitle">Técnica de regulação do sistema nervoso autônomo</div>
+
+<div class="circle-wrap">
+  <div class="ring-outer"></div>
+  <svg class="progress-ring" viewBox="0 0 200 200">
+    <circle class="progress-track" cx="100" cy="100" r="95"/>
+    <circle class="progress-fill" id="prog" cx="100" cy="100" r="95"
+      stroke-dasharray="596.9"
+      stroke-dashoffset="596.9"/>
+  </svg>
+  <div class="orb" id="orb">
+    <div class="count-display" id="countDisplay">—</div>
+    <div class="phase-label" id="phaseLabel">aguardando</div>
+  </div>
+</div>
+
+<div class="info-row">
+  <div class="info-item">
+    <div class="info-num">4</div>
+    <div class="info-txt">inspira</div>
+  </div>
+  <div class="info-item">
+    <div class="info-num">7</div>
+    <div class="info-txt">retém</div>
+  </div>
+  <div class="info-item">
+    <div class="info-num">8</div>
+    <div class="info-txt">expira</div>
+  </div>
+</div>
+
+<div class="cycle-display" id="cycleDisplay">— / 4 ciclos</div>
+
+<button class="btn-start" id="btnStart" onclick="iniciar()">iniciar</button>
+
+<div class="done-msg" id="doneMsg">
+  <div class="done-title">Completo</div>
+  <div class="done-sub">4 ciclos realizados com sucesso</div>
+  <button class="btn-start" style="margin-top:10px" onclick="reiniciar()">repetir</button>
+</div>
+
+<!-- Guia lateral -->
+<div class="phases-guide">
+  <div class="phase-dot" id="dot-inhale">
+    <div class="dot"></div>
+    <div class="phase-txt">Inspirar · 4s</div>
+  </div>
+  <div class="phase-dot" id="dot-hold">
+    <div class="dot"></div>
+    <div class="phase-txt">Reter · 7s</div>
+  </div>
+  <div class="phase-dot" id="dot-exhale">
+    <div class="dot"></div>
+    <div class="phase-txt">Expirar · 8s</div>
+  </div>
+</div>
+
+<script>
+  const CYCLES_TOTAL = 4;
+  const PHASES = [
+    { id: 'inhale', label: 'INSPIRE', dur: 4, cls: 'inhale', dot: 'dot-inhale' },
+    { id: 'hold',   label: 'RETENHA', dur: 7, cls: 'hold',   dot: 'dot-hold'   },
+    { id: 'exhale', label: 'EXPIRE',  dur: 8, cls: 'exhale', dot: 'dot-exhale' },
+  ];
+
+  const TOTAL_PHASE = 4 + 7 + 8; // 19s por ciclo
+  const CIRC = 2 * Math.PI * 95; // 596.9
+
+  let running = false, currentCycle = 0, phaseIdx = 0;
+  let countdown = 0, interval = null, startTime = null;
+
+  const orb = document.getElementById('orb');
+  const countDisplay = document.getElementById('countDisplay');
+  const phaseLabel = document.getElementById('phaseLabel');
+  const cycleDisplay = document.getElementById('cycleDisplay');
+  const btnStart = document.getElementById('btnStart');
+  const doneMsg = document.getElementById('doneMsg');
+  const prog = document.getElementById('prog');
+
+  function setDot(dotId) {
+    document.querySelectorAll('.phase-dot').forEach(d => d.classList.remove('active'));
+    document.getElementById(dotId)?.classList.add('active');
+  }
+
+  function setPhase(ph) {
+    orb.className = 'orb ' + ph.cls;
+    phaseLabel.textContent = ph.label;
+    setDot(ph.dot);
+    countdown = ph.dur;
+    startTime = Date.now();
+    animatePhase(ph);
+  }
+
+  function animatePhase(ph) {
+    if (interval) clearInterval(interval);
+    const total = ph.dur * 1000;
+
+    interval = setInterval(() => {
+      if (!running) return clearInterval(interval);
+
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, ph.dur - elapsed / 1000);
+      countDisplay.textContent = Math.ceil(remaining);
+
+      // Progresso do anel (por fase, não ciclo total)
+      const pct = elapsed / total;
+      prog.style.strokeDashoffset = CIRC * (1 - Math.min(pct, 1));
+
+      if (elapsed >= total) {
+        clearInterval(interval);
+        nextPhase();
+      }
+    }, 50);
+  }
+
+  function nextPhase() {
+    phaseIdx++;
+    if (phaseIdx >= PHASES.length) {
+      phaseIdx = 0;
+      currentCycle++;
+      if (currentCycle >= CYCLES_TOTAL) {
+        terminar();
+        return;
+      }
+    }
+    cycleDisplay.textContent = `${currentCycle + 1} / ${CYCLES_TOTAL} ciclos`;
+    setPhase(PHASES[phaseIdx]);
+  }
+
+  function iniciar() {
+    running = true;
+    currentCycle = 0;
+    phaseIdx = 0;
+    btnStart.style.display = 'none';
+    doneMsg.classList.remove('visible');
+    cycleDisplay.textContent = `1 / ${CYCLES_TOTAL} ciclos`;
+    setPhase(PHASES[0]);
+  }
+
+  function terminar() {
+    running = false;
+    orb.className = 'orb';
+    countDisplay.textContent = '✓';
+    phaseLabel.textContent = 'concluído';
+    prog.style.strokeDashoffset = 0;
+    document.querySelectorAll('.phase-dot').forEach(d => d.classList.remove('active'));
+    doneMsg.classList.add('visible');
+    cycleDisplay.textContent = `${CYCLES_TOTAL} / ${CYCLES_TOTAL} ciclos`;
+  }
+
+  function reiniciar() {
+    doneMsg.classList.remove('visible');
+    prog.style.strokeDashoffset = CIRC;
+    orb.className = 'orb';
+    countDisplay.textContent = '—';
+    phaseLabel.textContent = 'aguardando';
+    cycleDisplay.textContent = '— / 4 ciclos';
+    btnStart.style.display = 'inline-block';
+  }
+</script>
+</body>
+</html>

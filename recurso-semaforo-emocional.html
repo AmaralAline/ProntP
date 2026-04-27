@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semáforo Emocional</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap');
+
+  /* Exceção ao SKILL - Space Grotesk é proposital para dar identidade "sistema de sinalização" */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #0c0c0c;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(30px, 5vw, 80px);
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+
+  /* Semáforo */
+  .semaphore-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .semaphore-title {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(240,240,240,0.3);
+    text-align: center;
+  }
+
+  .semaphore-body {
+    background: #1a1a1a;
+    border-radius: 30px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+    position: relative;
+  }
+
+  /* Bolts decorativos */
+  .semaphore-body::before, .semaphore-body::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .semaphore-body::before { top: 12px; left: 12px; }
+  .semaphore-body::after { top: 12px; right: 12px; }
+
+  .light {
+    width: clamp(60px, 10vw, 90px);
+    height: clamp(60px, 10vw, 90px);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(22px, 4vw, 32px);
+  }
+
+  .light::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  /* Apagado */
+  .light.red-off   { background: rgba(200,40,40,0.08);   border: 1px solid rgba(200,40,40,0.15);   box-shadow: none; }
+  .light.yellow-off { background: rgba(220,170,20,0.08); border: 1px solid rgba(220,170,20,0.15);  box-shadow: none; }
+  .light.green-off  { background: rgba(40,170,80,0.08);  border: 1px solid rgba(40,170,80,0.15);   box-shadow: none; }
+
+  /* Aceso */
+  .light.red-on {
+    background: radial-gradient(circle at 35% 30%, #ff6666, #cc1111);
+    border: 1px solid rgba(200,40,40,0.5);
+    box-shadow: 0 0 30px rgba(220,30,30,0.5), 0 0 60px rgba(220,30,30,0.2), inset 0 2px 4px rgba(255,255,255,0.2);
+  }
+  .light.yellow-on {
+    background: radial-gradient(circle at 35% 30%, #ffe066, #d4900a);
+    border: 1px solid rgba(220,170,20,0.5);
+    box-shadow: 0 0 30px rgba(230,180,20,0.5), 0 0 60px rgba(230,180,20,0.2), inset 0 2px 4px rgba(255,255,255,0.2);
+  }
+  .light.green-on {
+    background: radial-gradient(circle at 35% 30%, #66ff99, #0a9940);
+    border: 1px solid rgba(40,170,80,0.5);
+    box-shadow: 0 0 30px rgba(30,200,80,0.5), 0 0 60px rgba(30,200,80,0.2), inset 0 2px 4px rgba(255,255,255,0.2);
+  }
+
+  .light:hover { transform: scale(1.04); }
+
+  /* Legenda */
+  .light-legend {
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(240,240,240,0.3);
+  }
+
+  /* Painel de informação */
+  .info-panel {
+    max-width: 360px;
+    width: 100%;
+  }
+
+  .state-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    min-height: 160px;
+    transition: border-color 0.4s, box-shadow 0.4s;
+  }
+  .state-card.red-active   { border-color: rgba(220,30,30,0.4);   box-shadow: 0 0 20px rgba(220,30,30,0.08);  }
+  .state-card.yellow-active{ border-color: rgba(220,170,20,0.4);  box-shadow: 0 0 20px rgba(220,170,20,0.08); }
+  .state-card.green-active { border-color: rgba(30,170,80,0.4);   box-shadow: 0 0 20px rgba(30,170,80,0.08);  }
+
+  .state-emoji { font-size: 28px; margin-bottom: 10px; }
+  .state-nome {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    transition: color 0.4s;
+  }
+  .state-nome.red    { color: #ff6666; }
+  .state-nome.yellow { color: #ffe066; }
+  .state-nome.green  { color: #66ff99; }
+  .state-nome.neutral { color: rgba(240,240,240,0.4); }
+
+  .state-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(240,240,240,0.45);
+    line-height: 1.7;
+  }
+
+  .estado-inicial {
+    font-size: 13px;
+    color: rgba(240,240,240,0.2);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* Estratégias */
+  .strategies-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240,240,240,0.25);
+    margin-bottom: 8px;
+  }
+  .strategies-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .strategy-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(240,240,240,0.5);
+    line-height: 1.4;
+    transition: all 0.2s;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .strategy-item span:first-child { flex-shrink: 0; font-size: 14px; }
+  .strategy-item:hover { background: rgba(255,255,255,0.06); color: rgba(240,240,240,0.8); }
+
+  /* Contagem / histórico */
+  .count-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .count-item {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  .count-num {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .count-lbl {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(240,240,240,0.25);
+    margin-top: 3px;
+  }
+  .count-item:nth-child(1) .count-num { color: #ff6666; }
+  .count-item:nth-child(2) .count-num { color: #ffe066; }
+  .count-item:nth-child(3) .count-num { color: #66ff99; }
+</style>
+</head>
+<body>
+
+<!-- Semáforo -->
+<div class="semaphore-wrap">
+  <div class="semaphore-title">O profissional seleciona</div>
+  <div class="semaphore-body">
+    <div>
+      <div class="light red-off" id="lightRed" onclick="ativar('red')">🔴</div>
+    </div>
+    <div>
+      <div class="light yellow-off" id="lightYellow" onclick="ativar('yellow')">🟡</div>
+    </div>
+    <div>
+      <div class="light green-off" id="lightGreen" onclick="ativar('green')">🟢</div>
+    </div>
+  </div>
+  <div class="light-legend">Semáforo Emocional</div>
+
+  <!-- Contadores -->
+  <div class="count-row" style="width:100%; max-width:200px;">
+    <div class="count-item">
+      <div class="count-num" id="cntRed">0</div>
+      <div class="count-lbl">Alerta</div>
+    </div>
+    <div class="count-item">
+      <div class="count-num" id="cntYellow">0</div>
+      <div class="count-lbl">Atenção</div>
+    </div>
+    <div class="count-item">
+      <div class="count-num" id="cntGreen">0</div>
+      <div class="count-lbl">Calmo</div>
+    </div>
+  </div>
+</div>
+
+<!-- Painel de info -->
+<div class="info-panel">
+  <div class="state-card" id="stateCard">
+    <div class="estado-inicial">
+      Toque em uma das luzes do semáforo para identificar o estado emocional atual do paciente e ver as estratégias de regulação recomendadas.
+    </div>
+  </div>
+
+  <div class="strategies-label" id="stratLbl" style="display:none">Estratégias sugeridas</div>
+  <div class="strategies-list" id="stratList"></div>
+</div>
+
+<script>
+const ESTADOS = {
+  red: {
+    nome: 'Alerta · Parar',
+    emoji: '🛑',
+    desc: 'O paciente está em estado de alta ativação emocional. O sistema nervoso está sobrecarregado. É hora de pausar antes de qualquer decisão ou ação.',
+    strategies: [
+      { icon: '🫁', txt: 'Respiração 4-7-8: inspire 4, retenha 7, expire 8 segundos' },
+      { icon: '🦶', txt: 'Grounding físico: 5 coisas que pode ver, 4 tocar, 3 ouvir' },
+      { icon: '🧊', txt: 'Técnica TIPP: temperatura (gelo no rosto), exercício intenso, respiração pausada' },
+      { icon: '🤲', txt: 'Acuprssão: pressione o ponto entre polegar e indicador' },
+      { icon: '⏸️', txt: 'Pausa segura: peça um tempo antes de continuar a conversa' },
+    ]
+  },
+  yellow: {
+    nome: 'Atenção · Desacelerar',
+    emoji: '⚠️',
+    desc: 'O paciente percebe desconforto crescente. As emoções estão presentes e podem interferir, mas ainda há capacidade de observar e intervir.',
+    strategies: [
+      { icon: '👁️', txt: 'Observação sem julgamento: "O que estou sentindo agora?" — só nomear' },
+      { icon: '🎯', txt: 'Identificar o gatilho: o que veio antes desse sentimento?' },
+      { icon: '🌬️', txt: 'Respiração quadrada: 4 tempos para inspirar, segurar, expirar, pausar' },
+      { icon: '🧘', txt: 'Scan corporal: onde está a tensão? Relaxe conscientemente essa região' },
+      { icon: '💬', txt: 'Expressão regulada: "Eu sinto... porque... e preciso de..."' },
+    ]
+  },
+  green: {
+    nome: 'Calmo · Engajar',
+    emoji: '✅',
+    desc: 'O paciente está receptivo, regulado e capaz de refletir. Este é o estado ideal para trabalhar questões mais profundas e para o aprendizado terapêutico.',
+    strategies: [
+      { icon: '🔍', txt: 'Explorar pensamentos automáticos com reestruturação cognitiva' },
+      { icon: '🗺️', txt: 'Mapear padrões: identifique ciclos emocionais recorrentes' },
+      { icon: '📝', txt: 'Escrita expressiva: o que você gostaria de deixar pra trás hoje?' },
+      { icon: '💡', txt: 'Construção de recursos: o que funcionou para chegar até aqui?' },
+      { icon: '🌱', txt: 'Trabalhar metas e valores — o que importa para você?' },
+    ]
+  }
+};
+
+const counts = { red: 0, yellow: 0, green: 0 };
+let current = null;
+
+function ativar(color) {
+  // Toggle
+  if (current === color) {
+    desativar();
+    return;
+  }
+  desativar();
+  current = color;
+
+  // Acende
+  const lightMap = { red: 'lightRed', yellow: 'lightYellow', green: 'lightGreen' };
+  const classMap = { red: 'red-on', yellow: 'yellow-on', green: 'green-on' };
+  document.getElementById(lightMap[color]).className = `light ${classMap[color]}`;
+
+  const st = ESTADOS[color];
+  const card = document.getElementById('stateCard');
+  const activeClass = { red: 'red-active', yellow: 'yellow-active', green: 'green-active' };
+  const nameClass = { red: 'red', yellow: 'yellow', green: 'green' };
+
+  card.className = `state-card ${activeClass[color]}`;
+  card.innerHTML = `
+    <div class="state-emoji">${st.emoji}</div>
+    <div class="state-nome ${nameClass[color]}">${st.nome}</div>
+    <div class="state-desc">${st.desc}</div>
+  `;
+
+  // Estratégias
+  document.getElementById('stratLbl').style.display = 'block';
+  document.getElementById('stratList').innerHTML = st.strategies.map(s =>
+    `<div class="strategy-item"><span>${s.icon}</span><span>${s.txt}</span></div>`
+  ).join('');
+
+  // Contador
+  counts[color]++;
+  document.getElementById(`cnt${color.charAt(0).toUpperCase()+color.slice(1)}`).textContent = counts[color];
+}
+
+function desativar() {
+  if (!current) return;
+  const lightMap = { red: 'lightRed', yellow: 'lightYellow', green: 'lightGreen' };
+  const classOff = { red: 'red-off', yellow: 'yellow-off', green: 'green-off' };
+  const iconMap = { red: '🔴', yellow: '🟡', green: '🟢' };
+
+  const el = document.getElementById(lightMap[current]);
+  el.className = `light ${classOff[current]}`;
+  current = null;
+
+  document.getElementById('stateCard').className = 'state-card';
+  document.getElementById('stateCard').innerHTML = `<div class="estado-inicial">Toque em uma das luzes do semáforo para identificar o estado emocional atual do paciente e ver as estratégias de regulação recomendadas.</div>`;
+  document.getElementById('stratLbl').style.display = 'none';
+  document.getElementById('stratList').innerHTML = '';
+}
+</script>
+</body>
+</html>

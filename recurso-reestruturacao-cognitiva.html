@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reestruturação Cognitiva</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300&family=IBM+Plex+Mono:wght@300;400&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #f5f2ee;
+    font-family: 'IBM Plex Serif', serif;
+    color: #1a1714;
+    min-height: 100vh;
+    padding: clamp(20px, 4vw, 50px);
+    overflow-x: hidden;
+  }
+
+  /* Linhas de fundo estilo caderno terapêutico */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 31px, rgba(180,165,140,0.2) 31px, rgba(180,165,140,0.2) 32px
+    );
+    pointer-events: none;
+  }
+
+  /* Margem vermelha */
+  body::after {
+    content: '';
+    position: fixed;
+    left: clamp(40px, 6vw, 70px);
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(200,100,100,0.2);
+    pointer-events: none;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding-left: clamp(30px, 5vw, 60px);
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    border-bottom: 2px solid rgba(26,23,20,0.15);
+    padding-bottom: 16px;
+    margin-bottom: 32px;
+  }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(26,23,20,0.4);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  h1 {
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 300;
+    color: #1a1714;
+    line-height: 1.2;
+  }
+  .desc {
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(26,23,20,0.5);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* Passos */
+  .step {
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(26,23,20,0.35);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(26,23,20,0.1);
+  }
+  .step-label {
+    font-size: 15px;
+    font-weight: 400;
+    color: #1a1714;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .step-help {
+    font-size: 12px;
+    font-style: italic;
+    color: rgba(26,23,20,0.4);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  textarea, input[type=text] {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(26,23,20,0.2);
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    color: #1a1714;
+    padding: 6px 0;
+    resize: none;
+    outline: none;
+    line-height: 1.7;
+    transition: border-color 0.2s;
+  }
+  textarea:focus, input:focus {
+    border-bottom-color: rgba(26,23,20,0.5);
+  }
+  textarea { min-height: 60px; }
+
+  /* Distorções */
+  .distorcoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .dist-item {
+    padding: 8px 10px;
+    border: 1px solid rgba(26,23,20,0.12);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: rgba(26,23,20,0.5);
+    transition: all 0.2s;
+    font-family: 'IBM Plex Serif', serif;
+    background: transparent;
+    text-align: left;
+    line-height: 1.3;
+  }
+  .dist-item:hover { border-color: rgba(26,23,20,0.3); color: rgba(26,23,20,0.8); }
+  .dist-item.sel {
+    border-color: #8b4513;
+    background: rgba(139,69,19,0.06);
+    color: #8b4513;
+  }
+
+  /* Escala de crença */
+  .belief-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .belief-label-txt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: rgba(26,23,20,0.4);
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 2px;
+    background: linear-gradient(to right, #8b4513, rgba(26,23,20,0.15));
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #1a1714;
+    cursor: pointer;
+  }
+  .belief-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    color: #8b4513;
+    width: 34px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  /* Separador resultado */
+  .result-box {
+    background: rgba(26,23,20,0.04);
+    border-left: 3px solid rgba(26,23,20,0.15);
+    padding: 16px 20px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(26,23,20,0.6);
+    font-style: italic;
+    min-height: 50px;
+    transition: all 0.3s;
+  }
+  .result-box.filled {
+    border-color: #5c7a3e;
+    color: #2d4019;
+    background: rgba(92,122,62,0.05);
+    font-style: normal;
+  }
+
+  /* Resumo final */
+  .summary {
+    display: none;
+    margin-top: 40px;
+    padding: 24px;
+    border: 1px solid rgba(26,23,20,0.15);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.5);
+  }
+  .summary.show { display: block; }
+  .summary-title {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(26,23,20,0.4);
+    margin-bottom: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+  }
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .ba-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(26,23,20,0.35);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .ba-text { font-size: 13px; line-height: 1.5; color: #1a1714; }
+  .arrow { font-size: 20px; color: rgba(26,23,20,0.2); align-self: center; }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 10px 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: #1a1714;
+    color: #f5f2ee;
+    border: 1px solid #1a1714;
+  }
+  .btn-primary:hover { background: #333; }
+  .btn-secondary {
+    background: transparent;
+    color: rgba(26,23,20,0.5);
+    border: 1px solid rgba(26,23,20,0.2);
+  }
+  .btn-secondary:hover { border-color: rgba(26,23,20,0.4); color: rgba(26,23,20,0.8); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="tag">TCC · Técnica de reestruturação cognitiva</div>
+    <h1>Registro de Pensamento Automático</h1>
+    <div class="desc">Identifique, questione e reformule pensamentos disfuncionais em tempo real</div>
+  </div>
+
+  <!-- PASSO 1: Situação -->
+  <div class="step">
+    <div class="step-num">01 · Situação</div>
+    <div class="step-label">O que aconteceu? Quando e onde?</div>
+    <div class="step-help">Descreva o evento de forma objetiva, sem interpretação — apenas o que aconteceu.</div>
+    <textarea id="situacao" rows="3" placeholder="Ex: Meu chefe não respondeu meu e-mail durante todo o dia..."></textarea>
+  </div>
+
+  <!-- PASSO 2: Pensamento automático -->
+  <div class="step">
+    <div class="step-num">02 · Pensamento Automático</div>
+    <div class="step-label">Qual pensamento surgiu imediatamente?</div>
+    <div class="step-help">O primeiro pensamento, antes de refletir. Pode ser uma frase, imagem ou conclusão rápida.</div>
+    <textarea id="pensamento" rows="2" placeholder="Ex: Ele está me ignorando porque vai me demitir..."></textarea>
+
+    <div style="margin-top: 14px;">
+      <div style="font-size:12px; color:rgba(26,23,20,0.4); margin-bottom:8px;">O quanto você acredita nesse pensamento? (0–100%)</div>
+      <div class="belief-row">
+        <span class="belief-label-txt">0%</span>
+        <input type="range" id="crencaAntes" min="0" max="100" value="80" oninput="document.getElementById('crencaAntesVal').textContent=this.value+'%'">
+        <span class="belief-val" id="crencaAntesVal">80%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSO 3: Emoção -->
+  <div class="step">
+    <div class="step-num">03 · Emoção</div>
+    <div class="step-label">Que emoção esse pensamento gerou?</div>
+    <div class="step-help">Nomeie a emoção e sua intensidade (0–100%).</div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
+      <input type="text" id="emocao" style="flex:1; min-width:120px;" placeholder="Ex: Ansiedade, medo, vergonha...">
+    </div>
+    <div class="belief-row">
+      <span class="belief-label-txt">0%</span>
+      <input type="range" id="intensidade" min="0" max="100" value="75" oninput="document.getElementById('intensidadeVal').textContent=this.value+'%'">
+      <span class="belief-val" id="intensidadeVal">75%</span>
+    </div>
+  </div>
+
+  <!-- PASSO 4: Distorções -->
+  <div class="step">
+    <div class="step-num">04 · Distorção Cognitiva</div>
+    <div class="step-label">Qual armadilha do pensamento está presente?</div>
+    <div class="step-help">Selecione uma ou mais que se aplicam.</div>
+    <div class="distorcoes-grid" id="distGrid"></div>
+  </div>
+
+  <!-- PASSO 5: Questionamento -->
+  <div class="step">
+    <div class="step-num">05 · Questionamento Socrático</div>
+    <div class="step-label">Quais são as evidências reais?</div>
+    <div class="step-help">O que sustenta esse pensamento? O que o contradiz? Existe outra explicação possível?</div>
+    <textarea id="evidencias" rows="4" placeholder="A favor: &#10;Contra: &#10;Outra explicação: "></textarea>
+  </div>
+
+  <!-- PASSO 6: Pensamento alternativo -->
+  <div class="step">
+    <div class="step-num">06 · Pensamento Alternativo</div>
+    <div class="step-label">Como você poderia pensar de forma mais equilibrada?</div>
+    <div class="step-help">Não precisa ser positivo — só mais realista e menos catastrófico.</div>
+    <textarea id="alternativo" rows="3" placeholder="Ex: Talvez ele esteja sobrecarregado. Preciso de mais informação antes de concluir algo..." oninput="updateResult()"></textarea>
+
+    <div style="margin-top: 14px;">
+      <div style="font-size:12px; color:rgba(26,23,20,0.4); margin-bottom:8px;">O quanto você acredita no pensamento original agora?</div>
+      <div class="belief-row">
+        <span class="belief-label-txt">0%</span>
+        <input type="range" id="crencaDepois" min="0" max="100" value="40" oninput="document.getElementById('crencaDepoisVal').textContent=this.value+'%'">
+        <span class="belief-val" id="crencaDepoisVal">40%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="gerarResumo()">Ver resumo da sessão</button>
+    <button class="btn btn-secondary" onclick="reiniciar()">Novo registro</button>
+  </div>
+
+  <!-- Resumo -->
+  <div class="summary" id="summary">
+    <div class="summary-title">Resumo · Antes × Depois</div>
+    <div class="before-after" id="beforafter"></div>
+    <div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(26,23,20,0.1);">
+      <div class="ba-label">Distorções identificadas</div>
+      <div id="distRes" style="font-size:13px; color:rgba(26,23,20,0.6); margin-top:4px;"></div>
+    </div>
+    <div style="margin-top:16px;">
+      <div class="ba-label">Observação clínica</div>
+      <div class="result-box filled" id="obsClinica"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DISTORCOES = [
+  { id: 'catastrofizacao', nome: 'Catastrofização', desc: 'Imaginar o pior cenário possível' },
+  { id: 'leituramente', nome: 'Leitura de mentes', desc: 'Supor o que os outros pensam' },
+  { id: 'generalizacao', nome: 'Generalização', desc: 'Tirar conclusões amplas de um evento' },
+  { id: 'filtro', nome: 'Filtro mental', desc: 'Focar só no negativo' },
+  { id: 'tudo-nada', nome: 'Tudo ou nada', desc: 'Ver as coisas em extremos' },
+  { id: 'personalizacao', nome: 'Personalização', desc: 'Assumir culpa sem evidência' },
+  { id: 'rotulacao', nome: 'Rotulação', desc: 'Atribuir rótulos permanentes' },
+  { id: 'dever', nome: '"Deveria"', desc: 'Regras rígidas sobre si ou outros' },
+  { id: 'emocional', nome: 'Raciocínio emocional', desc: '"Sinto logo é verdade"' },
+  { id: 'adivinhacao', nome: 'Adivinhação', desc: 'Prever negativamente o futuro' },
+];
+
+const selected = new Set();
+
+const grid = document.getElementById('distGrid');
+DISTORCOES.forEach(d => {
+  const btn = document.createElement('button');
+  btn.className = 'dist-item';
+  btn.innerHTML = `<strong>${d.nome}</strong><br><span style="font-size:10px;opacity:0.7">${d.desc}</span>`;
+  btn.onclick = () => {
+    btn.classList.toggle('sel');
+    selected.has(d.id) ? selected.delete(d.id) : selected.add(d.id);
+  };
+  grid.appendChild(btn);
+});
+
+function updateResult() { /* atualiza em tempo real se quiser */ }
+
+function gerarResumo() {
+  const pens = document.getElementById('pensamento').value || '(não preenchido)';
+  const alt = document.getElementById('alternativo').value || '(não preenchido)';
+  const antes = document.getElementById('crencaAntesVal').textContent;
+  const depois = document.getElementById('crencaDepoisVal').textContent;
+  const emocao = document.getElementById('emocao').value || '(não informada)';
+  const intens = document.getElementById('intensidadeVal').textContent;
+
+  const dist = DISTORCOES.filter(d => selected.has(d.id)).map(d => d.nome).join(' · ') || 'Nenhuma selecionada';
+
+  // Cálculo de redução de crença
+  const antesN = parseInt(antes);
+  const depoisN = parseInt(depois);
+  const reducao = antesN - depoisN;
+
+  let obs = '';
+  if (reducao >= 30) obs = `Houve uma redução significativa de ${reducao}% na crença do pensamento automático. Isso indica boa resposta ao questionamento socrático. A emoção registrada (${emocao} · ${intens}) pode ser revisada na próxima sessão para acompanhar evolução.`;
+  else if (reducao >= 10) obs = `Redução moderada de ${reducao}% na crença. O processo de questionamento foi iniciado, mas o pensamento alternativo pode precisar de mais elaboração e exposição. Vale trabalhar as evidências contrárias com mais profundidade.`;
+  else if (reducao >= 0) obs = `A crença no pensamento automático teve redução pequena (${reducao}%). Isso é comum em estágios iniciais ou em pensamentos centrais mais arraigados. Continue o trabalho de reestruturação em sessões futuras.`;
+  else obs = `A crença no pensamento aumentou durante o exercício. Isso pode indicar que o questionamento tocou em um tema sensível. Explore com cuidado as resistências e os medos subjacentes.`;
+
+  document.getElementById('beforafter').innerHTML = `
+    <div>
+      <div class="ba-label">Pensamento automático</div>
+      <div class="ba-text">"${pens}"</div>
+      <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:10px; color:#8b4513;">Crença: ${antes}</div>
+    </div>
+    <div class="arrow">→</div>
+    <div>
+      <div class="ba-label">Pensamento alternativo</div>
+      <div class="ba-text">"${alt}"</div>
+      <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:10px; color:#5c7a3e;">Crença: ${depois}</div>
+    </div>
+  `;
+  document.getElementById('distRes').textContent = dist;
+  document.getElementById('obsClinica').textContent = obs;
+  document.getElementById('summary').classList.add('show');
+  document.getElementById('summary').scrollIntoView({ behavior: 'smooth' });
+}
+
+function reiniciar() {
+  ['situacao','pensamento','emocao','evidencias','alternativo'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  selected.clear();
+  document.querySelectorAll('.dist-item').forEach(b => b.classList.remove('sel'));
+  document.getElementById('crencaAntes').value = 80;
+  document.getElementById('crencaAntesVal').textContent = '80%';
+  document.getElementById('intensidade').value = 75;
+  document.getElementById('intensidadeVal').textContent = '75%';
+  document.getElementById('crencaDepois').value = 40;
+  document.getElementById('crencaDepoisVal').textContent = '40%';
+  document.getElementById('summary').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
