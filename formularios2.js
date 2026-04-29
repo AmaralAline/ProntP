@@ -3,18 +3,22 @@
 // ============================================================
 
 const interpretacoes = {
-    'Inventario de Depressao de Beck (BDI)': (t) => t < 10 ? { nivel: 'Minimo', cor: '#4CAF50' } : t < 19 ? { nivel: 'Leve', cor: '#8BC34A' } : t < 30 ? { nivel: 'Moderado', cor: '#FF9800' } : { nivel: 'Grave', cor: '#f44336' },
-    'Escala de Ansiedade de Hamilton (HAMA)': (t) => t <= 17 ? { nivel: 'Ansiedade leve', cor: '#8BC34A' } : t <= 24 ? { nivel: 'Ansiedade leve a moderada', cor: '#FF9800' } : t <= 30 ? { nivel: 'Ansiedade moderada a grave', cor: '#FF5722' } : { nivel: 'Ansiedade grave', cor: '#f44336' },
-    'Escala MADRS': (t) => t <= 6 ? { nivel: 'Sem depressao', cor: '#4CAF50' } : t <= 19 ? { nivel: 'Depressao leve', cor: '#8BC34A' } : t <= 34 ? { nivel: 'Depressao moderada', cor: '#FF9800' } : { nivel: 'Depressao grave', cor: '#f44336' },
-    'Escala BES - Compulsao Alimentar': (t) => t < 8 ? { nivel: 'Sem compulsao', cor: '#4CAF50' } : t < 12 ? { nivel: 'Compulsao leve', cor: '#8BC34A' } : t < 17 ? { nivel: 'Compulsao moderada', cor: '#FF9800' } : { nivel: 'Compulsao grave', cor: '#f44336' },
+    // Escalas mantidas
     'Escala de Sonolencia de Epworth (ESE)': (t) => t <= 10 ? { nivel: 'Normal', cor: '#4CAF50' } : t <= 14 ? { nivel: 'Sonolencia leve', cor: '#8BC34A' } : t <= 17 ? { nivel: 'Sonolencia moderada', cor: '#FF9800' } : { nivel: 'Sonolencia severa', cor: '#f44336' },
-    'Pittsburgh - Qualidade do Sono (PSQI)': (t) => t <= 5 ? { nivel: 'Boa qualidade do sono', cor: '#4CAF50' } : { nivel: 'Ma qualidade do sono', cor: '#f44336' },
-    'Inventario EDI-3 - Transtornos Alimentares': (t) => t < 15 ? { nivel: 'Baixo risco', cor: '#4CAF50' } : t < 30 ? { nivel: 'Risco moderado', cor: '#FF9800' } : { nivel: 'Alto risco', cor: '#f44336' },
-    'Questionario BSQ - Formato Corporal': (t) => t < 15 ? { nivel: 'Baixa insatisfacao corporal', cor: '#4CAF50' } : t < 25 ? { nivel: 'Insatisfacao leve', cor: '#8BC34A' } : t < 38 ? { nivel: 'Insatisfacao moderada', cor: '#FF9800' } : { nivel: 'Alta insatisfacao corporal', cor: '#f44336' },
     'Questionario SCOFF': (t) => t < 2 ? { nivel: 'Baixo risco de transtorno alimentar', cor: '#4CAF50' } : { nivel: 'Possivel risco de transtorno alimentar', cor: '#f44336' },
     'Teste EAT-26 - Atitudes Alimentares': (t) => t < 20 ? { nivel: 'Baixo risco', cor: '#4CAF50' } : { nivel: 'Possivel risco de transtorno alimentar', cor: '#f44336' },
-    'Teste BULIT-R - Bulimia': (t) => t < 12 ? { nivel: 'Baixo risco', cor: '#4CAF50' } : t < 20 ? { nivel: 'Risco leve', cor: '#8BC34A' } : t < 28 ? { nivel: 'Risco moderado', cor: '#FF9800' } : { nivel: 'Alto risco de bulimia', cor: '#f44336' },
-    'Escala de Estresse no Trabalho (EET)': (t) => t <= 10 ? { nivel: 'Estresse baixo', cor: '#4CAF50' } : t <= 15 ? { nivel: 'Estresse moderado', cor: '#FF9800' } : { nivel: 'Estresse alto', cor: '#f44336' }
+    'Escala de Estresse no Trabalho (EET)': (t) => t <= 10 ? { nivel: 'Estresse baixo', cor: '#4CAF50' } : t <= 15 ? { nivel: 'Estresse moderado', cor: '#FF9800' } : { nivel: 'Estresse alto', cor: '#f44336' },
+    'Escala de Avaliacao de Burnout': (t) => t <= 33 ? { nivel: 'Sem indicativo de Burnout', cor: '#4CAF50' } : t <= 66 ? { nivel: 'Burnout moderado', cor: '#FF9800' } : { nivel: 'Burnout grave', cor: '#f44336' },
+
+    // Novas escalas — uso livre confirmado
+    'PHQ-9 - Rastreamento de Depressao': (t) => t <= 4 ? { nivel: 'Minimo ou sem depressao', cor: '#4CAF50' } : t <= 9 ? { nivel: 'Depressao leve', cor: '#8BC34A' } : t <= 14 ? { nivel: 'Depressao moderada', cor: '#FF9800' } : t <= 19 ? { nivel: 'Depressao moderadamente grave', cor: '#FF5722' } : { nivel: 'Depressao grave', cor: '#f44336' },
+    'GAD-7 - Rastreamento de Ansiedade': (t) => t <= 4 ? { nivel: 'Minima ou sem ansiedade', cor: '#4CAF50' } : t <= 9 ? { nivel: 'Ansiedade leve', cor: '#8BC34A' } : t <= 14 ? { nivel: 'Ansiedade moderada', cor: '#FF9800' } : { nivel: 'Ansiedade grave', cor: '#f44336' },
+    'PSS-10 - Escala de Estresse Percebido': (t) => t <= 13 ? { nivel: 'Estresse baixo', cor: '#4CAF50' } : t <= 26 ? { nivel: 'Estresse moderado', cor: '#FF9800' } : { nivel: 'Estresse alto', cor: '#f44336' },
+    'ISI - Indice de Gravidade de Insonia': (t) => t <= 7 ? { nivel: 'Sem insonia clinicamente significativa', cor: '#4CAF50' } : t <= 14 ? { nivel: 'Insonia subclinica', cor: '#8BC34A' } : t <= 21 ? { nivel: 'Insonia moderada', cor: '#FF9800' } : { nivel: 'Insonia grave', cor: '#f44336' },
+    'PCL-5 - Rastreamento de Trauma e TEPT': (t) => t <= 32 ? { nivel: 'Sem indicativo de TEPT', cor: '#4CAF50' } : t <= 49 ? { nivel: 'Indicativo moderado de TEPT', cor: '#FF9800' } : { nivel: 'Indicativo grave de TEPT - encaminhamento recomendado', cor: '#f44336' },
+    'EPDS - Escala de Depressao Pos-Parto': (t) => t <= 9 ? { nivel: 'Sem indicativo de depressao pos-parto', cor: '#4CAF50' } : t <= 12 ? { nivel: 'Possivel depressao pos-parto leve', cor: '#FF9800' } : { nivel: 'Provavel depressao pos-parto - avaliacao clinica urgente', cor: '#f44336' },
+    'AUDIT - Uso de Alcool (OMS)': (t) => t <= 7 ? { nivel: 'Uso de baixo risco', cor: '#4CAF50' } : t <= 15 ? { nivel: 'Uso de risco - intervencao breve recomendada', cor: '#FF9800' } : t <= 19 ? { nivel: 'Uso nocivo - avaliacao especializada', cor: '#FF5722' } : { nivel: 'Provavel dependencia - encaminhamento especializado', cor: '#f44336' },
+    'SRQ-20 - Saude Mental Geral (OMS)': (t) => t <= 5 ? { nivel: 'Sem indicativo de transtorno mental comum', cor: '#4CAF50' } : t <= 7 ? { nivel: 'Indicativo leve', cor: '#8BC34A' } : t <= 11 ? { nivel: 'Indicativo moderado - acompanhamento recomendado', cor: '#FF9800' } : { nivel: 'Indicativo grave - avaliacao clinica necessaria', cor: '#f44336' }
 };
 
 let escalasDisponiveis = [];
@@ -153,7 +157,8 @@ async function verRespostas(linkId, escalaNome) {
 
 function mostrarModalRespostas(respostas, escalaNome) {
     const totalPontos = respostas.reduce((soma, r) => soma + (r.valor !== null && r.valor !== undefined ? parseInt(r.valor) : 0), 0);
-    const interpFn = interpretacoes[escalaNome];
+    const escalaKey = Object.keys(interpretacoes).find(k => k.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() === escalaNome.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase());
+    const interpFn = escalaKey ? interpretacoes[escalaKey] : null;
     const interp = interpFn ? interpFn(totalPontos) : null;
 
     let modal = document.getElementById('modal-respostas');
@@ -173,63 +178,54 @@ function mostrarModalRespostas(respostas, escalaNome) {
                     <p style="font-size:40px;font-weight:bold;color:#fff;margin:0;">${totalPontos}</p>
                     <p style="font-size:16px;font-weight:600;margin-top:8px;color:${interp.cor};">? ${interp.nivel}</p>
                 </div>
+                ${escalaNome.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes('burnout') ? (() => {
+                const ex = respostas.filter(r => r.ordem >= 1 && r.ordem <= 8).reduce((s, r) => s + (parseInt(r.valor) || 0), 0);
+                const de = respostas.filter(r => r.ordem >= 9 && r.ordem <= 13).reduce((s, r) => s + (parseInt(r.valor) || 0), 0);
+                const re = respostas.filter(r => r.ordem >= 14 && r.ordem <= 20).reduce((s, r) => s + (parseInt(r.valor) || 0), 0);
+                const nE = ex <= 16 ? { l: 'Baixa', c: '#4CAF50', desc: 'Nível saudável de energia. Sem sinais de esgotamento.' } : ex <= 27 ? { l: 'Moderada', c: '#FF9800', desc: 'Sinais de cansaço acumulado. Atenção ao autocuidado e limites pessoais.' } : { l: 'Grave', c: '#f44336', desc: 'Esgotamento emocional e físico intenso. Intervenção recomendada.' };
+                const nD = de <= 6 ? { l: 'Baixa', c: '#4CAF50', desc: 'Vínculos preservados. Relações profissionais saudáveis.' } : de <= 12 ? { l: 'Moderada', c: '#FF9800', desc: 'Início de distanciamento emocional. Trabalhar empatia e vínculos.' } : { l: 'Grave', c: '#f44336', desc: 'Distanciamento severo das pessoas. Risco de prejuízo nas relações.' };
+                const nR = re >= 28 ? { l: 'Alta', c: '#4CAF50', desc: 'Senso elevado de propósito e competência no trabalho.' } : re >= 14 ? { l: 'Moderada', c: '#FF9800', desc: 'Satisfação profissional parcial. Explorar fontes de motivação.' } : { l: 'Baixa', c: '#f44336', desc: 'Baixo senso de realização. Pode indicar desmotivação e impotência.' };
+                const pctEx = Math.round((ex / 40) * 100);
+                const pctDe = Math.round((de / 25) * 100);
+                const pctRe = Math.round((re / 35) * 100);
+                return ''
+                    // Cards dimensão
+                    + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">'
+                    + '<div style="background:#1a1a2e;border-radius:10px;padding:14px;text-align:center;border-top:3px solid ' + nE.c + ';">'
+                    + '<p style="color:#aaa;font-size:10px;margin:0 0 6px;letter-spacing:.1em;">EXAUSTÃO</p>'
+                    + '<p style="color:#fff;font-size:24px;font-weight:bold;margin:0;">' + ex + '<span style="font-size:11px;color:#555;font-weight:normal;">/40</span></p>'
+                    + '<p style="color:' + nE.c + ';font-size:11px;font-weight:600;margin-top:6px;">' + nE.l + '</p></div>'
+                    + '<div style="background:#1a1a2e;border-radius:10px;padding:14px;text-align:center;border-top:3px solid ' + nD.c + ';">'
+                    + '<p style="color:#aaa;font-size:10px;margin:0 0 6px;letter-spacing:.1em;">DESPERSONALIZAÇÃO</p>'
+                    + '<p style="color:#fff;font-size:24px;font-weight:bold;margin:0;">' + de + '<span style="font-size:11px;color:#555;font-weight:normal;">/25</span></p>'
+                    + '<p style="color:' + nD.c + ';font-size:11px;font-weight:600;margin-top:6px;">' + nD.l + '</p></div>'
+                    + '<div style="background:#1a1a2e;border-radius:10px;padding:14px;text-align:center;border-top:3px solid ' + nR.c + ';">'
+                    + '<p style="color:#aaa;font-size:10px;margin:0 0 6px;letter-spacing:.1em;">REALIZAÇÃO ?</p>'
+                    + '<p style="color:#fff;font-size:24px;font-weight:bold;margin:0;">' + re + '<span style="font-size:11px;color:#555;font-weight:normal;">/35</span></p>'
+                    + '<p style="color:' + nR.c + ';font-size:11px;font-weight:600;margin-top:6px;">' + nR.l + '</p></div>'
+                    + '</div>'
+                    // Gráfico de barras SVG
+                    + '<div style="background:#1a1a2e;border-radius:10px;padding:16px;margin-bottom:16px;">'
+                    + '<p style="color:#aaa;font-size:10px;letter-spacing:.1em;margin-bottom:14px;">GRÁFICO POR DIMENSÃO</p>'
+                    + '<div style="display:flex;flex-direction:column;gap:10px;">'
+                    + '<div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#ccc;font-size:12px;">Exaustão</span><span style="color:' + nE.c + ';font-size:12px;font-weight:600;">' + pctEx + '%</span></div><div style="background:#0d0d1a;border-radius:4px;height:10px;overflow:hidden;"><div style="width:' + pctEx + '%;height:100%;background:' + nE.c + ';border-radius:4px;transition:width .5s;"></div></div></div>'
+                    + '<div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#ccc;font-size:12px;">Despersonalização</span><span style="color:' + nD.c + ';font-size:12px;font-weight:600;">' + pctDe + '%</span></div><div style="background:#0d0d1a;border-radius:4px;height:10px;overflow:hidden;"><div style="width:' + pctDe + '%;height:100%;background:' + nD.c + ';border-radius:4px;transition:width .5s;"></div></div></div>'
+                    + '<div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#ccc;font-size:12px;">Realização (quanto maior melhor)</span><span style="color:' + nR.c + ';font-size:12px;font-weight:600;">' + pctRe + '%</span></div><div style="background:#0d0d1a;border-radius:4px;height:10px;overflow:hidden;"><div style="width:' + pctRe + '%;height:100%;background:' + nR.c + ';border-radius:4px;transition:width .5s;"></div></div></div>'
+                    + '</div></div>'
+                    // Descrições clínicas
+                    + '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">'
+                    + '<div style="background:#1a1a2e;border-radius:8px;padding:12px;border-left:3px solid ' + nE.c + ';">'
+                    + '<p style="color:#aaa;font-size:10px;letter-spacing:.1em;margin:0 0 4px;">EXAUSTÃO · ' + nE.l + '</p>'
+                    + '<p style="color:#ccc;font-size:13px;margin:0;">' + nE.desc + '</p></div>'
+                    + '<div style="background:#1a1a2e;border-radius:8px;padding:12px;border-left:3px solid ' + nD.c + ';">'
+                    + '<p style="color:#aaa;font-size:10px;letter-spacing:.1em;margin:0 0 4px;">DESPERSONALIZAÇÃO · ' + nD.l + '</p>'
+                    + '<p style="color:#ccc;font-size:13px;margin:0;">' + nD.desc + '</p></div>'
+                    + '<div style="background:#1a1a2e;border-radius:8px;padding:12px;border-left:3px solid ' + nR.c + ';">'
+                    + '<p style="color:#aaa;font-size:10px;letter-spacing:.1em;margin:0 0 4px;">REALIZAÇÃO · ' + nR.l + '</p>'
+                    + '<p style="color:#ccc;font-size:13px;margin:0;">' + nR.desc + '</p></div>'
+                    + '</div>';
+            })() : ''}
             ` : `<div style="background:#12121e;border-radius:10px;padding:16px;margin-bottom:20px;text-align:center;"><p style="color:#fff;font-size:18px;">Pontuacao Total: ${totalPontos}</p></div>`}
-
-            ${(function () {
-            var nome = escalaNome || '';
-            var normalizado = nome.toLowerCase().replace(/\u00e3/g, 'a').replace(/\u00e2/g, 'a').replace(/\u00e1/g, 'a').replace(/\u00e0/g, 'a').replace(/\u00e9/g, 'e').replace(/\u00ea/g, 'e').replace(/\u00ed/g, 'i').replace(/\u00f3/g, 'o').replace(/\u00f4/g, 'o').replace(/\u00fa/g, 'u').replace(/\u00e7/g, 'c').replace(/\u00f5/g, 'o');
-            if (!normalizado.includes('burnout')) return '';
-            var ex = 0, de = 0, re = 0;
-            respostas.forEach(function (r) {
-                var v = parseInt(r.valor) || 0, o = parseInt(r.ordem) || 0;
-                if (o >= 1 && o <= 8) ex += v;
-                else if (o >= 9 && o <= 13) de += v;
-                else if (o >= 14 && o <= 20) re += v;
-            });
-            var nEL = ex <= 16 ? 'Baixa' : ex <= 27 ? 'Moderada' : 'Grave';
-            var nEC = ex <= 16 ? '#4CAF50' : ex <= 27 ? '#FF9800' : '#f44336';
-            var nEDesc = ex <= 16 ? 'Nivel saudavel de energia. Sem sinais de esgotamento.' : ex <= 27 ? 'Sinais de cansaco acumulado. Atencao ao autocuidado.' : 'Esgotamento intenso. Intervencao recomendada.';
-            var nDL = de <= 6 ? 'Baixa' : de <= 12 ? 'Moderada' : 'Grave';
-            var nDC = de <= 6 ? '#4CAF50' : de <= 12 ? '#FF9800' : '#f44336';
-            var nDDesc = de <= 6 ? 'Vinculos preservados. Relacoes saudaveis.' : de <= 12 ? 'Inicio de distanciamento emocional.' : 'Distanciamento severo. Risco nas relacoes.';
-            var nRL = re >= 28 ? 'Alta' : re >= 14 ? 'Moderada' : 'Baixa';
-            var nRC = re >= 28 ? '#4CAF50' : re >= 14 ? '#FF9800' : '#f44336';
-            var nRDesc = re >= 28 ? 'Senso elevado de proposito e competencia.' : re >= 14 ? 'Satisfacao parcial. Explorar motivacao.' : 'Baixo senso de realizacao. Pode indicar desmotivacao.';
-            var pE = Math.round(ex / 40 * 100), pD = Math.round(de / 25 * 100), pR = Math.round(re / 35 * 100);
-            return '<div style="margin-bottom:16px;">'
-                + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">'
-                + '<div style="background:#12121e;border-radius:10px;padding:14px;text-align:center;border-top:3px solid ' + nEC + ';">'
-                + '<p style="color:#aaa;font-size:10px;margin:0 0 4px;">EXAUSTAO</p>'
-                + '<p style="color:#fff;font-size:24px;font-weight:bold;margin:0;">' + ex + '<span style="font-size:11px;color:#555;">/40</span></p>'
-                + '<p style="color:' + nEC + ';font-size:11px;font-weight:600;margin-top:4px;">' + nEL + '</p></div>'
-                + '<div style="background:#12121e;border-radius:10px;padding:14px;text-align:center;border-top:3px solid ' + nDC + ';">'
-                + '<p style="color:#aaa;font-size:10px;margin:0 0 4px;">DESPERSONALIZACAO</p>'
-                + '<p style="color:#fff;font-size:24px;font-weight:bold;margin:0;">' + de + '<span style="font-size:11px;color:#555;">/25</span></p>'
-                + '<p style="color:' + nDC + ';font-size:11px;font-weight:600;margin-top:4px;">' + nDL + '</p></div>'
-                + '<div style="background:#12121e;border-radius:10px;padding:14px;text-align:center;border-top:3px solid ' + nRC + ';">'
-                + '<p style="color:#aaa;font-size:10px;margin:0 0 4px;">REALIZACAO (maior = melhor)</p>'
-                + '<p style="color:#fff;font-size:24px;font-weight:bold;margin:0;">' + re + '<span style="font-size:11px;color:#555;">/35</span></p>'
-                + '<p style="color:' + nRC + ';font-size:11px;font-weight:600;margin-top:4px;">' + nRL + '</p></div>'
-                + '</div>'
-                + '<div style="background:#12121e;border-radius:10px;padding:14px;margin-bottom:12px;">'
-                + '<p style="color:#aaa;font-size:10px;margin:0 0 10px;letter-spacing:.1em;">GRAFICO POR DIMENSAO</p>'
-                + '<div style="display:flex;flex-direction:column;gap:8px;">'
-                + '<div><div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="color:#ccc;font-size:12px;">Exaustao</span><span style="color:' + nEC + ';font-size:12px;font-weight:600;">' + pE + '%</span></div><div style="background:#0d0d1a;border-radius:4px;height:10px;"><div style="width:' + pE + '%;height:100%;background:' + nEC + ';border-radius:4px;"></div></div></div>'
-                + '<div><div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="color:#ccc;font-size:12px;">Despersonalizacao</span><span style="color:' + nDC + ';font-size:12px;font-weight:600;">' + pD + '%</span></div><div style="background:#0d0d1a;border-radius:4px;height:10px;"><div style="width:' + pD + '%;height:100%;background:' + nDC + ';border-radius:4px;"></div></div></div>'
-                + '<div><div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="color:#ccc;font-size:12px;">Realizacao</span><span style="color:' + nRC + ';font-size:12px;font-weight:600;">' + pR + '%</span></div><div style="background:#0d0d1a;border-radius:4px;height:10px;"><div style="width:' + pR + '%;height:100%;background:' + nRC + ';border-radius:4px;"></div></div></div>'
-                + '</div></div>'
-                + '<div style="display:flex;flex-direction:column;gap:6px;">'
-                + '<div style="background:#12121e;border-radius:8px;padding:12px;border-left:3px solid ' + nEC + ';">'
-                + '<p style="color:#aaa;font-size:10px;margin:0 0 3px;">EXAUSTAO - ' + nEL + '</p>'
-                + '<p style="color:#ccc;font-size:13px;margin:0;">' + nEDesc + '</p></div>'
-                + '<div style="background:#12121e;border-radius:8px;padding:12px;border-left:3px solid ' + nDC + ';">'
-                + '<p style="color:#aaa;font-size:10px;margin:0 0 3px;">DESPERSONALIZACAO - ' + nDL + '</p>'
-                + '<p style="color:#ccc;font-size:13px;margin:0;">' + nDDesc + '</p></div>'
-                + '<div style="background:#12121e;border-radius:8px;padding:12px;border-left:3px solid ' + nRC + ';">'
-                + '<p style="color:#aaa;font-size:10px;margin:0 0 3px;">REALIZACAO - ' + nRL + '</p>'
-                + '<p style="color:#ccc;font-size:13px;margin:0;">' + nRDesc + '</p></div>'
-                + '</div></div>';
-        })()}
             <h3 style="color:#ccc;font-size:14px;margin-bottom:12px;">Respostas detalhadas:</h3>
             ${respostas.map(r => `
                 <div style="margin-bottom:12px;padding:12px;background:#12121e;border-radius:8px;">
