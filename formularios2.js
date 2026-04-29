@@ -34,9 +34,11 @@ function popularSelectEscalas() {
     const select = document.getElementById('tipo-formulario');
     if (!select) return;
     select.innerHTML = '<option value="">Selecione...</option>';
+    const palavrasConhecidas = ['Inventari', 'Escala', 'Pittsburgh', 'Question', 'Teste', 'TCC'];
     const grupos = [
-        { label: 'Inventarios', itens: escalasDisponiveis.filter(e => e.nome.includes('Inventari')) },
         { label: 'Escalas', itens: escalasDisponiveis.filter(e => e.nome.includes('Escala') || e.nome.includes('Pittsburgh')) },
+        { label: 'Rastreamentos e Avaliacoes', itens: escalasDisponiveis.filter(e => !palavrasConhecidas.some(p => e.nome.includes(p))) },
+        { label: 'Inventarios', itens: escalasDisponiveis.filter(e => e.nome.includes('Inventari')) },
         { label: 'Questionarios e Testes', itens: escalasDisponiveis.filter(e => e.nome.includes('Question') || e.nome.includes('Teste')) },
         { label: 'Ferramentas TCC', itens: escalasDisponiveis.filter(e => e.nome.includes('TCC')) }
     ];
