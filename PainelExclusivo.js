@@ -3,11 +3,13 @@
 //  Versão corrigida - com JWT, rotas corretas e listagem
 // ============================================================
 
-// URL da API — usa caminho relativo (proxy) em produção ou variável de ambiente em dev
-// Configure seu servidor web (Nginx/Railway) para fazer proxy de /api/ → backend
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5015'  // dev local
-    : '';                       // produção: usa proxy reverso no mesmo domínio
+// URL da API — detecta automaticamente o ambiente
+const API_URL = (() => {
+    const h = window.location.hostname;
+    if (h === 'localhost' || h === '127.0.0.1') return 'http://localhost:5015';
+    // Produção: backend no Railway
+    return 'https://prontpsiback-production.up.railway.app';
+})();
 
 // ============================================================
 //  CID-10 — AUTOCOMPLETE (saúde mental e geral)
