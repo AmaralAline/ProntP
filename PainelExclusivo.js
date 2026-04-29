@@ -3,7 +3,11 @@
 //  Versão corrigida - com JWT, rotas corretas e listagem
 // ============================================================
 
-const API_URL = 'https://prontpsiback-production.up.railway.app';
+// URL da API — usa caminho relativo (proxy) em produção ou variável de ambiente em dev
+// Configure seu servidor web (Nginx/Railway) para fazer proxy de /api/ → backend
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5015'  // dev local
+    : '';                       // produção: usa proxy reverso no mesmo domínio
 
 // ============================================================
 //  CID-10 — AUTOCOMPLETE (saúde mental e geral)
@@ -154,6 +158,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Exibe nome do profissional logado se tiver elemento para isso
     const nomeEl = document.getElementById('nome-profissional');
     if (nomeEl) nomeEl.textContent = profissional.nome || 'Profissional';
+
+    // Verifica se o usuário é admin e exibe o link do painel admin apenas para admins
+    try {
+        const resAdmin = await fetch(`${API_URL}/api/admin/metricas`, { headers: headersAuth() });
+        if (resAdmin.ok) {
+            const linkAdmin = document.getElementById('link-admin');
+            if (linkAdmin) linkAdmin.style.display = 'flex';
+        }
+    } catch (_) { /* não é admin ou sem conexão — mantém link oculto */ }
 
     // Botões do menu lateral
     const botoes = [
