@@ -153,12 +153,122 @@
                         <h2 class="dashboard-titulo">Bom dia, <span id="nome-profissional">Profissional</span> 👋</h2>
                         <p class="dashboard-data" id="dashboard-data"></p>
                     </div>
-                    <div class="clock-mini">
-                        <div class="clock" style="width:100px;height:100px;">
-                            <div class="center-circle"></div>
-                            <div id="hour-hand" class="hand hour"></div>
-                            <div id="minute-hand" class="hand minute"></div>
-                            <div id="second-hand" class="hand second"></div>
+                    <!-- ── NOVO RELÓGIO DIGITAL — substitui o bloco .clock-mini ── -->
+                    <div class="clock-mini" id="digital-clock-widget">
+                        <style>
+                            #digital-clock-widget {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-end;
+                                gap: 6px;
+                                user-select: none;
+                            }
+
+                            .dclock-time {
+                                display: flex;
+                                align-items: center;
+                                gap: 2px;
+                                line-height: 1;
+                            }
+
+                            .dclock-seg {
+                                font-family: 'Roboto', monospace;
+                                font-size: 42px;
+                                font-weight: 700;
+                                color: #f1f5f9;
+                                letter-spacing: -1px;
+                                min-width: 56px;
+                                text-align: center;
+                            }
+
+                            .dclock-colon {
+                                font-size: 36px;
+                                font-weight: 700;
+                                color: #8b5cf6;
+                                animation: dclock-blink 1s step-end infinite;
+                                margin-bottom: 4px;
+                                line-height: 1;
+                            }
+
+                            @keyframes dclock-blink {
+                                0%, 100% {
+                                    opacity: 1;
+                                }
+
+                                50% {
+                                    opacity: 0.15;
+                                }
+                            }
+
+                            .dclock-seg-seconds {
+                                font-size: 22px;
+                                font-weight: 600;
+                                color: #7c3aed;
+                                min-width: 32px;
+                                text-align: left;
+                                align-self: flex-end;
+                                margin-bottom: 3px;
+                                letter-spacing: 0;
+                            }
+
+                            .dclock-ampm {
+                                font-size: 11px;
+                                font-weight: 700;
+                                letter-spacing: 1.5px;
+                                text-transform: uppercase;
+                                color: #a78bfa;
+                                background: rgba(139,92,246,0.12);
+                                border: 1px solid rgba(139,92,246,0.25);
+                                border-radius: 5px;
+                                padding: 2px 7px;
+                                align-self: flex-start;
+                                margin-top: -4px;
+                            }
+
+                            .dclock-date-row {
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                            }
+
+                            .dclock-date {
+                                font-size: 12px;
+                                font-weight: 500;
+                                color: #64748b;
+                                letter-spacing: 0.3px;
+                            }
+
+                            .dclock-divider {
+                                width: 1px;
+                                height: 12px;
+                                background: rgba(139,92,246,0.25);
+                            }
+
+                            .dclock-weekday {
+                                font-size: 12px;
+                                font-weight: 600;
+                                color: #8b5cf6;
+                                text-transform: capitalize;
+                            }
+
+                            /* Glow sutil nos dígitos principais */
+                            .dclock-seg {
+                                text-shadow: 0 0 20px rgba(139,92,246,0.3);
+                            }
+                        </style>
+
+                        <div class="dclock-time">
+                            <span class="dclock-seg" id="dclock-h">00</span>
+                            <span class="dclock-colon">:</span>
+                            <span class="dclock-seg" id="dclock-m">00</span>
+                            <span class="dclock-seg-seconds" id="dclock-s">00</span>
+                            <span class="dclock-ampm" id="dclock-ampm">AM</span>
+                        </div>
+
+                        <div class="dclock-date-row">
+                            <span class="dclock-weekday" id="dclock-weekday"></span>
+                            <div class="dclock-divider"></div>
+                            <span class="dclock-date" id="dclock-date"></span>
                         </div>
                     </div>
                 </div>

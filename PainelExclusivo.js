@@ -407,22 +407,43 @@ function fecharModalPolitica() {
 //  RELÓGIO
 // ------------------------------------------------------------
 function iniciarRelogio() {
+    // ── NOVO RELÓGIO DIGITAL — substitui o bloco da função atualizar() ──
+    // Troque TODA a função atualizar() e o setInterval abaixo dela por este código:
+
     function atualizar() {
         const now = new Date();
-        const horas = now.getHours() % 12;
+        let horas = now.getHours();
         const minutos = now.getMinutes();
         const segundos = now.getSeconds();
+        const ampm = horas >= 12 ? 'PM' : 'AM';
+        horas = horas % 12 || 12; // converte para 12h
 
-        const hourHand = document.getElementById('hour-hand');
-        const minuteHand = document.getElementById('minute-hand');
-        const secondHand = document.getElementById('second-hand');
+        const pad = n => String(n).padStart(2, '0');
 
-        if (hourHand) hourHand.style.transform = `rotate(${(horas * 30) + (minutos * 0.5)}deg)`;
-        if (minuteHand) minuteHand.style.transform = `rotate(${minutos * 6}deg)`;
-        if (secondHand) secondHand.style.transform = `rotate(${segundos * 6}deg)`;
+        const elH = document.getElementById('dclock-h');
+        const elM = document.getElementById('dclock-m');
+        const elS = document.getElementById('dclock-s');
+        const elAmpm = document.getElementById('dclock-ampm');
+        const elDate = document.getElementById('dclock-date');
+        const elWeekday = document.getElementById('dclock-weekday');
+
+        if (elH) elH.textContent = pad(horas);
+        if (elM) elM.textContent = pad(minutos);
+        if (elS) elS.textContent = pad(segundos);
+        if (elAmpm) elAmpm.textContent = ampm;
+
+        if (elDate) {
+            elDate.textContent = now.toLocaleDateString('pt-BR', {
+                day: '2-digit', month: 'long', year: 'numeric'
+            });
+        }
+        if (elWeekday) {
+            elWeekday.textContent = now.toLocaleDateString('pt-BR', { weekday: 'long' });
+        }
     }
     atualizar();
     setInterval(atualizar, 1000);
+    
 }
 
 // ============================================================
