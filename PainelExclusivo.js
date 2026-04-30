@@ -424,22 +424,14 @@ function iniciarRelogio() {
         const elM = document.getElementById('dclock-m');
         const elS = document.getElementById('dclock-s');
         const elAmpm = document.getElementById('dclock-ampm');
-        const elDate = document.getElementById('dclock-date');
-        const elWeekday = document.getElementById('dclock-weekday');
+        
 
         if (elH) elH.textContent = pad(horas);
         if (elM) elM.textContent = pad(minutos);
         if (elS) elS.textContent = pad(segundos);
         if (elAmpm) elAmpm.textContent = ampm;
 
-        if (elDate) {
-            elDate.textContent = now.toLocaleDateString('pt-BR', {
-                day: '2-digit', month: 'long', year: 'numeric'
-            });
-        }
-        if (elWeekday) {
-            elWeekday.textContent = now.toLocaleDateString('pt-BR', { weekday: 'long' });
-        }
+        
     }
     atualizar();
     setInterval(atualizar, 1000);
