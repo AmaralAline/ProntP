@@ -895,14 +895,32 @@ table {
 }
 
 #digital-clock-widget {
-    margin-left: auto;
-    padding-left: 40px;
-    padding: 14px 22px;
-    border-radius: 14px;
+    margin-left: 80px;
+    padding: 10px 18px;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.03);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
+
+    #digital-clock-widget .dclock-seg {
+        font-size: 28px !important;
+        min-width: 36px !important;
+    }
+
+    #digital-clock-widget .dclock-colon {
+        font-size: 24px !important;
+    }
+
+    #digital-clock-widget .dclock-seg-seconds {
+        font-size: 14px !important;
+        min-width: 22px !important;
+    }
+
+    #digital-clock-widget .dclock-ampm {
+        font-size: 9px !important;
+        padding: 1px 5px !important;
+    }
 
 .dashboard-titulo {
     font-size: 24px;
