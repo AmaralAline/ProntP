@@ -2365,33 +2365,48 @@
     </div>
 
     <script>
-        // ─── STORAGE HELPERS ───
-        async function load(key) {
-            try { const r = await window.storage.get(key); return r ? JSON.parse(r.value) : null } catch { return null }
-        }
-        async function save(key, val) {
-            try { await window.storage.set(key, JSON.stringify(val)) } catch (e) { console.error(e) }
+        // ─── CONFIG ───
+        const API = 'https://prontpsiback-production.up.railway.app/api/portal';
+        let adminToken = null;
+
+        // ─── API HELPERS ───
+        async function api(method, path, body) {
+            const opts = {
+                method,
+                headers: { 'Content-Type': 'application/json' }
+            };
+            if (adminToken) opts.headers['Authorization'] = 'Bearer ' + adminToken;
+            if (body) opts.body = JSON.stringify(body);
+            const res = await fetch(API + path, opts);
+            if (!res.ok) throw await res.json();
+            return res.json();
         }
 
         // ─── STATE ───
-        let noticias = [], eventos = [], recursos = [], profissionais = [];
-        let currentArticle = null;
+        let noticias = [], eventos = [], profissionais = [];
         let adminUser = null;
-
-        // Credenciais admin (em prod, validar via backend)
-        const ADMIN_EMAIL = 'prontpsii@gmail.com';
-        const ADMIN_PASS = 'prontpsi2026';
 
         // ─── INIT ───
         async function init() {
             const hoje = new Date();
             document.getElementById('portalDate').textContent = hoje.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            await carregarDados();
+        }
 
-            noticias = await load('psi:noticias') || [];
-            eventos = await load('psi:eventos') || [];
-            recursos = await load('psi:recursos') || [];
-            profissionais = await load('psi:profissionais') || [];
-
+        async function carregarDados() {
+            try {
+                [noticias, eventos, profissionais] = await Promise.all([
+                    api('GET', '/noticias'),
+                    api('GET', '/eventos'),
+                    api('GET', '/profissionais')
+                ]);
+                // normaliza campos vindos do MySQL para o padrão usado no render
+                noticias = noticias.map(n => ({ ...n, img: n.img_url, data: n.criado_em, spec: n.especialidade, loc: n.cidade, link: n.link_perfil }));
+                eventos = eventos.map(e => ({ ...e, data: e.data_evento, local: e.local_evento, desc: e.descricao, link: e.link_inscricao }));
+                profissionais = profissionais.map(p => ({ ...p, spec: p.especialidade, loc: p.cidade, link: p.link_perfil }));
+            } catch (e) {
+                console.error('Erro ao carregar dados do portal:', e);
+            }
             renderPortal();
             renderAdminTables();
             renderDashStats();
@@ -2540,16 +2555,42 @@
         // ─── LOGIN ───
         function openLogin() { document.getElementById('loginModal').classList.add('open') }
         function closeLogin() { document.getElementById('loginModal').classList.remove('open') }
-        function doLogin() {
+        async function doLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const pass = document.getElementById('loginPass').value;
-            if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+            const errEl = document.getElementById('loginErr');
+            errEl.style.display = 'none';
+            try {
+                const res = await fetch('https://prontpsiback-production.up.railway.app/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, senha: pass })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.erro || 'Erro');
+                if (!data.is_admin) { errEl.textContent = 'Usuário sem permissão de admin'; errEl.style.display = 'block'; return; }
+                adminToken = data.token;
                 adminUser = email;
                 closeLogin();
+                // Recarrega tabelas admin com dados completos (incluindo rascunhos)
+                await carregarAdmin();
                 openAdmin();
-            } else {
-                document.getElementById('loginErr').style.display = 'block';
+            } catch (e) {
+                errEl.textContent = 'E-mail ou senha incorretos';
+                errEl.style.display = 'block';
             }
+        }
+        async function carregarAdmin() {
+            try {
+                const [todasNoticias, todosEventos, todosProfs] = await Promise.all([
+                    api('GET', '/noticias/todas'),
+                    api('GET', '/eventos/todos'),
+                    api('GET', '/profissionais/todos')
+                ]);
+                noticias = todasNoticias.map(n => ({ ...n, img: n.img_url, data: n.criado_em }));
+                eventos = todosEventos.map(e => ({ ...e, data: e.data_evento, local: e.local_evento, desc: e.descricao, link: e.link_inscricao }));
+                profissionais = todosProfs.map(p => ({ ...p, spec: p.especialidade, loc: p.cidade, link: p.link_perfil }));
+            } catch (e) { console.error(e); }
         }
         document.getElementById('loginModal').addEventListener('click', function (e) { if (e.target === this) closeLogin() });
         document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('open')) doLogin() });
@@ -2590,57 +2631,39 @@
             const resumo = document.getElementById('n-resumo').value.trim();
             const corpo = document.getElementById('n-corpo').value.trim();
             if (!titulo || !resumo || !corpo) { showToast('Preencha título, resumo e texto completo', 'erro'); return; }
-            const item = {
-                id: Date.now(),
-                titulo, resumo, corpo,
-                categoria: document.getElementById('n-cat').value,
-                autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi',
-                img: document.getElementById('n-img').value.trim(),
-                status: document.getElementById('n-status').value,
-                data: new Date().toISOString()
-            };
-            noticias.unshift(item);
-            await save('psi:noticias', noticias);
-            ['n-titulo', 'n-resumo', 'n-corpo', 'n-autor', 'n-img'].forEach(id => document.getElementById(id).value = '');
-            renderAdminTables(); renderPortal(); renderDashStats();
-            showToast(item.status === 'publicado' ? '✅ Artigo publicado no portal!' : '📝 Rascunho salvo!');
+            try {
+                await api('POST', '/noticias', {
+                    titulo, resumo, corpo,
+                    categoria: document.getElementById('n-cat').value,
+                    autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi',
+                    img_url: document.getElementById('n-img').value.trim() || null,
+                    status: document.getElementById('n-status').value
+                });
+                ['n-titulo', 'n-resumo', 'n-corpo', 'n-autor', 'n-img'].forEach(id => document.getElementById(id).value = '');
+                await carregarAdmin();
+                renderAdminTables(); renderPortal(); renderDashStats();
+                showToast(document.getElementById('n-status').value === 'publicado' ? '✅ Artigo publicado no portal!' : '📝 Rascunho salvo!');
+            } catch (e) { showToast('Erro ao salvar: ' + e.erro, 'erro'); }
         }
 
         // ─── SALVAR EVENTO ───
         async function salvarEvento() {
             const titulo = document.getElementById('e-titulo').value.trim();
-            const data = document.getElementById('e-data').value;
-            if (!titulo || !data) { showToast('Preencha nome e data do evento', 'erro'); return; }
-            const item = {
-                id: Date.now(), titulo, data,
-                modalidade: document.getElementById('e-modal').value,
-                local: document.getElementById('e-local').value.trim(),
-                desc: document.getElementById('e-desc').value.trim(),
-                link: document.getElementById('e-link').value.trim()
-            };
-            eventos.push(item);
-            await save('psi:eventos', eventos);
-            ['e-titulo', 'e-data', 'e-local', 'e-desc', 'e-link'].forEach(id => document.getElementById(id).value = '');
-            renderAdminTables(); renderEventos(); renderDashStats();
-            showToast('✅ Evento adicionado ao portal!');
-        }
-
-        // ─── SALVAR RECURSO ───
-        async function salvarRecurso() {
-            const titulo = document.getElementById('r-titulo').value.trim();
-            if (!titulo) { showToast('Preencha o nome do recurso', 'erro'); return; }
-            const item = {
-                id: Date.now(), titulo,
-                tipo: document.getElementById('r-tipo').value,
-                desc: document.getElementById('r-desc').value.trim(),
-                emoji: document.getElementById('r-emoji').value.trim() || '📄',
-                link: document.getElementById('r-link').value.trim()
-            };
-            recursos.push(item);
-            await save('psi:recursos', recursos);
-            ['r-titulo', 'r-desc', 'r-emoji', 'r-link'].forEach(id => document.getElementById(id).value = '');
-            renderAdminTables(); renderRecursos(); renderDashStats();
-            showToast('✅ Recurso adicionado!');
+            const data_evento = document.getElementById('e-data').value;
+            if (!titulo || !data_evento) { showToast('Preencha nome e data do evento', 'erro'); return; }
+            try {
+                await api('POST', '/eventos', {
+                    titulo, data_evento,
+                    modalidade: document.getElementById('e-modal').value,
+                    local_evento: document.getElementById('e-local').value.trim() || null,
+                    descricao: document.getElementById('e-desc').value.trim() || null,
+                    link_inscricao: document.getElementById('e-link').value.trim() || null
+                });
+                ['e-titulo', 'e-data', 'e-local', 'e-desc', 'e-link'].forEach(id => document.getElementById(id).value = '');
+                await carregarAdmin();
+                renderAdminTables(); renderEventos(); renderDashStats();
+                showToast('✅ Evento adicionado ao portal!');
+            } catch (e) { showToast('Erro ao salvar: ' + e.erro, 'erro'); }
         }
 
         // ─── SALVAR PROFISSIONAL ───
@@ -2648,43 +2671,32 @@
             const nome = document.getElementById('p-nome').value.trim();
             const iniciais = document.getElementById('p-iniciais').value.trim().toUpperCase();
             if (!nome || !iniciais) { showToast('Preencha nome e iniciais', 'erro'); return; }
-            const item = {
-                id: Date.now(), nome, iniciais,
-                spec: document.getElementById('p-spec').value.trim(),
-                loc: document.getElementById('p-loc').value.trim(),
-                link: document.getElementById('p-link').value.trim()
-            };
-            profissionais.push(item);
-            await save('psi:profissionais', profissionais);
-            ['p-nome', 'p-iniciais', 'p-spec', 'p-loc', 'p-link'].forEach(id => document.getElementById(id).value = '');
-            renderAdminTables(); renderProfissionais(); renderDashStats();
-            showToast('✅ Profissional adicionado ao destaque!');
+            try {
+                await api('POST', '/profissionais', {
+                    nome, iniciais,
+                    especialidade: document.getElementById('p-spec').value.trim(),
+                    cidade: document.getElementById('p-loc').value.trim() || null,
+                    link_perfil: document.getElementById('p-link').value.trim() || null
+                });
+                ['p-nome', 'p-iniciais', 'p-spec', 'p-loc', 'p-link'].forEach(id => document.getElementById(id).value = '');
+                await carregarAdmin();
+                renderAdminTables(); renderProfissionais(); renderDashStats();
+                showToast('✅ Profissional adicionado ao destaque!');
+            } catch (e) { showToast('Erro ao salvar: ' + e.erro, 'erro'); }
         }
 
-        // ─── DELETE HELPERS ───
+        // ─── DELETE ───
         async function deletarNoticia(id) {
-            noticias = noticias.filter(n => n.id !== id);
-            await save('psi:noticias', noticias);
-            renderAdminTables(); renderPortal(); renderDashStats();
-            showToast('🗑 Artigo removido');
+            try { await api('DELETE', '/noticias/' + id); await carregarAdmin(); renderAdminTables(); renderPortal(); renderDashStats(); showToast('🗑 Artigo removido'); }
+            catch (e) { showToast('Erro ao remover', 'erro'); }
         }
         async function deletarEvento(id) {
-            eventos = eventos.filter(e => e.id !== id);
-            await save('psi:eventos', eventos);
-            renderAdminTables(); renderEventos(); renderDashStats();
-            showToast('🗑 Evento removido');
-        }
-        async function deletarRecurso(id) {
-            recursos = recursos.filter(r => r.id !== id);
-            await save('psi:recursos', recursos);
-            renderAdminTables(); renderRecursos(); renderDashStats();
-            showToast('🗑 Recurso removido');
+            try { await api('DELETE', '/eventos/' + id); await carregarAdmin(); renderAdminTables(); renderEventos(); renderDashStats(); showToast('🗑 Evento removido'); }
+            catch (e) { showToast('Erro ao remover', 'erro'); }
         }
         async function deletarProf(id) {
-            profissionais = profissionais.filter(p => p.id !== id);
-            await save('psi:profissionais', profissionais);
-            renderAdminTables(); renderProfissionais(); renderDashStats();
-            showToast('🗑 Profissional removido');
+            try { await api('DELETE', '/profissionais/' + id); await carregarAdmin(); renderAdminTables(); renderProfissionais(); renderDashStats(); showToast('🗑 Profissional removido'); }
+            catch (e) { showToast('Erro ao remover', 'erro'); }
         }
 
         // ─── RENDER ADMIN TABLES ───
