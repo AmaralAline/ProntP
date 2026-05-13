@@ -2568,7 +2568,9 @@
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.erro || 'Erro');
-                if (!data.is_admin) { errEl.textContent = 'Usuário sem permissão de admin'; errEl.style.display = 'block'; return; }
+                // Decodifica o payload do JWT para verificar is_admin
+                const payload = JSON.parse(atob(data.token.split('.')[1]));
+                if (!payload.is_admin && !payload.isAdmin) { errEl.textContent = 'Usuário sem permissão de admin'; errEl.style.display = 'block'; return; }
                 adminToken = data.token;
                 adminUser = email;
                 closeLogin();
