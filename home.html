@@ -7,6 +7,9 @@
     <meta name="description" content="Notícias, artigos e recursos para psicólogos e psiquiatras. O sistema clínico do universo Psi." />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Quill editor rico -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -42,7 +45,7 @@
             overflow-x: hidden
         }
 
-        /* ── NAV ── */
+        /* NAV */
         nav {
             position: fixed;
             top: 0;
@@ -150,7 +153,7 @@
                 transform: translateY(-1px)
             }
 
-        /* ── TOPBAR TICKER ── */
+        /* TICKER */
         .news-ticker {
             position: fixed;
             top: 64px;
@@ -217,7 +220,7 @@
             }
         }
 
-        /* ── PORTAL GRID ── */
+        /* PORTAL */
         .portal-section {
             padding: 32px 40px 40px;
             max-width: 1280px;
@@ -267,7 +270,7 @@
             text-transform: uppercase
         }
 
-        /* ── HERO NEWS ── */
+        /* HERO NEWS */
         .hero-news {
             display: grid;
             grid-template-columns: 1.7fr 1fr;
@@ -291,7 +294,7 @@
 
         .hero-img-area {
             height: 300px;
-            background: linear-gradient(135deg,rgba(109,40,217,.4) 0%,rgba(139,92,246,.15) 100%);
+            background: linear-gradient(135deg,rgba(109,40,217,.4),rgba(139,92,246,.15));
             display: flex;
             align-items: flex-end;
             padding: 20px;
@@ -311,7 +314,7 @@
             .hero-img-area .img-overlay {
                 position: absolute;
                 inset: 0;
-                background: linear-gradient(to top,rgba(10,13,20,.85) 0%,transparent 50%)
+                background: linear-gradient(to top,rgba(10,13,20,.85),transparent 50%)
             }
 
         .hero-cat-badge {
@@ -355,14 +358,6 @@
             display: flex;
             align-items: center;
             gap: 10px
-        }
-
-        .card-meta-dot {
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            background: var(--muted);
-            display: inline-block
         }
 
         .hero-side {
@@ -413,7 +408,7 @@
             color: var(--muted)
         }
 
-        /* ── SECONDARY GRID ── */
+        /* CARDS GRID */
         .secondary-section {
             margin-bottom: 32px
         }
@@ -514,7 +509,7 @@
             color: var(--muted)
         }
 
-        /* ── EVENTS STRIP ── */
+        /* EVENTOS */
         .events-strip {
             background: var(--bg2);
             border: 1px solid var(--border2);
@@ -608,941 +603,7 @@
             color: var(--roxo-light)
         }
 
-        /* ── RECURSOS STRIP ── */
-        .recursos-strip {
-            display: grid;
-            grid-template-columns: repeat(4,1fr);
-            gap: 12px;
-            margin-bottom: 32px
-        }
-
-        .recurso-card {
-            background: var(--bg2);
-            border: 1px solid var(--border2);
-            border-radius: 10px;
-            padding: 16px;
-            cursor: pointer;
-            transition: border-color .2s,transform .2s;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px
-        }
-
-            .recurso-card:hover {
-                border-color: rgba(139,92,246,.25);
-                transform: translateY(-2px)
-            }
-
-        .recurso-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: rgba(109,40,217,.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0
-        }
-
-        .recurso-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 4px;
-            line-height: 1.3
-        }
-
-        .recurso-desc {
-            font-size: 11.5px;
-            color: var(--muted2)
-        }
-
-        .recurso-tag {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            color: var(--green);
-            margin-top: 6px
-        }
-
-        /* ── SISTEMA CTA BLOCK ── */
-        .sistema-cta {
-            background: linear-gradient(135deg,rgba(109,40,217,.18) 0%,rgba(139,92,246,.06) 100%);
-            border: 1px solid rgba(139,92,246,.2);
-            border-radius: 16px;
-            padding: 40px 48px;
-            margin-bottom: 40px;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 32px;
-            align-items: center;
-            position: relative;
-            overflow: hidden
-        }
-
-            .sistema-cta::before {
-                content: '';
-                position: absolute;
-                top: -40px;
-                right: -40px;
-                width: 220px;
-                height: 220px;
-                border-radius: 50%;
-                background: radial-gradient(circle,rgba(109,40,217,.15),transparent 70%);
-                pointer-events: none
-            }
-
-        .sistema-cta-label {
-            font-size: 10.5px;
-            font-weight: 700;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--roxo-light);
-            margin-bottom: 10px
-        }
-
-        .sistema-cta-title {
-            font-family: 'DM Serif Display',serif;
-            font-size: 28px;
-            color: #fff;
-            line-height: 1.2;
-            margin-bottom: 10px
-        }
-
-        .sistema-cta-sub {
-            font-size: 14px;
-            color: var(--muted2);
-            line-height: 1.6;
-            margin-bottom: 0;
-            max-width: 520px
-        }
-
-        .sistema-cta-feats {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 16px
-        }
-
-        .sistema-feat {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 13px;
-            color: var(--muted2)
-        }
-
-            .sistema-feat i {
-                color: var(--green);
-                font-size: 12px
-            }
-
-        .sistema-cta-btns {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            flex-shrink: 0
-        }
-
-        .btn-cta-primary {
-            background: var(--roxo);
-            color: #fff;
-            border: none;
-            padding: 13px 28px;
-            border-radius: 10px;
-            font-family: 'DM Sans',sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .2s;
-            white-space: nowrap;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center
-        }
-
-            .btn-cta-primary:hover {
-                background: var(--roxo-light);
-                transform: translateY(-1px)
-            }
-
-        .btn-cta-secondary {
-            background: transparent;
-            color: var(--roxo-light);
-            border: 1px solid rgba(139,92,246,.35);
-            padding: 11px 28px;
-            border-radius: 10px;
-            font-family: 'DM Sans',sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: .2s;
-            white-space: nowrap;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center
-        }
-
-            .btn-cta-secondary:hover {
-                background: rgba(139,92,246,.1)
-            }
-
-        .cta-note {
-            font-size: 11px;
-            color: var(--muted);
-            text-align: center
-        }
-
-        /* ── PROFISSIONAIS STRIP ── */
-        .prof-strip {
-            display: grid;
-            grid-template-columns: repeat(4,1fr);
-            gap: 12px;
-            margin-bottom: 40px
-        }
-
-        .prof-card {
-            background: var(--bg2);
-            border: 1px solid var(--border2);
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color .2s
-        }
-
-            .prof-card:hover {
-                border-color: rgba(139,92,246,.25)
-            }
-
-        .prof-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg,rgba(109,40,217,.3),rgba(139,92,246,.15));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--roxo-light);
-            border: 2px solid rgba(139,92,246,.2)
-        }
-
-        .prof-name {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 3px
-        }
-
-        .prof-spec {
-            font-size: 11.5px;
-            color: var(--muted2);
-            margin-bottom: 6px
-        }
-
-        .prof-loc {
-            font-size: 11px;
-            color: var(--muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px
-        }
-
-        /* ── FOOTER ── */
-        footer {
-            background: var(--bg2);
-            border-top: 1px solid var(--border2);
-            text-align: center;
-            padding: 40px 40px 28px
-        }
-
-        .footer-logo {
-            font-family: 'DM Serif Display',serif;
-            font-size: 22px;
-            color: #fff;
-            display: block;
-            margin-bottom: 18px
-        }
-
-            .footer-logo span {
-                color: var(--roxo-light)
-            }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px
-        }
-
-            .footer-links a {
-                color: var(--muted);
-                text-decoration: none;
-                font-size: 13px;
-                transition: color .2s
-            }
-
-                .footer-links a:hover {
-                    color: #fff
-                }
-
-        .footer-copy {
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 12px
-        }
-
-        /* ── MODAL ARTIGO ── */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.75);
-            z-index: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .3s
-        }
-
-            .modal-overlay.open {
-                opacity: 1;
-                pointer-events: all
-            }
-
-        .modal {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            max-width: 720px;
-            width: 100%;
-            max-height: 88vh;
-            overflow-y: auto;
-            padding: 36px 40px
-        }
-
-        .modal-cat {
-            font-size: 10.5px;
-            font-weight: 700;
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            color: var(--roxo-light);
-            margin-bottom: 12px
-        }
-
-        .modal-title {
-            font-family: 'Playfair Display',serif;
-            font-size: 30px;
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--text);
-            margin-bottom: 12px
-        }
-
-        .modal-meta {
-            font-size: 12.5px;
-            color: var(--muted);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px
-        }
-
-        .modal-img {
-            width: 100%;
-            height: 260px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg,rgba(109,40,217,.3),rgba(10,13,20,.8))
-        }
-
-        .modal-body {
-            font-size: 15px;
-            color: var(--muted2);
-            line-height: 1.8
-        }
-
-            .modal-body p {
-                margin-bottom: 16px
-            }
-
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: var(--muted);
-            font-size: 22px;
-            cursor: pointer;
-            transition: color .2s
-        }
-
-            .modal-close:hover {
-                color: #fff
-            }
-
-        .modal-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px
-        }
-
-        /* ── PAINEL ADMIN ── */
-        #admin-panel {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.85);
-            z-index: 900;
-            overflow-y: auto;
-            padding: 0
-        }
-
-            #admin-panel.open {
-                display: block
-            }
-
-        .admin-shell {
-            background: #0d111b;
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 240px 1fr
-        }
-
-        .admin-sidebar {
-            background: #080c14;
-            border-right: 1px solid var(--border2);
-            padding: 0
-        }
-
-        .admin-sidebar-header {
-            padding: 22px 20px 16px;
-            border-bottom: 1px solid var(--border2)
-        }
-
-        .admin-logo {
-            font-family: 'DM Serif Display',serif;
-            font-size: 18px;
-            color: #fff
-        }
-
-            .admin-logo span {
-                color: var(--roxo-light)
-            }
-
-        .admin-role {
-            font-size: 10.5px;
-            color: var(--muted);
-            margin-top: 3px;
-            letter-spacing: .06em
-        }
-
-        .admin-nav {
-            padding: 12px 0
-        }
-
-        .admin-nav-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 20px;
-            color: var(--muted2);
-            font-size: 13.5px;
-            cursor: pointer;
-            transition: .2s;
-            border-left: 3px solid transparent
-        }
-
-            .admin-nav-item:hover {
-                color: #fff;
-                background: rgba(255,255,255,.03)
-            }
-
-            .admin-nav-item.active {
-                color: var(--roxo-light);
-                background: rgba(109,40,217,.08);
-                border-left-color: var(--roxo-light)
-            }
-
-            .admin-nav-item i {
-                width: 18px;
-                text-align: center;
-                font-size: 14px
-            }
-
-        .admin-nav-sep {
-            margin: 8px 20px;
-            height: 1px;
-            background: var(--border2)
-        }
-
-        .admin-content {
-            padding: 32px 40px;
-            overflow-y: auto;
-            max-height: 100vh
-        }
-
-        .admin-topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 28px
-        }
-
-        .admin-page-title {
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--text)
-        }
-
-        .admin-page-sub {
-            font-size: 13px;
-            color: var(--muted);
-            margin-top: 4px
-        }
-
-        .btn-close-admin {
-            background: transparent;
-            border: 1px solid var(--border2);
-            color: var(--muted2);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: 'DM Sans',sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: .2s;
-            display: flex;
-            align-items: center;
-            gap: 7px
-        }
-
-            .btn-close-admin:hover {
-                color: #fff;
-                border-color: var(--border)
-            }
-
-        /* Admin tabs */
-        .admin-section {
-            display: none
-        }
-
-            .admin-section.active {
-                display: block
-            }
-
-        /* Admin form */
-        .form-group {
-            margin-bottom: 18px
-        }
-
-        .form-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--muted2);
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            margin-bottom: 7px
-        }
-
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 11px 14px;
-            color: var(--text);
-            font-family: 'DM Sans',sans-serif;
-            font-size: 14px;
-            transition: border-color .2s;
-            outline: none
-        }
-
-            .form-input:focus, .form-select:focus, .form-textarea:focus {
-                border-color: rgba(139,92,246,.5)
-            }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-            line-height: 1.6
-        }
-
-        .form-select option {
-            background: var(--bg2)
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px
-        }
-
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px
-        }
-
-        .admin-card {
-            background: var(--bg2);
-            border: 1px solid var(--border2);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px
-        }
-
-        .admin-card-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px
-        }
-
-            .admin-card-title i {
-                color: var(--roxo-light)
-            }
-
-        .btn-submit {
-            background: var(--roxo);
-            color: #fff;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 8px;
-            font-family: 'DM Sans',sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .2s;
-            display: flex;
-            align-items: center;
-            gap: 8px
-        }
-
-            .btn-submit:hover {
-                background: var(--roxo-light)
-            }
-
-        .btn-danger {
-            background: transparent;
-            color: #ef4444;
-            border: 1px solid rgba(239,68,68,.3);
-            padding: 7px 14px;
-            border-radius: 6px;
-            font-family: 'DM Sans',sans-serif;
-            font-size: 12px;
-            cursor: pointer;
-            transition: .2s
-        }
-
-            .btn-danger:hover {
-                background: rgba(239,68,68,.1)
-            }
-
-        .btn-edit {
-            background: transparent;
-            color: var(--roxo-light);
-            border: 1px solid rgba(139,92,246,.3);
-            padding: 7px 14px;
-            border-radius: 6px;
-            font-family: 'DM Sans',sans-serif;
-            font-size: 12px;
-            cursor: pointer;
-            transition: .2s
-        }
-
-            .btn-edit:hover {
-                background: rgba(139,92,246,.1)
-            }
-
-        /* Admin table */
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse
-        }
-
-            .admin-table th {
-                font-size: 11px;
-                font-weight: 600;
-                letter-spacing: .08em;
-                text-transform: uppercase;
-                color: var(--muted);
-                padding: 10px 14px;
-                border-bottom: 1px solid var(--border2);
-                text-align: left
-            }
-
-            .admin-table td {
-                font-size: 13px;
-                color: var(--muted2);
-                padding: 12px 14px;
-                border-bottom: 1px solid var(--border2);
-                vertical-align: middle
-            }
-
-            .admin-table tr:last-child td {
-                border-bottom: none
-            }
-
-            .admin-table tr:hover td {
-                background: rgba(255,255,255,.015)
-            }
-
-        .table-title {
-            font-weight: 500;
-            color: var(--text);
-            font-size: 13.5px
-        }
-
-        .status-pub {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--green);
-            background: rgba(16,185,129,.1);
-            padding: 3px 9px;
-            border-radius: 20px
-        }
-
-        .status-draft {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--muted2);
-            background: rgba(255,255,255,.06);
-            padding: 3px 9px;
-            border-radius: 20px
-        }
-
-        .table-actions {
-            display: flex;
-            gap: 8px
-        }
-
-        /* Stats row */
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(4,1fr);
-            gap: 14px;
-            margin-bottom: 24px
-        }
-
-        .stat-card {
-            background: var(--bg2);
-            border: 1px solid var(--border2);
-            border-radius: 10px;
-            padding: 16px 18px
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: var(--muted);
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            margin-bottom: 8px
-        }
-
-        .stat-val {
-            font-size: 26px;
-            font-weight: 600;
-            color: var(--text)
-        }
-
-        .stat-sub {
-            font-size: 11.5px;
-            color: var(--muted2);
-            margin-top: 4px
-        }
-
-        /* toast */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: #1a2235;
-            border: 1px solid rgba(16,185,129,.3);
-            color: var(--green);
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 13.5px;
-            font-weight: 500;
-            z-index: 9999;
-            transition: .4s;
-            opacity: 0
-        }
-
-            .toast.show {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1
-            }
-
-        /* Login modal */
-        .login-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.85);
-            z-index: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .3s
-        }
-
-            .login-modal.open {
-                opacity: 1;
-                pointer-events: all
-            }
-
-        .login-box {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 36px 40px;
-            width: 100%;
-            max-width: 400px
-        }
-
-        .login-logo {
-            font-family: 'DM Serif Display',serif;
-            font-size: 24px;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 4px
-        }
-
-            .login-logo span {
-                color: var(--roxo-light)
-            }
-
-        .login-sub {
-            font-size: 13px;
-            color: var(--muted);
-            text-align: center;
-            margin-bottom: 28px
-        }
-
-        .login-err {
-            font-size: 12.5px;
-            color: #ef4444;
-            text-align: center;
-            margin-top: 12px;
-            display: none
-        }
-
-        .login-note {
-            font-size: 11.5px;
-            color: var(--muted);
-            text-align: center;
-            margin-top: 16px
-        }
-
-        /* Highlight anim */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(14px)
-            }
-
-            to {
-                opacity: 1;
-                transform: none
-            }
-        }
-
-        .portal-section > * {
-            animation: fadeUp .5s ease both
-        }
-
-        /* Image upload preview */
-        .img-preview {
-            width: 100%;
-            height: 160px;
-            background: var(--bg3);
-            border: 1px dashed var(--border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 8px;
-            color: var(--muted);
-            font-size: 13px;
-            cursor: pointer;
-            transition: .2s;
-            overflow: hidden;
-            position: relative
-        }
-
-            .img-preview:hover {
-                border-color: rgba(139,92,246,.4)
-            }
-
-            .img-preview img {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 7px
-            }
-
-        .img-preview-label {
-            position: relative;
-            z-index: 1;
-            background: rgba(10,13,20,.7);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 12px
-        }
-
-        /* Whatsapp */
-        .wa-btn {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 100;
-            background: #25D366;
-            color: #fff;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            box-shadow: 0 4px 20px rgba(37,211,102,.4);
-            text-decoration: none;
-            transition: transform .2s
-        }
-
-            .wa-btn:hover {
-                transform: scale(1.1)
-            }
-
-        /* ── RECURSOS GRATUITOS FIXOS ── */
+        /* RECURSOS GRATUITOS */
         .gratuitos-grid {
             display: grid;
             grid-template-columns: repeat(3,1fr);
@@ -1564,7 +625,7 @@
                 content: '';
                 position: absolute;
                 inset: 0;
-                background: linear-gradient(135deg,rgba(139,92,246,.06) 0%,transparent 60%);
+                background: linear-gradient(135deg,rgba(139,92,246,.06),transparent 60%);
                 opacity: 0;
                 transition: opacity .3s;
                 pointer-events: none
@@ -1768,13 +829,944 @@
             color: var(--roxo-light)
         }
 
-        @media(max-width:900px) {
-            .gratuitos-grid {
-                grid-template-columns: 1fr
-            }
+        /* SISTEMA CTA */
+        .sistema-cta {
+            background: linear-gradient(135deg,rgba(109,40,217,.18),rgba(139,92,246,.06));
+            border: 1px solid rgba(139,92,246,.2);
+            border-radius: 16px;
+            padding: 40px 48px;
+            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 32px;
+            align-items: center;
+            position: relative;
+            overflow: hidden
         }
 
-        /* ── FADE-UP ── */
+            .sistema-cta::before {
+                content: '';
+                position: absolute;
+                top: -40px;
+                right: -40px;
+                width: 220px;
+                height: 220px;
+                border-radius: 50%;
+                background: radial-gradient(circle,rgba(109,40,217,.15),transparent 70%);
+                pointer-events: none
+            }
+
+        .sistema-cta-label {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--roxo-light);
+            margin-bottom: 10px
+        }
+
+        .sistema-cta-title {
+            font-family: 'DM Serif Display',serif;
+            font-size: 28px;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 10px
+        }
+
+        .sistema-cta-sub {
+            font-size: 14px;
+            color: var(--muted2);
+            line-height: 1.6;
+            max-width: 520px
+        }
+
+        .sistema-cta-feats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px
+        }
+
+        .sistema-feat {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            color: var(--muted2)
+        }
+
+            .sistema-feat i {
+                color: var(--green);
+                font-size: 12px
+            }
+
+        .sistema-cta-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0
+        }
+
+        .btn-cta-primary {
+            background: var(--roxo);
+            color: #fff;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 10px;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center
+        }
+
+            .btn-cta-primary:hover {
+                background: var(--roxo-light);
+                transform: translateY(-1px)
+            }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,.35);
+            padding: 11px 28px;
+            border-radius: 10px;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: .2s;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center
+        }
+
+            .btn-cta-secondary:hover {
+                background: rgba(139,92,246,.1)
+            }
+
+        .cta-note {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center
+        }
+
+        /* PROFISSIONAIS */
+        .prof-strip {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 12px;
+            margin-bottom: 40px
+        }
+
+        .prof-card {
+            background: var(--bg2);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color .2s
+        }
+
+            .prof-card:hover {
+                border-color: rgba(139,92,246,.25)
+            }
+
+        .prof-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,rgba(109,40,217,.3),rgba(139,92,246,.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--roxo-light);
+            border: 2px solid rgba(139,92,246,.2)
+        }
+
+        .prof-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 3px
+        }
+
+        .prof-spec {
+            font-size: 11.5px;
+            color: var(--muted2);
+            margin-bottom: 6px
+        }
+
+        .prof-loc {
+            font-size: 11px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--bg2);
+            border-top: 1px solid var(--border2);
+            text-align: center;
+            padding: 40px 40px 28px
+        }
+
+        .footer-logo {
+            font-family: 'DM Serif Display',serif;
+            font-size: 22px;
+            color: #fff;
+            display: block;
+            margin-bottom: 18px
+        }
+
+            .footer-logo span {
+                color: var(--roxo-light)
+            }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px
+        }
+
+            .footer-links a {
+                color: var(--muted);
+                text-decoration: none;
+                font-size: 13px;
+                transition: color .2s
+            }
+
+                .footer-links a:hover {
+                    color: #fff
+                }
+
+        .footer-copy {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 12px
+        }
+
+        /* MODAL ARTIGO */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.75);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s
+        }
+
+            .modal-overlay.open {
+                opacity: 1;
+                pointer-events: all
+            }
+
+        .modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 720px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 36px 40px;
+            position: relative
+        }
+
+        .modal-cat {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--roxo-light);
+            margin-bottom: 12px
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 12px
+        }
+
+        .modal-meta {
+            font-size: 12.5px;
+            color: var(--muted);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 24px
+        }
+
+        .modal-body {
+            font-size: 15px;
+            color: var(--muted2);
+            line-height: 1.8
+        }
+
+            .modal-body p {
+                margin-bottom: 16px
+            }
+
+            .modal-body h2, .modal-body h3 {
+                color: var(--text);
+                margin: 20px 0 10px;
+                font-family: 'Playfair Display',serif
+            }
+
+            .modal-body strong {
+                color: var(--text)
+            }
+
+            .modal-body ul, .modal-body ol {
+                padding-left: 20px;
+                margin-bottom: 16px
+            }
+
+            .modal-body li {
+                margin-bottom: 6px
+            }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-size: 22px;
+            cursor: pointer;
+            transition: color .2s
+        }
+
+            .modal-close:hover {
+                color: #fff
+            }
+
+        .modal-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px
+        }
+
+        /* PAINEL ADMIN */
+        #admin-panel {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.85);
+            z-index: 900;
+            overflow-y: auto
+        }
+
+            #admin-panel.open {
+                display: block
+            }
+
+        .admin-shell {
+            background: #0d111b;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 240px 1fr
+        }
+
+        .admin-sidebar {
+            background: #080c14;
+            border-right: 1px solid var(--border2);
+            padding: 0
+        }
+
+        .admin-sidebar-header {
+            padding: 22px 20px 16px;
+            border-bottom: 1px solid var(--border2)
+        }
+
+        .admin-logo {
+            font-family: 'DM Serif Display',serif;
+            font-size: 18px;
+            color: #fff
+        }
+
+            .admin-logo span {
+                color: var(--roxo-light)
+            }
+
+        .admin-role {
+            font-size: 10.5px;
+            color: var(--muted);
+            margin-top: 3px;
+            letter-spacing: .06em
+        }
+
+        .admin-nav {
+            padding: 12px 0
+        }
+
+        .admin-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 20px;
+            color: var(--muted2);
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: .2s;
+            border-left: 3px solid transparent
+        }
+
+            .admin-nav-item:hover {
+                color: #fff;
+                background: rgba(255,255,255,.03)
+            }
+
+            .admin-nav-item.active {
+                color: var(--roxo-light);
+                background: rgba(109,40,217,.08);
+                border-left-color: var(--roxo-light)
+            }
+
+            .admin-nav-item i {
+                width: 18px;
+                text-align: center;
+                font-size: 14px
+            }
+
+        .admin-nav-sep {
+            margin: 8px 20px;
+            height: 1px;
+            background: var(--border2)
+        }
+
+        .admin-content {
+            padding: 32px 40px;
+            overflow-y: auto;
+            max-height: 100vh
+        }
+
+        .admin-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px
+        }
+
+        .admin-page-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .admin-page-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        .btn-close-admin {
+            background: transparent;
+            border: 1px solid var(--border2);
+            color: var(--muted2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+            .btn-close-admin:hover {
+                color: #fff;
+                border-color: var(--border)
+            }
+
+        .admin-section {
+            display: none
+        }
+
+            .admin-section.active {
+                display: block
+            }
+
+        /* Forms admin */
+        .form-group {
+            margin-bottom: 18px
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted2);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin-bottom: 7px
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 11px 14px;
+            color: var(--text);
+            font-family: 'DM Sans',sans-serif;
+            font-size: 14px;
+            transition: border-color .2s;
+            outline: none
+        }
+
+            .form-input:focus, .form-select:focus, .form-textarea:focus {
+                border-color: rgba(139,92,246,.5)
+            }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6
+        }
+
+        .form-select option {
+            background: var(--bg2)
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .admin-card {
+            background: var(--bg2);
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px
+        }
+
+        .admin-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+            .admin-card-title i {
+                color: var(--roxo-light)
+            }
+
+        .btn-submit {
+            background: var(--roxo);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+            .btn-submit:hover {
+                background: var(--roxo-light)
+            }
+
+        .btn-danger {
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,.3);
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            transition: .2s
+        }
+
+            .btn-danger:hover {
+                background: rgba(239,68,68,.1)
+            }
+
+        .btn-edit {
+            background: transparent;
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,.3);
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            transition: .2s
+        }
+
+            .btn-edit:hover {
+                background: rgba(139,92,246,.1)
+            }
+
+        .btn-preview {
+            background: transparent;
+            color: var(--green);
+            border: 1px solid rgba(16,185,129,.3);
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            transition: .2s
+        }
+
+            .btn-preview:hover {
+                background: rgba(16,185,129,.1)
+            }
+
+        /* Admin table */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+            .admin-table th {
+                font-size: 11px;
+                font-weight: 600;
+                letter-spacing: .08em;
+                text-transform: uppercase;
+                color: var(--muted);
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border2);
+                text-align: left
+            }
+
+            .admin-table td {
+                font-size: 13px;
+                color: var(--muted2);
+                padding: 12px 14px;
+                border-bottom: 1px solid var(--border2);
+                vertical-align: middle
+            }
+
+            .admin-table tr:last-child td {
+                border-bottom: none
+            }
+
+            .admin-table tr:hover td {
+                background: rgba(255,255,255,.015)
+            }
+
+        .table-title {
+            font-weight: 500;
+            color: var(--text);
+            font-size: 13.5px
+        }
+
+        .status-pub {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green);
+            background: rgba(16,185,129,.1);
+            padding: 3px 9px;
+            border-radius: 20px
+        }
+
+        .status-draft {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted2);
+            background: rgba(255,255,255,.06);
+            padding: 3px 9px;
+            border-radius: 20px
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        /* Stats */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 14px;
+            margin-bottom: 24px
+        }
+
+        .stat-card {
+            background: var(--bg2);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            padding: 16px 18px
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin-bottom: 8px
+        }
+
+        .stat-val {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .stat-sub {
+            font-size: 11.5px;
+            color: var(--muted2);
+            margin-top: 4px
+        }
+
+        /* Quill editor customizado */
+        .ql-toolbar {
+            background: var(--bg3) !important;
+            border-color: var(--border) !important;
+            border-radius: 8px 8px 0 0
+        }
+
+        .ql-container {
+            background: var(--bg2) !important;
+            border-color: var(--border) !important;
+            border-radius: 0 0 8px 8px;
+            color: var(--text) !important;
+            font-family: 'DM Sans',sans-serif !important;
+            font-size: 14px !important;
+            min-height: 200px
+        }
+
+        .ql-editor {
+            color: var(--text) !important;
+            min-height: 200px
+        }
+
+            .ql-editor.ql-blank::before {
+                color: var(--muted) !important
+            }
+
+        .ql-toolbar .ql-stroke {
+            stroke: var(--muted2) !important
+        }
+
+        .ql-toolbar .ql-fill {
+            fill: var(--muted2) !important
+        }
+
+        .ql-toolbar button:hover .ql-stroke {
+            stroke: #fff !important
+        }
+
+        .ql-toolbar .ql-picker-label {
+            color: var(--muted2) !important
+        }
+
+        /* Preview modal */
+        .preview-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.85);
+            z-index: 950;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s
+        }
+
+            .preview-modal.open {
+                opacity: 1;
+                pointer-events: all
+            }
+
+        .preview-box {
+            background: var(--bg2);
+            border: 1px solid rgba(139,92,246,.3);
+            border-radius: 16px;
+            max-width: 720px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 36px 40px;
+            position: relative
+        }
+
+        .preview-badge {
+            background: rgba(109,40,217,.2);
+            color: var(--roxo-light);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(139,92,246,.3);
+            display: inline-block;
+            margin-bottom: 16px
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #1a2235;
+            border: 1px solid rgba(16,185,129,.3);
+            color: var(--green);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            z-index: 9999;
+            transition: .4s;
+            opacity: 0
+        }
+
+            .toast.show {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1
+            }
+
+        /* Login modal */
+        .login-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.85);
+            z-index: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s
+        }
+
+            .login-modal.open {
+                opacity: 1;
+                pointer-events: all
+            }
+
+        .login-box {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px 40px;
+            width: 100%;
+            max-width: 400px
+        }
+
+        .login-logo {
+            font-family: 'DM Serif Display',serif;
+            font-size: 24px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 4px
+        }
+
+            .login-logo span {
+                color: var(--roxo-light)
+            }
+
+        .login-sub {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 28px
+        }
+
+        .login-err {
+            font-size: 12.5px;
+            color: #ef4444;
+            text-align: center;
+            margin-top: 12px;
+            display: none
+        }
+
+        .login-note {
+            font-size: 11.5px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 16px
+        }
+
+        /* Ticker admin form */
+        .ticker-admin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        .ticker-admin-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px
+        }
+
+            .ticker-admin-item span {
+                flex: 1;
+                font-size: 13px;
+                color: var(--muted2)
+            }
+
+        .drag-handle {
+            cursor: grab;
+            color: var(--muted);
+            font-size: 14px;
+            padding: 0 4px
+        }
+
+        /* Fade up */
         .fade-up {
             opacity: 0;
             transform: translateY(24px);
@@ -1786,7 +1778,7 @@
                 transform: translateY(0)
             }
 
-        /* Responsive basics */
+        /* Responsive */
         @media(max-width:900px) {
             .hero-news {
                 grid-template-columns: 1fr
@@ -1796,7 +1788,11 @@
                 grid-template-columns: 1fr 1fr
             }
 
-            .recursos-strip, .prof-strip {
+            .gratuitos-grid {
+                grid-template-columns: 1fr
+            }
+
+            .prof-strip {
                 grid-template-columns: 1fr 1fr
             }
 
@@ -1812,7 +1808,7 @@
                 display: none
             }
 
-            .form-row, .form-row-3 {
+            .form-row {
                 grid-template-columns: 1fr
             }
 
@@ -1829,18 +1825,40 @@
                 padding: 28px 24px
             }
         }
+
+        .wa-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            background: #25D366;
+            color: #fff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 4px 20px rgba(37,211,102,.4);
+            text-decoration: none;
+            transition: transform .2s
+        }
+
+            .wa-btn:hover {
+                transform: scale(1.1)
+            }
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
     <nav>
         <div class="nav-logo">Pront<span>Psi</span></div>
         <div class="nav-cats-menu">
-            <a href="#" onclick="filterCat('Psicologia')">Psicologia</a>
-            <a href="#" onclick="filterCat('Psiquiatria')">Psiquiatria</a>
-            <a href="#" onclick="filterCat('Neurociência')">Neurociência</a>
-            <a href="#" onclick="filterCat('Eventos')">Eventos</a>
+            <a href="#" onclick="filterCat('Psicologia',null);return false">Psicologia</a>
+            <a href="#" onclick="filterCat('Psiquiatria',null);return false">Psiquiatria</a>
+            <a href="#" onclick="filterCat('Neurociência',null);return false">Neurociência</a>
+            <a href="#" onclick="filterCat('Eventos',null);return false">Eventos</a>
         </div>
         <div class="nav-links">
             <a href="profissionais.html" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);padding:7px 14px;border-radius:8px;font-size:12.5px;white-space:nowrap"><i class="fas fa-search"></i> Encontre um Psi</a>
@@ -1850,37 +1868,23 @@
         </div>
     </nav>
 
-    <!-- TICKER -->
     <div class="news-ticker">
         <span class="ticker-label">AO VIVO</span>
         <div class="ticker-track" id="tickerTrack">
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">OMS alerta para aumento de transtornos de ansiedade em jovens</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">CFP publica novas diretrizes para telepsicologia</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">Pesquisa revela impacto do sono na saúde mental</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">Nova escala de avaliação de burnout é validada no Brasil</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">OMS alerta para aumento de transtornos de ansiedade em jovens</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">CFP publica novas diretrizes para telepsicologia</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">Pesquisa revela impacto do sono na saúde mental</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas</span>
-            <span class="ticker-dot">●</span>
-            <span class="ticker-item">Nova escala de avaliação de burnout é validada no Brasil</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">OMS alerta para aumento de transtornos de ansiedade em jovens</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">CFP publica novas diretrizes para telepsicologia</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">Pesquisa revela impacto do sono na saúde mental</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">Nova escala de avaliação de burnout é validada no Brasil</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">OMS alerta para aumento de transtornos de ansiedade em jovens</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">CFP publica novas diretrizes para telepsicologia</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">Pesquisa revela impacto do sono na saúde mental</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas</span>
+            <span class="ticker-dot">●</span><span class="ticker-item">Nova escala de avaliação de burnout é validada no Brasil</span>
         </div>
     </div>
 
-    <!-- PORTAL -->
     <div class="portal-section">
-
-        <!-- Header cats -->
         <div class="portal-header">
             <div class="portal-cats">
                 <button class="portal-cat active" onclick="filterCat('all',this)">Tudo</button>
@@ -1892,7 +1896,6 @@
             <span class="portal-date" id="portalDate"></span>
         </div>
 
-        <!-- HERO GRID -->
         <div class="hero-news" id="heroGrid">
             <div class="hero-main-card" id="heroMain" onclick="openArticle(0)">
                 <div class="hero-img-area" id="heroImgArea">
@@ -1901,30 +1904,25 @@
                 </div>
                 <div class="hero-card-body">
                     <div class="hero-card-title" id="heroTitle">Bem-vindo ao Portal ProntPsi</div>
-                    <div class="hero-card-excerpt" id="heroExcerpt">Publique sua primeira notícia pelo painel admin e ela aparecerá aqui automaticamente, formatada e pronta.</div>
-                    <div class="card-meta"><span id="heroAuthor">Redação ProntPsi</span><span class="card-meta-dot"></span><span id="heroDate">Hoje</span></div>
+                    <div class="hero-card-excerpt" id="heroExcerpt">Publique sua primeira notícia pelo painel admin e ela aparecerá aqui automaticamente.</div>
+                    <div class="card-meta"><span id="heroAuthor">Redação ProntPsi</span><span style="width:3px;height:3px;border-radius:50%;background:var(--muted);display:inline-block"></span><span id="heroDate">Hoje</span></div>
                 </div>
             </div>
             <div class="hero-side" id="heroSide"></div>
         </div>
 
-        <!-- MAIS LIDAS -->
         <div class="secondary-section">
-            <div class="section-label">
-                <span class="section-label-text">Últimas notícias</span>
-                <div class="section-label-line"></div>
-            </div>
+            <div class="section-label"><span class="section-label-text">Últimas notícias</span><div class="section-label-line"></div></div>
             <div class="cards-grid" id="cardsGrid">
                 <div class="news-card" style="display:flex;align-items:center;justify-content:center;min-height:200px;border-style:dashed">
                     <div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">
                         <i class="fas fa-newspaper" style="font-size:28px;margin-bottom:10px;display:block;color:var(--roxo-light);opacity:.4"></i>
-                        Publique artigos pelo painel admin<br>e eles aparecerão aqui
+                        Publique artigos pelo painel admin
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- EVENTOS -->
         <div class="secondary-section">
             <div class="events-strip">
                 <div class="events-strip-header">
@@ -1939,64 +1937,33 @@
             </div>
         </div>
 
-        <!-- RECURSOS GRATUITOS -->
         <div class="secondary-section" id="gratuitos">
-            <div class="section-label">
-                <span class="section-label-text">Recursos gratuitos — sem cadastro</span>
-                <div class="section-label-line"></div>
-            </div>
-            <div style="text-align:center;margin-bottom:32px">
-                <p style="font-size:14px;color:var(--muted2);max-width:520px;margin:0 auto;line-height:1.7">Ferramentas úteis para o dia a dia clínico, abertas para qualquer profissional Psi — mesmo quem ainda não assina o sistema.</p>
-            </div>
+            <div class="section-label"><span class="section-label-text">Recursos gratuitos — sem cadastro</span><div class="section-label-line"></div></div>
+            <div style="text-align:center;margin-bottom:32px"><p style="font-size:14px;color:var(--muted2);max-width:520px;margin:0 auto;line-height:1.7">Ferramentas úteis para o dia a dia clínico, abertas para qualquer profissional Psi.</p></div>
             <div class="gratuitos-grid">
-
-                <!-- Calculadora -->
                 <div class="gratis-card fade-up">
-                    <span class="gratis-tag">✦ Gratuito</span>
-                    <span class="gratis-icon">🧮</span>
+                    <span class="gratis-tag">✦ Gratuito</span><span class="gratis-icon">🧮</span>
                     <h3>Calculadora de Honorários</h3>
                     <p>Descubra o valor justo para sua sessão baseado na sua região, especialidade e tempo de formado.</p>
                     <div class="calc-wrapper">
                         <div class="calc-row">
                             <label>Tempo de formado</label>
-                            <select id="calc-tempo">
-                                <option value="1">Recém-formado (0–2 anos)</option>
-                                <option value="2">Em formação (3–5 anos)</option>
-                                <option value="3">Experiente (6–10 anos)</option>
-                                <option value="4">Sênior (10+ anos)</option>
-                            </select>
+                            <select id="calc-tempo"><option value="1">Recém-formado (0–2 anos)</option><option value="2">Em formação (3–5 anos)</option><option value="3">Experiente (6–10 anos)</option><option value="4">Sênior (10+ anos)</option></select>
                         </div>
                         <div class="calc-row">
                             <label>Região</label>
-                            <select id="calc-regiao">
-                                <option value="sp">São Paulo (Capital)</option>
-                                <option value="rj">Rio de Janeiro</option>
-                                <option value="sul">Sul (RS, SC, PR)</option>
-                                <option value="mg">Minas Gerais</option>
-                                <option value="ne">Nordeste</option>
-                                <option value="co">Centro-Oeste</option>
-                                <option value="norte">Norte</option>
-                            </select>
+                            <select id="calc-regiao"><option value="sp">São Paulo (Capital)</option><option value="rj">Rio de Janeiro</option><option value="sul">Sul (RS, SC, PR)</option><option value="mg">Minas Gerais</option><option value="ne">Nordeste</option><option value="co">Centro-Oeste</option><option value="norte">Norte</option></select>
                         </div>
                         <div class="calc-row">
                             <label>Modalidade</label>
-                            <select id="calc-modo">
-                                <option value="1">Presencial</option>
-                                <option value="0.9">Online</option>
-                            </select>
+                            <select id="calc-modo"><option value="1">Presencial</option><option value="0.9">Online</option></select>
                         </div>
                         <button class="btn-calc" onclick="calcularHonorarios()">Calcular</button>
-                        <div class="calc-result" id="calc-result" style="display:none;">
-                            <span class="calc-result-valor" id="calc-valor"></span>
-                            <span class="calc-result-label">Faixa sugerida por sessão (50min)</span>
-                        </div>
+                        <div class="calc-result" id="calc-result" style="display:none"><span class="calc-result-valor" id="calc-valor"></span><span class="calc-result-label">Faixa sugerida por sessão (50min)</span></div>
                     </div>
                 </div>
-
-                <!-- Buscador de Escalas -->
                 <div class="gratis-card fade-up">
-                    <span class="gratis-tag">✦ Gratuito</span>
-                    <span class="gratis-icon">🔍</span>
+                    <span class="gratis-tag">✦ Gratuito</span><span class="gratis-icon">🔍</span>
                     <h3>Buscador de Escalas Validadas</h3>
                     <p>Encontre rapidamente qual escala usar para cada situação clínica — todas validadas para o Brasil.</p>
                     <div class="escalas-wrapper">
@@ -2004,45 +1971,26 @@
                         <div class="escala-list" id="escala-lista"></div>
                     </div>
                 </div>
-
-                <!-- Guia do Consultório -->
-                <div class="gratis-card fade-up" onclick="window.location.href='guia.html'" style="cursor:pointer;">
-                    <span class="gratis-tag">✦ Gratuito</span>
-                    <span class="gratis-icon">📋</span>
+                <div class="gratis-card fade-up" onclick="window.location.href='guia.html'" style="cursor:pointer">
+                    <span class="gratis-tag">✦ Gratuito</span><span class="gratis-icon">📋</span>
                     <h3>Guia: Como Montar seu Consultório</h3>
-                    <p>Do CNPJ à precificação. Um guia prático para profissionais recém-formados que querem começar com o pé direito.</p>
-                    <span class="gratis-link" style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--roxo-light);font-weight:600;">
-                        Acessar guia gratuito <i class="fas fa-arrow-right"></i>
-                    </span>
-                    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
-                        <div style="display:flex;gap:10px;align-items:center;">
-                            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">✓</div>
-                            <span style="font-size:13px;color:var(--muted2);">Como abrir o CNPJ como profissional autônomo da saúde</span>
-                        </div>
-                        <div style="display:flex;gap:10px;align-items:center;">
-                            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">✓</div>
-                            <span style="font-size:13px;color:var(--muted2);">Precificação justa para cada fase da carreira</span>
-                        </div>
-                        <div style="display:flex;gap:10px;align-items:center;">
-                            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">✓</div>
-                            <span style="font-size:13px;color:var(--muted2);">Marketing ético para atrair pacientes</span>
-                        </div>
-                        <div style="display:flex;gap:10px;align-items:center;">
-                            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">✓</div>
-                            <span style="font-size:13px;color:var(--muted2);">Documentação clínica obrigatória pelo CFP</span>
-                        </div>
+                    <p>Do CNPJ à precificação. Um guia prático para profissionais recém-formados.</p>
+                    <span class="gratis-link">Acessar guia gratuito <i class="fas fa-arrow-right"></i></span>
+                    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+                        <div style="display:flex;gap:10px;align-items:center"><div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">✓</div><span style="font-size:13px;color:var(--muted2)">Como abrir o CNPJ como profissional autônomo</span></div>
+                        <div style="display:flex;gap:10px;align-items:center"><div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">✓</div><span style="font-size:13px;color:var(--muted2)">Precificação justa para cada fase da carreira</span></div>
+                        <div style="display:flex;gap:10px;align-items:center"><div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">✓</div><span style="font-size:13px;color:var(--muted2)">Marketing ético para atrair pacientes</span></div>
+                        <div style="display:flex;gap:10px;align-items:center"><div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">✓</div><span style="font-size:13px;color:var(--muted2)">Documentação clínica obrigatória pelo CFP</span></div>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <!-- SISTEMA CTA -->
         <div class="sistema-cta">
             <div>
                 <div class="sistema-cta-label">⚡ Sistema clínico</div>
                 <div class="sistema-cta-title">Prontuário, agenda e escalas<br>em um só lugar</div>
-                <div class="sistema-cta-sub">Para psicólogos, psiquiatras e equipes multidisciplinares. Tudo que você precisa para organizar sua clínica — sem complicação.</div>
+                <div class="sistema-cta-sub">Para psicólogos, psiquiatras e equipes multidisciplinares. Tudo que você precisa para organizar sua clínica.</div>
                 <div class="sistema-cta-feats">
                     <div class="sistema-feat"><i class="fas fa-check-circle"></i> Agenda com pagamento online</div>
                     <div class="sistema-feat"><i class="fas fa-check-circle"></i> 16 escalas clínicas validadas</div>
@@ -2057,7 +2005,6 @@
             </div>
         </div>
 
-        <!-- PROFISSIONAIS EM DESTAQUE -->
         <div class="secondary-section">
             <div class="section-label">
                 <span class="section-label-text">Profissionais em destaque</span>
@@ -2066,49 +2013,56 @@
             </div>
             <div class="prof-strip" id="profStrip">
                 <div class="prof-card" style="border-style:dashed;grid-column:1/-1;display:flex;align-items:center;justify-content:center;min-height:90px">
-                    <span style="color:var(--muted);font-size:12px"><i class="fas fa-user-md" style="margin-right:8px;color:var(--roxo-light);opacity:.4"></i>Adicione profissionais em destaque pelo painel admin</span>
+                    <span style="color:var(--muted);font-size:12px">Adicione profissionais em destaque pelo painel admin</span>
                 </div>
             </div>
         </div>
+    </div>
 
-    </div><!-- /portal-section -->
-    <!-- FOOTER -->
     <footer>
         <span class="footer-logo">Pront<span>Psi</span></span>
         <div class="footer-links">
-            <a href="#">Portal</a>
-            <a href="profissionais.html">Encontre um Psi</a>
-            <a href="#planos">Planos</a>
-            <a href="#faq">FAQ</a>
-            <a href="login.html">Entrar no sistema</a>
-            <a href="cadastro.html">Cadastrar</a>
+            <a href="#">Portal</a><a href="profissionais.html">Encontre um Psi</a>
+            <a href="#planos">Planos</a><a href="#faq">FAQ</a>
+            <a href="login.html">Entrar no sistema</a><a href="cadastro.html">Cadastrar</a>
             <a href="mailto:prontpsii@gmail.com">Contato</a>
         </div>
         <p class="footer-copy">© 2026 ProntPsi — O sistema clínico do universo Psi.</p>
         <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:24px">
-            <a href="https://instagram.com/prontpsi" target="_blank" style="color:var(--muted);text-decoration:none;font-size:13px;display:inline-flex;align-items:center;gap:7px">
-                <i class="fab fa-instagram" style="font-size:17px"></i> @prontpsi
-            </a>
-            <a href="#admin-acesso" onclick="openLogin();return false;" style="color:var(--muted);text-decoration:none;font-size:11px;opacity:.4;transition:opacity .2s" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.4'">
-                <i class="fas fa-lock" style="font-size:10px"></i> admin
-            </a>
+            <a href="https://instagram.com/prontpsi" target="_blank" style="color:var(--muted);text-decoration:none;font-size:13px;display:inline-flex;align-items:center;gap:7px"><i class="fab fa-instagram" style="font-size:17px"></i> @prontpsi</a>
+            <a href="#admin-acesso" onclick="openLogin();return false;" style="color:var(--muted);text-decoration:none;font-size:11px;opacity:.35;transition:opacity .2s" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.35'"><i class="fas fa-lock" style="font-size:10px"></i> admin</a>
         </div>
     </footer>
 
     <a href="https://wa.me/5511947454936" target="_blank" class="wa-btn"><i class="fab fa-whatsapp"></i></a>
 
-    <!-- MODAL LEITURA ARTIGO -->
+    <!-- MODAL LEITURA -->
     <div class="modal-overlay" id="articleModal">
-        <div class="modal" style="position:relative">
+        <div class="modal">
             <div class="modal-header-row">
                 <div class="modal-cat" id="modalCat">Psicologia</div>
-                <button class="modal-close" onclick="closeArticle()" style="position:static"><i class="fas fa-times"></i></button>
+                <button class="modal-close" onclick="closeArticle()"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-title" id="modalTitle"></div>
             <div class="modal-meta" id="modalMeta"></div>
             <img class="modal-img" id="modalImg" src="" alt="" style="display:none" />
-            <div class="modal-img" id="modalImgPlaceholder" style="display:flex;align-items:center;justify-content:center;font-size:40px;background:linear-gradient(135deg,rgba(109,40,217,.25),rgba(10,13,20,.8))">🧠</div>
+            <div id="modalImgPlaceholder" style="width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:48px;background:linear-gradient(135deg,rgba(109,40,217,.25),rgba(10,13,20,.8));border-radius:10px;margin-bottom:24px">🧠</div>
             <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- PREVIEW MODAL -->
+    <div class="preview-modal" id="previewModal">
+        <div class="preview-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                <span class="preview-badge">👁 Pré-visualização</span>
+                <button onclick="closePreview()" style="background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-cat" id="pvCat"></div>
+            <div class="modal-title" id="pvTitle"></div>
+            <div class="modal-meta" id="pvMeta"></div>
+            <div id="pvImgWrap"></div>
+            <div class="modal-body" id="pvBody"></div>
         </div>
     </div>
 
@@ -2126,10 +2080,9 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
-    <!-- ADMIN PANEL -->
+    <!-- PAINEL ADMIN -->
     <div id="admin-panel">
         <div class="admin-shell">
             <div class="admin-sidebar">
@@ -2138,11 +2091,11 @@
                     <div class="admin-role">Painel Editorial Admin</div>
                 </div>
                 <div class="admin-nav">
-                    <div class="admin-nav-item active" onclick="showAdminSection('dashboard')"><i class="fas fa-chart-bar"></i> Dashboard</div>
-                    <div class="admin-nav-item" onclick="showAdminSection('noticias')"><i class="fas fa-newspaper"></i> Notícias & Artigos</div>
-                    <div class="admin-nav-item" onclick="showAdminSection('eventos')"><i class="fas fa-calendar-alt"></i> Eventos</div>
-                    <div class="admin-nav-item" onclick="showAdminSection('recursos')"><i class="fas fa-folder-open"></i> Recursos Gratuitos</div>
-                    <div class="admin-nav-item" onclick="showAdminSection('profissionais')"><i class="fas fa-user-md"></i> Profissionais Destaque</div>
+                    <div class="admin-nav-item active" onclick="showAdminSection('dashboard',this)"><i class="fas fa-chart-bar"></i> Dashboard</div>
+                    <div class="admin-nav-item" onclick="showAdminSection('noticias',this)"><i class="fas fa-newspaper"></i> Notícias & Artigos</div>
+                    <div class="admin-nav-item" onclick="showAdminSection('eventos',this)"><i class="fas fa-calendar-alt"></i> Eventos</div>
+                    <div class="admin-nav-item" onclick="showAdminSection('ticker',this)"><i class="fas fa-broadcast-tower"></i> Ticker AO VIVO</div>
+                    <div class="admin-nav-item" onclick="showAdminSection('profissionais',this)"><i class="fas fa-user-md"></i> Profissionais Destaque</div>
                     <div class="admin-nav-sep"></div>
                     <div class="admin-nav-item" onclick="closeAdmin()"><i class="fas fa-arrow-left"></i> Voltar ao portal</div>
                 </div>
@@ -2153,34 +2106,30 @@
                         <div class="admin-page-title" id="adminPageTitle">Dashboard</div>
                         <div class="admin-page-sub" id="adminPageSub">Visão geral do portal</div>
                     </div>
-                    <button class="btn-close-admin" onclick="closeAdmin()"><i class="fas fa-times"></i> Fechar painel</button>
+                    <button class="btn-close-admin" onclick="closeAdmin()"><i class="fas fa-times"></i> Fechar</button>
                 </div>
 
                 <!-- DASHBOARD -->
                 <div class="admin-section active" id="sec-dashboard">
                     <div class="admin-stats" id="dashStats"></div>
                     <div class="admin-card">
-                        <div class="admin-card-title"><i class="fas fa-info-circle"></i> Como usar o painel</div>
+                        <div class="admin-card-title"><i class="fas fa-info-circle"></i> Como usar</div>
                         <p style="font-size:13.5px;color:var(--muted2);line-height:1.8">
-                            Use o menu lateral para publicar conteúdo. Cada seção tem um formulário simples:<br><br>
-                            <strong style="color:var(--text)">📰 Notícias & Artigos</strong> — publique matérias, pesquisas e artigos clínicos<br>
-                            <strong style="color:var(--text)">📅 Eventos</strong> — divulgue congressos, webinars e cursos<br>
-                            <strong style="color:var(--text)">📁 Recursos Gratuitos</strong> — disponibilize PDFs, escalas e guias<br>
-                            <strong style="color:var(--text)">👨‍⚕️ Profissionais</strong> — coloque profissionais em destaque na home<br><br>
-                            Tudo que você publicar aparece imediatamente no portal, já formatado e posicionado.
+                            <strong style="color:var(--text)">📰 Notícias & Artigos</strong> — editor rico com negrito, listas, títulos. Prévia antes de publicar. Edição depois de publicado.<br>
+                            <strong style="color:var(--text)">📅 Eventos</strong> — congressos, webinars e cursos.<br>
+                            <strong style="color:var(--text)">📡 Ticker AO VIVO</strong> — edite as manchetes que rolam no topo do site.<br>
+                            <strong style="color:var(--text)">👨‍⚕️ Profissionais</strong> — arraste para reordenar quem aparece primeiro.
                         </p>
                     </div>
                 </div>
 
                 <!-- NOTICIAS -->
                 <div class="admin-section" id="sec-noticias">
-                    <div class="admin-card">
-                        <div class="admin-card-title"><i class="fas fa-plus-circle"></i> Publicar nova notícia / artigo</div>
+                    <div class="admin-card" id="formNoticiaCard">
+                        <div class="admin-card-title"><i class="fas fa-plus-circle"></i> <span id="formNoticiaLabel">Publicar nova notícia</span></div>
+                        <input type="hidden" id="n-id" value="" />
                         <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Título *</label>
-                                <input class="form-input" id="n-titulo" placeholder="Título da matéria" />
-                            </div>
+                            <div class="form-group"><label class="form-label">Título *</label><input class="form-input" id="n-titulo" placeholder="Título da matéria" /></div>
                             <div class="form-group">
                                 <label class="form-label">Categoria</label>
                                 <select class="form-select" id="n-cat">
@@ -2193,23 +2142,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Resumo (aparece na home) *</label>
-                            <textarea class="form-textarea" id="n-resumo" placeholder="Uma ou duas frases resumindo o artigo..." style="min-height:70px"></textarea>
-                        </div>
+                        <div class="form-group"><label class="form-label">Resumo (aparece na home) *</label><textarea class="form-textarea" id="n-resumo" placeholder="Uma ou duas frases resumindo o artigo..." style="min-height:60px"></textarea></div>
                         <div class="form-group">
                             <label class="form-label">Texto completo *</label>
-                            <textarea class="form-textarea" id="n-corpo" placeholder="Escreva o artigo completo aqui. Use linhas em branco para separar parágrafos." style="min-height:180px"></textarea>
+                            <div id="quillEditor" style="margin-bottom:8px"></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Autor</label>
-                                <input class="form-input" id="n-autor" placeholder="Ex: Dra. Ana Lima" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">URL da imagem (opcional)</label>
-                                <input class="form-input" id="n-img" placeholder="https://..." />
-                            </div>
+                            <div class="form-group"><label class="form-label">Autor</label><input class="form-input" id="n-autor" placeholder="Ex: Dra. Ana Lima" /></div>
+                            <div class="form-group"><label class="form-label">URL da imagem (opcional)</label><input class="form-input" id="n-img" placeholder="https://..." /></div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Status</label>
@@ -2218,9 +2158,12 @@
                                 <option value="rascunho">📝 Rascunho</option>
                             </select>
                         </div>
-                        <button class="btn-submit" onclick="salvarNoticia()"><i class="fas fa-paper-plane"></i> Publicar agora</button>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap">
+                            <button class="btn-preview" onclick="abrirPreview()"><i class="fas fa-eye"></i> Pré-visualizar</button>
+                            <button class="btn-submit" onclick="salvarNoticia()"><i class="fas fa-paper-plane"></i> <span id="btnSalvarLabel">Publicar agora</span></button>
+                            <button id="btnCancelarEdicao" class="btn-danger" onclick="cancelarEdicao()" style="display:none"><i class="fas fa-times"></i> Cancelar edição</button>
+                        </div>
                     </div>
-
                     <div class="admin-card">
                         <div class="admin-card-title"><i class="fas fa-list"></i> Conteúdo publicado</div>
                         <table class="admin-table">
@@ -2235,37 +2178,18 @@
                     <div class="admin-card">
                         <div class="admin-card-title"><i class="fas fa-plus-circle"></i> Adicionar evento</div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Nome do evento *</label>
-                                <input class="form-input" id="e-titulo" placeholder="Ex: Congresso Brasileiro de Psiquiatria" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Data *</label>
-                                <input class="form-input" type="date" id="e-data" />
-                            </div>
+                            <div class="form-group"><label class="form-label">Nome do evento *</label><input class="form-input" id="e-titulo" placeholder="Ex: Congresso Brasileiro de Psiquiatria" /></div>
+                            <div class="form-group"><label class="form-label">Data *</label><input class="form-input" type="date" id="e-data" /></div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label">Modalidade</label>
-                                <select class="form-select" id="e-modal">
-                                    <option value="online">Online</option>
-                                    <option value="presencial">Presencial</option>
-                                    <option value="hibrido">Híbrido</option>
-                                </select>
+                                <select class="form-select" id="e-modal"><option value="online">Online</option><option value="presencial">Presencial</option><option value="hibrido">Híbrido</option></select>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Local / Plataforma</label>
-                                <input class="form-input" id="e-local" placeholder="Ex: Zoom / São Paulo - SP" />
-                            </div>
+                            <div class="form-group"><label class="form-label">Local / Plataforma</label><input class="form-input" id="e-local" placeholder="Ex: Zoom / São Paulo - SP" /></div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Descrição curta</label>
-                            <textarea class="form-textarea" id="e-desc" placeholder="Breve descrição do evento..." style="min-height:70px"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Link de inscrição</label>
-                            <input class="form-input" id="e-link" placeholder="https://..." />
-                        </div>
+                        <div class="form-group"><label class="form-label">Descrição curta</label><textarea class="form-textarea" id="e-desc" placeholder="Breve descrição..." style="min-height:70px"></textarea></div>
+                        <div class="form-group"><label class="form-label">Link de inscrição</label><input class="form-input" id="e-link" placeholder="https://..." /></div>
                         <button class="btn-submit" onclick="salvarEvento()"><i class="fas fa-calendar-check"></i> Adicionar evento</button>
                     </div>
                     <div class="admin-card">
@@ -2277,47 +2201,16 @@
                     </div>
                 </div>
 
-                <!-- RECURSOS -->
-                <div class="admin-section" id="sec-recursos">
+                <!-- TICKER -->
+                <div class="admin-section" id="sec-ticker">
                     <div class="admin-card">
-                        <div class="admin-card-title"><i class="fas fa-plus-circle"></i> Adicionar recurso gratuito</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Nome do recurso *</label>
-                                <input class="form-input" id="r-titulo" placeholder="Ex: Guia Completo do Beck BDI-II" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Tipo</label>
-                                <select class="form-select" id="r-tipo">
-                                    <option>PDF</option>
-                                    <option>Escala clínica</option>
-                                    <option>Guia prático</option>
-                                    <option>Infográfico</option>
-                                    <option>Planilha</option>
-                                    <option>Vídeo</option>
-                                </select>
-                            </div>
+                        <div class="admin-card-title"><i class="fas fa-broadcast-tower"></i> Manchetes do ticker AO VIVO</div>
+                        <p style="font-size:13px;color:var(--muted2);margin-bottom:16px">Essas são as manchetes que rolam no topo do site. Edite, adicione ou remova.</p>
+                        <div class="form-row" style="margin-bottom:16px">
+                            <div class="form-group"><label class="form-label">Nova manchete</label><input class="form-input" id="ticker-nova" placeholder="Ex: OMS divulga novo relatório sobre saúde mental" /></div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Descrição curta</label>
-                            <input class="form-input" id="r-desc" placeholder="Para que serve / o que contém" />
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Emoji / ícone representativo</label>
-                            <input class="form-input" id="r-emoji" placeholder="📄 🧠 📊 📋 🎥" style="max-width:160px" />
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Link para download / acesso</label>
-                            <input class="form-input" id="r-link" placeholder="https://..." />
-                        </div>
-                        <button class="btn-submit" onclick="salvarRecurso()"><i class="fas fa-folder-plus"></i> Adicionar recurso</button>
-                    </div>
-                    <div class="admin-card">
-                        <div class="admin-card-title"><i class="fas fa-list"></i> Recursos cadastrados</div>
-                        <table class="admin-table">
-                            <thead><tr><th>Nome</th><th>Tipo</th><th>Ações</th></tr></thead>
-                            <tbody id="recursosTabela"></tbody>
-                        </table>
+                        <button class="btn-submit" onclick="adicionarTicker()" style="margin-bottom:20px"><i class="fas fa-plus"></i> Adicionar manchete</button>
+                        <div class="ticker-admin-list" id="tickerAdminList"></div>
                     </div>
                 </div>
 
@@ -2326,35 +2219,20 @@
                     <div class="admin-card">
                         <div class="admin-card-title"><i class="fas fa-plus-circle"></i> Adicionar profissional em destaque</div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Nome completo *</label>
-                                <input class="form-input" id="p-nome" placeholder="Ex: Dra. Maria Silva" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Especialidade *</label>
-                                <input class="form-input" id="p-spec" placeholder="Ex: Psiquiatra · TDAH e Ansiedade" />
-                            </div>
+                            <div class="form-group"><label class="form-label">Nome completo *</label><input class="form-input" id="p-nome" placeholder="Ex: Dra. Maria Silva" /></div>
+                            <div class="form-group"><label class="form-label">Especialidade *</label><input class="form-input" id="p-spec" placeholder="Ex: Psiquiatra · TDAH e Ansiedade" /></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Cidade / Estado</label>
-                                <input class="form-input" id="p-loc" placeholder="Ex: São Paulo, SP" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Iniciais (para avatar) *</label>
-                                <input class="form-input" id="p-iniciais" placeholder="Ex: MS" maxlength="2" style="max-width:100px" />
-                            </div>
+                            <div class="form-group"><label class="form-label">Cidade / Estado</label><input class="form-input" id="p-loc" placeholder="Ex: São Paulo, SP" /></div>
+                            <div class="form-group"><label class="form-label">Iniciais (para avatar) *</label><input class="form-input" id="p-iniciais" placeholder="Ex: MS" maxlength="2" style="max-width:100px" /></div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Link do perfil (opcional)</label>
-                            <input class="form-input" id="p-link" placeholder="https://..." />
-                        </div>
+                        <div class="form-group"><label class="form-label">Link do perfil (opcional)</label><input class="form-input" id="p-link" placeholder="https://..." /></div>
                         <button class="btn-submit" onclick="salvarProfissional()"><i class="fas fa-user-plus"></i> Adicionar ao destaque</button>
                     </div>
                     <div class="admin-card">
-                        <div class="admin-card-title"><i class="fas fa-list"></i> Profissionais em destaque</div>
+                        <div class="admin-card-title"><i class="fas fa-list"></i> Profissionais em destaque <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:8px">arraste para reordenar</span></div>
                         <table class="admin-table">
-                            <thead><tr><th>Nome</th><th>Especialidade</th><th>Cidade</th><th>Ações</th></tr></thead>
+                            <thead><tr><th></th><th>Nome</th><th>Especialidade</th><th>Cidade</th><th>Ações</th></tr></thead>
                             <tbody id="profsTabela"></tbody>
                         </table>
                     </div>
@@ -2365,16 +2243,16 @@
     </div>
 
     <script>
-        // ─── CONFIG ───
         const API = 'https://prontpsiback-production.up.railway.app/api/portal';
         let adminToken = null;
+        let noticias = [], eventos = [], profissionais = [];
+        let quill = null;
+        let tickerItens = [];
+        let editandoId = null;
 
-        // ─── API HELPERS ───
+        // ─── API ───
         async function api(method, path, body) {
-            const opts = {
-                method,
-                headers: { 'Content-Type': 'application/json' }
-            };
+            const opts = { method, headers: { 'Content-Type': 'application/json' } };
             if (adminToken) opts.headers['Authorization'] = 'Bearer ' + adminToken;
             if (body) opts.body = JSON.stringify(body);
             const res = await fetch(API + path, opts);
@@ -2382,49 +2260,57 @@
             return res.json();
         }
 
-        // ─── STATE ───
-        let noticias = [], eventos = [], profissionais = [];
-        let adminUser = null;
-
         // ─── INIT ───
         async function init() {
-            const hoje = new Date();
-            document.getElementById('portalDate').textContent = hoje.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('portalDate').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            // Init Quill
+            quill = new Quill('#quillEditor', {
+                theme: 'snow',
+                placeholder: 'Escreva o artigo completo aqui...',
+                modules: { toolbar: [[{ header: [2, 3, false] }], 'bold', 'italic', 'underline', { list: 'ordered' }, { list: 'bullet' }, 'blockquote', 'clean'] }
+            });
+            // Ticker do localStorage
+            tickerItens = JSON.parse(localStorage.getItem('psi:ticker') || 'null') || [
+                'OMS alerta para aumento de transtornos de ansiedade em jovens',
+                'CFP publica novas diretrizes para telepsicologia',
+                'Pesquisa revela impacto do sono na saúde mental',
+                'Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas',
+                'Nova escala de avaliação de burnout é validada no Brasil'
+            ];
+            renderTicker();
             await carregarDados();
         }
 
         async function carregarDados() {
             try {
-                [noticias, eventos, profissionais] = await Promise.all([
-                    api('GET', '/noticias'),
-                    api('GET', '/eventos'),
-                    api('GET', '/profissionais')
-                ]);
-                // normaliza campos vindos do MySQL para o padrão usado no render
-                noticias = noticias.map(n => ({ ...n, img: n.img_url, data: n.criado_em, spec: n.especialidade, loc: n.cidade, link: n.link_perfil }));
-                eventos = eventos.map(e => ({ ...e, data: e.data_evento, local: e.local_evento, desc: e.descricao, link: e.link_inscricao }));
-                profissionais = profissionais.map(p => ({ ...p, spec: p.especialidade, loc: p.cidade, link: p.link_perfil }));
-            } catch (e) {
-                console.error('Erro ao carregar dados do portal:', e);
-            }
+                const [n, e, p] = await Promise.all([api('GET', '/noticias'), api('GET', '/eventos'), api('GET', '/profissionais')]);
+                noticias = n.map(x => ({ ...x, img: x.img_url, data: x.criado_em }));
+                eventos = e.map(x => ({ ...x, data: x.data_evento, local: x.local_evento, desc: x.descricao, link: x.link_inscricao }));
+                profissionais = p.map(x => ({ ...x, spec: x.especialidade, loc: x.cidade, link: x.link_perfil }));
+            } catch (e) { console.error(e) }
+            renderPortal();
+            renderAdminTables();
+            renderDashStats();
+        }
+
+        async function carregarAdmin() {
+            try {
+                const [n, e, p] = await Promise.all([api('GET', '/noticias/todas'), api('GET', '/eventos/todos'), api('GET', '/profissionais/todos')]);
+                noticias = n.map(x => ({ ...x, img: x.img_url, data: x.criado_em }));
+                eventos = e.map(x => ({ ...x, data: x.data_evento, local: x.local_evento, desc: x.descricao, link: x.link_inscricao }));
+                profissionais = p.map(x => ({ ...x, spec: x.especialidade, loc: x.cidade, link: x.link_perfil }));
+            } catch (e) { console.error(e) }
             renderPortal();
             renderAdminTables();
             renderDashStats();
         }
 
         // ─── RENDER PORTAL ───
-        function renderPortal() {
-            renderHero();
-            renderCards();
-            renderEventos();
-            renderRecursos();
-            renderProfissionais();
-        }
+        function renderPortal() { renderHero(); renderCards(); renderEventos(); renderProfissionais(); }
 
         function renderHero() {
             const pubs = noticias.filter(n => n.status === 'publicado');
-            if (pubs.length === 0) return;
-
+            if (!pubs.length) return;
             const main = pubs[0];
             document.getElementById('heroCat').textContent = main.categoria;
             document.getElementById('heroTitle').textContent = main.titulo;
@@ -2432,125 +2318,91 @@
             document.getElementById('heroAuthor').textContent = main.autor || 'Redação ProntPsi';
             document.getElementById('heroDate').textContent = formatDate(main.data);
             document.getElementById('heroMain').onclick = () => openArticle(noticias.indexOf(main));
-
             const imgArea = document.getElementById('heroImgArea');
-            if (main.img) {
-                imgArea.innerHTML = `<img src="${main.img}" alt=""/><div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>`;
-            } else {
-                imgArea.innerHTML = `<div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>`;
-            }
-
+            imgArea.innerHTML = main.img ? `<img src="${main.img}" alt=""/><div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>` : `<div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>`;
             const side = document.getElementById('heroSide');
             const sidePubs = pubs.slice(1, 4);
-            if (sidePubs.length === 0) { side.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);font-size:12px;padding:20px;text-align:center">Publique mais artigos<br>para aparecerem aqui</div>'; return; }
-            side.innerHTML = sidePubs.map((n, i) => {
-                const idx = noticias.indexOf(n);
-                return `<div class="side-news-card" onclick="openArticle(${idx})">
-          <div class="side-cat">${n.categoria}</div>
-          <div class="side-title">${n.titulo}</div>
-          <div class="side-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div>
-        </div>`;
-            }).join('');
+            if (!sidePubs.length) { side.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);font-size:12px;padding:20px;text-align:center">Publique mais artigos para aparecerem aqui</div>'; return; }
+            side.innerHTML = sidePubs.map(n => `<div class="side-news-card" onclick="openArticle(${noticias.indexOf(n)})"><div class="side-cat">${n.categoria}</div><div class="side-title">${n.titulo}</div><div class="side-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div></div>`).join('');
         }
 
         function renderCards() {
             const pubs = noticias.filter(n => n.status === 'publicado');
             const grid = document.getElementById('cardsGrid');
-            if (pubs.length <= 1) {
-                if (pubs.length === 0) grid.innerHTML = `<div class="news-card" style="display:flex;align-items:center;justify-content:center;min-height:200px;border-style:dashed"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px"><i class="fas fa-newspaper" style="font-size:28px;margin-bottom:10px;display:block;color:var(--roxo-light);opacity:.4"></i>Publique artigos pelo painel admin<br>e eles aparecerão aqui</div></div>`;
-                return;
-            }
-            const resto = pubs.slice(1, 7);
-            grid.innerHTML = resto.map(n => {
-                const idx = noticias.indexOf(n);
-                return `<div class="news-card" onclick="openArticle(${idx})">
-          <div class="news-card-img" style="${n.img ? '' : ''}">
-            ${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}
-            <span class="ncat">${n.categoria}</span>
-          </div>
-          <div class="news-card-body">
-            <div class="news-card-title">${n.titulo}</div>
-            <div class="news-card-excerpt">${n.resumo}</div>
-            <div class="news-card-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div>
-          </div>
-        </div>`;
-            }).join('');
+            if (pubs.length <= 1) { grid.innerHTML = pubs.length === 0 ? `<div class="news-card" style="display:flex;align-items:center;justify-content:center;min-height:200px;border-style:dashed"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px"><i class="fas fa-newspaper" style="font-size:28px;margin-bottom:10px;display:block;color:var(--roxo-light);opacity:.4"></i>Publique artigos pelo painel admin</div></div>` : ''; return; }
+            grid.innerHTML = pubs.slice(1, 7).map(n => `<div class="news-card" onclick="openArticle(${noticias.indexOf(n)})"><div class="news-card-img">${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}<span class="ncat">${n.categoria}</span></div><div class="news-card-body"><div class="news-card-title">${n.titulo}</div><div class="news-card-excerpt">${n.resumo}</div><div class="news-card-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div></div></div>`).join('');
         }
 
         function renderEventos() {
             const el = document.getElementById('eventsList');
-            if (eventos.length === 0) {
-                el.innerHTML = `<div class="event-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:90px"><span style="color:var(--muted);font-size:12px">Adicione eventos pelo painel admin</span></div>`;
-                return;
-            }
-            const sorted = eventos.slice().sort((a, b) => new Date(a.data) - new Date(b.data)).slice(0, 3);
-            el.innerHTML = sorted.map(ev => `
-        <div class="event-card" onclick="${ev.link ? `window.open('${ev.link}','_blank')` : ''}">
-          <div class="event-date-badge"><i class="fas fa-calendar"></i> ${formatDate(ev.data)}</div>
-          <div class="event-title">${ev.titulo}</div>
-          <div class="event-meta">
-            <span class="event-tag ${ev.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${ev.modalidade}</span>
-            <span style="color:var(--muted)">·</span>
-            <span>${ev.local || ''}</span>
-          </div>
-        </div>
-      `).join('');
-        }
-
-        function renderRecursos() {
-            const el = document.getElementById('recursosList');
-            if (recursos.length === 0) {
-                el.innerHTML = `<div class="recurso-card" style="border-style:dashed;grid-column:1/-1;justify-content:center"><span style="color:var(--muted);font-size:12px"><i class="fas fa-folder-open" style="margin-right:8px;color:var(--roxo-light);opacity:.4"></i>Adicione recursos pelo painel admin</span></div>`;
-                return;
-            }
-            el.innerHTML = recursos.slice(0, 4).map(r => `
-        <div class="recurso-card" onclick="${r.link ? `window.open('${r.link}','_blank')` : ''}">
-          <div class="recurso-icon">${r.emoji || '📄'}</div>
-          <div>
-            <div class="recurso-title">${r.titulo}</div>
-            <div class="recurso-desc">${r.desc || ''}</div>
-            <div class="recurso-tag">⬇ ${r.tipo}</div>
-          </div>
-        </div>
-      `).join('');
+            if (!eventos.length) { el.innerHTML = `<div class="event-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:90px"><span style="color:var(--muted);font-size:12px">Adicione eventos pelo painel admin</span></div>`; return; }
+            el.innerHTML = eventos.slice().sort((a, b) => new Date(a.data) - new Date(b.data)).slice(0, 3).map(ev => `<div class="event-card" onclick="${ev.link ? `window.open('${ev.link}','_blank')` : ''}"><div class="event-date-badge"><i class="fas fa-calendar"></i> ${formatDate(ev.data)}</div><div class="event-title">${ev.titulo}</div><div class="event-meta"><span class="event-tag ${ev.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${ev.modalidade}</span><span style="color:var(--muted)">·</span><span>${ev.local || ''}</span></div></div>`).join('');
         }
 
         function renderProfissionais() {
             const el = document.getElementById('profStrip');
-            if (profissionais.length === 0) {
-                el.innerHTML = `<div class="prof-card" style="border-style:dashed;grid-column:1/-1;display:flex;align-items:center;justify-content:center;min-height:90px"><span style="color:var(--muted);font-size:12px"><i class="fas fa-user-md" style="margin-right:8px;color:var(--roxo-light);opacity:.4"></i>Adicione profissionais em destaque pelo painel admin</span></div>`;
-                return;
-            }
-            el.innerHTML = profissionais.slice(0, 4).map(p => `
-        <div class="prof-card" onclick="${p.link ? `window.open('${p.link}','_blank')` : ''}">
-          <div class="prof-avatar">${p.iniciais}</div>
-          <div class="prof-name">${p.nome}</div>
-          <div class="prof-spec">${p.spec}</div>
-          <div class="prof-loc"><i class="fas fa-map-marker-alt" style="font-size:10px"></i> ${p.loc || ''}</div>
-        </div>
-      `).join('');
+            if (!profissionais.length) { el.innerHTML = `<div class="prof-card" style="border-style:dashed;grid-column:1/-1;display:flex;align-items:center;justify-content:center;min-height:90px"><span style="color:var(--muted);font-size:12px">Adicione profissionais em destaque pelo painel admin</span></div>`; return; }
+            el.innerHTML = profissionais.slice(0, 4).map(p => `<div class="prof-card" onclick="${p.link ? `window.open('${p.link}','_blank')` : ''}"><div class="prof-avatar">${p.iniciais}</div><div class="prof-name">${p.nome}</div><div class="prof-spec">${p.spec || ''}</div><div class="prof-loc"><i class="fas fa-map-marker-alt" style="font-size:10px"></i> ${p.loc || ''}</div></div>`).join('');
+        }
+
+        // ─── TICKER ───
+        function renderTicker() {
+            const doubled = [...tickerItens, ...tickerItens];
+            document.getElementById('tickerTrack').innerHTML = doubled.map(t => `<span class="ticker-dot">●</span><span class="ticker-item">${t}</span>`).join('');
+        }
+        function renderTickerAdmin() {
+            const el = document.getElementById('tickerAdminList');
+            if (!tickerItens.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">Nenhuma manchete cadastrada</p>'; return; }
+            el.innerHTML = tickerItens.map((t, i) => `<div class="ticker-admin-item"><span class="drag-handle">⠿</span><span>${t}</span><button class="btn-danger" onclick="removerTicker(${i})"><i class="fas fa-trash"></i></button></div>`).join('');
+        }
+        function adicionarTicker() {
+            const val = document.getElementById('ticker-nova').value.trim();
+            if (!val) { showToast('Digite a manchete', 'erro'); return; }
+            tickerItens.push(val);
+            localStorage.setItem('psi:ticker', JSON.stringify(tickerItens));
+            document.getElementById('ticker-nova').value = '';
+            renderTicker(); renderTickerAdmin();
+            showToast('✅ Manchete adicionada!');
+        }
+        function removerTicker(i) {
+            tickerItens.splice(i, 1);
+            localStorage.setItem('psi:ticker', JSON.stringify(tickerItens));
+            renderTicker(); renderTickerAdmin();
+            showToast('🗑 Manchete removida');
         }
 
         // ─── ARTICLE MODAL ───
         function openArticle(idx) {
-            const art = noticias[idx];
-            if (!art) return;
+            const art = noticias[idx]; if (!art) return;
             document.getElementById('modalCat').textContent = art.categoria;
             document.getElementById('modalTitle').textContent = art.titulo;
             document.getElementById('modalMeta').innerHTML = `${art.autor || 'Redação ProntPsi'} <span style="margin:0 6px;color:var(--muted)">·</span> ${formatDate(art.data)}`;
-            if (art.img) {
-                document.getElementById('modalImg').src = art.img;
-                document.getElementById('modalImg').style.display = 'block';
-                document.getElementById('modalImgPlaceholder').style.display = 'none';
-            } else {
-                document.getElementById('modalImg').style.display = 'none';
-                document.getElementById('modalImgPlaceholder').style.display = 'flex';
-            }
-            document.getElementById('modalBody').innerHTML = art.corpo.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
+            const img = document.getElementById('modalImg'), ph = document.getElementById('modalImgPlaceholder');
+            if (art.img) { img.src = art.img; img.style.display = 'block'; ph.style.display = 'none'; } else { img.style.display = 'none'; ph.style.display = 'flex'; }
+            document.getElementById('modalBody').innerHTML = art.corpo || art.body || '';
             document.getElementById('articleModal').classList.add('open');
         }
         function closeArticle() { document.getElementById('articleModal').classList.remove('open') }
         document.getElementById('articleModal').addEventListener('click', function (e) { if (e.target === this) closeArticle() });
+
+        // ─── PREVIEW ───
+        function abrirPreview() {
+            const titulo = document.getElementById('n-titulo').value.trim();
+            const resumo = document.getElementById('n-resumo').value.trim();
+            const corpo = quill.root.innerHTML;
+            const cat = document.getElementById('n-cat').value;
+            const autor = document.getElementById('n-autor').value.trim() || 'Redação ProntPsi';
+            const img = document.getElementById('n-img').value.trim();
+            if (!titulo) { showToast('Preencha o título para visualizar', 'erro'); return; }
+            document.getElementById('pvCat').textContent = cat;
+            document.getElementById('pvTitle').textContent = titulo;
+            document.getElementById('pvMeta').innerHTML = `${autor} <span style="margin:0 6px;color:var(--muted)">·</span> ${formatDate(new Date().toISOString())}`;
+            document.getElementById('pvImgWrap').innerHTML = img ? `<img src="${img}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin-bottom:24px" alt=""/>` : '';
+            document.getElementById('pvBody').innerHTML = corpo;
+            document.getElementById('previewModal').classList.add('open');
+        }
+        function closePreview() { document.getElementById('previewModal').classList.remove('open') }
+        document.getElementById('previewModal').addEventListener('click', function (e) { if (e.target === this) closePreview() });
 
         // ─── LOGIN ───
         function openLogin() { document.getElementById('loginModal').classList.add('open') }
@@ -2561,111 +2413,106 @@
             const errEl = document.getElementById('loginErr');
             errEl.style.display = 'none';
             try {
-                const res = await fetch('https://prontpsiback-production.up.railway.app/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, senha: pass })
-                });
+                const res = await fetch('https://prontpsiback-production.up.railway.app/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, senha: pass }) });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.erro || 'Erro');
-                // Decodifica o payload do JWT para verificar is_admin
                 const payload = JSON.parse(atob(data.token.split('.')[1]));
                 if (!payload.is_admin && !payload.isAdmin) { errEl.textContent = 'Usuário sem permissão de admin'; errEl.style.display = 'block'; return; }
                 adminToken = data.token;
-                adminUser = email;
                 closeLogin();
-                // Recarrega tabelas admin com dados completos (incluindo rascunhos)
                 await carregarAdmin();
                 openAdmin();
-            } catch (e) {
-                errEl.textContent = 'E-mail ou senha incorretos';
-                errEl.style.display = 'block';
-            }
-        }
-        async function carregarAdmin() {
-            try {
-                const [todasNoticias, todosEventos, todosProfs] = await Promise.all([
-                    api('GET', '/noticias/todas'),
-                    api('GET', '/eventos/todos'),
-                    api('GET', '/profissionais/todos')
-                ]);
-                noticias = todasNoticias.map(n => ({ ...n, img: n.img_url, data: n.criado_em }));
-                eventos = todosEventos.map(e => ({ ...e, data: e.data_evento, local: e.local_evento, desc: e.descricao, link: e.link_inscricao }));
-                profissionais = todosProfs.map(p => ({ ...p, spec: p.especialidade, loc: p.cidade, link: p.link_perfil }));
-            } catch (e) { console.error(e); }
+            } catch (e) { errEl.textContent = 'E-mail ou senha incorretos'; errEl.style.display = 'block'; }
         }
         document.getElementById('loginModal').addEventListener('click', function (e) { if (e.target === this) closeLogin() });
         document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('open')) doLogin() });
 
         // ─── ADMIN ───
-        function openAdmin() {
-            document.getElementById('admin-panel').classList.add('open');
-            renderAdminTables();
-            renderDashStats();
-        }
+        function openAdmin() { document.getElementById('admin-panel').classList.add('open'); renderAdminTables(); renderDashStats(); renderTickerAdmin(); }
         function closeAdmin() { document.getElementById('admin-panel').classList.remove('open') }
-
-        function showAdminSection(id) {
+        function showAdminSection(id, el) {
             document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
             document.getElementById('sec-' + id).classList.add('active');
-            event.currentTarget.classList.add('active');
-            const titles = { dashboard: ['Dashboard', 'Visão geral do portal'], noticias: ['Notícias & Artigos', 'Publique e gerencie o conteúdo editorial'], eventos: ['Eventos Psi', 'Gerencie congressos, webinars e cursos'], recursos: ['Recursos Gratuitos', 'PDFs, escalas e materiais disponíveis'], profissionais: ['Profissionais em Destaque', 'Quem aparece na vitrine da home'] };
+            if (el) el.classList.add('active');
+            const titles = { dashboard: ['Dashboard', 'Visão geral do portal'], noticias: ['Notícias & Artigos', 'Publique e gerencie o conteúdo editorial'], eventos: ['Eventos Psi', 'Gerencie congressos, webinars e cursos'], ticker: ['Ticker AO VIVO', 'Manchetes que aparecem no topo do site'], profissionais: ['Profissionais em Destaque', 'Quem aparece na vitrine da home'] };
             const t = titles[id] || ['Admin', ''];
             document.getElementById('adminPageTitle').textContent = t[0];
             document.getElementById('adminPageSub').textContent = t[1];
+            if (id === 'ticker') renderTickerAdmin();
         }
 
         function renderDashStats() {
             const pubs = noticias.filter(n => n.status === 'publicado').length;
             const drafts = noticias.filter(n => n.status === 'rascunho').length;
             document.getElementById('dashStats').innerHTML = `
-        <div class="stat-card"><div class="stat-label">Artigos publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">no portal</div></div>
+        <div class="stat-card"><div class="stat-label">Publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">artigos no portal</div></div>
         <div class="stat-card"><div class="stat-label">Rascunhos</div><div class="stat-val">${drafts}</div><div class="stat-sub">aguardando</div></div>
         <div class="stat-card"><div class="stat-label">Eventos</div><div class="stat-val">${eventos.length}</div><div class="stat-sub">cadastrados</div></div>
-        <div class="stat-card"><div class="stat-label">Recursos</div><div class="stat-val">${recursos.length}</div><div class="stat-sub">disponíveis</div></div>
-      `;
+        <div class="stat-card"><div class="stat-label">Manchetes</div><div class="stat-val">${tickerItens.length}</div><div class="stat-sub">no ticker</div></div>`;
         }
 
         // ─── SALVAR NOTÍCIA ───
         async function salvarNoticia() {
             const titulo = document.getElementById('n-titulo').value.trim();
             const resumo = document.getElementById('n-resumo').value.trim();
-            const corpo = document.getElementById('n-corpo').value.trim();
-            if (!titulo || !resumo || !corpo) { showToast('Preencha título, resumo e texto completo', 'erro'); return; }
+            const corpo = quill.root.innerHTML;
+            const textoPlano = quill.getText().trim();
+            if (!titulo || !resumo || !textoPlano) { showToast('Preencha título, resumo e texto', 'erro'); return; }
+            const payload = { titulo, resumo, corpo, categoria: document.getElementById('n-cat').value, autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi', img_url: document.getElementById('n-img').value.trim() || null, status: document.getElementById('n-status').value };
             try {
-                await api('POST', '/noticias', {
-                    titulo, resumo, corpo,
-                    categoria: document.getElementById('n-cat').value,
-                    autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi',
-                    img_url: document.getElementById('n-img').value.trim() || null,
-                    status: document.getElementById('n-status').value
-                });
-                ['n-titulo', 'n-resumo', 'n-corpo', 'n-autor', 'n-img'].forEach(id => document.getElementById(id).value = '');
-                await carregarAdmin();
-                renderAdminTables(); renderPortal(); renderDashStats();
-                showToast(document.getElementById('n-status').value === 'publicado' ? '✅ Artigo publicado no portal!' : '📝 Rascunho salvo!');
-            } catch (e) { showToast('Erro ao salvar: ' + e.erro, 'erro'); }
+                if (editandoId) {
+                    await api('PUT', '/noticias/' + editandoId, payload);
+                    showToast('✅ Artigo atualizado!');
+                    cancelarEdicao();
+                } else {
+                    await api('POST', '/noticias', payload);
+                    showToast(payload.status === 'publicado' ? '✅ Artigo publicado!' : '📝 Rascunho salvo!');
+                    ['n-titulo', 'n-resumo', 'n-autor', 'n-img'].forEach(id => document.getElementById(id).value = '');
+                    quill.setContents([]);
+                }
+                await carregarAdmin(); renderAdminTables(); renderPortal(); renderDashStats();
+            } catch (e) { showToast('Erro ao salvar: ' + (e.erro || ''), 'erro'); }
+        }
+
+        function editarNoticia(id) {
+            const art = noticias.find(n => n.id === id); if (!art) return;
+            editandoId = id;
+            document.getElementById('n-id').value = id;
+            document.getElementById('n-titulo').value = art.titulo;
+            document.getElementById('n-resumo').value = art.resumo;
+            document.getElementById('n-cat').value = art.categoria;
+            document.getElementById('n-autor').value = art.autor || '';
+            document.getElementById('n-img').value = art.img || '';
+            document.getElementById('n-status').value = art.status;
+            quill.root.innerHTML = art.corpo || '';
+            document.getElementById('formNoticiaLabel').textContent = 'Editar artigo';
+            document.getElementById('btnSalvarLabel').textContent = 'Salvar alterações';
+            document.getElementById('btnCancelarEdicao').style.display = 'flex';
+            document.getElementById('formNoticiaCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelarEdicao() {
+            editandoId = null;
+            document.getElementById('n-id').value = '';
+            ['n-titulo', 'n-resumo', 'n-autor', 'n-img'].forEach(id => document.getElementById(id).value = '');
+            quill.setContents([]);
+            document.getElementById('formNoticiaLabel').textContent = 'Publicar nova notícia';
+            document.getElementById('btnSalvarLabel').textContent = 'Publicar agora';
+            document.getElementById('btnCancelarEdicao').style.display = 'none';
         }
 
         // ─── SALVAR EVENTO ───
         async function salvarEvento() {
             const titulo = document.getElementById('e-titulo').value.trim();
             const data_evento = document.getElementById('e-data').value;
-            if (!titulo || !data_evento) { showToast('Preencha nome e data do evento', 'erro'); return; }
+            if (!titulo || !data_evento) { showToast('Preencha nome e data', 'erro'); return; }
             try {
-                await api('POST', '/eventos', {
-                    titulo, data_evento,
-                    modalidade: document.getElementById('e-modal').value,
-                    local_evento: document.getElementById('e-local').value.trim() || null,
-                    descricao: document.getElementById('e-desc').value.trim() || null,
-                    link_inscricao: document.getElementById('e-link').value.trim() || null
-                });
+                await api('POST', '/eventos', { titulo, data_evento, modalidade: document.getElementById('e-modal').value, local_evento: document.getElementById('e-local').value.trim() || null, descricao: document.getElementById('e-desc').value.trim() || null, link_inscricao: document.getElementById('e-link').value.trim() || null });
                 ['e-titulo', 'e-data', 'e-local', 'e-desc', 'e-link'].forEach(id => document.getElementById(id).value = '');
-                await carregarAdmin();
-                renderAdminTables(); renderEventos(); renderDashStats();
-                showToast('✅ Evento adicionado ao portal!');
-            } catch (e) { showToast('Erro ao salvar: ' + e.erro, 'erro'); }
+                await carregarAdmin(); renderAdminTables(); renderEventos(); renderDashStats();
+                showToast('✅ Evento adicionado!');
+            } catch (e) { showToast('Erro ao salvar: ' + (e.erro || ''), 'erro'); }
         }
 
         // ─── SALVAR PROFISSIONAL ───
@@ -2674,117 +2521,52 @@
             const iniciais = document.getElementById('p-iniciais').value.trim().toUpperCase();
             if (!nome || !iniciais) { showToast('Preencha nome e iniciais', 'erro'); return; }
             try {
-                await api('POST', '/profissionais', {
-                    nome, iniciais,
-                    especialidade: document.getElementById('p-spec').value.trim(),
-                    cidade: document.getElementById('p-loc').value.trim() || null,
-                    link_perfil: document.getElementById('p-link').value.trim() || null
-                });
+                await api('POST', '/profissionais', { nome, iniciais, especialidade: document.getElementById('p-spec').value.trim(), cidade: document.getElementById('p-loc').value.trim() || null, link_perfil: document.getElementById('p-link').value.trim() || null });
                 ['p-nome', 'p-iniciais', 'p-spec', 'p-loc', 'p-link'].forEach(id => document.getElementById(id).value = '');
-                await carregarAdmin();
-                renderAdminTables(); renderProfissionais(); renderDashStats();
-                showToast('✅ Profissional adicionado ao destaque!');
-            } catch (e) { showToast('Erro ao salvar: ' + e.erro, 'erro'); }
+                await carregarAdmin(); renderAdminTables(); renderProfissionais(); renderDashStats();
+                showToast('✅ Profissional adicionado!');
+            } catch (e) { showToast('Erro ao salvar: ' + (e.erro || ''), 'erro'); }
         }
 
         // ─── DELETE ───
-        async function deletarNoticia(id) {
-            try { await api('DELETE', '/noticias/' + id); await carregarAdmin(); renderAdminTables(); renderPortal(); renderDashStats(); showToast('🗑 Artigo removido'); }
-            catch (e) { showToast('Erro ao remover', 'erro'); }
-        }
-        async function deletarEvento(id) {
-            try { await api('DELETE', '/eventos/' + id); await carregarAdmin(); renderAdminTables(); renderEventos(); renderDashStats(); showToast('🗑 Evento removido'); }
-            catch (e) { showToast('Erro ao remover', 'erro'); }
-        }
-        async function deletarProf(id) {
-            try { await api('DELETE', '/profissionais/' + id); await carregarAdmin(); renderAdminTables(); renderProfissionais(); renderDashStats(); showToast('🗑 Profissional removido'); }
-            catch (e) { showToast('Erro ao remover', 'erro'); }
-        }
+        async function deletarNoticia(id) { if (!confirm('Remover este artigo?')) return; try { await api('DELETE', '/noticias/' + id); await carregarAdmin(); renderAdminTables(); renderPortal(); renderDashStats(); showToast('🗑 Artigo removido'); } catch { showToast('Erro ao remover', 'erro'); } }
+        async function deletarEvento(id) { if (!confirm('Remover este evento?')) return; try { await api('DELETE', '/eventos/' + id); await carregarAdmin(); renderAdminTables(); renderEventos(); renderDashStats(); showToast('🗑 Evento removido'); } catch { showToast('Erro ao remover', 'erro'); } }
+        async function deletarProf(id) { if (!confirm('Remover este profissional?')) return; try { await api('DELETE', '/profissionais/' + id); await carregarAdmin(); renderAdminTables(); renderProfissionais(); renderDashStats(); showToast('🗑 Profissional removido'); } catch { showToast('Erro ao remover', 'erro'); } }
 
         // ─── RENDER ADMIN TABLES ───
         function renderAdminTables() {
-            // Noticias
             const nt = document.getElementById('noticiasTabela');
-            nt.innerHTML = noticias.length === 0
-                ? `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum artigo publicado ainda</td></tr>`
-                : noticias.map(n => `<tr>
-          <td><div class="table-title">${n.titulo}</div></td>
-          <td>${n.categoria}</td>
-          <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td>
-          <td style="white-space:nowrap">${formatDate(n.data)}</td>
-          <td><div class="table-actions"><button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i> Remover</button></div></td>
-        </tr>`).join('');
-
-            // Eventos
+            nt.innerHTML = !noticias.length ? `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum artigo ainda</td></tr>` : noticias.map(n => `<tr><td><div class="table-title">${n.titulo}</div></td><td>${n.categoria}</td><td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td><td style="white-space:nowrap">${formatDate(n.data)}</td><td><div class="table-actions"><button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button><button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button></div></td></tr>`).join('');
             const et = document.getElementById('eventosTabela');
-            et.innerHTML = eventos.length === 0
-                ? `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">Nenhum evento cadastrado</td></tr>`
-                : eventos.map(e => `<tr>
-          <td><div class="table-title">${e.titulo}</div></td>
-          <td>${formatDate(e.data)}</td>
-          <td><span class="event-tag ${e.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${e.modalidade}</span></td>
-          <td><button class="btn-danger" onclick="deletarEvento(${e.id})"><i class="fas fa-trash"></i> Remover</button></td>
-        </tr>`).join('');
-
-            // Recursos
-            const rt = document.getElementById('recursosTabela');
-            rt.innerHTML = recursos.length === 0
-                ? `<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:24px">Nenhum recurso adicionado</td></tr>`
-                : recursos.map(r => `<tr>
-          <td><div class="table-title">${r.emoji} ${r.titulo}</div></td>
-          <td>${r.tipo}</td>
-          <td><button class="btn-danger" onclick="deletarRecurso(${r.id})"><i class="fas fa-trash"></i> Remover</button></td>
-        </tr>`).join('');
-
-            // Profissionais
+            et.innerHTML = !eventos.length ? `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">Nenhum evento cadastrado</td></tr>` : eventos.map(e => `<tr><td><div class="table-title">${e.titulo}</div></td><td>${formatDate(e.data)}</td><td><span class="event-tag ${e.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${e.modalidade}</span></td><td><button class="btn-danger" onclick="deletarEvento(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
             const pt = document.getElementById('profsTabela');
-            pt.innerHTML = profissionais.length === 0
-                ? `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">Nenhum profissional em destaque</td></tr>`
-                : profissionais.map(p => `<tr>
-          <td><div class="table-title">${p.nome}</div></td>
-          <td>${p.spec}</td>
-          <td>${p.loc || '—'}</td>
-          <td><button class="btn-danger" onclick="deletarProf(${p.id})"><i class="fas fa-trash"></i> Remover</button></td>
-        </tr>`).join('');
+            pt.innerHTML = !profissionais.length ? `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum profissional em destaque</td></tr>` : profissionais.map((p, i) => `<tr draggable="true" ondragstart="dragStart(${i})" ondragover="dragOver(event,${i})" ondrop="dragDrop(${i})" style="cursor:grab"><td style="color:var(--muted);font-size:18px;padding-left:10px">⠿</td><td><div class="table-title">${p.nome}</div></td><td>${p.spec || ''}</td><td>${p.loc || '—'}</td><td><button class="btn-danger" onclick="deletarProf(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+        }
+
+        // ─── DRAG & DROP PROFISSIONAIS ───
+        let dragIdx = null;
+        function dragStart(i) { dragIdx = i; }
+        function dragOver(e, i) { e.preventDefault(); }
+        function dragDrop(i) {
+            if (dragIdx === null || dragIdx === i) return;
+            const arr = [...profissionais];
+            const [moved] = arr.splice(dragIdx, 1);
+            arr.splice(i, 0, moved);
+            profissionais = arr;
+            dragIdx = null;
+            renderAdminTables();
+            renderProfissionais();
+            showToast('✅ Ordem atualizada!');
         }
 
         // ─── FILTER CAT ───
         function filterCat(cat, btn) {
-            if (btn) {
-                document.querySelectorAll('.portal-cat').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
+            if (btn) { document.querySelectorAll('.portal-cat').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
             if (cat === 'all') { renderCards(); return; }
             const filtered = noticias.filter(n => n.status === 'publicado' && n.categoria === cat);
             const grid = document.getElementById('cardsGrid');
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="news-card" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;min-height:160px;border-style:dashed"><span style="color:var(--muted);font-size:13px">Nenhum artigo em "${cat}" ainda</span></div>`;
-                return;
-            }
-            grid.innerHTML = filtered.slice(0, 6).map(n => {
-                const idx = noticias.indexOf(n);
-                return `<div class="news-card" onclick="openArticle(${idx})">
-          <div class="news-card-img">${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}<span class="ncat">${n.categoria}</span></div>
-          <div class="news-card-body"><div class="news-card-title">${n.titulo}</div><div class="news-card-excerpt">${n.resumo}</div><div class="news-card-meta">${n.autor || 'Redação'} · ${formatDate(n.data)}</div></div>
-        </div>`;
-            }).join('');
-        }
-
-        // ─── TOAST ───
-        function showToast(msg, tipo) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.style.borderColor = tipo === 'erro' ? 'rgba(239,68,68,.3)' : 'rgba(16,185,129,.3)';
-            t.style.color = tipo === 'erro' ? '#ef4444' : 'var(--green)';
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        }
-
-        // ─── FORMAT DATE ───
-        function formatDate(iso) {
-            if (!iso) return '';
-            const d = new Date(iso);
-            return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+            if (!filtered.length) { grid.innerHTML = `<div class="news-card" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;min-height:160px;border-style:dashed"><span style="color:var(--muted);font-size:13px">Nenhum artigo em "${cat}" ainda</span></div>`; return; }
+            grid.innerHTML = filtered.slice(0, 6).map(n => `<div class="news-card" onclick="openArticle(${noticias.indexOf(n)})"><div class="news-card-img">${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}<span class="ncat">${n.categoria}</span></div><div class="news-card-body"><div class="news-card-title">${n.titulo}</div><div class="news-card-excerpt">${n.resumo}</div><div class="news-card-meta">${n.autor || 'Redação'} · ${formatDate(n.data)}</div></div></div>`).join('');
         }
 
         // ─── CALCULADORA ───
@@ -2800,24 +2582,14 @@
             document.getElementById('calc-result').style.display = 'block';
         }
 
-        // ─── BUSCADOR DE ESCALAS ───
+        // ─── ESCALAS ───
         const escalas = [
-            { nome: 'Beck BDI-II', area: 'Depressão' },
-            { nome: 'Hamilton HAM-A', area: 'Ansiedade' },
-            { nome: 'Hamilton HAM-D', area: 'Depressão' },
-            { nome: 'MADRS', area: 'Depressão' },
-            { nome: 'PHQ-9', area: 'Depressão' },
-            { nome: 'GAD-7', area: 'Ansiedade' },
-            { nome: 'Pittsburgh PSQI', area: 'Sono' },
-            { nome: 'Epworth', area: 'Sono' },
-            { nome: 'BINGE (ECAP)', area: 'Compulsão Alimentar' },
-            { nome: 'AUDIT', area: 'Álcool' },
-            { nome: 'CAGE', area: 'Álcool' },
-            { nome: 'PCL-5', area: 'Trauma / PTSD' },
-            { nome: 'OCI-R', area: 'TOC' },
-            { nome: 'Young Mania Rating', area: 'Mania' },
-            { nome: 'SNAP-IV', area: 'TDAH' },
-            { nome: 'Columbia Suicide', area: 'Risco de Suicídio' },
+            { nome: 'Beck BDI-II', area: 'Depressão' }, { nome: 'Hamilton HAM-A', area: 'Ansiedade' }, { nome: 'Hamilton HAM-D', area: 'Depressão' },
+            { nome: 'MADRS', area: 'Depressão' }, { nome: 'PHQ-9', area: 'Depressão' }, { nome: 'GAD-7', area: 'Ansiedade' },
+            { nome: 'Pittsburgh PSQI', area: 'Sono' }, { nome: 'Epworth', area: 'Sono' }, { nome: 'BINGE (ECAP)', area: 'Compulsão Alimentar' },
+            { nome: 'AUDIT', area: 'Álcool' }, { nome: 'CAGE', area: 'Álcool' }, { nome: 'PCL-5', area: 'Trauma / PTSD' },
+            { nome: 'OCI-R', area: 'TOC' }, { nome: 'Young Mania Rating', area: 'Mania' }, { nome: 'SNAP-IV', area: 'TDAH' },
+            { nome: 'Columbia Suicide', area: 'Risco de Suicídio' }
         ];
         function buscarEscala() {
             const q = document.getElementById('escala-busca').value.toLowerCase();
@@ -2827,16 +2599,25 @@
         }
         buscarEscala();
 
-        // ─── FADE UP SCROLL ───
-        const scrollObs = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') });
-        }, { threshold: 0.12 });
+        // ─── TOAST ───
+        function showToast(msg, tipo) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.borderColor = tipo === 'erro' ? 'rgba(239,68,68,.3)' : 'rgba(16,185,129,.3)';
+            t.style.color = tipo === 'erro' ? '#ef4444' : 'var(--green)';
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // ─── FORMAT DATE ───
+        function formatDate(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }); }
+
+        // ─── FADE UP ───
+        const scrollObs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }), { threshold: .12 });
         document.querySelectorAll('.fade-up').forEach(el => scrollObs.observe(el));
 
         // ─── START ───
         init();
-
-        // Abre admin se URL tiver #admin (acesso direto pelo link secreto)
         if (window.location.hash === '#admin-acesso') openLogin();
     </script>
 </body>
