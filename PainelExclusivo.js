@@ -424,18 +424,18 @@ function iniciarRelogio() {
         const elM = document.getElementById('dclock-m');
         const elS = document.getElementById('dclock-s');
         const elAmpm = document.getElementById('dclock-ampm');
-        
+
 
         if (elH) elH.textContent = pad(horas);
         if (elM) elM.textContent = pad(minutos);
         if (elS) elS.textContent = pad(segundos);
         if (elAmpm) elAmpm.textContent = ampm;
 
-        
+
     }
     atualizar();
     setInterval(atualizar, 1000);
-    
+
 }
 
 // ============================================================
@@ -719,6 +719,9 @@ if (selectHistorico) {
     });
 }
 
+// Armazena evoluções carregadas para acesso pelo modal
+window._evolucoesPaciente = [];
+
 async function carregarHistoricoEvolucao(pacienteId) {
     try {
         const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/evolucoes`, {
@@ -727,6 +730,7 @@ async function carregarHistoricoEvolucao(pacienteId) {
 
         if (res.ok) {
             const evolucoes = await res.json();
+            window._evolucoesPaciente = evolucoes;
             const tabela = document.getElementById('evolucao-tabela');
             const vazio = document.getElementById('evolucao-vazio');
             const tbody = tabela?.querySelector('tbody');
@@ -738,8 +742,14 @@ async function carregarHistoricoEvolucao(pacienteId) {
             }
 
             if (tbody) {
-                tbody.innerHTML = evolucoes.map(ev => `
-                    <tr>
+                tbody.innerHTML = evolucoes.map((ev, idx) => `
+                    <tr
+                        onclick="abrirModalEvolucao(${idx})"
+                        style="cursor:pointer; transition: background 0.15s;"
+                        onmouseover="this.style.background='rgba(139,92,246,0.10)'"
+                        onmouseout="this.style.background=''"
+                        title="Clique para ver a evolução completa"
+                    >
                         <td style="padding:10px; white-space:nowrap;">
                             ${parseDateLocal(ev.data_hora).toLocaleDateString('pt-BR')}
                         </td>
@@ -749,8 +759,8 @@ async function carregarHistoricoEvolucao(pacienteId) {
                         <td style="padding:10px;">
                             ${ev.valor_sessao ? `R$ ${parseFloat(ev.valor_sessao).toFixed(2)}` : '-'}
                         </td>
-                        <td style="padding:10px; max-width:300px;">
-                            ${ev.texto_evolucao.substring(0, 80)}${ev.texto_evolucao.length > 80 ? '...' : ''}
+                        <td style="padding:10px; max-width:260px; color:#94a3b8; font-size:13px;">
+                            ${ev.texto_evolucao.substring(0, 60)}${ev.texto_evolucao.length > 60 ? '<span style="color:#8b5cf6;">… ver mais</span>' : ''}
                         </td>
                     </tr>
                 `).join('');
@@ -763,6 +773,42 @@ async function carregarHistoricoEvolucao(pacienteId) {
         console.error('Erro ao carregar histórico:', err);
     }
 };
+
+function abrirModalEvolucao(idx) {
+    const ev = window._evolucoesPaciente[idx];
+    if (!ev) return;
+
+    const data = parseDateLocal(ev.data_hora).toLocaleDateString('pt-BR', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+    const hora = parseDateLocal(ev.data_hora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+    // Formata texto preservando quebras de linha
+    const textoFormatado = ev.texto_evolucao
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br>');
+
+    const modal = document.getElementById('modal-evolucao-completa');
+    if (!modal) return;
+
+    document.getElementById('modal-ev-data').textContent = data + (hora !== '00:00' ? ' às ' + hora : '');
+    document.getElementById('modal-ev-convenio').textContent = ev.convenio || '-';
+    document.getElementById('modal-ev-cid').textContent = ev.cid10 || '-';
+    document.getElementById('modal-ev-duracao').textContent = (ev.duracao_minutos || 50) + ' min';
+    document.getElementById('modal-ev-valor').textContent = ev.valor_sessao ? 'R$ ' + parseFloat(ev.valor_sessao).toFixed(2) : '-';
+    document.getElementById('modal-ev-texto').innerHTML = textoFormatado;
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharModalEvolucao() {
+    const modal = document.getElementById('modal-evolucao-completa');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
 
 // ============================================================
 //  AGENDA
@@ -2833,7 +2879,10 @@ function fecharJogo() {
 
 // Fecha com ESC
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') fecharJogo();
+    if (e.key === 'Escape') {
+        fecharJogo();
+        fecharModalEvolucao();
+    }
 });
 /* ============================================================
    PATCH: Bug Report / Suporte
