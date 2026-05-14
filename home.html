@@ -1560,96 +1560,6 @@
             margin-top: 4px
         }
 
-        /* Editor rico nativo */
-        .editor-wrap {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            background: var(--bg2)
-        }
-
-        .editor-toolbar {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            padding: 8px 10px;
-            background: var(--bg3);
-            border-bottom: 1px solid var(--border)
-        }
-
-            .editor-toolbar button {
-                background: transparent;
-                border: 1px solid var(--border);
-                color: var(--muted2);
-                padding: 5px 10px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 13px;
-                font-family: 'DM Sans',sans-serif;
-                transition: .2s;
-                min-width: 32px
-            }
-
-                .editor-toolbar button:hover {
-                    background: rgba(139,92,246,.15);
-                    color: #fff;
-                    border-color: rgba(139,92,246,.4)
-                }
-
-        .editor-sep {
-            width: 1px;
-            background: var(--border);
-            margin: 0 4px;
-            align-self: stretch
-        }
-
-        .editor-body {
-            min-height: 220px;
-            padding: 16px;
-            color: var(--text);
-            font-size: 14px;
-            line-height: 1.7;
-            outline: none;
-            font-family: 'DM Sans',sans-serif
-        }
-
-            .editor-body:empty::before {
-                content: 'Escreva o artigo completo aqui...';
-                color: var(--muted);
-                pointer-events: none
-            }
-
-            .editor-body h2 {
-                font-family: 'Playfair Display',serif;
-                font-size: 22px;
-                color: #fff;
-                margin: 16px 0 8px
-            }
-
-            .editor-body h3 {
-                font-family: 'Playfair Display',serif;
-                font-size: 18px;
-                color: #fff;
-                margin: 14px 0 6px
-            }
-
-            .editor-body p {
-                margin-bottom: 12px
-            }
-
-            .editor-body ul, .editor-body ol {
-                padding-left: 20px;
-                margin-bottom: 12px
-            }
-
-            .editor-body li {
-                margin-bottom: 4px
-            }
-
-            .editor-body strong {
-                color: #fff
-            }
-
         /* Preview modal */
         .preview-modal {
             position: fixed;
@@ -1694,6 +1604,102 @@
             display: inline-block;
             margin-bottom: 16px
         }
+
+        /* Editor rico nativo */
+        .editor-wrap {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg2);
+            margin-bottom: 8px
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            background: var(--bg3);
+            border-bottom: 1px solid var(--border)
+        }
+
+            .editor-toolbar button {
+                background: transparent;
+                border: 1px solid var(--border);
+                color: var(--muted2);
+                padding: 5px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 13px;
+                font-family: 'DM Sans',sans-serif;
+                transition: .2s;
+                min-width: 32px
+            }
+
+                .editor-toolbar button:hover {
+                    background: rgba(139,92,246,.15);
+                    color: #fff;
+                    border-color: rgba(139,92,246,.4)
+                }
+
+        .editor-sep {
+            width: 1px;
+            background: var(--border);
+            margin: 0 2px;
+            align-self: stretch;
+            flex-shrink: 0
+        }
+
+        .editor-body {
+            min-height: 240px;
+            padding: 16px;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.8;
+            outline: none;
+            font-family: 'DM Sans',sans-serif
+        }
+
+            .editor-body:empty::before {
+                content: 'Escreva o artigo completo aqui...';
+                color: var(--muted);
+                pointer-events: none;
+                display: block
+            }
+
+            .editor-body h2 {
+                font-family: 'Playfair Display',serif;
+                font-size: 22px;
+                color: #fff;
+                margin: 16px 0 8px;
+                font-weight: 700
+            }
+
+            .editor-body h3 {
+                font-family: 'Playfair Display',serif;
+                font-size: 18px;
+                color: #fff;
+                margin: 14px 0 6px;
+                font-weight: 700
+            }
+
+            .editor-body p {
+                margin-bottom: 12px
+            }
+
+            .editor-body ul, .editor-body ol {
+                padding-left: 22px;
+                margin-bottom: 12px
+            }
+
+            .editor-body li {
+                margin-bottom: 4px
+            }
+
+            .editor-body strong {
+                color: #fff;
+                font-weight: 700
+            }
 
         /* Toast */
         .toast {
@@ -2196,6 +2202,11 @@
                                     <button type="button" onclick="execCmd('italic')" title="Itálico"><i>I</i></button>
                                     <button type="button" onclick="execCmd('underline')" title="Sublinhado"><u>S</u></button>
                                     <span class="editor-sep"></span>
+                                    <button type="button" onclick="execCmd('justifyLeft')" title="Alinhar esquerda">⬅</button>
+                                    <button type="button" onclick="execCmd('justifyCenter')" title="Centralizar">☰</button>
+                                    <button type="button" onclick="execCmd('justifyRight')" title="Alinhar direita">➡</button>
+                                    <button type="button" onclick="execCmd('justifyFull')" title="Justificar">≡</button>
+                                    <span class="editor-sep"></span>
                                     <button type="button" onclick="execCmd('formatBlock','h2')" title="Título">T1</button>
                                     <button type="button" onclick="execCmd('formatBlock','h3')" title="Subtítulo">T2</button>
                                     <button type="button" onclick="execCmd('formatBlock','p')" title="Parágrafo">¶</button>
@@ -2203,10 +2214,11 @@
                                     <button type="button" onclick="execCmd('insertUnorderedList')" title="Lista">• Lista</button>
                                     <button type="button" onclick="execCmd('insertOrderedList')" title="Lista numerada">1. Lista</button>
                                     <span class="editor-sep"></span>
-                                    <button type="button" onclick="execCmd('removeFormat')" title="Limpar formatação">✕ Limpar</button>
+                                    <button type="button" onclick="execCmd('removeFormat')" title="Limpar">✕</button>
                                 </div>
-                                <div id="editorCorpo" class="editor-body" contenteditable="true"></div>
+                                <div id="editorCorpo" class="editor-body" contenteditable="true" oninput="onEditorInput()"></div>
                             </div>
+                            <input type="hidden" id="n-corpo-hidden" />
                         </div>
                         <div class="form-row">
                             <div class="form-group"><label class="form-label">Autor</label><input class="form-input" id="n-autor" placeholder="Ex: Dra. Ana Lima" /></div>
@@ -2310,15 +2322,30 @@
         let tickerItens = [];
         let editandoId = null;
 
-        // ─── EDITOR NATIVO (sem dependências externas) ───
+        // ─── EDITOR NATIVO ───
         function execCmd(cmd, val) {
             document.getElementById('editorCorpo').focus();
             document.execCommand(cmd, false, val || null);
+            onEditorInput();
         }
-        function getEditorHTML() { return document.getElementById('editorCorpo').innerHTML; }
-        function getEditorText() { return document.getElementById('editorCorpo').innerText.trim(); }
-        function setEditorHTML(html) { document.getElementById('editorCorpo').innerHTML = html || ''; }
-        function clearEditor() { document.getElementById('editorCorpo').innerHTML = ''; }
+        function onEditorInput() {
+            // Sincroniza com hidden input para garantir envio
+            document.getElementById('n-corpo-hidden').value = document.getElementById('editorCorpo').innerHTML;
+        }
+        function getEditorHTML() {
+            return document.getElementById('editorCorpo').innerHTML || '';
+        }
+        function getEditorText() {
+            return document.getElementById('editorCorpo').innerText.trim() || '';
+        }
+        function setEditorHTML(html) {
+            document.getElementById('editorCorpo').innerHTML = html || '';
+            onEditorInput();
+        }
+        function clearEditor() {
+            document.getElementById('editorCorpo').innerHTML = '';
+            document.getElementById('n-corpo-hidden').value = '';
+        }
 
         // ─── API ───
         async function api(method, path, body) {
@@ -2451,12 +2478,12 @@
         // ─── PREVIEW ───
         function abrirPreview() {
             const titulo = document.getElementById('n-titulo').value.trim();
+            if (!titulo) { showToast('Preencha o título para visualizar', 'erro'); return; }
             const resumo = document.getElementById('n-resumo').value.trim();
             const corpo = getEditorHTML();
             const cat = document.getElementById('n-cat').value;
             const autor = document.getElementById('n-autor').value.trim() || 'Redação ProntPsi';
             const img = document.getElementById('n-img').value.trim();
-            if (!titulo) { showToast('Preencha o título para visualizar', 'erro'); return; }
             document.getElementById('pvCat').textContent = cat;
             document.getElementById('pvTitle').textContent = titulo;
             document.getElementById('pvMeta').innerHTML = `${autor} <span style="margin:0 6px;color:var(--muted)">·</span> ${formatDate(new Date().toISOString())}`;
@@ -2521,8 +2548,16 @@
             const resumo = document.getElementById('n-resumo').value.trim();
             const corpo = getEditorHTML();
             const textoPlano = getEditorText();
-            if (!titulo || !resumo || !textoPlano) { showToast('Preencha título, resumo e texto', 'erro'); return; }
-            const payload = { titulo, resumo, corpo, categoria: document.getElementById('n-cat').value, autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi', img_url: document.getElementById('n-img').value.trim() || null, status: document.getElementById('n-status').value };
+            if (!titulo) { showToast('Preencha o título', 'erro'); return; }
+            if (!resumo) { showToast('Preencha o resumo', 'erro'); return; }
+            if (!textoPlano) { showToast('Escreva o texto completo do artigo', 'erro'); return; }
+            const payload = {
+                titulo, resumo, corpo,
+                categoria: document.getElementById('n-cat').value,
+                autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi',
+                img_url: document.getElementById('n-img').value.trim() || null,
+                status: document.getElementById('n-status').value
+            };
             try {
                 if (editandoId) {
                     await api('PUT', '/noticias/' + editandoId, payload);
@@ -2535,7 +2570,10 @@
                     clearEditor();
                 }
                 await carregarAdmin(); renderAdminTables(); renderPortal(); renderDashStats();
-            } catch (e) { showToast('Erro ao salvar: ' + (e.erro || ''), 'erro'); }
+            } catch (e) {
+                console.error('Erro ao salvar:', e);
+                showToast('Erro: ' + (e.erro || e.message || JSON.stringify(e)), 'erro');
+            }
         }
 
         function editarNoticia(id) {
