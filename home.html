@@ -1650,6 +1650,58 @@
                 font-weight: 700
             }
 
+        /* Compartilhar artigo */
+        .share-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border2)
+        }
+
+        .share-label {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-right: 4px
+        }
+
+        .btn-share {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: .2s;
+            text-decoration: none
+        }
+
+        .btn-share-wa {
+            background: rgba(37,211,102,.12);
+            color: #25D366;
+            border: 1px solid rgba(37,211,102,.25)
+        }
+
+            .btn-share-wa:hover {
+                background: rgba(37,211,102,.22)
+            }
+
+        .btn-share-copy {
+            background: rgba(139,92,246,.12);
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,.25)
+        }
+
+            .btn-share-copy:hover {
+                background: rgba(139,92,246,.22)
+            }
+
         /* Preview modal */
         .preview-modal {
             position: fixed;
@@ -2072,7 +2124,8 @@
             <a href="login.html">Entrar no sistema</a><a href="cadastro.html">Cadastrar</a>
             <a href="mailto:prontpsii@gmail.com">Contato</a>
         </div>
-        <p class="footer-copy">© 2026 ProntPsi — O sistema clínico do universo Psi.</p>
+        <p style="font-size:13px;color:var(--muted2);max-width:560px;margin:0 auto 16px;line-height:1.7">Portal de notícias, recursos e referência para psicólogos e psiquiatras brasileiros. Conteúdo produzido por profissionais da saúde mental para profissionais da saúde mental.</p>
+        <p class="footer-copy">© 2026 ProntPsi — O sistema clínico e portal de referência do universo Psi.</p>
         <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:24px">
             <a href="https://instagram.com/prontpsi" target="_blank" style="color:var(--muted);text-decoration:none;font-size:13px;display:inline-flex;align-items:center;gap:7px"><i class="fab fa-instagram" style="font-size:17px"></i> @prontpsi</a>
             <a href="#admin-acesso" onclick="openLogin();return false;" style="color:var(--muted);text-decoration:none;font-size:11px;opacity:.35;transition:opacity .2s" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.35'"><i class="fas fa-lock" style="font-size:10px"></i> admin</a>
@@ -2224,9 +2277,7 @@
                                     </div>
                                     <div>
                                         <input type="file" id="imgFileInput" accept="image/*" style="display:none" onchange="uploadImagem(this)" />
-                                        <button type="button" class="btn-edit" onclick="document.getElementById('imgFileInput').click()" id="btnUploadImg">
-                                            <i class="fas fa-image"></i> Escolher imagem
-                                        </button>
+                                        <button type="button" class="btn-edit" onclick="document.getElementById('imgFileInput').click()" id="btnUploadImg"><i class="fas fa-image"></i> Escolher imagem</button>
                                         <div id="imgUploadStatus" style="font-size:12px;color:var(--muted2);margin-top:6px"></div>
                                     </div>
                                 </div>
@@ -2288,8 +2339,9 @@
                     <div class="admin-card">
                         <div class="admin-card-title"><i class="fas fa-broadcast-tower"></i> Manchetes do ticker AO VIVO</div>
                         <p style="font-size:13px;color:var(--muted2);margin-bottom:16px">Essas são as manchetes que rolam no topo do site. Edite, adicione ou remova.</p>
-                        <div class="form-row" style="margin-bottom:16px">
-                            <div class="form-group"><label class="form-label">Nova manchete</label><input class="form-input" id="ticker-nova" placeholder="Ex: OMS divulga novo relatório sobre saúde mental" /></div>
+                        <div class="form-row" style="margin-bottom:8px">
+                            <div class="form-group"><label class="form-label">Texto da manchete *</label><input class="form-input" id="ticker-nova" placeholder="Ex: OMS divulga novo relatório sobre saúde mental" /></div>
+                            <div class="form-group"><label class="form-label">Link (opcional — deixe vazio para não ser clicável)</label><input class="form-input" id="ticker-link" placeholder="https://... ou deixe vazio" /></div>
                         </div>
                         <button class="btn-submit" onclick="adicionarTicker()" style="margin-bottom:20px"><i class="fas fa-plus"></i> Adicionar manchete</button>
                         <div class="ticker-admin-list" id="tickerAdminList"></div>
@@ -2331,19 +2383,13 @@
         let tickerItens = [];
 
         // ─── EDITOR NATIVO ───
-        function execCmd(cmd, val) {
-            document.getElementById('editorCorpo').focus();
-            document.execCommand(cmd, false, val || null);
-        }
+        function execCmd(cmd, val) { document.getElementById('editorCorpo').focus(); document.execCommand(cmd, false, val || null); }
         function getEditorHTML() { return document.getElementById('editorCorpo').innerHTML || ''; }
         function getEditorText() { return (document.getElementById('editorCorpo').innerText || '').trim(); }
         function setEditorHTML(html) { document.getElementById('editorCorpo').innerHTML = html || ''; }
         function clearEditor() { document.getElementById('editorCorpo').innerHTML = ''; }
 
-        // ─── UPLOAD IMAGEM CLOUDINARY ───
-        const CLOUDINARY_CLOUD = 'dvpen4mud';
-        const CLOUDINARY_PRESET = 'jfxarzox';
-
+        // ─── CLOUDINARY ───
         async function uploadImagem(input) {
             const file = input.files[0]; if (!file) return;
             const status = document.getElementById('imgUploadStatus');
@@ -2351,8 +2397,8 @@
             status.textContent = '⏳ Enviando...'; btn.disabled = true;
             try {
                 const fd = new FormData();
-                fd.append('file', file); fd.append('upload_preset', CLOUDINARY_PRESET);
-                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
+                fd.append('file', file); fd.append('upload_preset', 'jfxarzox');
+                const res = await fetch('https://api.cloudinary.com/v1_1/dvpen4mud/image/upload', { method: 'POST', body: fd });
                 const data = await res.json();
                 if (data.secure_url) {
                     document.getElementById('n-img').value = data.secure_url;
@@ -2364,14 +2410,12 @@
             } catch (e) { status.textContent = '❌ ' + e.message; }
             btn.disabled = false; input.value = '';
         }
-
         function removerImagem() {
             document.getElementById('n-img').value = '';
             document.getElementById('imgPreview').src = '';
             document.getElementById('imgPreviewWrap').style.display = 'none';
             document.getElementById('imgUploadStatus').textContent = '';
         }
-
         function preencherImagem(url) {
             if (!url) { removerImagem(); return; }
             document.getElementById('n-img').value = url;
@@ -2394,13 +2438,19 @@
         async function init() {
             document.getElementById('portalDate').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             // Ticker do localStorage
-            tickerItens = JSON.parse(localStorage.getItem('psi:ticker') || 'null') || [
-                'OMS alerta para aumento de transtornos de ansiedade em jovens',
-                'CFP publica novas diretrizes para telepsicologia',
-                'Pesquisa revela impacto do sono na saúde mental',
-                'Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas',
-                'Nova escala de avaliação de burnout é validada no Brasil'
-            ];
+            const rawTicker = JSON.parse(localStorage.getItem('psi:ticker') || 'null');
+            if (!rawTicker) {
+                tickerItens = [
+                    { texto: 'OMS alerta para aumento de transtornos de ansiedade em jovens', link: '' },
+                    { texto: 'CFP publica novas diretrizes para telepsicologia', link: '' },
+                    { texto: 'Pesquisa revela impacto do sono na saúde mental', link: '' },
+                    { texto: 'Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas', link: '' },
+                    { texto: 'Nova escala de avaliação de burnout é validada no Brasil', link: '' }
+                ];
+            } else {
+                // Migra strings antigas para objetos
+                tickerItens = rawTicker.map(t => typeof t === 'string' ? { texto: t, link: '' } : t);
+            }
             renderTicker();
             await carregarDados();
         }
@@ -2479,19 +2529,39 @@
         // ─── TICKER ───
         function renderTicker() {
             const doubled = [...tickerItens, ...tickerItens];
-            document.getElementById('tickerTrack').innerHTML = doubled.map(t => `<span class="ticker-dot">●</span><span class="ticker-item">${t}</span>`).join('');
+            document.getElementById('tickerTrack').innerHTML = doubled.map(t => {
+                const texto = typeof t === 'string' ? t : t.texto;
+                const link = typeof t === 'string' ? '' : t.link;
+                if (link) {
+                    return `<span class="ticker-dot">●</span><a class="ticker-item ticker-link-item" href="${link}" target="_blank" rel="noopener">${texto}</a>`;
+                }
+                return `<span class="ticker-dot">●</span><span class="ticker-item">${texto}</span>`;
+            }).join('');
         }
         function renderTickerAdmin() {
             const el = document.getElementById('tickerAdminList');
             if (!tickerItens.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px">Nenhuma manchete cadastrada</p>'; return; }
-            el.innerHTML = tickerItens.map((t, i) => `<div class="ticker-admin-item"><span class="drag-handle">⠿</span><span>${t}</span><button class="btn-danger" onclick="removerTicker(${i})"><i class="fas fa-trash"></i></button></div>`).join('');
+            el.innerHTML = tickerItens.map((t, i) => {
+                const texto = typeof t === 'string' ? t : t.texto;
+                const link = typeof t === 'string' ? '' : t.link;
+                return `<div class="ticker-admin-item">
+                        <span class="drag-handle">⠿</span>
+                        <div style="flex:1">
+                            <div style="font-size:13px;color:var(--text)">${texto}</div>
+                            ${link ? `<div style="font-size:11px;color:var(--roxo-light);margin-top:2px"><i class="fas fa-link" style="font-size:10px"></i> ${link}</div>` : '<div style="font-size:11px;color:var(--muted);margin-top:2px">Sem link</div>'}
+                        </div>
+                        <button class="btn-danger" onclick="removerTicker(${i})"><i class="fas fa-trash"></i></button>
+                    </div>`;
+            }).join('');
         }
         function adicionarTicker() {
             const val = document.getElementById('ticker-nova').value.trim();
+            const link = document.getElementById('ticker-link').value.trim();
             if (!val) { showToast('Digite a manchete', 'erro'); return; }
-            tickerItens.push(val);
+            tickerItens.push({ texto: val, link: link || '' });
             localStorage.setItem('psi:ticker', JSON.stringify(tickerItens));
             document.getElementById('ticker-nova').value = '';
+            document.getElementById('ticker-link').value = '';
             renderTicker(); renderTickerAdmin();
             showToast('✅ Manchete adicionada!');
         }
@@ -2510,11 +2580,29 @@
             document.getElementById('modalMeta').innerHTML = `${art.autor || 'Redação ProntPsi'} <span style="margin:0 6px;color:var(--muted)">·</span> ${formatDate(art.data)}`;
             const img = document.getElementById('modalImg'), ph = document.getElementById('modalImgPlaceholder');
             if (art.img) { img.src = art.img; img.style.display = 'block'; ph.style.display = 'none'; } else { img.style.display = 'none'; ph.style.display = 'flex'; }
-            document.getElementById('modalBody').innerHTML = art.corpo || art.body || '';
+            const artIdx = noticias.indexOf(art);
+            document.getElementById('modalBody').innerHTML = (art.corpo || art.body || '') +
+                `<div class="share-bar">
+                        <span class="share-label">Compartilhar</span>
+                        <button class="btn-share btn-share-wa" onclick="compartilharWA(${artIdx})"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                        <button class="btn-share btn-share-copy" onclick="copiarLink(${artIdx})"><i class="fas fa-link"></i> Copiar link</button>
+                    </div>`;
             document.getElementById('articleModal').classList.add('open');
         }
         function closeArticle() { document.getElementById('articleModal').classList.remove('open') }
         document.getElementById('articleModal').addEventListener('click', function (e) { if (e.target === this) closeArticle() });
+
+        function compartilharWA(idx) {
+            const art = noticias[idx]; if (!art) return;
+            const url = encodeURIComponent(window.location.href.split('#')[0] + '#artigo-' + art.id);
+            const msg = encodeURIComponent('*' + art.titulo + '*\n\nLeia no portal ProntPsi: ' + decodeURIComponent(url));
+            window.open('https://wa.me/?text=' + msg, '_blank');
+        }
+        function copiarLink(idx) {
+            const art = noticias[idx]; if (!art) return;
+            const url = window.location.href.split('#')[0] + '#artigo-' + art.id;
+            navigator.clipboard.writeText(url).then(() => showToast('✅ Link copiado!')).catch(() => showToast('Erro ao copiar', 'erro'));
+        }
 
         // ─── PREVIEW ───
         function abrirPreview() {
