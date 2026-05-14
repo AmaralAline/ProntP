@@ -2192,23 +2192,23 @@
                             <label class="form-label">Texto completo *</label>
                             <div class="editor-wrap">
                                 <div class="editor-toolbar">
-                                    <button type="button" onclick="execCmd('bold')" title="Negrito"><b>N</b></button>
-                                    <button type="button" onclick="execCmd('italic')" title="Itálico"><i>I</i></button>
-                                    <button type="button" onclick="execCmd('underline')" title="Sublinhado"><u>S</u></button>
+                                    <button type="button" onclick="execCmd('bold')"><b>N</b></button>
+                                    <button type="button" onclick="execCmd('italic')"><i>I</i></button>
+                                    <button type="button" onclick="execCmd('underline')"><u>S</u></button>
                                     <span class="editor-sep"></span>
-                                    <button type="button" onclick="execCmd('justifyLeft')" title="Esquerda">⬅</button>
-                                    <button type="button" onclick="execCmd('justifyCenter')" title="Centro">☰</button>
-                                    <button type="button" onclick="execCmd('justifyRight')" title="Direita">➡</button>
-                                    <button type="button" onclick="execCmd('justifyFull')" title="Justificar">≡</button>
+                                    <button type="button" onclick="execCmd('justifyLeft')">⬅</button>
+                                    <button type="button" onclick="execCmd('justifyCenter')">☰</button>
+                                    <button type="button" onclick="execCmd('justifyRight')">➡</button>
+                                    <button type="button" onclick="execCmd('justifyFull')">≡</button>
                                     <span class="editor-sep"></span>
-                                    <button type="button" onclick="execCmd('formatBlock','h2')" title="Título">T1</button>
-                                    <button type="button" onclick="execCmd('formatBlock','h3')" title="Subtítulo">T2</button>
-                                    <button type="button" onclick="execCmd('formatBlock','p')" title="Parágrafo">¶</button>
+                                    <button type="button" onclick="execCmd('formatBlock','h2')">T1</button>
+                                    <button type="button" onclick="execCmd('formatBlock','h3')">T2</button>
+                                    <button type="button" onclick="execCmd('formatBlock','p')">¶</button>
                                     <span class="editor-sep"></span>
-                                    <button type="button" onclick="execCmd('insertUnorderedList')" title="Lista">• Lista</button>
-                                    <button type="button" onclick="execCmd('insertOrderedList')" title="1. Lista">1. Lista</button>
+                                    <button type="button" onclick="execCmd('insertUnorderedList')">• Lista</button>
+                                    <button type="button" onclick="execCmd('insertOrderedList')">1. Lista</button>
                                     <span class="editor-sep"></span>
-                                    <button type="button" onclick="execCmd('removeFormat')" title="Limpar">✕</button>
+                                    <button type="button" onclick="execCmd('removeFormat')">✕</button>
                                 </div>
                                 <div id="editorCorpo" class="editor-body" contenteditable="true"></div>
                             </div>
@@ -2313,6 +2313,16 @@
         let adminToken = null;
         let noticias = [], eventos = [], profissionais = [];
         let tickerItens = [];
+
+        // ─── EDITOR NATIVO ───
+        function execCmd(cmd, val) {
+            document.getElementById('editorCorpo').focus();
+            document.execCommand(cmd, false, val || null);
+        }
+        function getEditorHTML() { return document.getElementById('editorCorpo').innerHTML || ''; }
+        function getEditorText() { return (document.getElementById('editorCorpo').innerText || '').trim(); }
+        function setEditorHTML(html) { document.getElementById('editorCorpo').innerHTML = html || ''; }
+        function clearEditor() { document.getElementById('editorCorpo').innerHTML = ''; }
         let editandoId = null;
 
         // ─── API ───
@@ -2324,16 +2334,6 @@
             if (!res.ok) throw await res.json();
             return res.json();
         }
-
-        // ─── EDITOR NATIVO ───
-        function execCmd(cmd, val) {
-            document.getElementById('editorCorpo').focus();
-            document.execCommand(cmd, false, val || null);
-        }
-        function getEditorHTML() { return document.getElementById('editorCorpo').innerHTML || ''; }
-        function getEditorText() { return (document.getElementById('editorCorpo').innerText || '').trim(); }
-        function setEditorHTML(html) { document.getElementById('editorCorpo').innerHTML = html || ''; }
-        function clearEditor() { document.getElementById('editorCorpo').innerHTML = ''; }
 
         // ─── INIT ───
         async function init() {
@@ -2376,10 +2376,10 @@
 
         // ─── RENDER PORTAL ───
         function renderPortal() {
-            try { renderHero(); } catch (e) { console.warn('renderHero:', e); }
-            try { renderCards(); } catch (e) { console.warn('renderCards:', e); }
-            try { renderEventos(); } catch (e) { console.warn('renderEventos:', e); }
-            try { renderProfissionais(); } catch (e) { console.warn('renderProfissionais:', e); }
+            try { renderHero(); } catch (e) { console.warn('renderHero:', e.message); }
+            try { renderCards(); } catch (e) { console.warn('renderCards:', e.message); }
+            try { renderEventos(); } catch (e) { console.warn('renderEventos:', e.message); }
+            try { renderProfissionais(); } catch (e) { console.warn('renderProfissionais:', e.message); }
         }
 
         function renderHero() {
@@ -2393,7 +2393,7 @@
             const hm = document.getElementById('heroMain'); if (hm) hm.onclick = () => openArticle(noticias.indexOf(main));
             const imgArea = document.getElementById('heroImgArea');
             if (imgArea) imgArea.innerHTML = main.img ? `<img src="${main.img}" alt=""/><div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>` : `<div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>`;
-            const side = document.getElementById('heroSide'); if (!side) return;
+            const side = document.getElementById('heroSide');
             const sidePubs = pubs.slice(1, 4);
             if (!sidePubs.length) { side.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);font-size:12px;padding:20px;text-align:center">Publique mais artigos para aparecerem aqui</div>'; return; }
             side.innerHTML = sidePubs.map(n => `<div class="side-news-card" onclick="openArticle(${noticias.indexOf(n)})"><div class="side-cat">${n.categoria}</div><div class="side-title">${n.titulo}</div><div class="side-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div></div>`).join('');
@@ -2550,7 +2550,7 @@
                     clearEditor();
                 }
                 await carregarAdmin(); renderAdminTables(); renderPortal(); renderDashStats();
-            } catch (e) { console.error(e); showToast('Erro: ' + (e.erro || e.message || 'verifique o console'), 'erro'); }
+            } catch (e) { console.error(e); showToast('Erro: ' + (e.erro || e.message || ''), 'erro'); }
         }
 
         function editarNoticia(id) {
@@ -2590,7 +2590,7 @@
                 ['e-titulo', 'e-data', 'e-local', 'e-desc', 'e-link'].forEach(id => document.getElementById(id).value = '');
                 await carregarAdmin(); renderAdminTables(); renderEventos(); renderDashStats();
                 showToast('✅ Evento adicionado!');
-            } catch (e) { console.error(e); showToast('Erro: ' + (e.erro || e.message || 'verifique o console'), 'erro'); }
+            } catch (e) { console.error(e); showToast('Erro: ' + (e.erro || e.message || ''), 'erro'); }
         }
 
         // ─── SALVAR PROFISSIONAL ───
@@ -2603,7 +2603,7 @@
                 ['p-nome', 'p-iniciais', 'p-spec', 'p-loc', 'p-link'].forEach(id => document.getElementById(id).value = '');
                 await carregarAdmin(); renderAdminTables(); renderProfissionais(); renderDashStats();
                 showToast('✅ Profissional adicionado!');
-            } catch (e) { console.error(e); showToast('Erro: ' + (e.erro || e.message || 'verifique o console'), 'erro'); }
+            } catch (e) { console.error(e); showToast('Erro: ' + (e.erro || e.message || ''), 'erro'); }
         }
 
         // ─── DELETE ───
