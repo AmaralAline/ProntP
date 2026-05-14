@@ -2263,12 +2263,6 @@
         // ─── INIT ───
         async function init() {
             document.getElementById('portalDate').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            // Init Quill
-            quill = new Quill('#quillEditor', {
-                theme: 'snow',
-                placeholder: 'Escreva o artigo completo aqui...',
-                modules: { toolbar: [[{ header: [2, 3, false] }], 'bold', 'italic', 'underline', { list: 'ordered' }, { list: 'bullet' }, 'blockquote', 'clean'] }
-            });
             // Ticker do localStorage
             tickerItens = JSON.parse(localStorage.getItem('psi:ticker') || 'null') || [
                 'OMS alerta para aumento de transtornos de ansiedade em jovens',
@@ -2279,6 +2273,16 @@
             ];
             renderTicker();
             await carregarDados();
+        }
+
+        // Quill só inicializa quando painel está visível no DOM
+        function initQuill() {
+            if (quill) return;
+            quill = new Quill('#quillEditor', {
+                theme: 'snow',
+                placeholder: 'Escreva o artigo completo aqui...',
+                modules: { toolbar: [[{ header: [2, 3, false] }], 'bold', 'italic', 'underline', { list: 'ordered' }, { list: 'bullet' }, 'blockquote', 'clean'] }
+            });
         }
 
         async function carregarDados() {
@@ -2387,6 +2391,7 @@
 
         // ─── PREVIEW ───
         function abrirPreview() {
+            if (!quill) { showToast('Editor não carregado, tente novamente', 'erro'); return; }
             const titulo = document.getElementById('n-titulo').value.trim();
             const resumo = document.getElementById('n-resumo').value.trim();
             const corpo = quill.root.innerHTML;
@@ -2428,7 +2433,12 @@
         document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('open')) doLogin() });
 
         // ─── ADMIN ───
-        function openAdmin() { document.getElementById('admin-panel').classList.add('open'); renderAdminTables(); renderDashStats(); renderTickerAdmin(); }
+        function openAdmin() {
+            document.getElementById('admin-panel').classList.add('open');
+            // Inicializa Quill agora que o painel está visível
+            setTimeout(() => initQuill(), 100);
+            renderAdminTables(); renderDashStats(); renderTickerAdmin();
+        }
         function closeAdmin() { document.getElementById('admin-panel').classList.remove('open') }
         function showAdminSection(id, el) {
             document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
@@ -2440,6 +2450,8 @@
             document.getElementById('adminPageTitle').textContent = t[0];
             document.getElementById('adminPageSub').textContent = t[1];
             if (id === 'ticker') renderTickerAdmin();
+            // Garante Quill ao abrir aba de notícias
+            if (id === 'noticias') setTimeout(() => initQuill(), 100);
         }
 
         function renderDashStats() {
@@ -2454,6 +2466,7 @@
 
         // ─── SALVAR NOTÍCIA ───
         async function salvarNoticia() {
+            if (!quill) { showToast('Editor não carregado, tente novamente', 'erro'); return; }
             const titulo = document.getElementById('n-titulo').value.trim();
             const resumo = document.getElementById('n-resumo').value.trim();
             const corpo = quill.root.innerHTML;
@@ -2477,26 +2490,31 @@
 
         function editarNoticia(id) {
             const art = noticias.find(n => n.id === id); if (!art) return;
-            editandoId = id;
-            document.getElementById('n-id').value = id;
-            document.getElementById('n-titulo').value = art.titulo;
-            document.getElementById('n-resumo').value = art.resumo;
-            document.getElementById('n-cat').value = art.categoria;
-            document.getElementById('n-autor').value = art.autor || '';
-            document.getElementById('n-img').value = art.img || '';
-            document.getElementById('n-status').value = art.status;
-            quill.root.innerHTML = art.corpo || '';
-            document.getElementById('formNoticiaLabel').textContent = 'Editar artigo';
-            document.getElementById('btnSalvarLabel').textContent = 'Salvar alterações';
-            document.getElementById('btnCancelarEdicao').style.display = 'flex';
-            document.getElementById('formNoticiaCard').scrollIntoView({ behavior: 'smooth' });
+            // Garante que o Quill está inicializado antes de carregar conteúdo
+            showAdminSection('noticias', document.querySelector('.admin-nav-item:nth-child(2)'));
+            setTimeout(() => {
+                initQuill();
+                editandoId = id;
+                document.getElementById('n-id').value = id;
+                document.getElementById('n-titulo').value = art.titulo;
+                document.getElementById('n-resumo').value = art.resumo;
+                document.getElementById('n-cat').value = art.categoria;
+                document.getElementById('n-autor').value = art.autor || '';
+                document.getElementById('n-img').value = art.img || '';
+                document.getElementById('n-status').value = art.status;
+                if (quill) quill.root.innerHTML = art.corpo || '';
+                document.getElementById('formNoticiaLabel').textContent = 'Editar artigo';
+                document.getElementById('btnSalvarLabel').textContent = 'Salvar alterações';
+                document.getElementById('btnCancelarEdicao').style.display = 'flex';
+                document.getElementById('formNoticiaCard').scrollIntoView({ behavior: 'smooth' });
+            }, 150);
         }
 
         function cancelarEdicao() {
             editandoId = null;
             document.getElementById('n-id').value = '';
             ['n-titulo', 'n-resumo', 'n-autor', 'n-img'].forEach(id => document.getElementById(id).value = '');
-            quill.setContents([]);
+            if (quill) quill.setContents([]);
             document.getElementById('formNoticiaLabel').textContent = 'Publicar nova notícia';
             document.getElementById('btnSalvarLabel').textContent = 'Publicar agora';
             document.getElementById('btnCancelarEdicao').style.display = 'none';
