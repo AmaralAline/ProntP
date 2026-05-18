@@ -1411,8 +1411,32 @@
                 </div>
 
                 <!-- Aviso de verificação pendente -->
-                <div id="vitrine-aviso-verif" style="display:none;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
-                    <p style="color:#fbbf24;font-size:13px;margin:0;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i><strong>Verificação necessária.</strong> Solicite a verificação do seu perfil na seção "Meu Perfil" para aparecer na vitrine.</p>
+                <div id="vitrine-aviso-verif" style="display:none;background:rgba(251,191,36,0.06);border:2px solid rgba(251,191,36,0.4);border-radius:14px;padding:24px 28px;margin-bottom:24px;">
+                    <div style="display:flex;align-items:flex-start;gap:16px;">
+                        <div style="width:44px;height:44px;border-radius:50%;background:rgba(251,191,36,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fas fa-lock" style="color:#fbbf24;font-size:18px;"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <p style="color:#fbbf24;font-size:15px;font-weight:700;margin:0 0 6px;">
+                                Verificação necessária para aparecer na vitrine
+                            </p>
+                            <p style="color:#94a3b8;font-size:13px;margin:0 0 16px;line-height:1.6;">
+                                Antes de ativar sua vitrine, você precisa verificar seu CRP/CRM na seção <strong style="color:#e2e8f0;">Meu Perfil</strong>.
+                                Isso garante que apenas profissionais autorizados apareçam para os pacientes.<br>
+                                Após solicitar, nossa equipe confirma em até <strong style="color:#e2e8f0;">48 horas</strong>.
+                            </p>
+                            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                                <button onclick="document.getElementById('btn-perfil').click()"
+                                        style="display:inline-flex;align-items:center;gap:8px;background:#fbbf24;color:#0f1621;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;font-family:'Roboto',sans-serif;transition:.2s;">
+                                    <i class="fas fa-shield-alt"></i> Ir para Meu Perfil e verificar
+                                </button>
+                                <span style="font-size:12px;color:#64748b;">
+                                    <i class="fas fa-info-circle" style="margin-right:4px;"></i>
+                                    Você já preencheu os dados da vitrine? Eles ficam salvos e aparecem assim que a verificação for aprovada.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="vitrine-form-wrapper">

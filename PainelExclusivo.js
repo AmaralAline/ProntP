@@ -3570,7 +3570,7 @@ async function salvarVitrine() {
     const ativo = vitrineAtivo;
 
     if (ativo && !vitrineProfVerificado) {
-        mostrarFeedbackVitrine('Verificação profissional necessária para ativar a vitrine.', false);
+        mostrarFeedbackVitrine('⚠️ Para aparecer na vitrine, primeiro solicite a verificação do seu CRP/CRM em "Meu Perfil". Após aprovação (até 48h), a vitrine será liberada automaticamente.', false);
         if (toggle) toggle.checked = false;
         atualizarToggleVisual(false);
         return;
