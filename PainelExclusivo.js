@@ -3338,6 +3338,7 @@ async function carregarVitrine() {
         const toggle = document.getElementById('vitrine-toggle');
         if (toggle) toggle.checked = vitrineAtivo;
         atualizarToggleVisual(vitrineAtivo);
+        atualizarBlocoLinkVitrine(vitrineAtivo);
 
         const bioEl = document.getElementById('vitrine-bio');
         if (bioEl) bioEl.value = d.vitrine_bio || '';
@@ -3551,6 +3552,7 @@ async function salvarVitrine() {
             mostrarFeedbackVitrine('? ' + d.mensagem, true);
             atualizarBadgeMenuVitrine(ativo && vitrineProfVerificado);
             atualizarToggleVisual(ativo);
+            atualizarBlocoLinkVitrine(ativo);
         } else {
             mostrarFeedbackVitrine(d.erro || 'Erro ao salvar.', false);
             if (d.codigo === 'VERIFICACAO_PENDENTE' && toggle) {
@@ -3572,6 +3574,49 @@ function mostrarFeedbackVitrine(msg, sucesso) {
     else fb.style.color = '#94a3b8';
     fb.textContent = msg;
     if (sucesso === true) setTimeout(() => { fb.style.display = 'none'; }, 4000);
+}
+
+// ── LINK DA VITRINE ──────────────────────────────────────────────
+function slugifyNome(nome, id) {
+    const slug = (nome || '').toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    return slug + '-' + id;
+}
+
+function atualizarBlocoLinkVitrine(ativo) {
+    const bloco = document.getElementById('vitrine-link-block');
+    if (!bloco) return;
+    const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
+    if (ativo && prof.id && prof.verificado) {
+        const slug = slugifyNome(prof.nome, prof.id);
+        const url = 'https://www.prontpsi.com.br/profissionais.html?psi=' + slug;
+        const urlEl = document.getElementById('vitrine-link-url');
+        const abrirEl = document.getElementById('vitrine-link-abrir');
+        if (urlEl) urlEl.textContent = url;
+        if (abrirEl) abrirEl.href = url;
+        bloco.style.display = 'block';
+    } else {
+        bloco.style.display = 'none';
+    }
+}
+
+function copiarLinkVitrine() {
+    const url = document.getElementById('vitrine-link-url')?.textContent;
+    if (!url) return;
+    navigator.clipboard.writeText(url).then(() => {
+        mostrarFeedbackVitrine('✅ Link copiado! Cole onde quiser.', true);
+    });
+}
+
+function compartilharVitrineWA() {
+    const url = document.getElementById('vitrine-link-url')?.textContent;
+    const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
+    if (!url) return;
+    const msg = encodeURIComponent(
+        `Encontre-me na vitrine do ProntPsi!\n*${prof.nome || 'Meu perfil'}* — ${prof.especialidade || 'Psicólogo'}\n\n${url}`
+    );
+    window.open('https://wa.me/?text=' + msg, '_blank');
 }
 
 function atualizarBadgeMenuVitrine(ativo) {
