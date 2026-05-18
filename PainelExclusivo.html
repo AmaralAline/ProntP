@@ -1031,27 +1031,13 @@
                                    style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
                         </div>
                         <div class="form-group">
-                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Tipo de profissional</label>
-                            <select id="perfil-tipo-profissional" onchange="toggleTipoProfissional()" style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
-                                <option value="psicologia">Psicólogo(a)</option>
-                                <option value="psiquiatria">Psiquiatra</option>
-                                <option value="psicanalista">Psicanalista</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="campo-crp-wrap">
                             <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">CRP / CRM</label>
                             <input type="text" id="perfil-crp" placeholder="Ex: CRP 06/000001"
                                    style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
                         </div>
-                        <div class="form-group" id="campo-instituto-wrap" style="display:none;">
-                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Instituto de formação</label>
-                            <input type="text" id="perfil-instituto" placeholder="Ex: SBPSP, IPA, Febrapsi..."
-                                   style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
-                        </div>
                         <div class="form-group">
-                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Especialidade / Abordagem</label>
-                            <input type="text" id="perfil-especialidade" placeholder="Ex: Psicanálise Clínica, TCC, Psicodrama..."
+                            <label style="font-size:13px; font-weight:500; color:#94a3b8; margin-bottom:6px; display:block;">Especialidade</label>
+                            <input type="text" id="perfil-especialidade" placeholder="Ex: Psicóloga Clínica"
                                    style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
                         </div>
                         <div class="form-group">
@@ -1104,7 +1090,7 @@
                             <i class="fas fa-shield-alt" style="color:#8b5cf6; margin-right:8px;"></i>
                             Verificação Profissional
                         </h3>
-                        <p style="font-size:13px; color:#64748b; margin-bottom:16px;" id="verif-descricao">
+                        <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
                             Verifique seu CRP/CRM e CPF para receber o selo <strong style="color:#34d399;">Profissional Verificado</strong>. O sistema tentará a verificação automática; se necessário, nossa equipe concluirá manualmente em até 48h.
                         </p>
 
@@ -1182,265 +1168,235 @@
                             </div>
                         </div>
 
-                        <!-- BLOCO PSICANALISTA — aparece quando tipo = psicanalista -->
-                        <div id="verif-bloco-psicanalista" style="display:none;">
-                            <div style="background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:16px 20px;margin-bottom:16px;">
-                                <p style="font-size:13px;color:#94a3b8;margin-bottom:14px;">
-                                    <i class="fas fa-info-circle" style="color:#a78bfa;margin-right:6px;"></i>
-                                    Como psicanalista, sua verificação é feita pelo certificado do instituto de formação. Envie o documento abaixo — nossa equipe analisará em até 48h e você receberá o badge <strong style="color:#a78bfa;">Instituto Verificado</strong>.
-                                </p>
-                                <div style="margin-bottom:14px;">
-                                    <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px;">Nome do instituto de formação *</label>
-                                    <input type="text" id="verif-instituto" placeholder="Ex: SBPSP, IPA, Febrapsi, Instituto de Psicanálise..."
-                                           style="width:100%;padding:10px 14px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;">
-                                </div>
-                                <div style="margin-bottom:14px;">
-                                    <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px;">Ano de conclusão *</label>
-                                    <input type="number" id="verif-ano-conclusao" placeholder="Ex: 2018" min="1970" max="2026"
-                                           style="width:160px;padding:10px 14px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;">
-                                </div>
-                                <div style="margin-bottom:6px;">
-                                    <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px;">CPF *</label>
-                                    <input type="text" id="verif-cpf-psic" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)"
-                                           style="width:200px;padding:10px 14px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;">
-                                </div>
-                            </div>
-                            <button onclick="solicitarVerificacaoPsicanalista()" style="background:#7c3aed;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;font-family:'Roboto',sans-serif;">
-                                <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar para verificação
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <button id="btn-solicitar-verif" onclick="solicitarVerificacao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-search" style="margin-right:6px;"></i>Solicitar Verificação
                             </button>
-                            <p id="verif-feedback-psic" style="font-size:13px;display:none;margin-top:10px;"></p>
-                        </div>
-
-                        <div id="verif-bloco-padrao">
-                            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                                <button id="btn-solicitar-verif" onclick="solicitarVerificacao()" style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                                    <i class="fas fa-search" style="margin-right:6px;"></i>Solicitar Verificação
-                                </button>
-                                <p id="verif-feedback" style="font-size:13px; display:none;"></p>
-                            </div>
+                            <p id="verif-feedback" style="font-size:13px; display:none;"></p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- ASSINATURA DIGITAL -->
-                    <div class="form-card form-card-mobile" style="max-width:600px; margin-bottom:24px;">
-                        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-                            <i class="fas fa-signature" style="color:#8b5cf6; margin-right:8px;"></i>
-                            Assinatura Digital
-                        </h3>
-                        <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
-                            Desenhe sua assinatura abaixo. Ela será aplicada automaticamente em todos os recibos e relatórios gerados.
-                        </p>
+                <!-- ASSINATURA DIGITAL -->
+                <div class="form-card form-card-mobile" style="max-width:600px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-signature" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Assinatura Digital
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                        Desenhe sua assinatura abaixo. Ela será aplicada automaticamente em todos os recibos e relatórios gerados.
+                    </p>
 
-                        <div style="position:relative; margin-bottom:16px;">
-                            <canvas id="canvas-assinatura" width="500" height="160" style="
+                    <div style="position:relative; margin-bottom:16px;">
+                        <canvas id="canvas-assinatura" width="500" height="160" style="
                 background:#0f1621; border:1px solid rgba(139,92,246,0.3);
                 border-radius:8px; cursor:crosshair; display:block;
                 touch-action:none;
             "></canvas>
-                            <p style="font-size:11px; color:#64748b; margin-top:6px; text-align:center;">
-                                Desenhe sua assinatura acima usando o mouse ou dedo
-                            </p>
-                        </div>
-
-                        <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-                            <button onclick="limparAssinatura()" style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
-                                <i class="fas fa-eraser" style="margin-right:6px;"></i>Limpar
-                            </button>
-                            <button onclick="salvarAssinatura()" style="background:#7c3aed; color:#fff; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
-                                <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Assinatura
-                            </button>
-                        </div>
-
-                        <!-- PRÉVIA DA ASSINATURA SALVA -->
-                        <div id="assinatura-salva-box" style="display:none;">
-                            <p style="font-size:13px; color:#34d399; margin-bottom:8px;">✅ Assinatura salva:</p>
-                            <img id="assinatura-preview" style="max-width:300px; border:1px solid rgba(139,92,246,0.2); border-radius:8px; background:#0f1621; padding:8px;">
-                        </div>
-                        <p id="assinatura-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
-                    </div>
-                    <!-- CONFIGURAÇÃO DE PAGAMENTOS ONLINE (STRIPE) -->
-                    <div class="form-card" style="max-width:600px; margin-bottom:24px;" id="card-stripe">
-                        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
-                            <i class="fas fa-credit-card" style="color:#8b5cf6; margin-right:8px;"></i>
-                            Pagamentos Online — Stripe
-                        </h3>
-                        <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
-                            Conecte sua conta Stripe para receber pagamentos diretamente. Os valores das consultas online vão
-                            <strong style="color:#e2e8f0;">direto para o seu saldo Stripe</strong> — sem intermediários.
+                        <p style="font-size:11px; color:#64748b; margin-top:6px; text-align:center;">
+                            Desenhe sua assinatura acima usando o mouse ou dedo
                         </p>
+                    </div>
 
-                        <!-- STATUS: SEM CHAVE CONFIGURADA -->
-                        <div id="stripe-sem-chave">
-                            <div style="background:rgba(251,191,36,0.06); border:1px solid rgba(251,191,36,0.2); border-radius:10px; padding:16px; margin-bottom:20px; display:flex; gap:12px; align-items:flex-start;">
-                                <i class="fas fa-exclamation-triangle" style="color:#fbbf24; font-size:16px; margin-top:2px; flex-shrink:0;"></i>
-                                <div>
-                                    <p style="font-size:13px; font-weight:600; color:#fbbf24; margin-bottom:4px;">Pagamentos não configurados</p>
-                                    <p style="font-size:12px; color:#94a3b8; line-height:1.5;">
-                                        Sem isso, seus pacientes <strong style="color:#e2e8f0;">não conseguem pagar online</strong>.
-                                        Crie sua conta em <a href="https://dashboard.stripe.com/register" target="_blank" style="color:#a78bfa;">stripe.com</a> e cole as chaves abaixo.
-                                    </p>
-                                </div>
-                            </div>
+                    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+                        <button onclick="limparAssinatura()" style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-eraser" style="margin-right:6px;"></i>Limpar
+                        </button>
+                        <button onclick="salvarAssinatura()" style="background:#7c3aed; color:#fff; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                            <i class="fas fa-save" style="margin-right:6px;"></i>Salvar Assinatura
+                        </button>
+                    </div>
 
-                            <!-- INSTRUÇÕES EM PASSO A PASSO -->
-                            <div style="margin-bottom:20px;">
-                                <p style="font-size:12px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Como configurar:</p>
-                                <div style="display:flex; flex-direction:column; gap:8px;">
-                                    <div style="display:flex; gap:10px; align-items:flex-start;">
-                                        <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">1</span>
-                                        <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Acesse <a href="https://dashboard.stripe.com/register" target="_blank" style="color:#a78bfa;">dashboard.stripe.com</a> e crie sua conta (grátis)</p>
-                                    </div>
-                                    <div style="display:flex; gap:10px; align-items:flex-start;">
-                                        <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">2</span>
-                                        <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">No menu lateral: <strong style="color:#e2e8f0;">Developers → API Keys</strong></p>
-                                    </div>
-                                    <div style="display:flex; gap:10px; align-items:flex-start;">
-                                        <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">3</span>
-                                        <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Copie a <strong style="color:#e2e8f0;">Secret Key</strong> (começa com <code style="background:#0f1621; padding:1px 5px; border-radius:4px; color:#a78bfa;">sk_live_</code>) e cole abaixo</p>
-                                    </div>
-                                    <div style="display:flex; gap:10px; align-items:flex-start;">
-                                        <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">4</span>
-                                        <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Complete o cadastro bancário no Stripe para receber saques</p>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- PRÉVIA DA ASSINATURA SALVA -->
+                    <div id="assinatura-salva-box" style="display:none;">
+                        <p style="font-size:13px; color:#34d399; margin-bottom:8px;">✅ Assinatura salva:</p>
+                        <img id="assinatura-preview" style="max-width:300px; border:1px solid rgba(139,92,246,0.2); border-radius:8px; background:#0f1621; padding:8px;">
+                    </div>
+                    <p id="assinatura-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
+                </div>
+                <!-- CONFIGURAÇÃO DE PAGAMENTOS ONLINE (STRIPE) -->
+                <div class="form-card" style="max-width:600px; margin-bottom:24px;" id="card-stripe">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                        <i class="fas fa-credit-card" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Pagamentos Online — Stripe
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Conecte sua conta Stripe para receber pagamentos diretamente. Os valores das consultas online vão
+                        <strong style="color:#e2e8f0;">direto para o seu saldo Stripe</strong> — sem intermediários.
+                    </p>
 
-                            <!-- FORMULÁRIO DE CHAVES -->
-                            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
-                                <div>
-                                    <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">
-                                        Secret Key <span style="color:#f87171;">*</span>
-                                        <span style="color:#475569; font-weight:400;"> (nunca compartilhe esta chave)</span>
-                                    </label>
-                                    <div style="position:relative;">
-                                        <input type="password" id="stripe-secret-key" placeholder="sk_live_... ou sk_test_..."
-                                               style="width:100%; padding:10px 40px 10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; letter-spacing:1px;">
-                                        <button onclick="toggleVerStripe('stripe-secret-key', this)" type="button"
-                                                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer; font-size:14px;">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">
-                                        Publishable Key <span style="color:#64748b; font-weight:400;">(opcional, começa com pk_)</span>
-                                    </label>
-                                    <input type="text" id="stripe-publishable-key" placeholder="pk_live_... ou pk_test_..."
-                                           style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
-                                </div>
-                            </div>
-
-                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                <button onclick="salvarChavesStripe()" id="btn-salvar-stripe"
-                                        style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
-                                    <i class="fas fa-plug" style="margin-right:6px;"></i>Conectar Stripe
-                                </button>
-                                <p id="stripe-feedback" style="font-size:13px; display:none;"></p>
+                    <!-- STATUS: SEM CHAVE CONFIGURADA -->
+                    <div id="stripe-sem-chave">
+                        <div style="background:rgba(251,191,36,0.06); border:1px solid rgba(251,191,36,0.2); border-radius:10px; padding:16px; margin-bottom:20px; display:flex; gap:12px; align-items:flex-start;">
+                            <i class="fas fa-exclamation-triangle" style="color:#fbbf24; font-size:16px; margin-top:2px; flex-shrink:0;"></i>
+                            <div>
+                                <p style="font-size:13px; font-weight:600; color:#fbbf24; margin-bottom:4px;">Pagamentos não configurados</p>
+                                <p style="font-size:12px; color:#94a3b8; line-height:1.5;">
+                                    Sem isso, seus pacientes <strong style="color:#e2e8f0;">não conseguem pagar online</strong>.
+                                    Crie sua conta em <a href="https://dashboard.stripe.com/register" target="_blank" style="color:#a78bfa;">stripe.com</a> e cole as chaves abaixo.
+                                </p>
                             </div>
                         </div>
 
-                        <!-- STATUS: CHAVE CONFIGURADA -->
-                        <div id="stripe-com-chave" style="display:none;">
-                            <div style="background:rgba(52,211,153,0.06); border:1px solid rgba(52,211,153,0.25); border-radius:10px; padding:16px; margin-bottom:20px; display:flex; gap:12px; align-items:center;">
-                                <div style="width:36px; height:36px; border-radius:50%; background:rgba(52,211,153,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                    <i class="fas fa-check-circle" style="color:#34d399; font-size:18px;"></i>
+                        <!-- INSTRUÇÕES EM PASSO A PASSO -->
+                        <div style="margin-bottom:20px;">
+                            <p style="font-size:12px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Como configurar:</p>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                <div style="display:flex; gap:10px; align-items:flex-start;">
+                                    <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">1</span>
+                                    <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Acesse <a href="https://dashboard.stripe.com/register" target="_blank" style="color:#a78bfa;">dashboard.stripe.com</a> e crie sua conta (grátis)</p>
                                 </div>
-                                <div style="flex:1;">
-                                    <p style="font-size:14px; font-weight:600; color:#34d399; margin-bottom:2px;">✅ Stripe conectado</p>
-                                    <p style="font-size:12px; color:#64748b; margin:0;">Chave: <code id="stripe-chave-preview" style="background:#0f1621; padding:1px 6px; border-radius:4px; color:#a78bfa; font-size:11px;"></code></p>
+                                <div style="display:flex; gap:10px; align-items:flex-start;">
+                                    <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">2</span>
+                                    <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">No menu lateral: <strong style="color:#e2e8f0;">Developers → API Keys</strong></p>
+                                </div>
+                                <div style="display:flex; gap:10px; align-items:flex-start;">
+                                    <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">3</span>
+                                    <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Copie a <strong style="color:#e2e8f0;">Secret Key</strong> (começa com <code style="background:#0f1621; padding:1px 5px; border-radius:4px; color:#a78bfa;">sk_live_</code>) e cole abaixo</p>
+                                </div>
+                                <div style="display:flex; gap:10px; align-items:flex-start;">
+                                    <span style="background:#7c3aed; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">4</span>
+                                    <p style="font-size:13px; color:#94a3b8; margin:0; padding-top:2px;">Complete o cadastro bancário no Stripe para receber saques</p>
                                 </div>
                             </div>
+                        </div>
 
-                            <div style="background:#0f1621; border-radius:8px; padding:14px; margin-bottom:16px;">
-                                <p style="font-size:13px; color:#64748b; margin-bottom:8px; font-weight:500;">💡 Como funciona agora:</p>
-                                <ul style="font-size:12px; color:#94a3b8; padding-left:16px; line-height:2;">
-                                    <li>Pacientes pagam a consulta pelo link de agendamento</li>
-                                    <li>O valor entra <strong style="color:#e2e8f0;">direto no seu Stripe</strong></li>
-                                    <li>Você saca para sua conta bancária pelo painel do Stripe</li>
-                                    <li>O ProntPsi não toca no seu dinheiro</li>
-                                </ul>
+                        <!-- FORMULÁRIO DE CHAVES -->
+                        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+                            <div>
+                                <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">
+                                    Secret Key <span style="color:#f87171;">*</span>
+                                    <span style="color:#475569; font-weight:400;"> (nunca compartilhe esta chave)</span>
+                                </label>
+                                <div style="position:relative;">
+                                    <input type="password" id="stripe-secret-key" placeholder="sk_live_... ou sk_test_..."
+                                           style="width:100%; padding:10px 40px 10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; letter-spacing:1px;">
+                                    <button onclick="toggleVerStripe('stripe-secret-key', this)" type="button"
+                                            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer; font-size:14px;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
                             </div>
+                            <div>
+                                <label style="font-size:12px; color:#94a3b8; display:block; margin-bottom:6px;">
+                                    Publishable Key <span style="color:#64748b; font-weight:400;">(opcional, começa com pk_)</span>
+                                </label>
+                                <input type="text" id="stripe-publishable-key" placeholder="pk_live_... ou pk_test_..."
+                                       style="width:100%; padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif;">
+                            </div>
+                        </div>
 
-                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="https://dashboard.stripe.com/payments" target="_blank"
-                                   style="display:inline-flex; align-items:center; gap:6px; background:rgba(139,92,246,0.1); color:#a78bfa; border:1px solid rgba(139,92,246,0.3); padding:8px 16px; border-radius:8px; font-size:13px; text-decoration:none; font-family:'Roboto',sans-serif;">
-                                    <i class="fas fa-external-link-alt"></i> Ver pagamentos no Stripe
-                                </a>
-                                <button onclick="removerChavesStripe()"
-                                        style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
-                                    <i class="fas fa-unlink" style="margin-right:6px;"></i>Desconectar
-                                </button>
-                            </div>
+                        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                            <button onclick="salvarChavesStripe()" id="btn-salvar-stripe"
+                                    style="background:#7c3aed; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-plug" style="margin-right:6px;"></i>Conectar Stripe
+                            </button>
+                            <p id="stripe-feedback" style="font-size:13px; display:none;"></p>
                         </div>
                     </div>
 
-                    <!-- PRÉVIA DO CARIMBO -->
-                    <div class="form-card" style="max-width:600px;">
-                        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
-                            <i class="fas fa-stamp" style="color:#8b5cf6; margin-right:8px;"></i>
-                            Carimbo Digital
-                        </h3>
-                        <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
-                            Seu carimbo é gerado automaticamente com seus dados cadastrados.
-                        </p>
-                        <div id="carimbo-preview" style="
+                    <!-- STATUS: CHAVE CONFIGURADA -->
+                    <div id="stripe-com-chave" style="display:none;">
+                        <div style="background:rgba(52,211,153,0.06); border:1px solid rgba(52,211,153,0.25); border-radius:10px; padding:16px; margin-bottom:20px; display:flex; gap:12px; align-items:center;">
+                            <div style="width:36px; height:36px; border-radius:50%; background:rgba(52,211,153,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                <i class="fas fa-check-circle" style="color:#34d399; font-size:18px;"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <p style="font-size:14px; font-weight:600; color:#34d399; margin-bottom:2px;">✅ Stripe conectado</p>
+                                <p style="font-size:12px; color:#64748b; margin:0;">Chave: <code id="stripe-chave-preview" style="background:#0f1621; padding:1px 6px; border-radius:4px; color:#a78bfa; font-size:11px;"></code></p>
+                            </div>
+                        </div>
+
+                        <div style="background:#0f1621; border-radius:8px; padding:14px; margin-bottom:16px;">
+                            <p style="font-size:13px; color:#64748b; margin-bottom:8px; font-weight:500;">💡 Como funciona agora:</p>
+                            <ul style="font-size:12px; color:#94a3b8; padding-left:16px; line-height:2;">
+                                <li>Pacientes pagam a consulta pelo link de agendamento</li>
+                                <li>O valor entra <strong style="color:#e2e8f0;">direto no seu Stripe</strong></li>
+                                <li>Você saca para sua conta bancária pelo painel do Stripe</li>
+                                <li>O ProntPsi não toca no seu dinheiro</li>
+                            </ul>
+                        </div>
+
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <a href="https://dashboard.stripe.com/payments" target="_blank"
+                               style="display:inline-flex; align-items:center; gap:6px; background:rgba(139,92,246,0.1); color:#a78bfa; border:1px solid rgba(139,92,246,0.3); padding:8px 16px; border-radius:8px; font-size:13px; text-decoration:none; font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-external-link-alt"></i> Ver pagamentos no Stripe
+                            </a>
+                            <button onclick="removerChavesStripe()"
+                                    style="background:transparent; color:#f87171; border:1px solid rgba(248,113,113,0.3); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-unlink" style="margin-right:6px;"></i>Desconectar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRÉVIA DO CARIMBO -->
+                <div class="form-card" style="max-width:600px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fas fa-stamp" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Carimbo Digital
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                        Seu carimbo é gerado automaticamente com seus dados cadastrados.
+                    </p>
+                    <div id="carimbo-preview" style="
             display:inline-block; border:3px solid rgba(124,58,237,0.6);
             border-radius:50%; padding:16px 24px; text-align:center;
             min-width:180px;
         ">
-                            <p style="font-size:13px; font-weight:700; color:#a78bfa;" id="carimbo-nome">Aline Amaral</p>
-                            <p style="font-size:10px; color:#64748b; margin:2px 0;" id="carimbo-crp">CRP 06/000001</p>
-                            <p style="font-size:10px; color:#64748b;" id="carimbo-especialidade">Psicóloga</p>
-                            <div style="border-top:1px solid rgba(124,58,237,0.3); margin:6px 0;"></div>
-                            <p style="font-size:9px; color:#64748b;">ProntPsi</p>
-                        </div>
-                        <p style="font-size:12px; color:#64748b; margin-top:12px;">
-                            Para alterar os dados do carimbo, atualize seu cadastro de profissional.
-                        </p>
+                        <p style="font-size:13px; font-weight:700; color:#a78bfa;" id="carimbo-nome">Aline Amaral</p>
+                        <p style="font-size:10px; color:#64748b; margin:2px 0;" id="carimbo-crp">CRP 06/000001</p>
+                        <p style="font-size:10px; color:#64748b;" id="carimbo-especialidade">Psicóloga</p>
+                        <div style="border-top:1px solid rgba(124,58,237,0.3); margin:6px 0;"></div>
+                        <p style="font-size:9px; color:#64748b;">ProntPsi</p>
                     </div>
+                    <p style="font-size:12px; color:#64748b; margin-top:12px;">
+                        Para alterar os dados do carimbo, atualize seu cadastro de profissional.
+                    </p>
+                </div>
 
-                    <!-- EXPORTAR PRONTUÁRIOS -->
-                    <div class="form-card form-card-mobile" style="max-width:600px; margin-bottom:24px;">
-                        <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
-                            <i class="fas fa-file-export" style="color:#8b5cf6; margin-right:8px;"></i>
-                            Exportar Meus Prontuários
-                        </h3>
-                        <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
-                            Solicite um PDF com todos os prontuários e evoluções de um período. O arquivo será enviado para o seu e-mail cadastrado.
-                        </p>
-                        <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
-                            <div>
-                                <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
-                                <select id="export-mes" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
-                                    <option value="1">Janeiro</option>
-                                    <option value="2">Fevereiro</option>
-                                    <option value="3">Março</option>
-                                    <option value="4">Abril</option>
-                                    <option value="5">Maio</option>
-                                    <option value="6">Junho</option>
-                                    <option value="7">Julho</option>
-                                    <option value="8">Agosto</option>
-                                    <option value="9">Setembro</option>
-                                    <option value="10">Outubro</option>
-                                    <option value="11">Novembro</option>
-                                    <option value="12">Dezembro</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
-                                <select id="export-ano" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
-                                </select>
-                            </div>
-                            <button onclick="solicitarExporteProntuarios()" id="btn-exportar-prontuarios" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif; display:flex; align-items:center; gap:8px;">
-                                <i class="fas fa-envelope"></i> Enviar por e-mail
-                            </button>
+                <!-- EXPORTAR PRONTUÁRIOS -->
+                <div class="form-card form-card-mobile" style="max-width:600px; margin-bottom:24px;">
+                    <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
+                        <i class="fas fa-file-export" style="color:#8b5cf6; margin-right:8px;"></i>
+                        Exportar Meus Prontuários
+                    </h3>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+                        Solicite um PDF com todos os prontuários e evoluções de um período. O arquivo será enviado para o seu e-mail cadastrado.
+                    </p>
+                    <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+                        <div>
+                            <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Mês</label>
+                            <select id="export-mes" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
                         </div>
-                        <p id="export-feedback" style="display:none; font-size:13px; margin-top:12px;"></p>
-                        <p style="font-size:11px; color:#475569; margin-top:14px;">
-                            <i class="fas fa-info-circle" style="margin-right:4px;"></i>
-                            O arquivo pode levar alguns minutos para chegar. Recomendamos solicitar um mês por vez.
-                        </p>
+                        <div>
+                            <label style="font-size:13px; color:#94a3b8; display:block; margin-bottom:6px;">Ano</label>
+                            <select id="export-ano" style="padding:10px 14px; background:#0f1621; border:1px solid rgba(139,92,246,0.2); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif;">
+                            </select>
+                        </div>
+                        <button onclick="solicitarExporteProntuarios()" id="btn-exportar-prontuarios" style="background:#7c3aed; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-family:'Roboto',sans-serif; display:flex; align-items:center; gap:8px;">
+                            <i class="fas fa-envelope"></i> Enviar por e-mail
+                        </button>
                     </div>
+                    <p id="export-feedback" style="display:none; font-size:13px; margin-top:12px;"></p>
+                    <p style="font-size:11px; color:#475569; margin-top:14px;">
+                        <i class="fas fa-info-circle" style="margin-right:4px;"></i>
+                        O arquivo pode levar alguns minutos para chegar. Recomendamos solicitar um mês por vez.
+                    </p>
+                </div>
 
             </section>
 
@@ -2500,8 +2456,31 @@
         </div>
     </div>
     <!-- ============================================================
-     INSTRUÇÕES: Cole este bloco ANTES de </body> no PainelExclusivo.html
-     (substitui ou adiciona logo antes de <script defer src="PainelExclusivo.js">)
+     INSTRUÇÕES: Cole este bloco ANTES de
+    <!-- MODAL RECADO DO ADMIN -->
+    <div id="modal-recado-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#1a2332;border:1px solid rgba(139,92,246,.3);border-radius:16px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                <div style="width:42px;height:42px;border-radius:50%;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="fas fa-envelope" style="color:#a78bfa;font-size:18px;"></i>
+                </div>
+                <div>
+                    <p style="font-size:15px;font-weight:600;color:#f1f5f9;margin:0;">Recado da equipe ProntPsi</p>
+                    <p style="font-size:11px;color:#64748b;margin:2px 0 0;" id="recado-data-envio"></p>
+                </div>
+            </div>
+            <div id="recado-admin-mensagem" style="font-size:14px;color:#cbd5e1;line-height:1.7;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:16px 18px;margin-bottom:20px;"></div>
+            <button onclick="marcarRecadoLido()"
+                    style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">
+                <i class="fas fa-check" style="margin-right:8px;"></i>Entendido, marcar como lido
+            </button>
+        </div>
+    </div>
+
+</body> no PainelExclusivo.html
+     (substitui ou adiciona logo antes de
+<script defer src="PainelExclusivo.js">
+)
      ============================================================ -->
     <!-- MODAL: EVOLUÇÃO COMPLETA -->
     <div id="modal-evolucao-completa" style="
@@ -2658,14 +2637,35 @@
 
 
             <script defer src="PainelExclusivo.js"></script>
-            <script src="onboarding-prontpsi.js"></script>
-            <script defer src="agenda.js"></script>
-            <script defer src="sessao.js"></script>
-            <script src="notificacoes-prontpsi.js"></script>
-            <script src="atalhos-prontpsi.js"></script>
-            <script src="anamnese-prontpsi.js"></script>
-            <script src="financeiro-visual-prontpsi.js"></script>
-            <script defer src="formularios2.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="onboarding-prontpsi.js"></script>
+<script defer src="agenda.js"></script>
+<script defer src="sessao.js"></script>
+<script src="notificacoes-prontpsi.js"></script>
+<script src="atalhos-prontpsi.js"></script>
+<script src="anamnese-prontpsi.js"></script>
+<script src="financeiro-visual-prontpsi.js"></script>
+<script defer src="formularios2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<!-- MODAL RECADO DO ADMIN -->
+<div id="modal-recado-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#1a2332;border:1px solid rgba(139,92,246,.3);border-radius:16px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fas fa-envelope" style="color:#a78bfa;font-size:18px;"></i>
+            </div>
+            <div>
+                <p style="font-size:15px;font-weight:600;color:#f1f5f9;margin:0;">Recado da equipe ProntPsi</p>
+                <p style="font-size:11px;color:#64748b;margin:2px 0 0;" id="recado-data-envio"></p>
+            </div>
+        </div>
+        <div id="recado-admin-mensagem" style="font-size:14px;color:#cbd5e1;line-height:1.7;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:16px 18px;margin-bottom:20px;"></div>
+        <button onclick="marcarRecadoLido()"
+                style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">
+            <i class="fas fa-check" style="margin-right:8px;"></i>Entendido, marcar como lido
+        </button>
+    </div>
+</div>
+
 </body>
 </html>
