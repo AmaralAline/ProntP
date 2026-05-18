@@ -3359,6 +3359,16 @@ async function carregarVitrine() {
         const cidadeEl = document.getElementById('vitrine-cidade');
         if (cidadeEl) cidadeEl.value = d.vitrine_cidade || '';
 
+        const onlineEl = document.getElementById('vitrine-online');
+        const presencialEl = document.getElementById('vitrine-presencial');
+        const enderecoEl = document.getElementById('vitrine-endereco');
+        const cepEl = document.getElementById('vitrine-cep');
+        if (onlineEl) onlineEl.checked = d.vitrine_atende_online !== 0;
+        if (presencialEl) presencialEl.checked = !!d.vitrine_atende_presencial;
+        if (enderecoEl) enderecoEl.value = d.vitrine_endereco || '';
+        if (cepEl) cepEl.value = d.vitrine_cep || '';
+        togglePresencialForm();
+
         const estadoEl = document.getElementById('vitrine-estado');
         if (estadoEl) estadoEl.value = d.vitrine_estado || '';
 
@@ -3538,6 +3548,10 @@ async function salvarVitrine() {
         vitrine_cidade: document.getElementById('vitrine-cidade')?.value || null,
         vitrine_estado: document.getElementById('vitrine-estado')?.value || null,
         vitrine_especialidades: vitrineEspecialidadesSelecionadas,
+        vitrine_atende_online: document.getElementById('vitrine-online')?.checked ? 1 : 0,
+        vitrine_atende_presencial: document.getElementById('vitrine-presencial')?.checked ? 1 : 0,
+        vitrine_endereco: document.getElementById('vitrine-endereco')?.value.trim() || null,
+        vitrine_cep: document.getElementById('vitrine-cep')?.value.trim() || null,
     };
 
     try {
@@ -3552,7 +3566,6 @@ async function salvarVitrine() {
             mostrarFeedbackVitrine('? ' + d.mensagem, true);
             atualizarBadgeMenuVitrine(ativo && vitrineProfVerificado);
             atualizarToggleVisual(ativo);
-            atualizarBlocoLinkVitrine(ativo);
         } else {
             mostrarFeedbackVitrine(d.erro || 'Erro ao salvar.', false);
             if (d.codigo === 'VERIFICACAO_PENDENTE' && toggle) {
@@ -3565,18 +3578,38 @@ async function salvarVitrine() {
     }
 }
 
-function mostrarFeedbackVitrine(msg, sucesso) {
-    const fb = document.getElementById('vitrine-feedback');
-    if (!fb) return;
-    fb.style.display = 'block';
-    if (sucesso === true) fb.style.color = '#34d399';
-    else if (sucesso === false) fb.style.color = '#f87171';
-    else fb.style.color = '#94a3b8';
-    fb.textContent = msg;
-    if (sucesso === true) setTimeout(() => { fb.style.display = 'none'; }, 4000);
+
+// ── MODALIDADE PRESENCIAL ─────────────────────────────────────
+function togglePresencialForm() {
+    const presencial = document.getElementById('vitrine-presencial')?.checked;
+    const wrap = document.getElementById('vitrine-endereco-wrap');
+    if (wrap) wrap.style.display = presencial ? 'block' : 'none';
 }
 
-// ── LINK DA VITRINE ──────────────────────────────────────────────
+function mascaraCEP(el) {
+    let v = el.value.replace(/\D/g, '').slice(0, 8);
+    if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+    el.value = v;
+}
+
+async function buscarCEP() {
+    const cep = document.getElementById('vitrine-cep')?.value.replace(/\D/g, '');
+    if (!cep || cep.length !== 8) return;
+    try {
+        const res = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+        const d = await res.json();
+        if (!d.erro) {
+            const endEl = document.getElementById('vitrine-endereco');
+            const cidEl = document.getElementById('vitrine-cidade');
+            const estEl = document.getElementById('vitrine-estado');
+            if (endEl && !endEl.value) endEl.value = d.logradouro + (d.bairro ? ', ' + d.bairro : '');
+            if (cidEl && !cidEl.value) cidEl.value = d.localidade;
+            if (estEl) estEl.value = d.uf;
+        }
+    } catch (e) { console.warn('CEP não encontrado'); }
+}
+
+
 function slugifyNome(nome, id) {
     const slug = (nome || '').toLowerCase()
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -3588,7 +3621,6 @@ function atualizarBlocoLinkVitrine(ativo) {
     const bloco = document.getElementById('vitrine-link-block');
     if (!bloco) return;
     const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
-    // Usa vitrineProfVerificado que já é carregado pela carregarVitrine()
     if (ativo && prof.id && vitrineProfVerificado) {
         const slug = slugifyNome(prof.nome, prof.id);
         const url = 'https://www.prontpsi.com.br/profissionais.html?psi=' + slug;
@@ -3615,9 +3647,20 @@ function compartilharVitrineWA() {
     const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
     if (!url) return;
     const msg = encodeURIComponent(
-        `Encontre-me na vitrine do ProntPsi!\n*${prof.nome || 'Meu perfil'}* — ${prof.especialidade || 'Psicólogo'}\n\n${url}`
+        'Encontre-me na vitrine do ProntPsi!\n*' + (prof.nome || 'Meu perfil') + '* — ' + (prof.especialidade || 'Psicólogo') + '\n\n' + url
     );
     window.open('https://wa.me/?text=' + msg, '_blank');
+}
+
+function mostrarFeedbackVitrine(msg, sucesso) {
+    const fb = document.getElementById('vitrine-feedback');
+    if (!fb) return;
+    fb.style.display = 'block';
+    if (sucesso === true) fb.style.color = '#34d399';
+    else if (sucesso === false) fb.style.color = '#f87171';
+    else fb.style.color = '#94a3b8';
+    fb.textContent = msg;
+    if (sucesso === true) setTimeout(() => { fb.style.display = 'none'; }, 4000);
 }
 
 function atualizarBadgeMenuVitrine(ativo) {
