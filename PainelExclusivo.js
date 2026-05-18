@@ -3588,7 +3588,8 @@ function atualizarBlocoLinkVitrine(ativo) {
     const bloco = document.getElementById('vitrine-link-block');
     if (!bloco) return;
     const prof = JSON.parse(localStorage.getItem('profissional') || '{}');
-    if (ativo && prof.id && prof.verificado) {
+    // Usa vitrineProfVerificado que já é carregado pela carregarVitrine()
+    if (ativo && prof.id && vitrineProfVerificado) {
         const slug = slugifyNome(prof.nome, prof.id);
         const url = 'https://www.prontpsi.com.br/profissionais.html?psi=' + slug;
         const urlEl = document.getElementById('vitrine-link-url');
