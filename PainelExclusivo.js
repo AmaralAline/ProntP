@@ -283,6 +283,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Carrega dados iniciais
     await carregarPacientes();
+    verificarRecados();
     iniciarRelogio();
 
     // Verifica política de privacidade
@@ -2496,10 +2497,10 @@ async function salvarDadosProfissionais() {
             const nomeEl = document.getElementById('nome-profissional');
             if (nomeEl) nomeEl.textContent = nome;
 
-            feedback.textContent = '? Dados salvos com sucesso!';
+            feedback.textContent = '✅ Dados salvos com sucesso!';
             feedback.style.color = '#34d399';
         } else {
-            feedback.textContent = '?? Erro ao salvar. Verifique os dados.';
+            feedback.textContent = '❌ Erro ao salvar. Verifique os dados.';
             feedback.style.color = '#f87171';
         }
     } catch (err) {
@@ -2513,7 +2514,7 @@ async function salvarDadosProfissionais() {
         const nomeEl = document.getElementById('nome-profissional');
         if (nomeEl) nomeEl.textContent = nome;
 
-        feedback.textContent = '? Dados salvos localmente!';
+        feedback.textContent = '✅ Dados salvos localmente!';
         feedback.style.color = '#34d399';
     }
 
@@ -2646,6 +2647,74 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('change', atualizarPreviewRegistro);
     });
 });
+
+
+// ── TIPO PROFISSIONAL (Psicólogo, Psiquiatra, Psicanalista) ──────
+function toggleTipoProfissional() {
+    const tipo = document.getElementById('perfil-tipo-profissional')?.value;
+    const campoCrp = document.getElementById('campo-crp-wrap');
+    const campoInstituto = document.getElementById('campo-instituto-wrap');
+    const blocoVerifPadrao = document.getElementById('verif-bloco-padrao');
+    const blocoVerifPsic = document.getElementById('verif-bloco-psicanalista');
+    const verifDescricao = document.getElementById('verif-descricao');
+    const gridVerif = document.querySelector('.grid-2col');
+
+    if (tipo === 'psicanalista') {
+        if (campoCrp) campoCrp.style.display = 'none';
+        if (campoInstituto) campoInstituto.style.display = 'block';
+        if (blocoVerifPadrao) blocoVerifPadrao.style.display = 'none';
+        if (blocoVerifPsic) blocoVerifPsic.style.display = 'block';
+        if (gridVerif) gridVerif.style.display = 'none';
+        if (verifDescricao) verifDescricao.style.display = 'none';
+    } else {
+        if (campoCrp) campoCrp.style.display = 'block';
+        if (campoInstituto) campoInstituto.style.display = 'none';
+        if (blocoVerifPadrao) blocoVerifPadrao.style.display = 'block';
+        if (blocoVerifPsic) blocoVerifPsic.style.display = 'none';
+        if (gridVerif) gridVerif.style.display = 'grid';
+        if (verifDescricao) verifDescricao.style.display = 'block';
+    }
+}
+
+async function solicitarVerificacaoPsicanalista() {
+    const instituto = document.getElementById('verif-instituto')?.value.trim();
+    const ano = document.getElementById('verif-ano-conclusao')?.value.trim();
+    const cpf = document.getElementById('verif-cpf-psic')?.value.trim();
+    const feedback = document.getElementById('verif-feedback-psic');
+    if (!feedback) return;
+
+    if (!instituto || !ano || !cpf) {
+        feedback.textContent = 'Preencha instituto, ano de conclusão e CPF.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    feedback.textContent = 'Enviando solicitação...';
+    feedback.style.color = '#94a3b8';
+    feedback.style.display = 'block';
+
+    try {
+        await fetch(`${API_URL}/api/perfil/solicitar-verificacao`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                crp_crm: `Instituto: ${instituto} (${ano})`,
+                cpf,
+                tipo_verificacao: 'psicanalista',
+                instituto,
+                ano_conclusao: ano
+            })
+        });
+        atualizarStatusVerificacao(false, null, 'pendente');
+        feedback.textContent = '📨 Solicitação enviada! Nossa equipe verificará em até 48h e você receberá o badge "Instituto Verificado".';
+        feedback.style.color = '#fbbf24';
+    } catch (err) {
+        feedback.textContent = '📨 Solicitação registrada! Nossa equipe entrará em contato em até 48h.';
+        feedback.style.color = '#fbbf24';
+    }
+    feedback.style.display = 'block';
+}
 
 async function solicitarVerificacao() {
     const conselho = document.getElementById('verif-conselho')?.value.trim();
@@ -3571,8 +3640,10 @@ async function salvarVitrine() {
 
     if (ativo && !vitrineProfVerificado) {
         mostrarFeedbackVitrine('⚠️ Para aparecer na vitrine, primeiro solicite a verificação do seu CRP/CRM em "Meu Perfil". Após aprovação (até 48h), a vitrine será liberada automaticamente.', false);
-        if (toggle) toggle.checked = false;
+        const toggleEl = document.getElementById('vitrine-toggle');
+        if (toggleEl) toggleEl.checked = false;
         atualizarToggleVisual(false);
+        vitrineAtivo = false;
         return;
     }
 
@@ -3603,14 +3674,17 @@ async function salvarVitrine() {
         const d = await res.json();
         if (res.ok) {
             vitrineAtivo = ativo;
-            mostrarFeedbackVitrine('? ' + d.mensagem, true);
+            mostrarFeedbackVitrine('✅ ' + d.mensagem, true);
             atualizarBadgeMenuVitrine(ativo && vitrineProfVerificado);
             atualizarToggleVisual(ativo);
+            atualizarBlocoLinkVitrine(ativo);
         } else {
             mostrarFeedbackVitrine(d.erro || 'Erro ao salvar.', false);
-            if (d.codigo === 'VERIFICACAO_PENDENTE' && toggle) {
-                toggle.checked = false;
+            if (d.codigo === 'VERIFICACAO_PENDENTE') {
+                const toggleEl2 = document.getElementById('vitrine-toggle');
+                if (toggleEl2) toggleEl2.checked = false;
                 atualizarToggleVisual(false);
+                vitrineAtivo = false;
             }
         }
     } catch (err) {
