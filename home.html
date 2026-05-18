@@ -2119,6 +2119,7 @@
             <a href="#" onclick="filterCat('Psicologia',null);return false">Psicologia</a>
             <a href="#" onclick="filterCat('Psiquiatria',null);return false">Psiquiatria</a>
             <a href="#" onclick="filterCat('Neurociência',null);return false">Neurociência</a>
+            <a href="#" onclick="filterCat('Psicanálise',null);return false">Psicanálise</a>
             <a href="#" onclick="filterCat('Eventos',null);return false">Eventos</a>
         </div>
         <div class="nav-links">
@@ -2153,6 +2154,7 @@
                 <button class="portal-cat" onclick="filterCat('Psiquiatria',this)">Psiquiatria</button>
                 <button class="portal-cat" onclick="filterCat('Neurociência',this)">Neurociência</button>
                 <button class="portal-cat" onclick="filterCat('Carreira',this)">Carreira</button>
+                <button class="portal-cat" onclick="filterCat('Psicanálise',this)">Psicanálise</button>
             </div>
             <span class="portal-date" id="portalDate"></span>
         </div>
@@ -2250,8 +2252,8 @@
         <div class="sistema-cta">
             <div>
                 <div class="sistema-cta-label">⚡ Sistema clínico</div>
-                <div class="sistema-cta-title">Prontuário, agenda e escalas<br>em um só lugar</div>
-                <div class="sistema-cta-sub">Para psicólogos, psiquiatras e equipes multidisciplinares. Tudo que você precisa para organizar sua clínica.</div>
+                <div class="sistema-cta-title">Para psicólogos, psiquiatras<br>e psicanalistas</div>
+                <div class="sistema-cta-sub">Prontuário eletrônico, agenda online, escalas clínicas e vitrine para novos pacientes. Tudo que você precisa para organizar sua clínica e crescer.</div>
                 <div class="sistema-cta-feats">
                     <div class="sistema-feat"><i class="fas fa-check-circle"></i> Agenda com pagamento online</div>
                     <div class="sistema-feat"><i class="fas fa-check-circle"></i> 16 escalas clínicas validadas</div>
@@ -2289,7 +2291,7 @@
             <a href="mailto:prontpsii@gmail.com">Contato</a>
         </div>
         <p style="font-size:13px;color:var(--muted2);max-width:560px;margin:0 auto 16px;line-height:1.7">Portal de notícias, recursos e referência para psicólogos e psiquiatras brasileiros.</p>
-        <p class="footer-copy">© 2026 ProntPsi — O sistema clínico e portal de referência do universo Psi.</p>
+        <p class="footer-copy">© 2026 ProntPsi — O sistema clínico para psicólogos, psiquiatras e psicanalistas.</p>
         <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:24px">
             <a href="https://instagram.com/prontpsi" target="_blank" style="color:var(--muted);text-decoration:none;font-size:13px;display:inline-flex;align-items:center;gap:7px"><i class="fab fa-instagram" style="font-size:17px"></i> @prontpsi</a>
             <a href="#admin-acesso" onclick="openLogin();return false;" style="color:var(--muted);text-decoration:none;font-size:11px;opacity:.35;transition:opacity .2s" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.35'"><i class="fas fa-lock" style="font-size:10px"></i> admin</a>
@@ -2891,10 +2893,10 @@
             const pubs = noticias.filter(n => n.status === 'publicado').length;
             const drafts = noticias.filter(n => n.status === 'rascunho').length;
             document.getElementById('dashStats').innerHTML = `
-                <div class="stat-card"><div class="stat-label">Publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">artigos no portal</div></div>
-                <div class="stat-card"><div class="stat-label">Rascunhos</div><div class="stat-val">${drafts}</div><div class="stat-sub">aguardando</div></div>
-                <div class="stat-card"><div class="stat-label">Eventos</div><div class="stat-val">${eventos.length}</div><div class="stat-sub">cadastrados</div></div>
-                <div class="stat-card"><div class="stat-label">Manchetes</div><div class="stat-val">${tickerItens.length}</div><div class="stat-sub">no ticker</div></div>`;
+                    <div class="stat-card"><div class="stat-label">Publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">artigos no portal</div></div>
+                    <div class="stat-card"><div class="stat-label">Rascunhos</div><div class="stat-val">${drafts}</div><div class="stat-sub">aguardando</div></div>
+                    <div class="stat-card"><div class="stat-label">Eventos</div><div class="stat-val">${eventos.length}</div><div class="stat-sub">cadastrados</div></div>
+                    <div class="stat-card"><div class="stat-label">Manchetes</div><div class="stat-val">${tickerItens.length}</div><div class="stat-sub">no ticker</div></div>`;
         }
 
         // ─── SALVAR NOTÍCIA ───
@@ -2987,20 +2989,20 @@
             nt.innerHTML = !noticias.length
                 ? `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Nenhum artigo ainda</td></tr>`
                 : noticias.map((n, i) => `<tr class="drag-row" draggable="true"
-                            ondragstart="dragNoticia(${i})"
-                            ondragover="dragOverNoticia(event,${i})"
-                            ondrop="dropNoticia(${i})"
-                            ondragleave="this.classList.remove('drag-over')">
-                            <td style="padding-left:10px"><span class="drag-handle" style="font-size:18px;color:var(--muted)">⠿</span></td>
-                            <td><span class="ordem-badge">${i + 1}</span></td>
-                            <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
-                            <td>${n.categoria}</td>
-                            <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td>
-                            <td><div class="table-actions">
-                                <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
-                                <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
-                            </div></td>
-                        </tr>`).join('');
+                                ondragstart="dragNoticia(${i})"
+                                ondragover="dragOverNoticia(event,${i})"
+                                ondrop="dropNoticia(${i})"
+                                ondragleave="this.classList.remove('drag-over')">
+                                <td style="padding-left:10px"><span class="drag-handle" style="font-size:18px;color:var(--muted)">⠿</span></td>
+                                <td><span class="ordem-badge">${i + 1}</span></td>
+                                <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
+                                <td>${n.categoria}</td>
+                                <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td>
+                                <td><div class="table-actions">
+                                    <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
+                                    <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
+                                </div></td>
+                            </tr>`).join('');
             const et = document.getElementById('eventosTabela');
             et.innerHTML = !eventos.length ? `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">Nenhum evento cadastrado</td></tr>` : eventos.map(e => `<tr><td><div class="table-title">${e.titulo}</div></td><td>${formatDate(e.data)}</td><td><span class="event-tag ${e.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${e.modalidade}</span></td><td><button class="btn-danger" onclick="deletarEvento(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
             const pt = document.getElementById('profsTabela');

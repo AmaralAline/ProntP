@@ -18,12 +18,16 @@
         <input type="email" id="email" placeholder="E-mail" required />
         <input type="tel" id="telefone" placeholder="Telefone (opcional)" />
 
-        <input type="text" id="crp_crm" placeholder="CRP ou CRM (ex: CRP-06/123456)" required />
+        <input type="text" id="crp_crm" placeholder="CRP ou CRM (ex: CRP-06/123456)" />
+        <p id="crp-hint" style="font-size:12px;color:#64748b;margin-top:-8px;margin-bottom:4px;display:none;">
+            💡 Psicanalistas: informe o nome do instituto (ex: SBPSP, IPA) — o CRP não é obrigatório.
+        </p>
 
-        <select id="especialidade" required>
+        <select id="especialidade" required onchange="toggleCRP()">
             <option value="">Selecione sua especialidade</option>
             <option value="psicologia">Psicologia</option>
             <option value="psiquiatria">Psiquiatria</option>
+            <option value="psicanalista">Psicanálise</option>
             <option value="outro">Outro</option>
         </select>
 
@@ -36,6 +40,22 @@
         <button type="submit" id="btnCadastrar">Cadastrar</button>
         <a href="login.html" class="voltar-login">Já tem uma conta? Faça login</a>
     </form>
+    <script>
+        function toggleCRP() {
+            const esp = document.getElementById('especialidade').value;
+            const crpInput = document.getElementById('crp_crm');
+            const hint = document.getElementById('crp-hint');
+            if (esp === 'psicanalista') {
+                crpInput.placeholder = 'Instituto de formação (ex: SBPSP, IPA) — opcional';
+                crpInput.removeAttribute('required');
+                if (hint) hint.style.display = 'block';
+            } else {
+                crpInput.placeholder = 'CRP ou CRM (ex: CRP-06/123456)';
+                crpInput.setAttribute('required', '');
+                if (hint) hint.style.display = 'none';
+            }
+        }
+    </script>
     <script src="cadastro.js"></script>
 </body>
 </html>

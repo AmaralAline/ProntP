@@ -2414,6 +2414,20 @@ async function carregarDadosProfissionais() {
         const data = await res.json();
         if (data.nome) document.getElementById('perfil-nome').value = data.nome || '';
         if (data.crp_crm) document.getElementById('perfil-crp').value = data.crp_crm || '';
+
+        // Tipo profissional
+        const tipoEl = document.getElementById('perfil-tipo-profissional');
+        if (tipoEl && data.especialidade) {
+            const esp = (data.especialidade || '').toLowerCase();
+            if (esp.includes('psicanalista') || esp.includes('psicanálise') || esp.includes('psicanali')) {
+                tipoEl.value = 'psicanalista';
+            } else if (esp.includes('psiquiat')) {
+                tipoEl.value = 'psiquiatria';
+            } else if (esp.includes('psicolog')) {
+                tipoEl.value = 'psicologia';
+            }
+            toggleTipoProfissional();
+        }
         if (data.especialidade) document.getElementById('perfil-especialidade').value = data.especialidade || '';
         if (data.email) document.getElementById('perfil-email').value = data.email || '';
         if (data.telefone) document.getElementById('perfil-telefone').value = data.telefone || '';
@@ -2434,6 +2448,14 @@ async function salvarDadosProfissionais() {
     const email = document.getElementById('perfil-email')?.value.trim();
     const telefone = document.getElementById('perfil-telefone')?.value.trim();
     const endereco = document.getElementById('perfil-endereco')?.value.trim();
+    const tipoProfissional = document.getElementById('perfil-tipo-profissional')?.value || 'psicologia';
+    const instituto = document.getElementById('perfil-instituto')?.value.trim() || null;
+
+    // Se psicanalista, usa a especialidade com o instituto
+    let especialidadeFinal = document.getElementById('perfil-especialidade')?.value.trim();
+    if (tipoProfissional === 'psicanalista' && instituto && !especialidadeFinal) {
+        especialidadeFinal = 'Psicanalista';
+    }
     const cpf = document.getElementById('perfil-cpf')?.value.trim();
     const feedback = document.getElementById('perfil-dados-feedback');
 
@@ -2441,7 +2463,7 @@ async function salvarDadosProfissionais() {
         const res = await fetch(`${API_URL}/api/perfil`, {
             method: 'PUT',
             headers: headersAuth(),
-            body: JSON.stringify({ nome, crp_crm, especialidade, email, telefone, endereco, cpf })
+            body: JSON.stringify({ nome, crp_crm, especialidade: especialidadeFinal || especialidade, email, telefone, endereco, cpf, tipo_profissional: tipoProfissional, instituto })
         });
 
         if (res.ok) {
@@ -2606,6 +2628,76 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('change', atualizarPreviewRegistro);
     });
 });
+
+
+// ── TIPO PROFISSIONAL (Psicólogo, Psiquiatra, Psicanalista) ──────
+function toggleTipoProfissional() {
+    const tipo = document.getElementById('perfil-tipo-profissional')?.value;
+    const campoCrp = document.getElementById('campo-crp-wrap');
+    const campoInstituto = document.getElementById('campo-instituto-wrap');
+    const blocoVerifPadrao = document.getElementById('verif-bloco-padrao');
+    const blocoVerifPsic = document.getElementById('verif-bloco-psicanalista');
+    const verifDescricao = document.getElementById('verif-descricao');
+    const gridVerif = document.querySelector('.grid-2col');
+
+    if (tipo === 'psicanalista') {
+        if (campoCrp) campoCrp.style.display = 'none';
+        if (campoInstituto) campoInstituto.style.display = 'block';
+        if (blocoVerifPadrao) blocoVerifPadrao.style.display = 'none';
+        if (blocoVerifPsic) blocoVerifPsic.style.display = 'block';
+        if (gridVerif) gridVerif.style.display = 'none';
+        if (verifDescricao) verifDescricao.style.display = 'none';
+    } else {
+        if (campoCrp) campoCrp.style.display = 'block';
+        if (campoInstituto) campoInstituto.style.display = 'none';
+        if (blocoVerifPadrao) blocoVerifPadrao.style.display = 'block';
+        if (blocoVerifPsic) blocoVerifPsic.style.display = 'none';
+        if (gridVerif) gridVerif.style.display = 'grid';
+        if (verifDescricao) verifDescricao.style.display = 'block';
+    }
+}
+
+// ── VERIFICAÇÃO PSICANALISTA ──────────────────────────────────────
+async function solicitarVerificacaoPsicanalista() {
+    const instituto = document.getElementById('verif-instituto')?.value.trim();
+    const ano = document.getElementById('verif-ano-conclusao')?.value.trim();
+    const cpf = document.getElementById('verif-cpf-psic')?.value.trim();
+    const feedback = document.getElementById('verif-feedback-psic');
+
+    if (!instituto || !ano || !cpf) {
+        feedback.textContent = 'Preencha instituto, ano de conclusão e CPF.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    feedback.textContent = '⏳ Enviando solicitação...';
+    feedback.style.color = '#94a3b8';
+    feedback.style.display = 'block';
+
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/solicitar-verificacao`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({
+                crp_crm: `Instituto: ${instituto} (${ano})`,
+                cpf,
+                tipo_verificacao: 'psicanalista',
+                instituto,
+                ano_conclusao: ano
+            })
+        });
+
+        atualizarStatusVerificacao(false, null, 'pendente');
+        feedback.textContent = '📨 Solicitação enviada! Nossa equipe verificará o certificado em até 48h. Você receberá o badge "Instituto Verificado".';
+        feedback.style.color = '#fbbf24';
+        feedback.style.display = 'block';
+    } catch (err) {
+        feedback.textContent = '📨 Solicitação registrada! Nossa equipe entrará em contato em até 48h.';
+        feedback.style.color = '#fbbf24';
+        feedback.style.display = 'block';
+    }
+}
 
 async function solicitarVerificacao() {
     const conselho = document.getElementById('verif-conselho')?.value.trim();

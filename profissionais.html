@@ -897,9 +897,9 @@
     <nav>
         <a href="/" class="nav-logo">Pront<span>Psi</span></a>
         <ul class="nav-links">
-
+            <li><a href="/">Início</a></li>
             <li><a href="/profissionais.html" class="active">Profissionais</a></li>
-
+            <li><a href="/planos.html">Planos</a></li>
         </ul>
         <a href="/PainelExclusivo.html" class="nav-cta">
             <i class="fas fa-sign-in-alt"></i> Acessar sistema
@@ -949,6 +949,7 @@
         <button class="chip ativo" data-tipo="" onclick="setTipo(this, '')">Todos</button>
         <button class="chip" data-tipo="psicólogo" onclick="setTipo(this, 'psicólogo')">Psicólogo</button>
         <button class="chip" data-tipo="psiquiatra" onclick="setTipo(this, 'psiquiatra')">Psiquiatra</button>
+        <button class="chip" data-tipo="psicanalista" onclick="setTipo(this, 'psicanalista')">Psicanalista</button>
 
         <button class="chip" data-online="" onclick="setOnline(this)" style="margin-left:8px"><i class="fas fa-video" style="margin-right:4px;font-size:10px"></i>Online</button>
         <button class="chip" data-presencial="" onclick="setPresencial(this)"><i class="fas fa-map-marker-alt" style="margin-right:4px;font-size:10px"></i>Presencial</button>
@@ -1383,9 +1384,15 @@
                 );
             }
             if (filtroTipo) {
-                const termoBusca = filtroTipo === 'psicólogo' ? 'psicolog' : filtroTipo === 'psiquiatra' ? 'psiquiat' : filtroTipo;
+                const mapa = {
+                    'psicólogo': 'psicolog',
+                    'psiquiatra': 'psiquiat',
+                    'psicanalista': 'psicanalit'
+                };
+                const termo = mapa[filtroTipo] || filtroTipo;
                 resultado = resultado.filter(p =>
-                    p.especialidade?.toLowerCase().includes(termoBusca)
+                    p.especialidade?.toLowerCase().includes(termo) ||
+                    p.vitrine_bio?.toLowerCase().includes(filtroTipo)
                 );
             }
             if (filtroEstado) {
@@ -1507,27 +1514,35 @@
                     .map(t => `<span class="card-tag">${t}</span>`).join('');
 
                 const loc = [p.vitrine_cidade, p.vitrine_estado].filter(Boolean).join(', ');
-                const wppNum = (p.vitrine_whatsapp || '').replace(/\D/g, '');
-                const wppMsg = encodeURIComponent(`Olá ${p.nome}! Encontrei seu perfil no ProntPsi e gostaria de agendar uma consulta.`);
+                const mapsUrl = p.vitrine_endereco ? 'https://www.google.com/maps/search/' + encodeURIComponent(p.vitrine_endereco + ', ' + loc) : null;
+                const badgeOnline = p.vitrine_atende_online ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;margin-right:4px;"><i class=\"fas fa-video\"></i> Online</span>' : '';
+                const badgePresencial = p.vitrine_atende_presencial ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#a78bfa;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);padding:2px 8px;border-radius:10px;"><i class=\"fas fa-map-marker-alt\"></i> Presencial</span>' : '';
 
+                const wppNum = (p.vitrine_whatsapp || '').replace(/\D/g, '');
+                const wppMsg = encodeURIComponent(
+                    `Olá ${p.nome}! Encontrei seu perfil no ProntPsi e gostaria de agendar uma consulta.`
+                );
                 const btnWpp = (p.vitrine_aceita_wpp && wppNum)
-                    ? `<a class="btn-wpp" href="https://wa.me/55${wppNum}?text=${wppMsg}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>`
+                    ? `<a class="btn-wpp" href="https://wa.me/55${wppNum}?text=${wppMsg}" target="_blank" rel="noopener">
+                               <i class="fab fa-whatsapp"></i> WhatsApp
+                           </a>`
                     : '';
+
                 const btnEmail = (p.vitrine_aceita_email && p.vitrine_email_publico)
-                    ? `<a class="btn-email" href="mailto:${p.vitrine_email_publico}"><i class="fas fa-envelope"></i> E-mail</a>`
+                    ? `<a class="btn-email" href="mailto:${p.vitrine_email_publico}">
+                               <i class="fas fa-envelope"></i> E-mail
+                           </a>`
                     : '';
+
+                const isPsicanalista = (p.especialidade || '').toLowerCase().includes('psicanalit');
                 const badgeVerif = p.verificado
-                    ? `<span class="badge-verif"><i class="fas fa-check-circle"></i> Verificado</span>`
+                    ? isPsicanalista
+                        ? `<span class="badge-verif" style="background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:#a78bfa;"><i class="fas fa-check-circle"></i> Instituto Verificado</span>`
+                        : `<span class="badge-verif"><i class="fas fa-check-circle"></i> Verificado</span>`
                     : '';
-                const badgeOnline = p.vitrine_atende_online
-                    ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;margin-right:4px;"><i class="fas fa-video"></i> Online</span>`
-                    : '';
-                const badgePresencial = p.vitrine_atende_presencial
-                    ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#a78bfa;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);padding:2px 8px;border-radius:10px;"><i class="fas fa-map-marker-alt"></i> Presencial</span>`
-                    : '';
-                const mapsUrl = p.vitrine_endereco
-                    ? 'https://www.google.com/maps/search/' + encodeURIComponent(p.vitrine_endereco + ', ' + loc)
-                    : null;
+                const badgeOnline = p.vitrine_atende_online ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;margin-right:4px;"><i class="fas fa-video"></i> Online</span>` : '';
+                const badgePresencial = p.vitrine_atende_presencial ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#a78bfa;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);padding:2px 8px;border-radius:10px;"><i class="fas fa-map-marker-alt"></i> Presencial</span>` : '';
+                const mapsUrl = p.vitrine_endereco ? `https://www.google.com/maps/search/${encodeURIComponent(p.vitrine_endereco + ', ' + loc)}` : null;
 
                 return `
                         <div class="prof-card" style="animation-delay:${i * 40}ms;cursor:pointer" onclick="abrirPerfil(${p.id})">
@@ -1543,16 +1558,21 @@
                             ${p.vitrine_bio ? `<p class="card-bio">${p.vitrine_bio}</p>` : ''}
                             ${(badgeOnline || badgePresencial) ? `<div style="margin-bottom:8px">${badgeOnline}${badgePresencial}</div>` : ''}
                             ${tags ? `<div class="card-tags">${tags}</div>` : ''}
-                            ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ' <a href="' + mapsUrl + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--purple-l);font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>' : ''}</p>` : ''}
+                            ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ` <a href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--purple-l);font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>` : ''}</p>` : ''}
                             ${(btnWpp || btnEmail) ? `<div class="card-actions" onclick="event.stopPropagation()">${btnWpp}${btnEmail}</div>` : ''}
                         </div>`;
-            }).join('');
-        }
+                            ${ tags ? `<div class="card-tags">${tags}</div>` : '' }
+                            ${ (badgeOnline || badgePresencial) ? `<div style="margin-bottom:8px">${badgeOnline}${badgePresencial}</div>` : '' }
+                            ${ loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ` <a href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:#a78bfa;font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>` : ''}</p>` : '' }
+                            ${ (btnWpp || btnEmail) ? `<div class="card-actions">${btnWpp}${btnEmail}</div>` : '' }
+                        </div > `;
+                    }).join('');
+                }
 
-        // ─────────────────────────────────────────────────────────────
-        //  INIT
-        // ─────────────────────────────────────────────────────────────
-        carregar();
+                // ─────────────────────────────────────────────────────────────
+                //  INIT
+                // ─────────────────────────────────────────────────────────────
+                carregar();
     </script>
 </body>
 </html>
