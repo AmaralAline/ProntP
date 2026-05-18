@@ -1131,6 +1131,8 @@
         let filtroTipo = '';
         let filtroEstado = '';
         let estadoMapaSel = '';
+        let filtroOnline = false;
+        let filtroPresencial = false;
 
         // ─────────────────────────────────────────────────────────────
         //  CARREGAR PROFISSIONAIS
@@ -1262,6 +1264,20 @@
             document.querySelectorAll('[data-tipo]').forEach(b => b.classList.remove('ativo'));
             btn.classList.add('ativo');
             filtroTipo = tipo;
+            filtrar();
+        }
+
+        function setOnline(btn) {
+            filtroOnline = !filtroOnline;
+            if (filtroOnline) { filtroPresencial = false; document.querySelector('[data-presencial]')?.classList.remove('ativo'); }
+            btn.classList.toggle('ativo', filtroOnline);
+            filtrar();
+        }
+
+        function setPresencial(btn) {
+            filtroPresencial = !filtroPresencial;
+            if (filtroPresencial) { filtroOnline = false; document.querySelector('[data-online]')?.classList.remove('ativo'); }
+            btn.classList.toggle('ativo', filtroPresencial);
             filtrar();
         }
 
