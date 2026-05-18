@@ -897,9 +897,9 @@
     <nav>
         <a href="/" class="nav-logo">Pront<span>Psi</span></a>
         <ul class="nav-links">
-            <li><a href="/">Início</a></li>
+
             <li><a href="/profissionais.html" class="active">Profissionais</a></li>
-            <li><a href="/planos.html">Planos</a></li>
+
         </ul>
         <a href="/PainelExclusivo.html" class="nav-cta">
             <i class="fas fa-sign-in-alt"></i> Acessar sistema
@@ -1507,6 +1507,9 @@
                     .map(t => `<span class="card-tag">${t}</span>`).join('');
 
                 const loc = [p.vitrine_cidade, p.vitrine_estado].filter(Boolean).join(', ');
+                const mapsUrl = p.vitrine_endereco ? 'https://www.google.com/maps/search/' + encodeURIComponent(p.vitrine_endereco + ', ' + loc) : null;
+                const badgeOnline = p.vitrine_atende_online ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;margin-right:4px;"><i class=\"fas fa-video\"></i> Online</span>' : '';
+                const badgePresencial = p.vitrine_atende_presencial ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#a78bfa;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);padding:2px 8px;border-radius:10px;"><i class=\"fas fa-map-marker-alt\"></i> Presencial</span>' : '';
 
                 const wppNum = (p.vitrine_whatsapp || '').replace(/\D/g, '');
                 const wppMsg = encodeURIComponent(
@@ -1527,9 +1530,9 @@
                 const badgeVerif = p.verificado
                     ? `<span class="badge-verif"><i class="fas fa-check-circle"></i> Verificado</span>`
                     : '';
-                const badgeOnline = p.vitrine_atende_online ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;margin-right:4px;"><i class=\"fas fa-video\"></i> Online</span>' : '';
-                const badgePresencial = p.vitrine_atende_presencial ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#a78bfa;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);padding:2px 8px;border-radius:10px;"><i class=\"fas fa-map-marker-alt\"></i> Presencial</span>' : '';
-                const mapsUrl = p.vitrine_endereco ? 'https://www.google.com/maps/search/' + encodeURIComponent(p.vitrine_endereco + ', ' + loc) : null;
+                const badgeOnline = p.vitrine_atende_online ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;margin-right:4px;"><i class="fas fa-video"></i> Online</span>` : '';
+                const badgePresencial = p.vitrine_atende_presencial ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#a78bfa;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);padding:2px 8px;border-radius:10px;"><i class="fas fa-map-marker-alt"></i> Presencial</span>` : '';
+                const mapsUrl = p.vitrine_endereco ? `https://www.google.com/maps/search/${encodeURIComponent(p.vitrine_endereco + ', ' + loc)}` : null;
 
                 return `
                         <div class="prof-card" style="animation-delay:${i * 40}ms;cursor:pointer" onclick="abrirPerfil(${p.id})">
@@ -1545,16 +1548,21 @@
                             ${p.vitrine_bio ? `<p class="card-bio">${p.vitrine_bio}</p>` : ''}
                             ${(badgeOnline || badgePresencial) ? `<div style="margin-bottom:8px">${badgeOnline}${badgePresencial}</div>` : ''}
                             ${tags ? `<div class="card-tags">${tags}</div>` : ''}
-                            ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ' <a href="' + mapsUrl + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--purple-l);font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>' : ''}</p>` : ''}
+                            ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ` <a href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--purple-l);font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>` : ''}</p>` : ''}
                             ${(btnWpp || btnEmail) ? `<div class="card-actions" onclick="event.stopPropagation()">${btnWpp}${btnEmail}</div>` : ''}
                         </div>`;
-            }).join('');
-        }
+                            ${ tags ? `<div class="card-tags">${tags}</div>` : '' }
+                            ${ (badgeOnline || badgePresencial) ? `<div style="margin-bottom:8px">${badgeOnline}${badgePresencial}</div>` : '' }
+                            ${ loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ` <a href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:#a78bfa;font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>` : ''}</p>` : '' }
+                            ${ (btnWpp || btnEmail) ? `<div class="card-actions">${btnWpp}${btnEmail}</div>` : '' }
+                        </div > `;
+                    }).join('');
+                }
 
-        // ─────────────────────────────────────────────────────────────
-        //  INIT
-        // ─────────────────────────────────────────────────────────────
-        carregar();
+                // ─────────────────────────────────────────────────────────────
+                //  INIT
+                // ─────────────────────────────────────────────────────────────
+                carregar();
     </script>
 </body>
 </html>

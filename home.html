@@ -2122,7 +2122,7 @@
             <a href="#" onclick="filterCat('Eventos',null);return false">Eventos</a>
         </div>
         <div class="nav-links">
-            <a href="profissionais.html" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);padding:7px 14px;border-radius:8px;font-size:12.5px;white-space:nowrap"><i class="fas fa-search"></i> Encontre um Psi</a>
+            <a href="profissionais.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);padding:7px 14px;border-radius:8px;font-size:12.5px;white-space:nowrap"><i class="fas fa-search"></i> Encontre um Psi</a>
             <div class="nav-divider"></div>
             <a href="login.html" class="nav-login"><i class="fas fa-user-circle"></i> Entrar</a>
             <a href="cadastro.html" class="nav-cta" style="text-decoration:none">Teste grátis</a>
@@ -2270,7 +2270,7 @@
             <div class="section-label">
                 <span class="section-label-text">Profissionais em destaque</span>
                 <div class="section-label-line"></div>
-                <a href="profissionais.html" style="font-size:12px;color:var(--roxo-light);text-decoration:none;white-space:nowrap">Ver vitrine completa →</a>
+                <a href="profissionais.html" target="_blank" rel="noopener" style="font-size:12px;color:var(--roxo-light);text-decoration:none;white-space:nowrap">Ver vitrine completa →</a>
             </div>
             <div class="prof-strip" id="profStrip">
                 <div class="prof-card" style="border-style:dashed;grid-column:1/-1;display:flex;align-items:center;justify-content:center;min-height:90px">
@@ -2283,7 +2283,7 @@
     <footer>
         <span class="footer-logo">Pront<span>Psi</span></span>
         <div class="footer-links">
-            <a href="#">Portal</a><a href="profissionais.html">Encontre um Psi</a>
+            <a href="#">Portal</a><a href="profissionais.html" target="_blank" rel="noopener">Encontre um Psi</a>
             <a href="#planos">Planos</a><a href="#faq">FAQ</a>
             <a href="login.html">Entrar no sistema</a><a href="cadastro.html">Cadastrar</a>
             <a href="mailto:prontpsii@gmail.com">Contato</a>
@@ -2891,10 +2891,10 @@
             const pubs = noticias.filter(n => n.status === 'publicado').length;
             const drafts = noticias.filter(n => n.status === 'rascunho').length;
             document.getElementById('dashStats').innerHTML = `
-            <div class="stat-card"><div class="stat-label">Publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">artigos no portal</div></div>
-            <div class="stat-card"><div class="stat-label">Rascunhos</div><div class="stat-val">${drafts}</div><div class="stat-sub">aguardando</div></div>
-            <div class="stat-card"><div class="stat-label">Eventos</div><div class="stat-val">${eventos.length}</div><div class="stat-sub">cadastrados</div></div>
-            <div class="stat-card"><div class="stat-label">Manchetes</div><div class="stat-val">${tickerItens.length}</div><div class="stat-sub">no ticker</div></div>`;
+                <div class="stat-card"><div class="stat-label">Publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">artigos no portal</div></div>
+                <div class="stat-card"><div class="stat-label">Rascunhos</div><div class="stat-val">${drafts}</div><div class="stat-sub">aguardando</div></div>
+                <div class="stat-card"><div class="stat-label">Eventos</div><div class="stat-val">${eventos.length}</div><div class="stat-sub">cadastrados</div></div>
+                <div class="stat-card"><div class="stat-label">Manchetes</div><div class="stat-val">${tickerItens.length}</div><div class="stat-sub">no ticker</div></div>`;
         }
 
         // ─── SALVAR NOTÍCIA ───
@@ -2987,20 +2987,20 @@
             nt.innerHTML = !noticias.length
                 ? `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Nenhum artigo ainda</td></tr>`
                 : noticias.map((n, i) => `<tr class="drag-row" draggable="true"
-                        ondragstart="dragNoticia(${i})"
-                        ondragover="dragOverNoticia(event,${i})"
-                        ondrop="dropNoticia(${i})"
-                        ondragleave="this.classList.remove('drag-over')">
-                        <td style="padding-left:10px"><span class="drag-handle" style="font-size:18px;color:var(--muted)">⠿</span></td>
-                        <td><span class="ordem-badge">${i + 1}</span></td>
-                        <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
-                        <td>${n.categoria}</td>
-                        <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td>
-                        <td><div class="table-actions">
-                            <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
-                            <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
-                        </div></td>
-                    </tr>`).join('');
+                            ondragstart="dragNoticia(${i})"
+                            ondragover="dragOverNoticia(event,${i})"
+                            ondrop="dropNoticia(${i})"
+                            ondragleave="this.classList.remove('drag-over')">
+                            <td style="padding-left:10px"><span class="drag-handle" style="font-size:18px;color:var(--muted)">⠿</span></td>
+                            <td><span class="ordem-badge">${i + 1}</span></td>
+                            <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
+                            <td>${n.categoria}</td>
+                            <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td>
+                            <td><div class="table-actions">
+                                <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
+                                <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
+                            </div></td>
+                        </tr>`).join('');
             const et = document.getElementById('eventosTabela');
             et.innerHTML = !eventos.length ? `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">Nenhum evento cadastrado</td></tr>` : eventos.map(e => `<tr><td><div class="table-title">${e.titulo}</div></td><td>${formatDate(e.data)}</td><td><span class="event-tag ${e.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${e.modalidade}</span></td><td><button class="btn-danger" onclick="deletarEvento(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
             const pt = document.getElementById('profsTabela');
