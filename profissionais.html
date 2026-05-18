@@ -851,6 +851,348 @@
                 opacity: 1;
             }
 
+
+        /* ── PÁGINA DE PERFIL INDIVIDUAL ─────────────────────── */
+        #perfil-page {
+            display: none;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 32px 80px;
+        }
+
+        .perfil-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text2);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 32px;
+            transition: color .2s;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+            .perfil-back:hover {
+                color: #fff;
+            }
+
+        .perfil-hero {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 28px;
+            align-items: start;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .perfil-hero::before {
+                content: '';
+                position: absolute;
+                top: -60px;
+                right: -60px;
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(124,58,237,.15), transparent 70%);
+                pointer-events: none;
+            }
+
+        .perfil-foto {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border2);
+            flex-shrink: 0;
+        }
+
+        .perfil-iniciais {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(124,58,237,.3), rgba(139,92,246,.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--purple-l);
+            border: 3px solid var(--border2);
+            flex-shrink: 0;
+        }
+
+        .perfil-info {
+            flex: 1;
+        }
+
+        .perfil-nome {
+            font-family: 'Sora',sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .perfil-spec {
+            font-size: 15px;
+            color: var(--purple-l);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .perfil-crp {
+            font-size: 12px;
+            color: var(--text3);
+            margin-bottom: 10px;
+        }
+
+        .perfil-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .perfil-badge-verif {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--green-l);
+            border: 1px solid rgba(52,211,153,.3);
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .perfil-badge-online {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(124,58,237,.12);
+            border: 1px solid var(--border2);
+            color: var(--purple-l);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .perfil-loc {
+            font-size: 13px;
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+            .perfil-loc i {
+                color: var(--purple-l);
+                font-size: 11px;
+            }
+
+        .perfil-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .perfil-btn-wpp {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #25d366;
+            color: #fff;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'DM Sans',sans-serif;
+            text-decoration: none;
+            transition: background .2s;
+        }
+
+            .perfil-btn-wpp:hover {
+                background: #1da851;
+            }
+
+        .perfil-btn-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--purple-l);
+            border: 1px solid var(--border2);
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'DM Sans',sans-serif;
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+            .perfil-btn-email:hover {
+                background: var(--purple-ll);
+            }
+
+        .perfil-btn-share {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--text2);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: 'DM Sans',sans-serif;
+            transition: all .2s;
+        }
+
+            .perfil-btn-share:hover {
+                color: #fff;
+                border-color: var(--border2);
+            }
+
+        .perfil-section {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .perfil-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .perfil-section-title i {
+                color: var(--purple-l);
+            }
+
+        .perfil-bio {
+            font-size: 14.5px;
+            color: var(--text2);
+            line-height: 1.8;
+        }
+
+        .perfil-tags-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .perfil-tag {
+            font-size: 12px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text2);
+        }
+
+        .perfil-share-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 24px;
+            padding: 20px 24px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+
+        .perfil-share-label {
+            font-size: 12px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-right: 4px;
+        }
+
+        .perfil-share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: .2s;
+            text-decoration: none;
+            font-family: 'DM Sans',sans-serif;
+        }
+
+        .psb-wa {
+            background: rgba(37,211,102,.12);
+            color: #25D366;
+            border: 1px solid rgba(37,211,102,.25);
+        }
+
+            .psb-wa:hover {
+                background: rgba(37,211,102,.22);
+            }
+
+        .psb-copy {
+            background: rgba(139,92,246,.12);
+            color: var(--purple-l);
+            border: 1px solid var(--border2);
+        }
+
+            .psb-copy:hover {
+                background: rgba(139,92,246,.2);
+            }
+
+        .psb-insta {
+            background: rgba(225,48,108,.12);
+            color: #e1306c;
+            border: 1px solid rgba(225,48,108,.25);
+        }
+
+            .psb-insta:hover {
+                background: rgba(225,48,108,.22);
+            }
+
+        @media(max-width:600px) {
+            .perfil-hero {
+                grid-template-columns: 1fr;
+            }
+
+            .perfil-foto, .perfil-iniciais {
+                width: 80px;
+                height: 80px;
+                font-size: 26px;
+            }
+
+            #perfil-page {
+                padding: 24px 16px 60px;
+            }
+        }
         /* ── RESPONSIVE ────────────────────────────────────── */
         @media (max-width: 900px) {
             .main-layout {
@@ -950,6 +1292,7 @@
         <button class="chip" data-tipo="psicólogo" onclick="setTipo(this, 'psicólogo')">Psicólogo</button>
         <button class="chip" data-tipo="psiquiatra" onclick="setTipo(this, 'psiquiatra')">Psiquiatra</button>
 
+        <button class="chip" data-online="" onclick="setOnline(this)" style="margin-left:8px"><i class="fas fa-video" style="margin-right:4px;font-size:10px"></i>Online</button>
         <span class="filtro-label" style="margin-left:12px;">Estado</span>
         <select class="chip-estado" id="filtro-estado" onchange="filtrar()">
             <option value="">Todos</option>
@@ -1110,6 +1453,29 @@
         </div>
     </div>
 
+
+    <!-- ── PÁGINA DE PERFIL INDIVIDUAL ─────────────────────────── -->
+    <div id="perfil-page">
+        <button class="perfil-back" onclick="fecharPerfil()">
+            <i class="fas fa-arrow-left"></i> Voltar à vitrine
+        </button>
+        <div class="perfil-hero" id="perfil-hero"></div>
+        <div id="perfil-bio-sec" class="perfil-section" style="display:none">
+            <div class="perfil-section-title"><i class="fas fa-user"></i> Sobre</div>
+            <p class="perfil-bio" id="perfil-bio"></p>
+        </div>
+        <div id="perfil-tags-sec" class="perfil-section" style="display:none">
+            <div class="perfil-section-title"><i class="fas fa-brain"></i> Especialidades e abordagens</div>
+            <div class="perfil-tags-wrap" id="perfil-tags"></div>
+        </div>
+        <div class="perfil-share-bar">
+            <span class="perfil-share-label">Compartilhar perfil</span>
+            <button class="perfil-share-btn psb-wa" onclick="compartilharPerfilWA()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+            <button class="perfil-share-btn psb-insta" onclick="compartilharPerfilInsta()"><i class="fab fa-instagram"></i> Instagram</button>
+            <button class="perfil-share-btn psb-copy" onclick="copiarLinkPerfil()"><i class="fas fa-link"></i> Copiar link</button>
+        </div>
+    </div>
+
     <!-- ── FOOTER ────────────────────────────────────────────── -->
     <footer>
         <p>
@@ -1129,6 +1495,7 @@
         let filtroTipo = '';
         let filtroEstado = '';
         let estadoMapaSel = '';
+        let filtroOnline = false;
 
         // ─────────────────────────────────────────────────────────────
         //  CARREGAR PROFISSIONAIS
@@ -1140,15 +1507,158 @@
                 atualizarStats();
                 atualizarMapa();
                 filtrar();
+                checkURLPerfil();
             } catch (err) {
                 document.getElementById('cards-grid').innerHTML = `
-                <div class="empty-state" style="grid-column:1/-1">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <p>Não foi possível carregar os profissionais.<br>
-                       <a href="" onclick="location.reload()" style="color:var(--purple-l)">Tentar novamente</a></p>
-                </div>`;
+                    <div class="empty-state" style="grid-column:1/-1">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Não foi possível carregar os profissionais.<br>
+                           <a href="" onclick="location.reload()" style="color:var(--purple-l)">Tentar novamente</a></p>
+                    </div>`;
                 document.getElementById('cards-count').textContent = '';
             }
+        }
+
+
+        // ─────────────────────────────────────────────────────────────
+        //  SLUG E ROTEAMENTO
+        // ─────────────────────────────────────────────────────────────
+        function slugify(nome, id) {
+            const slug = (nome || '').toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            return slug + '-' + id;
+        }
+
+        function perfilURL(p) {
+            return window.location.origin + window.location.pathname + '?psi=' + slugify(p.nome, p.id);
+        }
+
+        let perfilAtual = null;
+
+        function abrirPerfil(id) {
+            const p = todosProf.find(x => x.id === id);
+            if (!p) return;
+            perfilAtual = p;
+
+            // Atualiza meta tags para SEO/compartilhamento
+            const titulo = `${p.nome} — ${p.especialidade || 'Psicólogo'} | ProntPsi`;
+            const desc = p.vitrine_bio
+                ? p.vitrine_bio.substring(0, 155) + '...'
+                : `${p.nome}, ${p.especialidade || 'psicólogo'} em ${p.vitrine_cidade || 'Brasil'}. Encontre e agende pelo ProntPsi.`;
+            document.title = titulo;
+            document.querySelector('meta[name="description"]').setAttribute('content', desc);
+
+            // Iniciais
+            const iniciais = (p.nome || '?').split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+            const fotoEl = p.vitrine_foto_url
+                ? `<img class="perfil-foto" src="${p.vitrine_foto_url}" alt="${p.nome}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="perfil-iniciais" style="display:none">${iniciais}</div>`
+                : `<div class="perfil-iniciais">${iniciais}</div>`;
+
+            const loc = [p.vitrine_cidade, p.vitrine_estado].filter(Boolean).join(', ');
+            const wppNum = (p.vitrine_whatsapp || '').replace(/\D/g, '');
+            const wppMsg = encodeURIComponent(`Olá ${p.nome}! Encontrei seu perfil no ProntPsi e gostaria de agendar uma consulta.`);
+
+            const btnWpp = (p.vitrine_aceita_wpp && wppNum)
+                ? `<a class="perfil-btn-wpp" href="https://wa.me/55${wppNum}?text=${wppMsg}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Agendar pelo WhatsApp</a>`
+                : '';
+            const btnEmail = (p.vitrine_aceita_email && p.vitrine_email_publico)
+                ? `<a class="perfil-btn-email" href="mailto:${p.vitrine_email_publico}"><i class="fas fa-envelope"></i> Enviar e-mail</a>`
+                : '';
+            const badgeVerif = p.verificado
+                ? `<span class="perfil-badge-verif"><i class="fas fa-check-circle"></i> CRP/CRM Verificado</span>`
+                : '';
+            const badgeOnline = (p.vitrine_especialidades || []).some(e => e.toLowerCase().includes('online'))
+                ? `<span class="perfil-badge-online"><i class="fas fa-video"></i> Atende online</span>`
+                : '';
+
+            document.getElementById('perfil-hero').innerHTML = `
+                    ${fotoEl}
+                    <div class="perfil-info">
+                        <div class="perfil-nome">${p.nome}</div>
+                        <div class="perfil-spec">${p.especialidade || ''}</div>
+                        <div class="perfil-crp">${p.crp_crm || ''}</div>
+                        <div class="perfil-badges">${badgeVerif}${badgeOnline}</div>
+                        ${loc ? `<div class="perfil-loc"><i class="fas fa-map-marker-alt"></i> ${loc}</div>` : ''}
+                        <div class="perfil-btns">${btnWpp}${btnEmail}</div>
+                    </div>`;
+
+            if (p.vitrine_bio) {
+                document.getElementById('perfil-bio').textContent = p.vitrine_bio;
+                document.getElementById('perfil-bio-sec').style.display = 'block';
+            } else {
+                document.getElementById('perfil-bio-sec').style.display = 'none';
+            }
+
+            const tags = p.vitrine_especialidades || [];
+            if (tags.length) {
+                document.getElementById('perfil-tags').innerHTML = tags.map(t => `<span class="perfil-tag">${t}</span>`).join('');
+                document.getElementById('perfil-tags-sec').style.display = 'block';
+            } else {
+                document.getElementById('perfil-tags-sec').style.display = 'none';
+            }
+
+            // Mostra perfil, esconde vitrine
+            document.getElementById('perfil-page').style.display = 'block';
+            document.querySelector('.filtros-wrap').style.display = 'none';
+            document.querySelector('.main-layout').style.display = 'none';
+            document.querySelector('.hero').style.display = 'none';
+
+            // URL com slug
+            history.pushState({ psi: id }, titulo, '?psi=' + slugify(p.nome, p.id));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function fecharPerfil() {
+            perfilAtual = null;
+            document.getElementById('perfil-page').style.display = 'none';
+            document.querySelector('.filtros-wrap').style.display = 'flex';
+            document.querySelector('.main-layout').style.display = 'grid';
+            document.querySelector('.hero').style.display = 'block';
+            document.title = 'ProntPsi — Encontre seu Profissional';
+            document.querySelector('meta[name="description"]').setAttribute('content', 'Diretório de psicólogos e psiquiatras verificados. Todos os profissionais com CRP/CRM confirmado pela equipe ProntPsi.');
+            history.pushState({}, 'ProntPsi', window.location.pathname);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Abre perfil se URL já tem ?psi=
+        function checkURLPerfil() {
+            const params = new URLSearchParams(window.location.search);
+            const psiSlug = params.get('psi');
+            if (psiSlug) {
+                const id = parseInt(psiSlug.split('-').pop());
+                if (!isNaN(id)) abrirPerfil(id);
+            }
+        }
+
+        window.addEventListener('popstate', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (!params.get('psi')) fecharPerfil();
+        });
+
+        // ─────────────────────────────────────────────────────────────
+        //  COMPARTILHAR PERFIL
+        // ─────────────────────────────────────────────────────────────
+        function compartilharPerfilWA() {
+            if (!perfilAtual) return;
+            const url = perfilURL(perfilAtual);
+            const msg = encodeURIComponent(`Encontrei este profissional no ProntPsi:\n*${perfilAtual.nome}* — ${perfilAtual.especialidade || 'Psicólogo'}\n\n${url}`);
+            window.open('https://wa.me/?text=' + msg, '_blank');
+        }
+        function compartilharPerfilInsta() {
+            if (!perfilAtual) return;
+            navigator.clipboard.writeText(perfilURL(perfilAtual)).then(() => {
+                alert('Link copiado! Cole nos stories ou na bio do Instagram.');
+            });
+        }
+        function copiarLinkPerfil() {
+            if (!perfilAtual) return;
+            navigator.clipboard.writeText(perfilURL(perfilAtual)).then(() => {
+                const btn = event.currentTarget;
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                setTimeout(() => btn.innerHTML = orig, 2500);
+            });
         }
 
         // ─────────────────────────────────────────────────────────────
@@ -1201,14 +1711,14 @@
             const sorted = Object.entries(porEstado).sort((a, b) => b[1] - a[1]).slice(0, 8);
 
             lista.innerHTML = sorted.map(([est, cnt]) => `
-            <div class="estado-row" id="row-${est}" onclick="filtrarEstadoMapa('${est}')">
-                <span class="estado-sigla">${est}</span>
-                <div class="estado-bar-wrap">
-                    <div class="estado-bar" style="width:${Math.round(cnt / max * 100)}%"></div>
+                <div class="estado-row" id="row-${est}" onclick="filtrarEstadoMapa('${est}')">
+                    <span class="estado-sigla">${est}</span>
+                    <div class="estado-bar-wrap">
+                        <div class="estado-bar" style="width:${Math.round(cnt / max * 100)}%"></div>
+                    </div>
+                    <span class="estado-count">${cnt}</span>
                 </div>
-                <span class="estado-count">${cnt}</span>
-            </div>
-        `).join('');
+            `).join('');
 
             if (sorted.length === 0) {
                 lista.innerHTML = '<p style="font-size:12px; color:var(--text3); text-align:center; padding:8px;">Nenhum dado disponível</p>';
@@ -1242,12 +1752,24 @@
             if (filtroEstado) {
                 resultado = resultado.filter(p => p.vitrine_estado === filtroEstado);
             }
+            if (filtroOnline) {
+                resultado = resultado.filter(p =>
+                    (p.vitrine_especialidades || []).some(e => e.toLowerCase().includes('online')) ||
+                    p.vitrine_bio?.toLowerCase().includes('online')
+                );
+            }
             if (estadoMapaSel) {
                 resultado = resultado.filter(p => p.vitrine_estado === estadoMapaSel);
             }
 
             renderizarCards(resultado);
             atualizarFiltroAtivo(q, resultado.length);
+        }
+
+        function setOnline(btn) {
+            filtroOnline = !filtroOnline;
+            btn.classList.toggle('ativo', filtroOnline);
+            filtrar();
         }
 
         function setTipo(btn, tipo) {
@@ -1315,11 +1837,11 @@
 
             if (!lista.length) {
                 grid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-user-slash"></i>
-                    <p>Nenhum profissional encontrado com esses filtros.<br>
-                       Tente uma busca diferente ou <a href="#" onclick="limparFiltros();return false;" style="color:var(--purple-l)">limpe os filtros</a>.</p>
-                </div>`;
+                    <div class="empty-state">
+                        <i class="fas fa-user-slash"></i>
+                        <p>Nenhum profissional encontrado com esses filtros.<br>
+                           Tente uma busca diferente ou <a href="#" onclick="limparFiltros();return false;" style="color:var(--purple-l)">limpe os filtros</a>.</p>
+                    </div>`;
                 return;
             }
 
@@ -1330,8 +1852,8 @@
 
                 const fotoEl = p.vitrine_foto_url
                     ? `<img class="card-avatar" src="${p.vitrine_foto_url}" alt="${p.nome}" loading="lazy"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                   <div class="card-avatar-initials" style="display:none;">${iniciais}</div>`
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                       <div class="card-avatar-initials" style="display:none;">${iniciais}</div>`
                     : `<div class="card-avatar-initials">${iniciais}</div>`;
 
                 const tags = (p.vitrine_especialidades || []).slice(0, 3)
@@ -1345,36 +1867,37 @@
                 );
                 const btnWpp = (p.vitrine_aceita_wpp && wppNum)
                     ? `<a class="btn-wpp" href="https://wa.me/55${wppNum}?text=${wppMsg}" target="_blank" rel="noopener">
-                       <i class="fab fa-whatsapp"></i> WhatsApp
-                   </a>`
+                           <i class="fab fa-whatsapp"></i> WhatsApp
+                       </a>`
                     : '';
 
                 const btnEmail = (p.vitrine_aceita_email && p.vitrine_email_publico)
                     ? `<a class="btn-email" href="mailto:${p.vitrine_email_publico}">
-                       <i class="fas fa-envelope"></i> E-mail
-                   </a>`
+                           <i class="fas fa-envelope"></i> E-mail
+                       </a>`
                     : '';
 
                 const badgeVerif = p.verificado
                     ? `<span class="badge-verif"><i class="fas fa-check-circle"></i> Verificado</span>`
                     : '';
 
+                const slug = slugify(p.nome, p.id);
                 return `
-                <div class="prof-card" style="animation-delay:${i * 40}ms">
-                    <div class="card-top">
-                        ${fotoEl}
-                        <div class="card-info">
-                            <p class="card-nome" title="${p.nome}">${p.nome}</p>
-                            <p class="card-spec">${p.especialidade || ''}</p>
-                            <p class="card-crp">${p.crp_crm || ''}</p>
-                            ${badgeVerif}
+                    <div class="prof-card" style="animation-delay:${i * 40}ms; cursor:pointer" onclick="abrirPerfil(${p.id})">
+                        <div class="card-top">
+                            ${fotoEl}
+                            <div class="card-info">
+                                <p class="card-nome" title="${p.nome}">${p.nome}</p>
+                                <p class="card-spec">${p.especialidade || ''}</p>
+                                <p class="card-crp">${p.crp_crm || ''}</p>
+                                ${badgeVerif}
+                            </div>
                         </div>
-                    </div>
-                    ${p.vitrine_bio ? `<p class="card-bio">${p.vitrine_bio}</p>` : ''}
-                    ${tags ? `<div class="card-tags">${tags}</div>` : ''}
-                    ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}</p>` : ''}
-                    ${(btnWpp || btnEmail) ? `<div class="card-actions">${btnWpp}${btnEmail}</div>` : ''}
-                </div>`;
+                        ${p.vitrine_bio ? `<p class="card-bio">${p.vitrine_bio}</p>` : ''}
+                        ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+                        ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}</p>` : ''}
+                        ${(btnWpp || btnEmail) ? `<div class="card-actions">${btnWpp}${btnEmail}</div>` : ''}
+                    </div>`;
             }).join('');
         }
 
