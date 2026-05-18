@@ -1560,6 +1560,173 @@
             margin-top: 4px
         }
 
+
+        /* Página de artigo inline */
+        #articlePage {
+            display: none;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 32px 40px 60px;
+            animation: fadeUp .4s ease
+        }
+
+        .article-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted2);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 28px;
+            transition: color .2s;
+            background: none;
+            border: none;
+            padding: 0
+        }
+
+            .article-back:hover {
+                color: #fff
+            }
+
+        .article-page-cat {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--roxo-light);
+            margin-bottom: 12px
+        }
+
+        .article-page-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 14px
+        }
+
+        .article-page-meta {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .article-page-img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 28px
+        }
+
+        .article-page-body {
+            font-size: 16px;
+            color: var(--muted2);
+            line-height: 1.85
+        }
+
+            .article-page-body p {
+                margin-bottom: 16px
+            }
+
+            .article-page-body h2 {
+                font-family: 'Playfair Display',serif;
+                font-size: 24px;
+                color: #fff;
+                margin: 28px 0 12px;
+                font-weight: 700
+            }
+
+            .article-page-body h3 {
+                font-family: 'Playfair Display',serif;
+                font-size: 20px;
+                color: #fff;
+                margin: 22px 0 10px;
+                font-weight: 700
+            }
+
+            .article-page-body strong {
+                color: #fff
+            }
+
+            .article-page-body ul, .article-page-body ol {
+                padding-left: 22px;
+                margin-bottom: 16px
+            }
+
+            .article-page-body li {
+                margin-bottom: 6px
+            }
+
+        /* Share bar */
+        .share-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border2);
+            flex-wrap: wrap
+        }
+
+        .share-label {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-right: 4px
+        }
+
+        .btn-share {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: .2s;
+            text-decoration: none
+        }
+
+        .btn-share-wa {
+            background: rgba(37,211,102,.12);
+            color: #25D366;
+            border: 1px solid rgba(37,211,102,.25)
+        }
+
+            .btn-share-wa:hover {
+                background: rgba(37,211,102,.22)
+            }
+
+        .btn-share-insta {
+            background: rgba(225,48,108,.12);
+            color: #e1306c;
+            border: 1px solid rgba(225,48,108,.25)
+        }
+
+            .btn-share-insta:hover {
+                background: rgba(225,48,108,.22)
+            }
+
+        .btn-share-copy {
+            background: rgba(139,92,246,.12);
+            color: var(--roxo-light);
+            border: 1px solid rgba(139,92,246,.25)
+        }
+
+            .btn-share-copy:hover {
+                background: rgba(139,92,246,.22)
+            }
+
         /* Editor nativo */
         .editor-wrap {
             border: 1px solid var(--border);
@@ -1648,58 +1815,6 @@
             .editor-body strong {
                 color: #fff;
                 font-weight: 700
-            }
-
-        /* Compartilhar artigo */
-        .share-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 28px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border2)
-        }
-
-        .share-label {
-            font-size: 12px;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            margin-right: 4px
-        }
-
-        .btn-share {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: .2s;
-            text-decoration: none
-        }
-
-        .btn-share-wa {
-            background: rgba(37,211,102,.12);
-            color: #25D366;
-            border: 1px solid rgba(37,211,102,.25)
-        }
-
-            .btn-share-wa:hover {
-                background: rgba(37,211,102,.22)
-            }
-
-        .btn-share-copy {
-            background: rgba(139,92,246,.12);
-            color: var(--roxo-light);
-            border: 1px solid rgba(139,92,246,.25)
-        }
-
-            .btn-share-copy:hover {
-                background: rgba(139,92,246,.22)
             }
 
         /* Preview modal */
@@ -2134,6 +2249,28 @@
 
     <a href="https://wa.me/5511947454936" target="_blank" class="wa-btn"><i class="fab fa-whatsapp"></i></a>
 
+
+    <!-- PÁGINA DE ARTIGO INLINE -->
+    <div id="articlePage">
+        <div style="max-width:760px;margin:0 auto;padding:0 40px">
+            <button class="article-back" onclick="fecharArtigo()"><i class="fas fa-arrow-left"></i> Voltar ao portal</button>
+            <div class="article-page-cat" id="apCat"></div>
+            <div class="article-page-title" id="apTitle"></div>
+            <div class="article-page-meta" id="apMeta"></div>
+            <img class="article-page-img" id="apImg" src="" alt="" style="display:none" />
+            <div class="article-page-body" id="apBody"></div>
+            <div class="share-bar">
+                <span class="share-label">Compartilhar</span>
+                <button class="btn-share btn-share-wa" onclick="compartilharWA()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                <button class="btn-share btn-share-insta" onclick="compartilharInsta()"><i class="fab fa-instagram"></i> Instagram</button>
+                <button class="btn-share btn-share-copy" onclick="copiarLink()"><i class="fas fa-link"></i> Copiar link</button>
+            </div>
+            <div style="margin-top:40px">
+                <button class="article-back" onclick="fecharArtigo()"><i class="fas fa-arrow-left"></i> Voltar ao portal</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL LEITURA -->
     <div class="modal-overlay" id="articleModal">
         <div class="modal">
@@ -2341,7 +2478,7 @@
                         <p style="font-size:13px;color:var(--muted2);margin-bottom:16px">Essas são as manchetes que rolam no topo do site. Edite, adicione ou remova.</p>
                         <div class="form-row" style="margin-bottom:8px">
                             <div class="form-group"><label class="form-label">Texto da manchete *</label><input class="form-input" id="ticker-nova" placeholder="Ex: OMS divulga novo relatório sobre saúde mental" /></div>
-                            <div class="form-group"><label class="form-label">Link (opcional — deixe vazio para não ser clicável)</label><input class="form-input" id="ticker-link" placeholder="https://... ou deixe vazio" /></div>
+                            <div class="form-group"><label class="form-label">Link (opcional)</label><input class="form-input" id="ticker-link" placeholder="https://... ou deixe vazio" /></div>
                         </div>
                         <button class="btn-submit" onclick="adicionarTicker()" style="margin-bottom:20px"><i class="fas fa-plus"></i> Adicionar manchete</button>
                         <div class="ticker-admin-list" id="tickerAdminList"></div>
@@ -2381,6 +2518,7 @@
         let adminToken = null;
         let noticias = [], eventos = [], profissionais = [];
         let tickerItens = [];
+        let artigoAtual = null;
 
         // ─── EDITOR NATIVO ───
         function execCmd(cmd, val) { document.getElementById('editorCorpo').focus(); document.execCommand(cmd, false, val || null); }
@@ -2422,6 +2560,61 @@
             document.getElementById('imgPreview').src = url;
             document.getElementById('imgPreviewWrap').style.display = 'block';
         }
+
+        // ─── ROTEAMENTO ARTIGO ───
+        function abrirArtigo(idx) {
+            const art = noticias[idx]; if (!art) return;
+            artigoAtual = art;
+            document.getElementById('apCat').textContent = art.categoria;
+            document.getElementById('apTitle').textContent = art.titulo;
+            document.getElementById('apMeta').innerHTML = `${art.autor || 'Redação ProntPsi'} <span style="margin:0 8px;color:var(--muted)">·</span> ${formatDate(art.data)}`;
+            const img = document.getElementById('apImg');
+            if (art.img) { img.src = art.img; img.style.display = 'block'; } else { img.style.display = 'none'; }
+            document.getElementById('apBody').innerHTML = art.corpo || '';
+            // Mostra página artigo, esconde portal
+            document.getElementById('articlePage').style.display = 'block';
+            document.querySelector('.portal-section').style.display = 'none';
+            // Atualiza URL sem recarregar
+            history.pushState({ artigo: art.id }, art.titulo, '#artigo-' + art.id);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function fecharArtigo() {
+            document.getElementById('articlePage').style.display = 'none';
+            document.querySelector('.portal-section').style.display = 'block';
+            history.pushState({}, 'ProntPsi', window.location.pathname);
+            artigoAtual = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // Abre artigo se URL já tem hash
+        function checkHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#artigo-')) {
+                const id = parseInt(hash.replace('#artigo-', ''));
+                const idx = noticias.findIndex(n => n.id === id);
+                if (idx >= 0) abrirArtigo(idx);
+            }
+        }
+        window.addEventListener('popstate', () => {
+            if (!window.location.hash.startsWith('#artigo-')) fecharArtigo();
+        });
+
+        // ─── COMPARTILHAR ───
+        function compartilharWA() {
+            if (!artigoAtual) return;
+            const url = window.location.origin + window.location.pathname + '#artigo-' + artigoAtual.id;
+            const msg = encodeURIComponent('*' + artigoAtual.titulo + '*\n\nLeia no portal ProntPsi:\n' + url);
+            window.open('https://wa.me/?text=' + msg, '_blank');
+        }
+        function compartilharInsta() {
+            if (!artigoAtual) return;
+            const url = window.location.origin + window.location.pathname + '#artigo-' + artigoAtual.id;
+            navigator.clipboard.writeText(url).then(() => showToast('✅ Link copiado! Cole no Instagram.'));
+        }
+        function copiarLink() {
+            if (!artigoAtual) return;
+            const url = window.location.origin + window.location.pathname + '#artigo-' + artigoAtual.id;
+            navigator.clipboard.writeText(url).then(() => showToast('✅ Link copiado!')).catch(() => showToast('Erro ao copiar', 'erro'));
+        }
         let editandoId = null;
 
         // ─── API ───
@@ -2439,20 +2632,16 @@
             document.getElementById('portalDate').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             // Ticker do localStorage
             const rawTicker = JSON.parse(localStorage.getItem('psi:ticker') || 'null');
-            if (!rawTicker) {
-                tickerItens = [
-                    { texto: 'OMS alerta para aumento de transtornos de ansiedade em jovens', link: '' },
-                    { texto: 'CFP publica novas diretrizes para telepsicologia', link: '' },
-                    { texto: 'Pesquisa revela impacto do sono na saúde mental', link: '' },
-                    { texto: 'Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas', link: '' },
-                    { texto: 'Nova escala de avaliação de burnout é validada no Brasil', link: '' }
-                ];
-            } else {
-                // Migra strings antigas para objetos
-                tickerItens = rawTicker.map(t => typeof t === 'string' ? { texto: t, link: '' } : t);
-            }
+            tickerItens = !rawTicker ? [
+                { texto: 'OMS alerta para aumento de transtornos de ansiedade em jovens', link: '' },
+                { texto: 'CFP publica novas diretrizes para telepsicologia', link: '' },
+                { texto: 'Pesquisa revela impacto do sono na saúde mental', link: '' },
+                { texto: 'Congresso Brasileiro de Psiquiatria 2026 — inscrições abertas', link: '' },
+                { texto: 'Nova escala de avaliação de burnout é validada no Brasil', link: '' }
+            ] : rawTicker.map(t => typeof t === 'string' ? { texto: t, link: '' } : t);
             renderTicker();
             await carregarDados();
+            checkHash();
         }
 
         async function carregarDados() {
@@ -2491,17 +2680,18 @@
             const pubs = noticias.filter(n => n.status === 'publicado');
             if (!pubs.length) return;
             const main = pubs[0];
-            const s = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-            s('heroCat', main.categoria); s('heroTitle', main.titulo);
-            s('heroExcerpt', main.resumo); s('heroAuthor', main.autor || 'Redação ProntPsi');
-            s('heroDate', formatDate(main.data));
-            const hm = document.getElementById('heroMain'); if (hm) hm.onclick = () => openArticle(noticias.indexOf(main));
+            document.getElementById('heroCat').textContent = main.categoria;
+            document.getElementById('heroTitle').textContent = main.titulo;
+            document.getElementById('heroExcerpt').textContent = main.resumo;
+            document.getElementById('heroAuthor').textContent = main.autor || 'Redação ProntPsi';
+            document.getElementById('heroDate').textContent = formatDate(main.data);
+            document.getElementById('heroMain').onclick = () => abrirArtigo(noticias.indexOf(main));
             const imgArea = document.getElementById('heroImgArea');
-            if (imgArea) imgArea.innerHTML = main.img ? `<img src="${main.img}" alt=""/><div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>` : `<div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>`;
+            imgArea.innerHTML = main.img ? `<img src="${main.img}" alt=""/><div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>` : `<div class="img-overlay"></div><span class="hero-cat-badge">${main.categoria}</span>`;
             const side = document.getElementById('heroSide');
             const sidePubs = pubs.slice(1, 4);
             if (!sidePubs.length) { side.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted);font-size:12px;padding:20px;text-align:center">Publique mais artigos para aparecerem aqui</div>'; return; }
-            side.innerHTML = sidePubs.map(n => `<div class="side-news-card" onclick="openArticle(${noticias.indexOf(n)})"><div class="side-cat">${n.categoria}</div><div class="side-title">${n.titulo}</div><div class="side-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div></div>`).join('');
+            side.innerHTML = sidePubs.map(n => `<div class="side-news-card" onclick="abrirArtigo(${noticias.indexOf(n)})"><div class="side-cat">${n.categoria}</div><div class="side-title">${n.titulo}</div><div class="side-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div></div>`).join('');
         }
 
         function renderCards() {
@@ -2509,7 +2699,7 @@
             const grid = document.getElementById('cardsGrid');
             if (!grid) return;
             if (pubs.length <= 1) { grid.innerHTML = pubs.length === 0 ? `<div class="news-card" style="display:flex;align-items:center;justify-content:center;min-height:200px;border-style:dashed"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px"><i class="fas fa-newspaper" style="font-size:28px;margin-bottom:10px;display:block;color:var(--roxo-light);opacity:.4"></i>Publique artigos pelo painel admin</div></div>` : ''; return; }
-            grid.innerHTML = pubs.slice(1, 7).map(n => `<div class="news-card" onclick="openArticle(${noticias.indexOf(n)})"><div class="news-card-img">${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}<span class="ncat">${n.categoria}</span></div><div class="news-card-body"><div class="news-card-title">${n.titulo}</div><div class="news-card-excerpt">${n.resumo}</div><div class="news-card-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div></div></div>`).join('');
+            grid.innerHTML = pubs.slice(1, 7).map(n => `<div class="news-card" onclick="abrirArtigo(${noticias.indexOf(n)})"><div class="news-card-img">${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}<span class="ncat">${n.categoria}</span></div><div class="news-card-body"><div class="news-card-title">${n.titulo}</div><div class="news-card-excerpt">${n.resumo}</div><div class="news-card-meta">${n.autor || 'Redação ProntPsi'} · ${formatDate(n.data)}</div></div></div>`).join('');
         }
 
         function renderEventos() {
@@ -2532,9 +2722,7 @@
             document.getElementById('tickerTrack').innerHTML = doubled.map(t => {
                 const texto = typeof t === 'string' ? t : t.texto;
                 const link = typeof t === 'string' ? '' : t.link;
-                if (link) {
-                    return `<span class="ticker-dot">●</span><a class="ticker-item ticker-link-item" href="${link}" target="_blank" rel="noopener">${texto}</a>`;
-                }
+                if (link) return `<span class="ticker-dot">●</span><a class="ticker-item" href="${link}" target="_blank" rel="noopener" style="color:var(--muted2);text-decoration:none;cursor:pointer;transition:color .2s" onmouseover="this.style.color='var(--roxo-light)'" onmouseout="this.style.color='var(--muted2)'">${texto} <i class="fas fa-external-link-alt" style="font-size:9px"></i></a>`;
                 return `<span class="ticker-dot">●</span><span class="ticker-item">${texto}</span>`;
             }).join('');
         }
@@ -2544,24 +2732,18 @@
             el.innerHTML = tickerItens.map((t, i) => {
                 const texto = typeof t === 'string' ? t : t.texto;
                 const link = typeof t === 'string' ? '' : t.link;
-                return `<div class="ticker-admin-item">
-                        <span class="drag-handle">⠿</span>
-                        <div style="flex:1">
-                            <div style="font-size:13px;color:var(--text)">${texto}</div>
-                            ${link ? `<div style="font-size:11px;color:var(--roxo-light);margin-top:2px"><i class="fas fa-link" style="font-size:10px"></i> ${link}</div>` : '<div style="font-size:11px;color:var(--muted);margin-top:2px">Sem link</div>'}
-                        </div>
-                        <button class="btn-danger" onclick="removerTicker(${i})"><i class="fas fa-trash"></i></button>
-                    </div>`;
+                return `<div class="ticker-admin-item"><span class="drag-handle">⠿</span><div style="flex:1"><div style="font-size:13px;color:var(--text)">${texto}</div>${link ? `<div style="font-size:11px;color:var(--roxo-light);margin-top:2px"><i class="fas fa-link" style="font-size:10px"></i> ${link}</div>` : '<div style="font-size:11px;color:var(--muted);margin-top:2px">Sem link</div>'}</div><button class="btn-danger" onclick="removerTicker(${i})"><i class="fas fa-trash"></i></button></div>`;
             }).join('');
         }
         function adicionarTicker() {
             const val = document.getElementById('ticker-nova').value.trim();
-            const link = document.getElementById('ticker-link').value.trim();
+            const linkEl = document.getElementById('ticker-link');
+            const link = linkEl ? linkEl.value.trim() : '';
             if (!val) { showToast('Digite a manchete', 'erro'); return; }
-            tickerItens.push({ texto: val, link: link || '' });
+            tickerItens.push({ texto: val, link: link });
             localStorage.setItem('psi:ticker', JSON.stringify(tickerItens));
             document.getElementById('ticker-nova').value = '';
-            document.getElementById('ticker-link').value = '';
+            if (linkEl) linkEl.value = '';
             renderTicker(); renderTickerAdmin();
             showToast('✅ Manchete adicionada!');
         }
@@ -2580,29 +2762,11 @@
             document.getElementById('modalMeta').innerHTML = `${art.autor || 'Redação ProntPsi'} <span style="margin:0 6px;color:var(--muted)">·</span> ${formatDate(art.data)}`;
             const img = document.getElementById('modalImg'), ph = document.getElementById('modalImgPlaceholder');
             if (art.img) { img.src = art.img; img.style.display = 'block'; ph.style.display = 'none'; } else { img.style.display = 'none'; ph.style.display = 'flex'; }
-            const artIdx = noticias.indexOf(art);
-            document.getElementById('modalBody').innerHTML = (art.corpo || art.body || '') +
-                `<div class="share-bar">
-                        <span class="share-label">Compartilhar</span>
-                        <button class="btn-share btn-share-wa" onclick="compartilharWA(${artIdx})"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-                        <button class="btn-share btn-share-copy" onclick="copiarLink(${artIdx})"><i class="fas fa-link"></i> Copiar link</button>
-                    </div>`;
+            document.getElementById('modalBody').innerHTML = art.corpo || art.body || '';
             document.getElementById('articleModal').classList.add('open');
         }
         function closeArticle() { document.getElementById('articleModal').classList.remove('open') }
         document.getElementById('articleModal').addEventListener('click', function (e) { if (e.target === this) closeArticle() });
-
-        function compartilharWA(idx) {
-            const art = noticias[idx]; if (!art) return;
-            const url = encodeURIComponent(window.location.href.split('#')[0] + '#artigo-' + art.id);
-            const msg = encodeURIComponent('*' + art.titulo + '*\n\nLeia no portal ProntPsi: ' + decodeURIComponent(url));
-            window.open('https://wa.me/?text=' + msg, '_blank');
-        }
-        function copiarLink(idx) {
-            const art = noticias[idx]; if (!art) return;
-            const url = window.location.href.split('#')[0] + '#artigo-' + art.id;
-            navigator.clipboard.writeText(url).then(() => showToast('✅ Link copiado!')).catch(() => showToast('Erro ao copiar', 'erro'));
-        }
 
         // ─── PREVIEW ───
         function abrirPreview() {
@@ -2787,7 +2951,7 @@
             const filtered = noticias.filter(n => n.status === 'publicado' && n.categoria === cat);
             const grid = document.getElementById('cardsGrid');
             if (!filtered.length) { grid.innerHTML = `<div class="news-card" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;min-height:160px;border-style:dashed"><span style="color:var(--muted);font-size:13px">Nenhum artigo em "${cat}" ainda</span></div>`; return; }
-            grid.innerHTML = filtered.slice(0, 6).map(n => `<div class="news-card" onclick="openArticle(${noticias.indexOf(n)})"><div class="news-card-img">${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}<span class="ncat">${n.categoria}</span></div><div class="news-card-body"><div class="news-card-title">${n.titulo}</div><div class="news-card-excerpt">${n.resumo}</div><div class="news-card-meta">${n.autor || 'Redação'} · ${formatDate(n.data)}</div></div></div>`).join('');
+            grid.innerHTML = filtered.slice(0, 6).map(n => `<div class="news-card" onclick="abrirArtigo(${noticias.indexOf(n)})"><div class="news-card-img">${n.img ? `<img src="${n.img}" alt=""/>` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">🧠</div>'}<span class="ncat">${n.categoria}</span></div><div class="news-card-body"><div class="news-card-title">${n.titulo}</div><div class="news-card-excerpt">${n.resumo}</div><div class="news-card-meta">${n.autor || 'Redação'} · ${formatDate(n.data)}</div></div></div>`).join('');
         }
 
         // ─── CALCULADORA ───
