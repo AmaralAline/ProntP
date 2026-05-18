@@ -255,6 +255,78 @@
                 .filtro button:hover {
                     background: rgba(139,92,246,0.1);
                 }
+
+        /* Indicadores de atividade */
+        .atividade-alta {
+            color: #34d399;
+            font-weight: 600;
+        }
+
+        .atividade-media {
+            color: #fbbf24;
+        }
+
+        .atividade-baixa {
+            color: #f87171;
+        }
+
+        .atividade-zero {
+            color: #475569;
+            font-style: italic;
+        }
+
+        .badge-inativo {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(248,113,113,0.1);
+            border: 1px solid rgba(248,113,113,0.25);
+            color: #f87171;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .acesso-recente {
+            color: #34d399;
+            font-size: 12px;
+        }
+
+        .acesso-medio {
+            color: #fbbf24;
+            font-size: 12px;
+        }
+
+        .acesso-antigo {
+            color: #f87171;
+            font-size: 12px;
+        }
+
+        .acesso-nunca {
+            color: #475569;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        /* Alerta inativos */
+        .alerta-inativos {
+            background: linear-gradient(135deg, rgba(248,113,113,0.06), rgba(251,191,36,0.04));
+            border: 1px solid rgba(248,113,113,0.25);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+
+        .alerta-inativos-titulo {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f87171;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -268,10 +340,23 @@
 
     <div class="main">
         <!-- MÉTRICAS -->
-        <div id="alerta-expirando" style="display:none;background:linear-gradient(135deg,rgba(251,191,36,0.08),rgba(248,113,113,0.05));border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:16px 20px;margin-bottom:24px;">
-            <div style="font-size:13px;font-weight:600;color:#fbbf24;margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-exclamation-triangle"></i> ⏰ Trials expirando nos próximos 7 dias</div>
+        <!-- ALERTAS -->
+        <div id="alerta-expirando" style="display:none;" class="alerta-expirando">
+            <div class="alerta-expirando-titulo">
+                <i class="fas fa-exclamation-triangle"></i>
+                ⏰ Trials expirando nos próximos 7 dias
+            </div>
             <div id="alerta-lista"></div>
         </div>
+
+        <div id="alerta-inativos" style="display:none;" class="alerta-inativos">
+            <div class="alerta-inativos-titulo">
+                <i class="fas fa-user-slash"></i>
+                😴 Usuários inativos — não acessam há mais de 7 dias
+            </div>
+            <div id="alerta-inativos-lista"></div>
+        </div>
+
         <div class="metricas-grid" id="metricas-grid">
             <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Total de profissionais</div></div>
             <div class="metrica-card"><div class="metrica-valor">—</div><div class="metrica-label">Pagantes</div></div>
@@ -503,9 +588,10 @@
                             <th>Início teste</th>
                             <th>Expira</th>
                             <th>Status</th>
+                            <th>Último acesso</th>
+                            <th>Atividade</th>
                             <th>Formulário</th>
                             <th>Extensão</th>
-                            <th>Uso</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -592,6 +678,36 @@
         </div>
 
     </div><!-- fim .main -->
+    <!-- MODAL EXTENSÃO MANUAL -->
+    <div class="modal-extensao" id="modal-extensao" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;">
+        <div style="background:#1a2332;border:1px solid rgba(139,92,246,.25);border-radius:16px;padding:32px;width:100%;max-width:420px;position:relative;">
+            <button onclick="fecharModalExtensao()" style="position:absolute;top:14px;right:16px;background:transparent;border:none;color:#64748b;font-size:20px;cursor:pointer;">✕</button>
+            <div style="font-size:15px;font-weight:600;color:#a78bfa;margin-bottom:20px;display:flex;align-items:center;gap:8px;"><i class="fas fa-calendar-plus"></i> Estender trial manualmente</div>
+            <p id="modal-extensao-nome" style="font-size:14px;color:#f1f5f9;margin-bottom:6px;font-weight:500;"></p>
+            <p id="modal-extensao-expira" style="font-size:12px;color:#64748b;margin-bottom:20px;"></p>
+            <label style="font-size:11px;color:#64748b;display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Quantos dias adicionar?</label>
+            <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+                <button onclick="selecionarDias(7,this)" style="padding:8px 14px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.1);color:#a78bfa;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;transition:.2s;" class="dias-btn">+7 dias</button>
+                <button onclick="selecionarDias(15,this)" style="padding:8px 14px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.1);color:#a78bfa;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;transition:.2s;" class="dias-btn">+15 dias</button>
+                <button onclick="selecionarDias(30,this)" style="padding:8px 14px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.1);color:#a78bfa;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;transition:.2s;" class="dias-btn">+30 dias</button>
+                <button onclick="selecionarDias(60,this)" style="padding:8px 14px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.1);color:#a78bfa;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;transition:.2s;" class="dias-btn">+60 dias</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+                <input type="number" id="input-dias-custom" placeholder="Outro valor" min="1" max="365"
+                       style="width:130px;padding:9px 12px;background:#141d2b;border:1px solid rgba(139,92,246,.25);border-radius:8px;color:#e2e8f0;font-size:13px;font-family:'Roboto',sans-serif;outline:none;"
+                       oninput="selecionarDiasCustom(this.value)">
+                <span style="font-size:13px;color:#64748b;">dias</span>
+            </div>
+            <p style="font-size:12px;color:#64748b;margin-bottom:16px;">Nova expiração: <strong id="preview-nova-data" style="color:#34d399;">—</strong></p>
+            <div style="display:flex;gap:10px;">
+                <button onclick="confirmarExtensao()" style="flex:1;padding:11px;background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;font-family:'Roboto',sans-serif;">
+                    <i class="fas fa-check" style="margin-right:6px;"></i>Confirmar extensão
+                </button>
+                <button onclick="fecharModalExtensao()" style="padding:11px 20px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">Cancelar</button>
+            </div>
+            <p id="modal-extensao-feedback" style="font-size:12px;margin-top:12px;display:none;"></p>
+        </div>
+    </div>
     <!-- MODAL AVALIAÇÃO -->
     <div id="modal-avaliacao" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; overflow-y:auto; padding:40px 20px;">
         <div style="max-width:680px; margin:0 auto; background:#1a2332; border:1px solid rgba(139,92,246,0.2); border-radius:16px; padding:32px; position:relative;">
@@ -737,6 +853,61 @@
             }
         }
 
+
+        let extensaoAtual = { id: null, expiraAtual: null, dias: 0 };
+        function abrirModalExtensao(id, nome, expiraISO) {
+            extensaoAtual = { id, expiraAtual: expiraISO ? new Date(expiraISO) : new Date(), dias: 0 };
+            document.getElementById('modal-extensao-nome').textContent = nome;
+            document.getElementById('modal-extensao-expira').textContent = 'Expira em: ' + (expiraISO ? new Date(expiraISO).toLocaleDateString('pt-BR') : 'não definida');
+            document.getElementById('preview-nova-data').textContent = '—';
+            document.getElementById('input-dias-custom').value = '';
+            document.getElementById('modal-extensao-feedback').style.display = 'none';
+            document.querySelectorAll('.dias-btn').forEach(b => b.style.background = 'rgba(139,92,246,.1)');
+            const m = document.getElementById('modal-extensao');
+            m.style.display = 'flex';
+        }
+        function fecharModalExtensao() { document.getElementById('modal-extensao').style.display = 'none'; }
+        function selecionarDias(dias, btn) {
+            extensaoAtual.dias = dias;
+            document.querySelectorAll('.dias-btn').forEach(b => b.style.background = 'rgba(139,92,246,.1)');
+            btn.style.background = 'rgba(139,92,246,.3)';
+            document.getElementById('input-dias-custom').value = '';
+            atualizarPreviewData();
+        }
+        function selecionarDiasCustom(val) {
+            extensaoAtual.dias = parseInt(val) || 0;
+            document.querySelectorAll('.dias-btn').forEach(b => b.style.background = 'rgba(139,92,246,.1)');
+            atualizarPreviewData();
+        }
+        function atualizarPreviewData() {
+            if (!extensaoAtual.dias || extensaoAtual.dias <= 0) { document.getElementById('preview-nova-data').textContent = '—'; return; }
+            const nova = new Date((extensaoAtual.expiraAtual || new Date()).getTime() + extensaoAtual.dias * 86400000);
+            document.getElementById('preview-nova-data').textContent = nova.toLocaleDateString('pt-BR');
+        }
+        async function confirmarExtensao() {
+            if (!extensaoAtual.id || !extensaoAtual.dias || extensaoAtual.dias <= 0) {
+                const fb = document.getElementById('modal-extensao-feedback');
+                fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Selecione quantos dias adicionar.'; return;
+            }
+            try {
+                const res = await fetch(`${API_URL}/api/admin/usuarios-teste/${extensaoAtual.id}/estender`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ dias: extensaoAtual.dias })
+                });
+                const data = await res.json();
+                const fb = document.getElementById('modal-extensao-feedback');
+                fb.style.display = 'block';
+                if (res.ok) {
+                    fb.style.color = '#34d399'; fb.textContent = '✅ ' + (data.mensagem || 'Trial estendido!');
+                    setTimeout(() => { fecharModalExtensao(); carregarUsuariosTeste(); }, 1500);
+                } else { fb.style.color = '#f87171'; fb.textContent = '❌ ' + (data.erro || 'Erro ao estender.'); }
+            } catch (err) {
+                const fb = document.getElementById('modal-extensao-feedback');
+                fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = '❌ Erro de conexão.';
+            }
+        }
+
         carregarMetricas();
         carregarProfissionais();
         carregarVerificacoesPendentes();
@@ -765,11 +936,7 @@
                                 <tr id="verif-row-${v.id}">
                                     <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
                                     <td style="color:#94a3b8;">${v.email}</td>
-                                    <td style="color:#a78bfa; font-weight:500;">
-                                            ${v.crp_crm || '—'}
-                                            ${(v.crp_crm || '').toLowerCase().includes('instituto') ?
-                        '<br><span style="font-size:10px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:2px 8px;border-radius:10px;border:1px solid rgba(139,92,246,0.3);">🎓 Psicanalista</span>' : ''}
-                                        </td>
+                                    <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
                                     <td style="color:#94a3b8;">${v.cpf || '—'}</td>
                                     <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
                                     <td>
@@ -935,6 +1102,78 @@
         carregarPagamentosAdmin();
 
         // USUARIOS TESTE
+
+        // ── ALERTA TRIALS EXPIRANDO ──────────────────────────────────
+        function verificarAlertaExpirando(usuarios) {
+            const hoje = new Date();
+            const em7dias = new Date(hoje.getTime() + 7 * 24 * 60 * 60 * 1000);
+            const expirando = usuarios.filter(u => {
+                if (!u.teste_expira_em || u.teste_convertido_assinante) return false;
+                const expira = new Date(u.teste_expira_em);
+                return expira >= hoje && expira <= em7dias;
+            }).sort((a, b) => new Date(a.teste_expira_em) - new Date(b.teste_expira_em));
+
+            const bloco = document.getElementById('alerta-expirando');
+            const lista = document.getElementById('alerta-lista');
+            if (!expirando.length) { bloco.style.display = 'none'; return; }
+            bloco.style.display = 'block';
+            lista.innerHTML = expirando.map(u => {
+                const expira = new Date(u.teste_expira_em);
+                const dias = Math.ceil((expira - hoje) / (1000 * 60 * 60 * 24));
+                const cor = dias <= 0 ? '#f87171' : dias <= 3 ? '#fb923c' : '#fbbf24';
+                const label = dias <= 0 ? 'Expira hoje!' : `${dias} dia${dias > 1 ? 's' : ''}`;
+                return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(15,22,33,.5);border-radius:8px;margin-bottom:6px;flex-wrap:wrap;gap:8px;">
+                        <div>
+                            <span style="font-size:13px;color:#f1f5f9;font-weight:500;">${u.nome}</span>
+                            <span style="font-size:11px;color:#64748b;margin-left:8px;">${u.email}</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span style="color:${cor};font-size:12px;font-weight:700;"><i class="fas fa-clock" style="margin-right:4px;"></i>${label}</span>
+                            <button class="btn-acao" onclick="abrirModalExtensao(${u.id}, '${u.nome.replace(/'/g, "\'")}', '${new Date(u.teste_expira_em).toISOString()}')"
+                                style="background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25);padding:5px 12px;font-size:11px;">
+                                <i class="fas fa-calendar-plus" style="margin-right:3px;"></i>Estender
+                            </button>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        // ── ALERTA INATIVOS ───────────────────────────────────────────
+        function verificarAlertaInativos(usuarios) {
+            const hoje = new Date();
+            const inativos = usuarios.filter(u => {
+                if (u.teste_convertido_assinante || !u.ativo) return false;
+                const totalAcoes = (u.total_pacientes || 0) + (u.total_evolucoes || 0) + (u.total_agenda || 0);
+                const ultimoAcesso = u.ultimo_acesso ? new Date(u.ultimo_acesso) : null;
+                const diasSemAcesso = ultimoAcesso ? Math.floor((hoje - ultimoAcesso) / (1000 * 60 * 60 * 24)) : 999;
+                return diasSemAcesso > 7 || (!ultimoAcesso && totalAcoes === 0);
+            });
+
+            const bloco = document.getElementById('alerta-inativos');
+            const lista = document.getElementById('alerta-inativos-lista');
+            if (!inativos.length) { bloco.style.display = 'none'; return; }
+            bloco.style.display = 'block';
+            lista.innerHTML = inativos.map(u => {
+                const ultimoAcesso = u.ultimo_acesso ? new Date(u.ultimo_acesso) : null;
+                const diasSemAcesso = ultimoAcesso ? Math.floor((hoje - ultimoAcesso) / (1000 * 60 * 60 * 24)) : null;
+                const acessoStr = diasSemAcesso !== null ? `${diasSemAcesso} dias sem acessar` : 'Nunca acessou';
+                const totalAcoes = (u.total_pacientes || 0) + (u.total_evolucoes || 0) + (u.total_agenda || 0);
+                return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(15,22,33,.5);border-radius:8px;margin-bottom:6px;flex-wrap:wrap;gap:8px;">
+                        <div>
+                            <span style="font-size:13px;color:#f1f5f9;font-weight:500;">${u.nome}</span>
+                            <span style="font-size:11px;color:#64748b;margin-left:8px;">${u.email}</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span style="color:#f87171;font-size:12px;"><i class="fas fa-moon" style="margin-right:4px;"></i>${acessoStr}</span>
+                            <span style="font-size:11px;color:#475569;">${totalAcoes === 0 ? 'Nenhuma ação' : totalAcoes + ' ações totais'}</span>
+                            <a href="mailto:${u.email}" style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.25);border-radius:6px;font-size:11px;text-decoration:none;">
+                                <i class="fas fa-envelope"></i> Contatar
+                            </a>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
         async function tornarUsuarioTeste() {
             const email = document.getElementById('input-email-teste').value.trim();
             const msg = document.getElementById('msg-tornar-teste');
@@ -964,6 +1203,61 @@
                     msg.textContent = '✅ ' + data.mensagem;
                     document.getElementById('input-email-teste').value = '';
                     carregarUsuariosTeste();
+
+                    let extensaoAtual = { id: null, expiraAtual: null, dias: 0 };
+                    function abrirModalExtensao(id, nome, expiraISO) {
+                        extensaoAtual = { id, expiraAtual: expiraISO ? new Date(expiraISO) : new Date(), dias: 0 };
+                        document.getElementById('modal-extensao-nome').textContent = nome;
+                        document.getElementById('modal-extensao-expira').textContent = 'Expira em: ' + (expiraISO ? new Date(expiraISO).toLocaleDateString('pt-BR') : 'não definida');
+                        document.getElementById('preview-nova-data').textContent = '—';
+                        document.getElementById('input-dias-custom').value = '';
+                        document.getElementById('modal-extensao-feedback').style.display = 'none';
+                        document.querySelectorAll('.dias-btn').forEach(b => b.style.background = 'rgba(139,92,246,.1)');
+                        const m = document.getElementById('modal-extensao');
+                        m.style.display = 'flex';
+                    }
+                    function fecharModalExtensao() { document.getElementById('modal-extensao').style.display = 'none'; }
+                    function selecionarDias(dias, btn) {
+                        extensaoAtual.dias = dias;
+                        document.querySelectorAll('.dias-btn').forEach(b => b.style.background = 'rgba(139,92,246,.1)');
+                        btn.style.background = 'rgba(139,92,246,.3)';
+                        document.getElementById('input-dias-custom').value = '';
+                        atualizarPreviewData();
+                    }
+                    function selecionarDiasCustom(val) {
+                        extensaoAtual.dias = parseInt(val) || 0;
+                        document.querySelectorAll('.dias-btn').forEach(b => b.style.background = 'rgba(139,92,246,.1)');
+                        atualizarPreviewData();
+                    }
+                    function atualizarPreviewData() {
+                        if (!extensaoAtual.dias || extensaoAtual.dias <= 0) { document.getElementById('preview-nova-data').textContent = '—'; return; }
+                        const nova = new Date((extensaoAtual.expiraAtual || new Date()).getTime() + extensaoAtual.dias * 86400000);
+                        document.getElementById('preview-nova-data').textContent = nova.toLocaleDateString('pt-BR');
+                    }
+                    async function confirmarExtensao() {
+                        if (!extensaoAtual.id || !extensaoAtual.dias || extensaoAtual.dias <= 0) {
+                            const fb = document.getElementById('modal-extensao-feedback');
+                            fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Selecione quantos dias adicionar.'; return;
+                        }
+                        try {
+                            const res = await fetch(`${API_URL}/api/admin/usuarios-teste/${extensaoAtual.id}/estender`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                                body: JSON.stringify({ dias: extensaoAtual.dias })
+                            });
+                            const data = await res.json();
+                            const fb = document.getElementById('modal-extensao-feedback');
+                            fb.style.display = 'block';
+                            if (res.ok) {
+                                fb.style.color = '#34d399'; fb.textContent = '✅ ' + (data.mensagem || 'Trial estendido!');
+                                setTimeout(() => { fecharModalExtensao(); carregarUsuariosTeste(); }, 1500);
+                            } else { fb.style.color = '#f87171'; fb.textContent = '❌ ' + (data.erro || 'Erro ao estender.'); }
+                        } catch (err) {
+                            const fb = document.getElementById('modal-extensao-feedback');
+                            fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = '❌ Erro de conexão.';
+                        }
+                    }
+
                     carregarMetricas();
                 } else {
                     msg.style.color = '#f87171';
@@ -986,11 +1280,13 @@
 
                 const badge = document.getElementById('badge-usuarios-teste');
                 badge.textContent = `${data.length} usuário${data.length !== 1 ? 's' : ''}`;
+                verificarAlertaExpirando(data);
+                verificarAlertaInativos(data);
 
                 const tbody = document.getElementById('tabela-usuarios-teste');
 
                 if (!data.length) {
-                    tbody.innerHTML = '<tr><td colspan="8" class="loading">Nenhum usuário teste cadastrado ainda.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="9" class="loading">Nenhum usuário teste cadastrado ainda.</td></tr>';
                     return;
                 }
 
@@ -1034,18 +1330,43 @@
                         extensaoBadge = `<span style="color:#475569;font-size:12px;">—</span>`;
                     }
 
-                    const uso = `<span style="font-size:11px;color:#64748b;">
-                                    ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
-                                </span>`;
+                    // Último acesso
+                    const ultimoAcesso = u.ultimo_acesso ? new Date(u.ultimo_acesso) : null;
+                    const diasSemAcesso = ultimoAcesso ? Math.floor((hoje - ultimoAcesso) / (1000 * 60 * 60 * 24)) : null;
+                    let acessoLabel = '<span class="acesso-nunca">Nunca acessou</span>';
+                    if (ultimoAcesso) {
+                        if (diasSemAcesso === 0) acessoLabel = '<span class="acesso-recente">Hoje</span>';
+                        else if (diasSemAcesso === 1) acessoLabel = '<span class="acesso-recente">Ontem</span>';
+                        else if (diasSemAcesso <= 7) acessoLabel = `<span class="acesso-recente">${diasSemAcesso}d atrás</span>`;
+                        else if (diasSemAcesso <= 14) acessoLabel = `<span class="acesso-medio">${diasSemAcesso}d atrás</span>`;
+                        else acessoLabel = `<span class="acesso-antigo">${diasSemAcesso}d atrás</span>`;
+                    }
 
-                    return `<tr id="teste-row-${u.id}">
+                    // Atividade geral e semanal
+                    const totalAcoes = (u.total_pacientes || 0) + (u.total_evolucoes || 0) + (u.total_agenda || 0);
+                    const acoesSemana = (u.pacientes_semana || 0) + (u.evolucoes_semana || 0) + (u.agenda_semana || 0);
+                    let atividadeClass = 'atividade-zero';
+                    let atividadeLabel = 'Nenhuma ação';
+                    if (acoesSemana >= 5) { atividadeClass = 'atividade-alta'; atividadeLabel = `${acoesSemana} ações`; }
+                    else if (acoesSemana >= 1) { atividadeClass = 'atividade-media'; atividadeLabel = `${acoesSemana} ações`; }
+                    else if (totalAcoes > 0) { atividadeClass = 'atividade-baixa'; atividadeLabel = 'Parado'; }
+
+                    const uso = `
+                            <span class="${atividadeClass}" style="font-size:12px;">${atividadeLabel}</span><br>
+                            <span style="font-size:10px;color:#475569;">esta semana</span><br>
+                            <span style="font-size:10px;color:#64748b;">${u.total_pacientes}p/${u.total_evolucoes}e/${u.total_agenda}a total</span>`;
+
+                    return `<tr id="teste-row-${u.id}" ${diasSemAcesso !== null && diasSemAcesso > 7 && totalAcoes === 0 ? 'style="opacity:.7"' : ''}>
                                     <td>
                                         <strong style="color:#f1f5f9;">${u.nome}</strong><br>
                                         <span style="font-size:11px;color:#64748b;">${u.email}</span>
+                                        ${diasSemAcesso === null ? '<br><span class="badge-inativo">Nunca entrou</span>' : ''}
                                     </td>
                                     <td style="color:#64748b;font-size:12px;">${inicio}</td>
                                     <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
                                     <td>${statusBadge}</td>
+                                    <td>${acessoLabel}</td>
+                                    <td>${uso}</td>
                                     <td>
                                         ${formularioBadge}
                                         ${u.teste_formulario_respondido
@@ -1057,11 +1378,11 @@
                         }
                                     </td>
                                     <td>${extensaoBadge}</td>
-                                    <td>${uso}<br>
-                                        <span style="font-size:10px;color:#475569;">pac/evol/agenda</span>
-                                    </td>
                                     <td>
-                                        ${btnExtensao}
+                                        <button class="btn-acao" onclick="abrirModalExtensao(${u.id}, '${u.nome.replace(/'/g, "\'")}', '${expira ? expira.toISOString() : ''}')"
+                                            style="background:rgba(96,165,250,0.12);color:#60a5fa;border:1px solid rgba(96,165,250,0.25);">
+                                            <i class="fas fa-calendar-plus" style="margin-right:3px;"></i>+Dias
+                                        </button>
                                         ${!u.ativo
                             ? `<button class="btn-acao btn-ativar" onclick="ativar(${u.id})">Reativar</button>`
                             : `<button class="btn-acao btn-suspender" onclick="suspender(${u.id})">Suspender</button>`
