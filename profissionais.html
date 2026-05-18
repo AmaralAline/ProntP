@@ -897,9 +897,8 @@
     <nav>
         <a href="/" class="nav-logo">Pront<span>Psi</span></a>
         <ul class="nav-links">
-            <li><a href="/">Início</a></li>
             <li><a href="/profissionais.html" class="active">Profissionais</a></li>
-            <li><a href="/planos.html">Planos</a></li>
+
         </ul>
         <a href="/PainelExclusivo.html" class="nav-cta">
             <i class="fas fa-sign-in-alt"></i> Acessar sistema
@@ -1176,11 +1175,11 @@
                 checkURLPerfil();
             } catch (err) {
                 document.getElementById('cards-grid').innerHTML = `
-                        <div class="empty-state" style="grid-column:1/-1">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <p>Não foi possível carregar os profissionais.<br>
-                               <a href="" onclick="location.reload()" style="color:var(--purple-l)">Tentar novamente</a></p>
-                        </div>`;
+                            <div class="empty-state" style="grid-column:1/-1">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <p>Não foi possível carregar os profissionais.<br>
+                                   <a href="" onclick="location.reload()" style="color:var(--purple-l)">Tentar novamente</a></p>
+                            </div>`;
                 document.getElementById('cards-count').textContent = '';
             }
         }
@@ -1227,16 +1226,16 @@
             const badgePresencial = p.vitrine_atende_presencial ? `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(139,92,246,.1);border:1px solid var(--border2);color:var(--purple-l);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;"><i class="fas fa-map-marker-alt"></i> Atende presencial</span>` : '';
 
             document.getElementById('perfil-hero').innerHTML = `
-                        ${fotoEl}
-                        <div>
-                            <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:4px;">${p.nome}</div>
-                            <div style="font-size:15px;color:var(--purple-l);font-weight:500;margin-bottom:4px;">${p.especialidade || ''}</div>
-                            <div style="font-size:12px;color:var(--text3);margin-bottom:10px;">${p.crp_crm || ''}</div>
-                            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">${badgeVerif}${badgeOnline}${badgePresencial}</div>
-                            ${loc ? `<div style="font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;margin-bottom:6px;"><i class="fas fa-map-marker-alt" style="color:var(--purple-l);font-size:11px;"></i> ${loc}</div>` : ''}
-                            ${p.vitrine_endereco ? `<div style="font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;margin-bottom:16px;"><i class="fas fa-building" style="color:var(--purple-l);font-size:11px;"></i> ${p.vitrine_endereco} <a href="${mapsUrl}" target="_blank" rel="noopener" style="color:var(--purple-l);font-size:11px;margin-left:6px;text-decoration:none;font-weight:600;"><i class="fas fa-map"></i> Ver no mapa</a></div>` : '<div style="margin-bottom:16px;"></div>'}
-                            <div style="display:flex;gap:10px;flex-wrap:wrap;">${btnWpp}${btnEmail}</div>
-                        </div>`;
+                            ${fotoEl}
+                            <div>
+                                <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:4px;">${p.nome}</div>
+                                <div style="font-size:15px;color:var(--purple-l);font-weight:500;margin-bottom:4px;">${p.especialidade || ''}</div>
+                                <div style="font-size:12px;color:var(--text3);margin-bottom:10px;">${p.crp_crm || ''}</div>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">${badgeVerif}${badgeOnline}${badgePresencial}</div>
+                                ${loc ? `<div style="font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;margin-bottom:6px;"><i class="fas fa-map-marker-alt" style="color:var(--purple-l);font-size:11px;"></i> ${loc}</div>` : ''}
+                                ${p.vitrine_endereco ? `<div style="font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;margin-bottom:16px;"><i class="fas fa-building" style="color:var(--purple-l);font-size:11px;"></i> ${p.vitrine_endereco} <a href="${mapsUrl}" target="_blank" rel="noopener" style="color:var(--purple-l);font-size:11px;margin-left:6px;text-decoration:none;font-weight:600;"><i class="fas fa-map"></i> Ver no mapa</a></div>` : '<div style="margin-bottom:16px;"></div>'}
+                                <div style="display:flex;gap:10px;flex-wrap:wrap;">${btnWpp}${btnEmail}</div>
+                            </div>`;
 
             if (p.vitrine_bio) {
                 document.getElementById('perfil-bio').textContent = p.vitrine_bio;
@@ -1351,14 +1350,14 @@
             const sorted = Object.entries(porEstado).sort((a, b) => b[1] - a[1]).slice(0, 8);
 
             lista.innerHTML = sorted.map(([est, cnt]) => `
-                    <div class="estado-row" id="row-${est}" onclick="filtrarEstadoMapa('${est}')">
-                        <span class="estado-sigla">${est}</span>
-                        <div class="estado-bar-wrap">
-                            <div class="estado-bar" style="width:${Math.round(cnt / max * 100)}%"></div>
+                        <div class="estado-row" id="row-${est}" onclick="filtrarEstadoMapa('${est}')">
+                            <span class="estado-sigla">${est}</span>
+                            <div class="estado-bar-wrap">
+                                <div class="estado-bar" style="width:${Math.round(cnt / max * 100)}%"></div>
+                            </div>
+                            <span class="estado-count">${cnt}</span>
                         </div>
-                        <span class="estado-count">${cnt}</span>
-                    </div>
-                `).join('');
+                    `).join('');
 
             if (sorted.length === 0) {
                 lista.innerHTML = '<p style="font-size:12px; color:var(--text3); text-align:center; padding:8px;">Nenhum dado disponível</p>';
@@ -1491,11 +1490,11 @@
 
             if (!lista.length) {
                 grid.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-user-slash"></i>
-                            <p>Nenhum profissional encontrado com esses filtros.<br>
-                               Tente uma busca diferente ou <a href="#" onclick="limparFiltros();return false;" style="color:var(--purple-l)">limpe os filtros</a>.</p>
-                        </div>`;
+                            <div class="empty-state">
+                                <i class="fas fa-user-slash"></i>
+                                <p>Nenhum profissional encontrado com esses filtros.<br>
+                                   Tente uma busca diferente ou <a href="#" onclick="limparFiltros();return false;" style="color:var(--purple-l)">limpe os filtros</a>.</p>
+                            </div>`;
                 return;
             }
 
@@ -1506,17 +1505,14 @@
 
                 const fotoEl = p.vitrine_foto_url
                     ? `<img class="card-avatar" src="${p.vitrine_foto_url}" alt="${p.nome}" loading="lazy"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                           <div class="card-avatar-initials" style="display:none;">${iniciais}</div>`
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                               <div class="card-avatar-initials" style="display:none;">${iniciais}</div>`
                     : `<div class="card-avatar-initials">${iniciais}</div>`;
 
                 const tags = (p.vitrine_especialidades || []).slice(0, 3)
                     .map(t => `<span class="card-tag">${t}</span>`).join('');
 
                 const loc = [p.vitrine_cidade, p.vitrine_estado].filter(Boolean).join(', ');
-                const mapsUrl = p.vitrine_endereco ? 'https://www.google.com/maps/search/' + encodeURIComponent(p.vitrine_endereco + ', ' + loc) : null;
-                const badgeOnline = p.vitrine_atende_online ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;margin-right:4px;"><i class=\"fas fa-video\"></i> Online</span>' : '';
-                const badgePresencial = p.vitrine_atende_presencial ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#a78bfa;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);padding:2px 8px;border-radius:10px;"><i class=\"fas fa-map-marker-alt\"></i> Presencial</span>' : '';
 
                 const wppNum = (p.vitrine_whatsapp || '').replace(/\D/g, '');
                 const wppMsg = encodeURIComponent(
@@ -1524,14 +1520,14 @@
                 );
                 const btnWpp = (p.vitrine_aceita_wpp && wppNum)
                     ? `<a class="btn-wpp" href="https://wa.me/55${wppNum}?text=${wppMsg}" target="_blank" rel="noopener">
-                               <i class="fab fa-whatsapp"></i> WhatsApp
-                           </a>`
+                                   <i class="fab fa-whatsapp"></i> WhatsApp
+                               </a>`
                     : '';
 
                 const btnEmail = (p.vitrine_aceita_email && p.vitrine_email_publico)
                     ? `<a class="btn-email" href="mailto:${p.vitrine_email_publico}">
-                               <i class="fas fa-envelope"></i> E-mail
-                           </a>`
+                                   <i class="fas fa-envelope"></i> E-mail
+                               </a>`
                     : '';
 
                 const isPsicanalista = (p.especialidade || '').toLowerCase().includes('psicanalit');
@@ -1545,34 +1541,29 @@
                 const mapsUrl = p.vitrine_endereco ? `https://www.google.com/maps/search/${encodeURIComponent(p.vitrine_endereco + ', ' + loc)}` : null;
 
                 return `
-                        <div class="prof-card" style="animation-delay:${i * 40}ms;cursor:pointer" onclick="abrirPerfil(${p.id})">
-                            <div class="card-top">
-                                ${fotoEl}
-                                <div class="card-info">
-                                    <p class="card-nome" title="${p.nome}">${p.nome}</p>
-                                    <p class="card-spec">${p.especialidade || ''}</p>
-                                    <p class="card-crp">${p.crp_crm || ''}</p>
-                                    ${badgeVerif}
+                            <div class="prof-card" style="animation-delay:${i * 40}ms;cursor:pointer" onclick="abrirPerfil(${p.id})">
+                                <div class="card-top">
+                                    ${fotoEl}
+                                    <div class="card-info">
+                                        <p class="card-nome" title="${p.nome}">${p.nome}</p>
+                                        <p class="card-spec">${p.especialidade || ''}</p>
+                                        <p class="card-crp">${p.crp_crm || ''}</p>
+                                        ${badgeVerif}
+                                    </div>
                                 </div>
-                            </div>
-                            ${p.vitrine_bio ? `<p class="card-bio">${p.vitrine_bio}</p>` : ''}
-                            ${(badgeOnline || badgePresencial) ? `<div style="margin-bottom:8px">${badgeOnline}${badgePresencial}</div>` : ''}
-                            ${tags ? `<div class="card-tags">${tags}</div>` : ''}
-                            ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ` <a href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--purple-l);font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>` : ''}</p>` : ''}
-                            ${(btnWpp || btnEmail) ? `<div class="card-actions" onclick="event.stopPropagation()">${btnWpp}${btnEmail}</div>` : ''}
-                        </div>`;
-                            ${ tags ? `<div class="card-tags">${tags}</div>` : '' }
-                            ${ (badgeOnline || badgePresencial) ? `<div style="margin-bottom:8px">${badgeOnline}${badgePresencial}</div>` : '' }
-                            ${ loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ` <a href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:#a78bfa;font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>` : ''}</p>` : '' }
-                            ${ (btnWpp || btnEmail) ? `<div class="card-actions">${btnWpp}${btnEmail}</div>` : '' }
-                        </div > `;
-                    }).join('');
-                }
+                                ${p.vitrine_bio ? `<p class="card-bio">${p.vitrine_bio}</p>` : ''}
+                                ${(badgeOnline || badgePresencial) ? `<div style="margin-bottom:8px">${badgeOnline}${badgePresencial}</div>` : ''}
+                                ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+                                ${loc ? `<p class="card-loc"><i class="fas fa-map-marker-alt"></i>${loc}${mapsUrl ? ` <a href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--purple-l);font-size:10px;margin-left:6px;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Ver no mapa</a>` : ''}</p>` : ''}
+                                ${(btnWpp || btnEmail) ? `<div class="card-actions" onclick="event.stopPropagation()">${btnWpp}${btnEmail}</div>` : ''}
+                            </div>`;
+            }).join('');
+        }
 
-                // ─────────────────────────────────────────────────────────────
-                //  INIT
-                // ─────────────────────────────────────────────────────────────
-                carregar();
+        // ─────────────────────────────────────────────────────────────
+        //  INIT
+        // ─────────────────────────────────────────────────────────────
+        carregar();
     </script>
 </body>
 </html>
