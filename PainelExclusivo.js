@@ -654,7 +654,7 @@ if (cadastroForm) {
             });
 
             if (res.ok) {
-                mostrarFeedback('cadastro-error', '? Paciente cadastrado com sucesso!', 'sucesso');
+                mostrarFeedback('cadastro-error', '✅ Paciente cadastrado com sucesso!', 'sucesso');
                 cadastroForm.reset();
                 await carregarPacientes();
             } else {
@@ -891,7 +891,7 @@ if (agendaForm) {
             });
 
             if (res.ok) {
-                mostrarFeedback('agenda-error', '? Consulta agendada com sucesso!', 'sucesso');
+                mostrarFeedback('agenda-error', '✅ Consulta agendada com sucesso!', 'sucesso');
                 agendaForm.reset();
                 await renderizarAgendaVista();
                 await carregarRecorrentes();
@@ -1199,7 +1199,7 @@ async function acaoConsultaStatus(novoStatus) {
         const data = await res.json();
         if (res.ok) {
             fb.style.color = '#34d399';
-            fb.textContent = '? ' + getStatusInfo(novoStatus).label.charAt(0).toUpperCase() + getStatusInfo(novoStatus).label.slice(1);
+            fb.textContent = '✅ ' + getStatusInfo(novoStatus).label.charAt(0).toUpperCase() + getStatusInfo(novoStatus).label.slice(1);
             setTimeout(() => { fecharModalConsulta(); renderizarAgendaVista(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171';
@@ -1254,7 +1254,7 @@ async function acaoConsultaCancelar() {
         });
         const data = await res.json();
         if (res.ok) {
-            fb.style.color = '#f87171'; fb.textContent = '? Cancelado';
+            fb.style.color = '#f87171'; fb.textContent = '❌ Cancelado';
             setTimeout(() => { fecharModalConsulta(); renderizarAgendaVista(); carregarConsultasHojeDashboard(); }, 1000);
         } else {
             fb.style.color = '#f87171'; fb.textContent = data.erro || 'Erro ao cancelar.';
@@ -1309,7 +1309,7 @@ async function confirmarRemarcar() {
         });
         const data = await res.json();
         if (res.ok) {
-            fb.style.color = '#34d399'; fb.textContent = '? Remarcado com sucesso!';
+            fb.style.color = '#34d399'; fb.textContent = '✅ Remarcado com sucesso!';
             setTimeout(() => {
                 document.getElementById('modal-remarcar').style.display = 'none';
                 fecharModalConsulta();
@@ -1803,7 +1803,7 @@ async function gerarTermo() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '? Termo enviado por email com sucesso!';
+            feedback.textContent = '✅ Termo enviado por email com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             await carregarTermos();
@@ -1845,7 +1845,7 @@ async function carregarTermos() {
                         background:${t.assinado ? 'rgba(52,211,153,0.15)' : 'rgba(251,191,36,0.15)'};
                         color:${t.assinado ? '#34d399' : '#fbbf24'};
                     ">
-                        ${t.assinado ? '? Assinado' : '? Pendente'}
+                        ${t.assinado ? '✅ Assinado' : '⏳ Pendente'}
                     </span>
                 </td>
                 <td style="padding:12px 16px; color:#94a3b8;">
@@ -2159,7 +2159,7 @@ async function salvarDisponibilidade() {
             body: JSON.stringify({ horarios })
         });
         if (res.ok) {
-            feedback.textContent = '? Disponibilidade salva com sucesso!';
+            feedback.textContent = '✅ Disponibilidade salva com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
         } else {
@@ -2306,7 +2306,7 @@ async function carregarRecibos() {
                     <span style="padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500;
                         background:${r.enviado_email ? 'rgba(52,211,153,0.15)' : 'rgba(100,116,139,0.15)'};
                         color:${r.enviado_email ? '#34d399' : '#64748b'};">
-                        ${r.enviado_email ? '? Enviado' : 'Não enviado'}
+                        ${r.enviado_email ? '✅ Enviado' : 'Não enviado'}
                     </span>
                 </td>
                 <td style="padding:12px 16px; display:flex; gap:8px;">
@@ -2396,7 +2396,7 @@ async function salvarAssinatura() {
         });
 
         if (res.ok) {
-            feedback.textContent = '? Assinatura salva com sucesso!';
+            feedback.textContent = '✅ Assinatura salva com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             document.getElementById('assinatura-preview').src = base64;
@@ -2748,18 +2748,18 @@ async function solicitarVerificacao() {
 
         if (res.ok && data.verificado) {
             atualizarStatusVerificacao(true, new Date().toISOString(), null);
-            feedback.textContent = '? Verificado automaticamente!';
+            feedback.textContent = '✅ Verificado automaticamente!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
         } else {
             atualizarStatusVerificacao(false, null, 'pendente');
-            feedback.textContent = '? Solicitação enviada! Nossa equipe verificará em até 48h.';
+            feedback.textContent = '📨 Solicitação enviada! Nossa equipe verificará em até 48h.';
             feedback.style.color = '#fbbf24';
             feedback.style.display = 'block';
         }
     } catch (err) {
         atualizarStatusVerificacao(false, null, 'pendente');
-        feedback.textContent = '? Solicitação registrada! Nossa equipe verificará em até 48h.';
+        feedback.textContent = '📨 Solicitação registrada! Nossa equipe verificará em até 48h.';
         feedback.style.color = '#fbbf24';
         feedback.style.display = 'block';
     }
@@ -2846,7 +2846,7 @@ async function salvarRecorrente() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '? Recorrência criada com sucesso!';
+            feedback.textContent = '✅ Recorrência criada com sucesso!';
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             document.getElementById('toggle-recorrente').checked = false;
@@ -3179,14 +3179,14 @@ async function salvarChavesStripe() {
     const btn = document.getElementById('btn-salvar-stripe');
 
     if (!secretKey) {
-        feedback.textContent = '? A Secret Key é obrigatória.';
+        feedback.textContent = '❌ A Secret Key é obrigatória.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
     }
 
     if (!secretKey.startsWith('sk_')) {
-        feedback.textContent = '? A Secret Key deve começar com sk_live_ ou sk_test_';
+        feedback.textContent = '❌ A Secret Key deve começar com sk_live_ ou sk_test_';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
         return;
@@ -3209,17 +3209,17 @@ async function salvarChavesStripe() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '? ' + data.mensagem;
+            feedback.textContent = '✅ ' + data.mensagem;
             feedback.style.color = '#34d399';
             feedback.style.display = 'block';
             setTimeout(() => carregarStatusStripe(), 800);
         } else {
-            feedback.textContent = '? ' + data.erro;
+            feedback.textContent = '❌ ' + data.erro;
             feedback.style.color = '#f87171';
             feedback.style.display = 'block';
         }
     } catch (err) {
-        feedback.textContent = '? Erro de conexão. Tente novamente.';
+        feedback.textContent = '❌ Erro de conexão. Tente novamente.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     } finally {
@@ -3272,71 +3272,70 @@ async function carregarFinanceiro() {
     const mes = parseInt(selMes.value);
     const ano = parseInt(inpAno.value);
 
-    tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="padding:40px;text-align:center;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>';
 
     try {
-        const res = await fetch(`${API_URL}/api/agendamentos-online`, {
-            headers: headersAuth()
-        });
-        if (!res.ok) throw new Error('Erro ao buscar pagamentos');
-        const todos = await res.json();
+        const res = await fetch(`${API_URL}/api/financeiro?mes=${mes}&ano=${ano}`, { headers: headersAuth() });
+        if (!res.ok) throw new Error('Erro ao buscar financeiro');
+        const { online, manuais } = await res.json();
 
-        // Filtra pelo mês/ano selecionado
-        const filtrados = todos.filter(ag => {
-            const d = parseDateLocal(ag.data_consulta + ' 00:00:00');
-            return d.getMonth() + 1 === mes && d.getFullYear() === ano;
-        });
+        const todos = [
+            ...online.map(a => ({ ...a, tipo: 'online' })),
+            ...manuais.map(a => ({ ...a, tipo: 'manual' }))
+        ].sort((a, b) => new Date(b.data || b.data_consulta) - new Date(a.data || a.data_consulta));
 
-        // Totais
-        const confirmados = filtrados.filter(a => a.status === 'confirmado');
-        const pendentes = filtrados.filter(a => a.status === 'pendente');
-        const cancelados = filtrados.filter(a => a.status === 'cancelado');
-        const totalValor = confirmados.reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+        const totalOnline = online.filter(a => a.status === 'confirmado').reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+        const totalManuais = manuais.reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+        const totalGeral = totalOnline + totalManuais;
 
-        document.getElementById('fin-total-confirmados').textContent = confirmados.length;
-        document.getElementById('fin-total-pendentes').textContent = pendentes.length;
-        document.getElementById('fin-total-cancelados').textContent = cancelados.length;
-        document.getElementById('fin-total-valor').textContent = `R$ ${totalValor.toFixed(2)}`;
+        document.getElementById('fin-total-confirmados').textContent = online.filter(a => a.status === 'confirmado').length;
+        document.getElementById('fin-total-pendentes').textContent = online.filter(a => a.status === 'pendente').length;
+        document.getElementById('fin-total-cancelados').textContent = online.filter(a => a.status === 'cancelado').length;
+        document.getElementById('fin-total-valor').textContent = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 
-        if (!filtrados.length) {
-            tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Nenhum pagamento neste período.</td></tr>';
+        if (!todos.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="padding:40px;text-align:center;color:#64748b;">Nenhum registro neste período.</td></tr>';
             return;
         }
 
-        const statusCor = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171' };
-        const statusLabel = { confirmado: '? Confirmado', pendente: '? Pendente', cancelado: '? Cancelado' };
+        const statusCor = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171', realizado: '#a78bfa' };
+        const statusLabel = { confirmado: '✅ Confirmado', pendente: '⏳ Pendente', cancelado: '❌ Cancelado', realizado: '✅ Realizado' };
 
-        tbody.innerHTML = filtrados.map(ag => {
-            const data = parseDateLocal(ag.data_consulta + ' 00:00:00').toLocaleDateString('pt-BR');
-            const hora = ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : '';
+        tbody.innerHTML = todos.map(ag => {
+            const dataStr = ag.data || ag.data_consulta || '';
+            const dataFmt = dataStr ? new Date(dataStr + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+            const hora = ag.hora ? String(ag.hora).substring(0, 5) : (ag.hora_inicio ? String(ag.hora_inicio).substring(0, 5) : '');
             const cor = statusCor[ag.status] || '#64748b';
             const label = statusLabel[ag.status] || ag.status;
-            const stripeId = ag.stripe_payment_intent || ag.stripe_session_id || null;
-            const stripeCell = stripeId
-                ? `<span title="${stripeId}" style="font-family:monospace; font-size:11px; color:#8b5cf6; cursor:help;">${stripeId.substring(0, 24)}...</span>`
-                : '<span style="color:#475569;">-</span>';
+            const origemBadge = ag.tipo === 'manual'
+                ? '<span style="font-size:10px;background:rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.25);padding:1px 6px;border-radius:8px;margin-left:4px;">Sessão</span>'
+                : '<span style="font-size:10px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25);padding:1px 6px;border-radius:8px;margin-left:4px;">Online</span>';
+            const convenioTag = ag.convenio ? `<br><span style="font-size:10px;color:#64748b;">Convênio: ${ag.convenio}</span>` : '';
 
             return `<tr>
-                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); color:#e2e8f0;">
-                    <strong>${ag.paciente_nome}</strong><br>
-                    <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
+                <td style="padding:12px 16px;border-top:1px solid rgba(139,92,246,0.08);color:#e2e8f0;">
+                    <strong>${ag.paciente_nome || '—'}</strong>${origemBadge}
+                    <br><span style="font-size:11px;color:#64748b;">${ag.paciente_email || ''}${convenioTag}</span>
                 </td>
-                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); color:#94a3b8;">
-                    ${data}<br><span style="font-size:11px; color:#64748b;">${hora}</span>
+                <td style="padding:12px 16px;border-top:1px solid rgba(139,92,246,0.08);color:#94a3b8;">
+                    ${dataFmt}<br><span style="font-size:11px;color:#64748b;">${hora}</span>
                 </td>
-                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08); font-weight:600; color:#a78bfa;">
-                    R$ ${parseFloat(ag.valor || 0).toFixed(2)}
-                    ${ag.reembolso_valor ? `<br><span style="font-size:11px; color:#f87171; font-weight:400;">Reembolso: R$ ${parseFloat(ag.reembolso_valor).toFixed(2)}</span>` : ''}
+                <td style="padding:12px 16px;border-top:1px solid rgba(139,92,246,0.08);font-weight:600;color:#a78bfa;">
+                    R$ ${parseFloat(ag.valor || 0).toFixed(2).replace('.', ',')}
                 </td>
-                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08);">
-                    <span style="font-size:12px; font-weight:500; color:${cor};">${label}</span>
+                <td style="padding:12px 16px;border-top:1px solid rgba(139,92,246,0.08);">
+                    <span style="font-size:12px;font-weight:500;color:${cor};">${label}</span>
                 </td>
-                <td style="padding:12px 16px; border-top:1px solid rgba(139,92,246,0.08);">${stripeCell}</td>
+                <td style="padding:12px 16px;border-top:1px solid rgba(139,92,246,0.08);">
+                    ${ag.tipo === 'online' && (ag.stripe_payment_intent || ag.stripe_session_id)
+                    ? `<span style="font-family:monospace;font-size:11px;color:#8b5cf6;">${(ag.stripe_payment_intent || ag.stripe_session_id).substring(0, 20)}...</span>`
+                    : `<span style="color:#475569;font-size:12px;">${ag.duracao_minutos ? ag.duracao_minutos + 'min' : '—'}</span>`}
+                </td>
             </tr>`;
         }).join('');
 
     } catch (err) {
-        tbody.innerHTML = '<tr><td colspan="5" style="padding:40px; text-align:center; color:#f87171;">Erro ao carregar. Tente novamente.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="padding:40px;text-align:center;color:#f87171;">Erro ao carregar. Tente novamente.</td></tr>';
         console.error(err);
     }
 }
@@ -3379,16 +3378,16 @@ async function salvarLinkVideo() {
         const data = await res.json();
 
         if (res.ok) {
-            feedback.textContent = '? Link salvo com sucesso!';
+            feedback.textContent = '✅ Link salvo com sucesso!';
             feedback.style.color = '#34d399';
         } else {
-            feedback.textContent = '? ' + data.erro;
+            feedback.textContent = '❌ ' + data.erro;
             feedback.style.color = '#f87171';
         }
         feedback.style.display = 'block';
         setTimeout(() => { feedback.style.display = 'none'; }, 3000);
     } catch (err) {
-        feedback.textContent = '? Erro de conexão.';
+        feedback.textContent = '❌ Erro de conexão.';
         feedback.style.color = '#f87171';
         feedback.style.display = 'block';
     }
@@ -3615,7 +3614,7 @@ async function uploadFotoVitrine(input) {
         if (res.ok && d.url) {
             vitrineFotoUrl = d.url;
             exibirFotoVitrine(d.url);
-            if (fb) { fb.textContent = '? Foto salva!'; fb.style.color = '#34d399'; }
+            if (fb) { fb.textContent = '✅ Foto salva!'; fb.style.color = '#34d399'; }
         } else {
             if (fb) { fb.textContent = d.erro || 'Erro ao enviar foto.'; fb.style.color = '#f87171'; }
         }
