@@ -255,6 +255,66 @@
                 .filtro button:hover {
                     background: rgba(139,92,246,0.1);
                 }
+
+        /* Email marketing */
+        .email-editor {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: #e2e8f0;
+            font-size: 14px;
+            font-family: 'Roboto',sans-serif;
+            resize: vertical;
+            outline: none;
+            line-height: 1.6;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .filtro-dest {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filtro-dest-btn {
+            padding: 7px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(139,92,246,0.25);
+            background: transparent;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Roboto',sans-serif;
+            transition: .2s;
+        }
+
+            .filtro-dest-btn.ativo {
+                background: rgba(139,92,246,0.15);
+                color: #a78bfa;
+                border-color: rgba(139,92,246,0.4);
+                font-weight: 600;
+            }
+
+        .preview-destinatarios {
+            background: rgba(139,92,246,0.06);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .historico-email {
+            background: #141d2b;
+            border: 1px solid rgba(139,92,246,0.1);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -327,7 +387,7 @@
                     </tr>
                 </thead>
                 <tbody id="tabela-profissionais">
-                    <tr><td colspan="9" class="loading">Carregando...</td></tr>
+                    <tr><td colspan="8" class="loading">Carregando...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -416,7 +476,7 @@
                         </tr>
                     </thead>
                     <tbody id="adm-tabela-pagamentos">
-                        <tr><td colspan="9" class="loading">Carregando...</td></tr>
+                        <tr><td colspan="8" class="loading">Carregando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -496,7 +556,6 @@
                     <thead>
                         <tr>
                             <th>Profissional</th>
-                            <th>Tipo</th>
                             <th>Início teste</th>
                             <th>Expira</th>
                             <th>Status</th>
@@ -507,69 +566,9 @@
                         </tr>
                     </thead>
                     <tbody id="tabela-usuarios-teste">
-                        <tr><td colspan="9" class="loading">Carregando...</td></tr>
+                        <tr><td colspan="8" class="loading">Carregando...</td></tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <!-- =====================================================
-             RECADOS PERSONALIZADOS
-        ====================================================== -->
-        <div style="margin-top:40px; margin-bottom:32px;">
-            <p class="section-title">
-                <i class="fas fa-envelope" style="color:#a78bfa; margin-right:8px;"></i>
-                Recados para Usuários
-                <span id="badge-recados-nao-lidos" style="display:none;background:#f87171;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;"></span>
-            </p>
-
-            <div style="background:#1a2332;border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:24px;margin-bottom:20px;">
-                <p style="font-size:13px;color:#94a3b8;margin-bottom:18px;">
-                    Envie uma mensagem personalizada para um usuário. Ela aparecerá assim que ele abrir o sistema e sumirá após ser marcada como lida.
-                </p>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;">
-                    <div>
-                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">Destinatário</label>
-                        <select id="recado-destinatario" style="width:100%;padding:10px 14px;background:#141d2b;border:1px solid rgba(139,92,246,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;outline:none;">
-                            <option value="">Selecione o profissional...</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">Tipo</label>
-                        <select id="recado-tipo" style="width:100%;padding:10px 14px;background:#141d2b;border:1px solid rgba(139,92,246,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;outline:none;">
-                            <option value="info">💬 Recado geral</option>
-                            <option value="dica">💡 Dica de uso</option>
-                            <option value="atencao">⚠️ Atenção</option>
-                            <option value="parabens">🎉 Parabéns</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="margin-bottom:14px;">
-                    <label style="font-size:11px;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">Mensagem</label>
-                    <textarea id="recado-mensagem" rows="3" placeholder="Ex: Oi! Vi que você ainda não cadastrou nenhum paciente. Posso te ajudar a começar?"
-                              style="width:100%;padding:12px 14px;background:#141d2b;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;resize:vertical;outline:none;line-height:1.5;box-sizing:border-box;"></textarea>
-                </div>
-                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-                    <button onclick="enviarRecado()"
-                            style="padding:10px 24px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.35);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;font-weight:500;">
-                        <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar recado
-                    </button>
-                    <span id="recado-feedback" style="font-size:13px;display:none;"></span>
-                </div>
-            </div>
-
-            <div id="lista-recados">
-                <p style="font-size:12px;color:#475569;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;">Recados enviados</p>
-                <div id="recados-container"><p style="color:#475569;font-size:13px;">Carregando...</p></div>
-                <div style="margin-top:12px;display:flex;gap:10px;">
-                    <button onclick="carregarRecados()" style="padding:7px 16px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:6px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">
-                        <i class="fas fa-sync" style="margin-right:4px;"></i>Atualizar
-                    </button>
-                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#64748b;">
-                        <input type="checkbox" id="mostrar-lidos" onchange="carregarRecados()" style="accent-color:#a78bfa;">
-                        Mostrar lidos
-                    </label>
-                </div>
             </div>
         </div>
 
@@ -794,8 +793,135 @@
             }
         }
 
+
+        // ── E-MAIL MARKETING ─────────────────────────────────────────
+        let filtroEmailAtual = 'todos';
+        let destinatariosEmail = [];
+
+        function selecionarFiltroEmail(filtro, btn) {
+            filtroEmailAtual = filtro;
+            document.querySelectorAll('.filtro-dest-btn').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            atualizarPreviewDestinatarios();
+        }
+
+        function atualizarPreviewDestinatarios() {
+            const hoje = new Date();
+            destinatariosEmail = todosProfissionais.filter(p => {
+                if (p.is_admin || !p.email) return false;
+                const esp = (p.especialidade || '').toLowerCase();
+                switch (filtroEmailAtual) {
+                    case 'todos': return true;
+                    case 'trial': return p.plano === 'trial' || p.tipo_usuario === 'teste';
+                    case 'pagantes': return p.plano === 'pago';
+                    case 'inativos':
+                        if (!p.ultimo_acesso) return true;
+                        return (hoje - new Date(p.ultimo_acesso)) > 7 * 24 * 60 * 60 * 1000;
+                    case 'psicologos': return esp.includes('psicolog');
+                    case 'psiquiatras': return esp.includes('psiquiat');
+                    case 'psicanalistas': return esp.includes('psicanalit') || esp.includes('psicanalista');
+                    default: return true;
+                }
+            });
+
+            const countEl = document.getElementById('preview-dest-count');
+            const nomesEl = document.getElementById('preview-dest-nomes');
+            countEl.textContent = destinatariosEmail.length;
+            countEl.style.color = destinatariosEmail.length > 0 ? '#a78bfa' : '#f87171';
+            const preview = destinatariosEmail.slice(0, 5).map(p => p.nome).join(', ');
+            nomesEl.textContent = destinatariosEmail.length > 0
+                ? preview + (destinatariosEmail.length > 5 ? ` e mais ${destinatariosEmail.length - 5}...` : '')
+                : 'Nenhum usuário encontrado com esse filtro.';
+        }
+
+        function gerarHTMLEmail(nomeProf, corpo) {
+            const paragrafos = corpo.split('\n').filter(l => l.trim()).map(l =>
+                `<p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.7;">${l}</p>`
+            ).join('');
+            return `
+                    <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
+                        <div style="background:#7c3aed;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+                            <h1 style="color:#fff;margin:0;font-size:22px;">ProntPsi</h1>
+                        </div>
+                        <div style="background:#fff;padding:32px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+                            <p style="color:#334155;font-size:15px;margin:0 0 20px;">Olá, <strong>${nomeProf}</strong>! 👋</p>
+                            ${paragrafos}
+                            <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
+                            <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
+                                ProntPsi — Sistema Clínico para Psicólogos, Psiquiatras e Psicanalistas<br>
+                                <a href="https://www.prontpsi.com.br" style="color:#7c3aed;">www.prontpsi.com.br</a>
+                            </p>
+                        </div>
+                    </div>`;
+        }
+
+        function previewEmail() {
+            const corpo = document.getElementById('email-corpo').value.trim();
+            const assunto = document.getElementById('email-assunto').value.trim();
+            if (!corpo) { alert('Escreva a mensagem antes de visualizar.'); return; }
+            document.getElementById('preview-email-content').innerHTML = gerarHTMLEmail('Nome do Profissional', corpo);
+            document.getElementById('modal-preview-email').style.display = 'flex';
+        }
+
+        async function confirmarEnvioEmail() {
+            const assunto = document.getElementById('email-assunto').value.trim();
+            const corpo = document.getElementById('email-corpo').value.trim();
+            const fb = document.getElementById('email-feedback');
+
+            if (!assunto) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Preencha o assunto.'; return; }
+            if (!corpo) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Escreva a mensagem.'; return; }
+            if (!destinatariosEmail.length) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Nenhum destinatário encontrado.'; return; }
+
+            const confirmado = confirm(`Enviar e-mail para ${destinatariosEmail.length} usuário(s)?\n\nAssunto: ${assunto}`);
+            if (!confirmado) return;
+
+            fb.style.display = 'block'; fb.style.color = '#fbbf24'; fb.textContent = `⏳ Enviando para ${destinatariosEmail.length} usuários...`;
+
+            try {
+                const res = await fetch(`${API_URL}/api/admin/email-marketing`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({
+                        assunto,
+                        corpo,
+                        destinatarios: destinatariosEmail.map(p => ({ id: p.id, nome: p.nome, email: p.email }))
+                    })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    fb.style.color = '#34d399';
+                    fb.textContent = `✅ E-mail enviado para ${data.enviados} usuários!`;
+                    document.getElementById('email-assunto').value = '';
+                    document.getElementById('email-corpo').value = '';
+                    adicionarHistoricoEmail(assunto, destinatariosEmail.length, data.enviados);
+                } else {
+                    fb.style.color = '#f87171';
+                    fb.textContent = '❌ ' + (data.erro || 'Erro ao enviar.');
+                }
+            } catch (err) {
+                fb.style.color = '#f87171'; fb.textContent = '❌ Erro de conexão.';
+            }
+        }
+
+        function adicionarHistoricoEmail(assunto, total, enviados) {
+            const container = document.getElementById('historico-emails-container');
+            const data = new Date().toLocaleString('pt-BR');
+            const item = document.createElement('div');
+            item.className = 'historico-email';
+            item.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                        <div>
+                            <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${assunto}</div>
+                            <div style="font-size:11px;color:#475569;margin-top:2px;">${data}</div>
+                        </div>
+                        <span style="font-size:12px;color:#34d399;font-weight:600;">${enviados}/${total} enviados</span>
+                    </div>`;
+            container.insertBefore(item, container.firstChild);
+            container.querySelector('p') && container.querySelector('p').remove();
+        }
+
         carregarMetricas();
-        carregarProfissionais().then(() => popularSelectRecados(todosProfissionais));
+        carregarProfissionais().then(() => { popularSelectRecados(todosProfissionais); atualizarPreviewDestinatarios(); });
         carregarVerificacoesPendentes();
 
         async function carregarVerificacoesPendentes() {
@@ -1017,6 +1143,133 @@
                     msg.textContent = '✅ ' + data.mensagem;
                     document.getElementById('input-email-teste').value = '';
                     carregarUsuariosTeste();
+
+                    // ── E-MAIL MARKETING ─────────────────────────────────────────
+                    let filtroEmailAtual = 'todos';
+                    let destinatariosEmail = [];
+
+                    function selecionarFiltroEmail(filtro, btn) {
+                        filtroEmailAtual = filtro;
+                        document.querySelectorAll('.filtro-dest-btn').forEach(b => b.classList.remove('ativo'));
+                        btn.classList.add('ativo');
+                        atualizarPreviewDestinatarios();
+                    }
+
+                    function atualizarPreviewDestinatarios() {
+                        const hoje = new Date();
+                        destinatariosEmail = todosProfissionais.filter(p => {
+                            if (p.is_admin || !p.email) return false;
+                            const esp = (p.especialidade || '').toLowerCase();
+                            switch (filtroEmailAtual) {
+                                case 'todos': return true;
+                                case 'trial': return p.plano === 'trial' || p.tipo_usuario === 'teste';
+                                case 'pagantes': return p.plano === 'pago';
+                                case 'inativos':
+                                    if (!p.ultimo_acesso) return true;
+                                    return (hoje - new Date(p.ultimo_acesso)) > 7 * 24 * 60 * 60 * 1000;
+                                case 'psicologos': return esp.includes('psicolog');
+                                case 'psiquiatras': return esp.includes('psiquiat');
+                                case 'psicanalistas': return esp.includes('psicanalit') || esp.includes('psicanalista');
+                                default: return true;
+                            }
+                        });
+
+                        const countEl = document.getElementById('preview-dest-count');
+                        const nomesEl = document.getElementById('preview-dest-nomes');
+                        countEl.textContent = destinatariosEmail.length;
+                        countEl.style.color = destinatariosEmail.length > 0 ? '#a78bfa' : '#f87171';
+                        const preview = destinatariosEmail.slice(0, 5).map(p => p.nome).join(', ');
+                        nomesEl.textContent = destinatariosEmail.length > 0
+                            ? preview + (destinatariosEmail.length > 5 ? ` e mais ${destinatariosEmail.length - 5}...` : '')
+                            : 'Nenhum usuário encontrado com esse filtro.';
+                    }
+
+                    function gerarHTMLEmail(nomeProf, corpo) {
+                        const paragrafos = corpo.split('\n').filter(l => l.trim()).map(l =>
+                            `<p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.7;">${l}</p>`
+                        ).join('');
+                        return `
+                    <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
+                        <div style="background:#7c3aed;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+                            <h1 style="color:#fff;margin:0;font-size:22px;">ProntPsi</h1>
+                        </div>
+                        <div style="background:#fff;padding:32px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+                            <p style="color:#334155;font-size:15px;margin:0 0 20px;">Olá, <strong>${nomeProf}</strong>! 👋</p>
+                            ${paragrafos}
+                            <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
+                            <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
+                                ProntPsi — Sistema Clínico para Psicólogos, Psiquiatras e Psicanalistas<br>
+                                <a href="https://www.prontpsi.com.br" style="color:#7c3aed;">www.prontpsi.com.br</a>
+                            </p>
+                        </div>
+                    </div>`;
+                    }
+
+                    function previewEmail() {
+                        const corpo = document.getElementById('email-corpo').value.trim();
+                        const assunto = document.getElementById('email-assunto').value.trim();
+                        if (!corpo) { alert('Escreva a mensagem antes de visualizar.'); return; }
+                        document.getElementById('preview-email-content').innerHTML = gerarHTMLEmail('Nome do Profissional', corpo);
+                        document.getElementById('modal-preview-email').style.display = 'flex';
+                    }
+
+                    async function confirmarEnvioEmail() {
+                        const assunto = document.getElementById('email-assunto').value.trim();
+                        const corpo = document.getElementById('email-corpo').value.trim();
+                        const fb = document.getElementById('email-feedback');
+
+                        if (!assunto) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Preencha o assunto.'; return; }
+                        if (!corpo) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Escreva a mensagem.'; return; }
+                        if (!destinatariosEmail.length) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Nenhum destinatário encontrado.'; return; }
+
+                        const confirmado = confirm(`Enviar e-mail para ${destinatariosEmail.length} usuário(s)?\n\nAssunto: ${assunto}`);
+                        if (!confirmado) return;
+
+                        fb.style.display = 'block'; fb.style.color = '#fbbf24'; fb.textContent = `⏳ Enviando para ${destinatariosEmail.length} usuários...`;
+
+                        try {
+                            const res = await fetch(`${API_URL}/api/admin/email-marketing`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                                body: JSON.stringify({
+                                    assunto,
+                                    corpo,
+                                    destinatarios: destinatariosEmail.map(p => ({ id: p.id, nome: p.nome, email: p.email }))
+                                })
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                                fb.style.color = '#34d399';
+                                fb.textContent = `✅ E-mail enviado para ${data.enviados} usuários!`;
+                                document.getElementById('email-assunto').value = '';
+                                document.getElementById('email-corpo').value = '';
+                                adicionarHistoricoEmail(assunto, destinatariosEmail.length, data.enviados);
+                            } else {
+                                fb.style.color = '#f87171';
+                                fb.textContent = '❌ ' + (data.erro || 'Erro ao enviar.');
+                            }
+                        } catch (err) {
+                            fb.style.color = '#f87171'; fb.textContent = '❌ Erro de conexão.';
+                        }
+                    }
+
+                    function adicionarHistoricoEmail(assunto, total, enviados) {
+                        const container = document.getElementById('historico-emails-container');
+                        const data = new Date().toLocaleString('pt-BR');
+                        const item = document.createElement('div');
+                        item.className = 'historico-email';
+                        item.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                        <div>
+                            <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${assunto}</div>
+                            <div style="font-size:11px;color:#475569;margin-top:2px;">${data}</div>
+                        </div>
+                        <span style="font-size:12px;color:#34d399;font-weight:600;">${enviados}/${total} enviados</span>
+                    </div>`;
+                        container.insertBefore(item, container.firstChild);
+                        container.querySelector('p') && container.querySelector('p').remove();
+                    }
+
                     carregarMetricas();
                 } else {
                     msg.style.color = '#f87171';
@@ -1043,7 +1296,7 @@
                 const tbody = document.getElementById('tabela-usuarios-teste');
 
                 if (!data.length) {
-                    tbody.innerHTML = '<tr><td colspan="9" class="loading">Nenhum usuário teste cadastrado ainda.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="8" class="loading">Nenhum usuário teste cadastrado ainda.</td></tr>';
                     return;
                 }
 
@@ -1091,26 +1344,11 @@
                                     ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
                                 </span>`;
 
-
-                    const tipoEsp = (u.especialidade || '').toLowerCase();
-                    let tipoBadge = '';
-                    if (tipoEsp.includes('psicolog')) {
-                        tipoBadge = '<span style="font-size:10px;font-weight:700;background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.25);padding:2px 10px;border-radius:10px;">Psicólogo</span>';
-                    } else if (tipoEsp.includes('psiquiat')) {
-                        tipoBadge = '<span style="font-size:10px;font-weight:700;background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.25);padding:2px 10px;border-radius:10px;">Psiquiatra</span>';
-                    } else if (tipoEsp.includes('psicanalit') || tipoEsp.includes('psicanálit') || tipoEsp.includes('psicanalista')) {
-                        tipoBadge = '<span style="font-size:10px;font-weight:700;background:rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.25);padding:2px 10px;border-radius:10px;">Psicanalista</span>';
-                    } else if (u.especialidade) {
-                        tipoBadge = '<span style="font-size:10px;font-weight:700;background:rgba(100,116,139,.12);color:#94a3b8;border:1px solid rgba(100,116,139,.2);padding:2px 10px;border-radius:10px;">' + u.especialidade + '</span>';
-                    } else {
-                        tipoBadge = '<span style="font-size:10px;color:#475569;">—</span>';
-                    }
                     return `<tr id="teste-row-${u.id}">
                                     <td>
                                         <strong style="color:#f1f5f9;">${u.nome}</strong><br>
                                         <span style="font-size:11px;color:#64748b;">${u.email}</span>
                                     </td>
-                                    <td>${tipoBadge}</td>
                                     <td style="color:#64748b;font-size:12px;">${inicio}</td>
                                     <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
                                     <td>${statusBadge}</td>
@@ -1344,105 +1582,6 @@
         }
 
         carregarAviso();
-
-        // ── RECADOS ───────────────────────────────────────────────────
-        async function carregarRecados() {
-            try {
-                const res = await fetch(`${API_URL}/api/admin/recados`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (!res.ok) return;
-                const data = await res.json();
-
-                const mostrarLidos = document.getElementById('mostrar-lidos')?.checked;
-                const filtrados = mostrarLidos ? data : data.filter(r => !r.lido);
-
-                const naoLidos = data.filter(r => !r.lido).length;
-                const badge = document.getElementById('badge-recados-nao-lidos');
-                if (badge) {
-                    if (naoLidos > 0) { badge.style.display = 'inline'; badge.textContent = naoLidos + ' não lido' + (naoLidos > 1 ? 's' : ''); }
-                    else { badge.style.display = 'none'; }
-                }
-
-                const container = document.getElementById('recados-container');
-                if (!filtrados.length) {
-                    container.innerHTML = '<p style="color:#475569;font-size:13px;">Nenhum recado' + (mostrarLidos ? '' : ' não lido') + '.</p>';
-                    return;
-                }
-
-                container.innerHTML = filtrados.map(r => {
-                    const dataEnvio = new Date(r.criado_em).toLocaleString('pt-BR');
-                    const lidoEm = r.lido_em ? new Date(r.lido_em).toLocaleString('pt-BR') : null;
-                    return `<div style="background:#141d2b;border:1px solid rgba(139,92,246,${r.lido ? '0.07' : '0.15'});border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;${r.lido ? 'opacity:.55' : ''}">
-                            <div style="flex:1">
-                                <div style="font-size:13px;font-weight:600;color:#f1f5f9;margin-bottom:2px;">
-                                    <i class="fas fa-user" style="font-size:10px;color:#64748b;margin-right:4px;"></i>
-                                    ${r.prof_nome} <span style="font-size:11px;color:#475569;margin-left:6px;">${r.prof_email}</span>
-                                </div>
-                                <div style="font-size:13px;color:#94a3b8;line-height:1.5;margin-bottom:6px;">${r.mensagem}</div>
-                                <div style="font-size:11px;color:#475569;">Enviado em ${dataEnvio}${lidoEm ? ' · <span style="color:#34d399;">Lido em ' + lidoEm + '</span>' : ''}</div>
-                            </div>
-                            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
-                                ${r.lido
-                            ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;"><i class="fas fa-check-double"></i> Lido</span>'
-                            : '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:2px 8px;border-radius:10px;"><i class="fas fa-clock"></i> Aguardando</span>'
-                        }
-                                <button onclick="deletarRecado(${r.id})" style="background:transparent;color:#475569;border:none;cursor:pointer;font-size:11px;padding:2px 6px;border-radius:4px;transition:.2s;" onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#475569'">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>`;
-                }).join('');
-            } catch (err) { console.error('Erro recados:', err); }
-        }
-
-        async function enviarRecado() {
-            const para = document.getElementById('recado-destinatario').value;
-            const msg = document.getElementById('recado-mensagem').value.trim();
-            const fb = document.getElementById('recado-feedback');
-            if (!para) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Selecione o destinatário.'; return; }
-            if (!msg) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Escreva a mensagem.'; return; }
-            try {
-                const res = await fetch(`${API_URL}/api/admin/recados`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ para_prof: parseInt(para), mensagem: msg })
-                });
-                const data = await res.json();
-                fb.style.display = 'block';
-                if (res.ok) {
-                    fb.style.color = '#34d399'; fb.textContent = '✅ Recado enviado!';
-                    document.getElementById('recado-mensagem').value = '';
-                    document.getElementById('recado-destinatario').value = '';
-                    setTimeout(() => fb.style.display = 'none', 3000);
-                    carregarRecados();
-                } else { fb.style.color = '#f87171'; fb.textContent = '❌ ' + (data.erro || 'Erro ao enviar.'); }
-            } catch (err) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = '❌ Erro de conexão.'; }
-        }
-
-        async function deletarRecado(id) {
-            if (!confirm('Remover este recado?')) return;
-            try {
-                await fetch(`${API_URL}/api/admin/recados/${id}`, {
-                    method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
-                });
-                carregarRecados();
-            } catch (err) { alert('Erro ao remover.'); }
-        }
-
-        function popularSelectRecados(profissionais) {
-            const sel = document.getElementById('recado-destinatario');
-            if (!sel) return;
-            sel.innerHTML = '<option value="">Selecione o profissional...</option>';
-            profissionais.filter(p => !p.is_admin).forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                opt.textContent = p.nome + ' (' + p.email + ')';
-                sel.appendChild(opt);
-            });
-        }
-
-        carregarRecados();
 
     </script>
 </body>
