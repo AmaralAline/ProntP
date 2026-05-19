@@ -1466,7 +1466,7 @@ async function carregarAgendaLateral() {
                 <div style="font-size:11px; color:#64748b;">${c.status || 'agendado'}</div>
             </div>`;
         }).join('');
-     catch (err) {
+    } catch (err) {
         console.error('Erro ao carregar agenda lateral:', err);
     }
 }
