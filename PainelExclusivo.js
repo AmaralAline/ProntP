@@ -3280,6 +3280,26 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── PACOTES DE SESSÕES ───────────────────────────────────────────
 let pacotesAtivos = [];
 
+
+// ── MODAL PACOTES DO PACIENTE ────────────────────────────────────
+let pacientePacoteAtual = { id: null, nome: '' };
+
+async function abrirModalPacotes(pacienteId, nomePaciente) {
+    pacientePacoteAtual = { id: pacienteId, nome: nomePaciente };
+    const modal = document.getElementById('modal-pacotes-paciente');
+    const titulo = document.getElementById('modal-pacotes-titulo');
+    if (titulo) titulo.textContent = `Pacotes — ${nomePaciente}`;
+    if (modal) modal.style.display = 'flex';
+    document.getElementById('form-pacote-inline').style.display = 'none';
+    await carregarPacotesPaciente(pacienteId);
+}
+
+function fecharModalPacotes() {
+    const modal = document.getElementById('modal-pacotes-paciente');
+    if (modal) modal.style.display = 'none';
+    pacientePacoteAtual = { id: null, nome: '' };
+}
+
 async function carregarPacotesPaciente(pacienteId) {
     if (!pacienteId) return;
     try {
@@ -3330,7 +3350,8 @@ function renderizarPacotes(pacienteId) {
     }).join('');
 }
 
-async function salvarNovoPacote(pacienteId) {
+async function salvarNovoPacote(pacienteIdParam) {
+    const pacienteId = pacienteIdParam || pacientePacoteAtual.id;
     const nome = document.getElementById('pacote-nome')?.value.trim() || 'Pacote';
     const sessoes = parseInt(document.getElementById('pacote-sessoes')?.value);
     const valor = parseFloat(document.getElementById('pacote-valor')?.value);
