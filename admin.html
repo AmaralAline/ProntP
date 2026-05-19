@@ -514,6 +514,66 @@
         </div>
 
         <!-- =====================================================
+             RECADOS PERSONALIZADOS
+        ====================================================== -->
+        <div style="margin-top:40px; margin-bottom:32px;">
+            <p class="section-title">
+                <i class="fas fa-envelope" style="color:#a78bfa; margin-right:8px;"></i>
+                Recados para Usuários
+                <span id="badge-recados-nao-lidos" style="display:none;background:#f87171;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;"></span>
+            </p>
+
+            <div style="background:#1a2332;border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:24px;margin-bottom:20px;">
+                <p style="font-size:13px;color:#94a3b8;margin-bottom:18px;">
+                    Envie uma mensagem personalizada para um usuário. Ela aparecerá assim que ele abrir o sistema e sumirá após ser marcada como lida.
+                </p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;">
+                    <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">Destinatário</label>
+                        <select id="recado-destinatario" style="width:100%;padding:10px 14px;background:#141d2b;border:1px solid rgba(139,92,246,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;outline:none;">
+                            <option value="">Selecione o profissional...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">Tipo</label>
+                        <select id="recado-tipo" style="width:100%;padding:10px 14px;background:#141d2b;border:1px solid rgba(139,92,246,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;outline:none;">
+                            <option value="info">💬 Recado geral</option>
+                            <option value="dica">💡 Dica de uso</option>
+                            <option value="atencao">⚠️ Atenção</option>
+                            <option value="parabens">🎉 Parabéns</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:11px;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">Mensagem</label>
+                    <textarea id="recado-mensagem" rows="3" placeholder="Ex: Oi! Vi que você ainda não cadastrou nenhum paciente. Posso te ajudar a começar?"
+                              style="width:100%;padding:12px 14px;background:#141d2b;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;resize:vertical;outline:none;line-height:1.5;box-sizing:border-box;"></textarea>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                    <button onclick="enviarRecado()"
+                            style="padding:10px 24px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.35);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;font-weight:500;">
+                        <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar recado
+                    </button>
+                    <span id="recado-feedback" style="font-size:13px;display:none;"></span>
+                </div>
+            </div>
+
+            <div id="lista-recados">
+                <p style="font-size:12px;color:#475569;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;">Recados enviados</p>
+                <div id="recados-container"><p style="color:#475569;font-size:13px;">Carregando...</p></div>
+                <div style="margin-top:12px;display:flex;gap:10px;">
+                    <button onclick="carregarRecados()" style="padding:7px 16px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:6px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">
+                        <i class="fas fa-sync" style="margin-right:4px;"></i>Atualizar
+                    </button>
+                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#64748b;">
+                        <input type="checkbox" id="mostrar-lidos" onchange="carregarRecados()" style="accent-color:#a78bfa;">
+                        Mostrar lidos
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- =====================================================
              AVISO DO SISTEMA
         ====================================================== -->
         <div style="margin-top:40px; margin-bottom:32px;">
@@ -735,7 +795,7 @@
         }
 
         carregarMetricas();
-        carregarProfissionais();
+        carregarProfissionais().then(() => popularSelectRecados(todosProfissionais));
         carregarVerificacoesPendentes();
 
         async function carregarVerificacoesPendentes() {
@@ -1284,6 +1344,105 @@
         }
 
         carregarAviso();
+
+        // ── RECADOS ───────────────────────────────────────────────────
+        async function carregarRecados() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/recados`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+
+                const mostrarLidos = document.getElementById('mostrar-lidos')?.checked;
+                const filtrados = mostrarLidos ? data : data.filter(r => !r.lido);
+
+                const naoLidos = data.filter(r => !r.lido).length;
+                const badge = document.getElementById('badge-recados-nao-lidos');
+                if (badge) {
+                    if (naoLidos > 0) { badge.style.display = 'inline'; badge.textContent = naoLidos + ' não lido' + (naoLidos > 1 ? 's' : ''); }
+                    else { badge.style.display = 'none'; }
+                }
+
+                const container = document.getElementById('recados-container');
+                if (!filtrados.length) {
+                    container.innerHTML = '<p style="color:#475569;font-size:13px;">Nenhum recado' + (mostrarLidos ? '' : ' não lido') + '.</p>';
+                    return;
+                }
+
+                container.innerHTML = filtrados.map(r => {
+                    const dataEnvio = new Date(r.criado_em).toLocaleString('pt-BR');
+                    const lidoEm = r.lido_em ? new Date(r.lido_em).toLocaleString('pt-BR') : null;
+                    return `<div style="background:#141d2b;border:1px solid rgba(139,92,246,${r.lido ? '0.07' : '0.15'});border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;${r.lido ? 'opacity:.55' : ''}">
+                            <div style="flex:1">
+                                <div style="font-size:13px;font-weight:600;color:#f1f5f9;margin-bottom:2px;">
+                                    <i class="fas fa-user" style="font-size:10px;color:#64748b;margin-right:4px;"></i>
+                                    ${r.prof_nome} <span style="font-size:11px;color:#475569;margin-left:6px;">${r.prof_email}</span>
+                                </div>
+                                <div style="font-size:13px;color:#94a3b8;line-height:1.5;margin-bottom:6px;">${r.mensagem}</div>
+                                <div style="font-size:11px;color:#475569;">Enviado em ${dataEnvio}${lidoEm ? ' · <span style="color:#34d399;">Lido em ' + lidoEm + '</span>' : ''}</div>
+                            </div>
+                            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
+                                ${r.lido
+                            ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;"><i class="fas fa-check-double"></i> Lido</span>'
+                            : '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:2px 8px;border-radius:10px;"><i class="fas fa-clock"></i> Aguardando</span>'
+                        }
+                                <button onclick="deletarRecado(${r.id})" style="background:transparent;color:#475569;border:none;cursor:pointer;font-size:11px;padding:2px 6px;border-radius:4px;transition:.2s;" onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#475569'">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                }).join('');
+            } catch (err) { console.error('Erro recados:', err); }
+        }
+
+        async function enviarRecado() {
+            const para = document.getElementById('recado-destinatario').value;
+            const msg = document.getElementById('recado-mensagem').value.trim();
+            const fb = document.getElementById('recado-feedback');
+            if (!para) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Selecione o destinatário.'; return; }
+            if (!msg) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Escreva a mensagem.'; return; }
+            try {
+                const res = await fetch(`${API_URL}/api/admin/recados`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ para_prof: parseInt(para), mensagem: msg })
+                });
+                const data = await res.json();
+                fb.style.display = 'block';
+                if (res.ok) {
+                    fb.style.color = '#34d399'; fb.textContent = '✅ Recado enviado!';
+                    document.getElementById('recado-mensagem').value = '';
+                    document.getElementById('recado-destinatario').value = '';
+                    setTimeout(() => fb.style.display = 'none', 3000);
+                    carregarRecados();
+                } else { fb.style.color = '#f87171'; fb.textContent = '❌ ' + (data.erro || 'Erro ao enviar.'); }
+            } catch (err) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = '❌ Erro de conexão.'; }
+        }
+
+        async function deletarRecado(id) {
+            if (!confirm('Remover este recado?')) return;
+            try {
+                await fetch(`${API_URL}/api/admin/recados/${id}`, {
+                    method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
+                });
+                carregarRecados();
+            } catch (err) { alert('Erro ao remover.'); }
+        }
+
+        function popularSelectRecados(profissionais) {
+            const sel = document.getElementById('recado-destinatario');
+            if (!sel) return;
+            sel.innerHTML = '<option value="">Selecione o profissional...</option>';
+            profissionais.filter(p => !p.is_admin).forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.nome + ' (' + p.email + ')';
+                sel.appendChild(opt);
+            });
+        }
+
+        carregarRecados();
 
     </script>
 </body>
