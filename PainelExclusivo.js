@@ -575,7 +575,7 @@ function renderizarListaPacientes() {
                         <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.email || '-'}</td>
                         <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.modo_pagamento || '-'}</td>
                         <td style="padding:12px 16px;">
-                            <div style="display:flex;gap:8px;">
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
                                 <button onclick="gerarRelatorioPDF(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
                                     background:#7c3aed; color:#fff; border:none;
                                     border-radius:6px; padding:6px 12px; cursor:pointer;
@@ -587,6 +587,12 @@ function renderizarListaPacientes() {
                                     border-radius:6px; padding:6px 12px; cursor:pointer;
                                     font-size:12px; font-family:'Roboto',sans-serif;">
                                     <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button onclick="abrirModalPacotes(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
+                                    background:rgba(96,165,250,0.12); color:#60a5fa; border:1px solid rgba(96,165,250,0.3);
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-box"></i> Pacote
                                 </button>
                                 <button onclick="inativarPaciente(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
                                     background:rgba(248,113,113,0.1); color:#f87171; border:1px solid rgba(248,113,113,0.25);
