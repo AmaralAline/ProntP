@@ -648,6 +648,64 @@
                     <h2>Prontuário</h2>
                     <p>Registre e consulte evoluções dos pacientes</p>
                 </div>
+
+                <!-- PACOTES DE SESSÕES -->
+                <div style="background:#1a2332;border:1px solid rgba(96,165,250,0.2);border-radius:12px;padding:20px;margin-bottom:20px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+                        <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">
+                            <i class="fas fa-box" style="color:#60a5fa;margin-right:8px;"></i>Pacotes de Sessões
+                        </p>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <select id="pacote-paciente-sel" onchange="carregarPacotesPaciente(this.value)" style="padding:6px 12px;background:#141d2b;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:12px;outline:none;font-family:'Roboto',sans-serif;">
+                                <option value="">Selecione paciente...</option>
+                            </select>
+                            <button onclick="document.getElementById('form-novo-pacote').style.display=document.getElementById('form-novo-pacote').style.display==='none'?'block':'none'"
+                                    style="font-size:12px;padding:6px 14px;background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.3);border-radius:8px;cursor:pointer;font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-plus" style="margin-right:4px;"></i>Novo pacote
+                            </button>
+                        </div>
+                    </div>
+                    <div id="form-novo-pacote" style="display:none;background:#141d2b;border:1px solid rgba(96,165,250,.15);border-radius:10px;padding:16px;margin-bottom:14px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+                            <div>
+                                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nome do pacote</label>
+                                <input type="text" id="pacote-nome" placeholder="Ex: Pacote 4 sessões" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+                            </div>
+                            <div>
+                                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nº de sessões *</label>
+                                <input type="number" id="pacote-sessoes" placeholder="4" min="1" max="50" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+                            </div>
+                            <div>
+                                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Valor total (R$) *</label>
+                                <input type="number" id="pacote-valor" placeholder="600.00" step="0.01" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+                            </div>
+                            <div>
+                                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Forma de pagamento</label>
+                                <select id="pacote-forma" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;outline:none;font-family:'Roboto',sans-serif;">
+                                    <option value="pix">PIX</option>
+                                    <option value="dinheiro">Dinheiro</option>
+                                    <option value="cartao_credito">Cartão crédito</option>
+                                    <option value="cartao_debito">Cartão débito</option>
+                                    <option value="transferencia">Transferência</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#94a3b8;margin-bottom:12px;">
+                            <input type="checkbox" id="pacote-pago" style="accent-color:#34d399;width:15px;height:15px;">
+                            Paciente já pagou este pacote
+                        </label>
+                        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                            <button onclick="salvarNovoPacote(document.getElementById('pacote-paciente-sel').value)"
+                                    style="padding:8px 20px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;font-weight:600;">
+                                <i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote
+                            </button>
+                            <button onclick="document.getElementById('form-novo-pacote').style.display='none'" style="padding:8px 14px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">Cancelar</button>
+                            <span id="pacote-feedback" style="font-size:12px;display:none;"></span>
+                        </div>
+                    </div>
+                    <div id="pacotes-container"><p style="color:#64748b;font-size:13px;">Selecione um paciente para ver os pacotes.</p></div>
+                </div>
+
                 <div class="evolucao-layout">
                     <div class="form-card">
                         <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:20px;">Nova Evolução</h3>
@@ -981,18 +1039,24 @@
                         <table style="width:100%; border-collapse:collapse;">
                             <thead>
                                 <tr style="background:#141d2b;">
-                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Paciente</th>
-                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Data</th>
-                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Valor</th>
-                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Status</th>
-                                    <th style="padding:12px 16px; text-align:left; font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">ID Stripe</th>
+                                    <th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Paciente</th>
+                                    <th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Data</th>
+                                    <th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Valor</th>
+                                    <th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Status</th>
+                                    <th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Detalhe</th>
                                 </tr>
                             </thead>
                             <tbody id="fin-tabela-body">
-                                <tr><td colspan="5" style="padding:40px; text-align:center; color:#64748b;">Selecione um período e clique em Filtrar.</td></tr>
+                                <tr><td colspan="5" style="padding:40px;text-align:center;color:#64748b;">Selecione um período e clique em Filtrar.</td></tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+
+                <!-- BLOCO IMPOSTOS -->
+                <div id="fin-impostos-bloco" style="background:#1a2332;border:1px solid rgba(139,92,246,0.15);border-radius:12px;padding:20px;margin-top:16px;">
+                    <p style="color:#64748b;font-size:13px;"><i class="fas fa-info-circle" style="margin-right:6px;color:#fbbf24;"></i>Configure seu regime fiscal em <strong>Meu Perfil</strong> para ver o cálculo de impostos.</p>
                 </div>
 
                 <!-- AVISO STRIPE -->
@@ -1214,6 +1278,42 @@
                     </div>
                     <p id="assinatura-feedback" style="font-size:13px; margin-top:8px; display:none;"></p>
                 </div>
+                <!-- REGIME FISCAL -->
+                <div class="form-card" style="max-width:600px;margin-bottom:24px;">
+                    <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;margin-bottom:4px;">
+                        <i class="fas fa-calculator" style="color:#a78bfa;margin-right:8px;"></i>
+                        Regime Fiscal e Impostos
+                    </h3>
+                    <p style="font-size:13px;color:#64748b;margin-bottom:20px;">Configure seu regime fiscal para que o sistema calcule automaticamente seus impostos no Financeiro.</p>
+
+                    <div style="margin-bottom:14px;">
+                        <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px;">Meu regime fiscal</label>
+                        <select id="regime-fiscal-sel" onchange="toggleISSField()" style="width:100%;padding:10px 14px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;outline:none;">
+                            <option value="">Selecione...</option>
+                            <option value="autonomo">Autônomo / RPA — INSS + IRRF + ISS</option>
+                            <option value="mei">MEI — DAS fixo mensal</option>
+                            <option value="simples_nacional">Simples Nacional — Anexo III</option>
+                            <option value="pessoa_fisica">Pessoa Física — Carnê-leão</option>
+                        </select>
+                    </div>
+
+                    <div id="iss-wrap" style="display:none;margin-bottom:14px;">
+                        <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px;">Alíquota do ISS no seu município (%)</label>
+                        <input type="number" id="iss-percentual" value="3" min="2" max="5" step="0.5"
+                               style="width:160px;padding:10px 14px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Roboto',sans-serif;outline:none;">
+                        <span style="font-size:12px;color:#475569;margin-left:8px;">Geralmente entre 2% e 5%</span>
+                    </div>
+
+                    <div style="background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:#64748b;line-height:1.6;">
+                        <strong style="color:#a78bfa;">Como funciona:</strong> ao acessar o Financeiro, o sistema calcula automaticamente INSS, IRRF, ISS ou DAS sobre sua receita do período e mostra seu valor líquido. Os cálculos seguem a tabela vigente de 2025.
+                    </div>
+
+                    <button onclick="salvarRegimeFiscal()" style="padding:10px 24px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;font-weight:600;">
+                        <i class="fas fa-save" style="margin-right:6px;"></i>Salvar regime fiscal
+                    </button>
+                    <span id="regime-feedback" style="font-size:12px;display:none;margin-left:10px;"></span>
+                </div>
+
                 <!-- CONFIGURAÇÃO DE PAGAMENTOS ONLINE (STRIPE) -->
                 <div class="form-card" style="max-width:600px; margin-bottom:24px;" id="card-stripe">
                     <h3 style="font-size:15px; font-weight:600; color:#e2e8f0; margin-bottom:4px;">
@@ -2477,7 +2577,11 @@
         </div>
     </div>
 
-
+</body> no PainelExclusivo.html
+     (substitui ou adiciona logo antes de
+<script defer src="PainelExclusivo.js">
+)
+     ============================================================ -->
     <!-- MODAL: EVOLUÇÃO COMPLETA -->
     <div id="modal-evolucao-completa" style="
         display:none; position:fixed; inset:0; z-index:9999;
@@ -2633,35 +2737,35 @@
 
 
             <script defer src="PainelExclusivo.js"></script>
-            <script src="onboarding-prontpsi.js"></script>
-            <script defer src="agenda.js"></script>
-            <script defer src="sessao.js"></script>
-            <script src="notificacoes-prontpsi.js"></script>
-            <script src="atalhos-prontpsi.js"></script>
-            <script src="anamnese-prontpsi.js"></script>
-            <script src="financeiro-visual-prontpsi.js"></script>
-            <script defer src="formularios2.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="onboarding-prontpsi.js"></script>
+<script defer src="agenda.js"></script>
+<script defer src="sessao.js"></script>
+<script src="notificacoes-prontpsi.js"></script>
+<script src="atalhos-prontpsi.js"></script>
+<script src="anamnese-prontpsi.js"></script>
+<script src="financeiro-visual-prontpsi.js"></script>
+<script defer src="formularios2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 
-            <!-- MODAL RECADO DO ADMIN -->
-            <div id="modal-recado-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
-                <div style="background:#1a2332;border:1px solid rgba(139,92,246,.3);border-radius:16px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);">
-                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-                        <div style="width:42px;height:42px;border-radius:50%;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="fas fa-envelope" style="color:#a78bfa;font-size:18px;"></i>
-                        </div>
-                        <div>
-                            <p style="font-size:15px;font-weight:600;color:#f1f5f9;margin:0;">Recado da equipe ProntPsi</p>
-                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;" id="recado-data-envio"></p>
-                        </div>
-                    </div>
-                    <div id="recado-admin-mensagem" style="font-size:14px;color:#cbd5e1;line-height:1.7;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:16px 18px;margin-bottom:20px;"></div>
-                    <button onclick="marcarRecadoLido()"
-                            style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">
-                        <i class="fas fa-check" style="margin-right:8px;"></i>Entendido, marcar como lido
-                    </button>
-                </div>
+<!-- MODAL RECADO DO ADMIN -->
+<div id="modal-recado-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#1a2332;border:1px solid rgba(139,92,246,.3);border-radius:16px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fas fa-envelope" style="color:#a78bfa;font-size:18px;"></i>
             </div>
+            <div>
+                <p style="font-size:15px;font-weight:600;color:#f1f5f9;margin:0;">Recado da equipe ProntPsi</p>
+                <p style="font-size:11px;color:#64748b;margin:2px 0 0;" id="recado-data-envio"></p>
+            </div>
+        </div>
+        <div id="recado-admin-mensagem" style="font-size:14px;color:#cbd5e1;line-height:1.7;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:16px 18px;margin-bottom:20px;"></div>
+        <button onclick="marcarRecadoLido()"
+                style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">
+            <i class="fas fa-check" style="margin-right:8px;"></i>Entendido, marcar como lido
+        </button>
+    </div>
+</div>
 
 </body>
 </html>

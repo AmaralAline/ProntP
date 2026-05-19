@@ -285,6 +285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await carregarPacientes();
     verificarRecados();
     iniciarRelogio();
+    carregarRegimeFiscal();
 
     // Verifica política de privacidade
     await verificarPolitica();
@@ -482,6 +483,18 @@ async function marcarRecadoLido() {
     } catch (e) { }
     document.getElementById('modal-recado-admin').style.display = 'none';
     recadoAtualId = null;
+}
+
+function popularSelectPacotes() {
+    const sel = document.getElementById('pacote-paciente-sel');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">Selecione paciente...</option>';
+    pacientes.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.nome;
+        sel.appendChild(opt);
+    });
 }
 
 async function carregarPacientes() {
@@ -1453,7 +1466,7 @@ async function carregarAgendaLateral() {
                 <div style="font-size:11px; color:#64748b;">${c.status || 'agendado'}</div>
             </div>`;
         }).join('');
-    } catch (err) {
+     catch (err) {
         console.error('Erro ao carregar agenda lateral:', err);
     }
 }
@@ -3263,6 +3276,304 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inpAno) inpAno.value = agora.getFullYear();
 });
 
+
+// ── PACOTES DE SESSÕES ───────────────────────────────────────────
+let pacotesAtivos = [];
+
+async function carregarPacotesPaciente(pacienteId) {
+    if (!pacienteId) return;
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/pacotes`, { headers: headersAuth() });
+        pacotesAtivos = await res.json();
+        renderizarPacotes(pacienteId);
+    } catch (e) { console.error('Pacotes:', e); }
+}
+
+function renderizarPacotes(pacienteId) {
+    const container = document.getElementById('pacotes-container');
+    if (!container) return;
+
+    if (!pacotesAtivos.length) {
+        container.innerHTML = '<p style="color:#64748b;font-size:13px;">Nenhum pacote ativo.</p>';
+        return;
+    }
+
+    container.innerHTML = pacotesAtivos.map(pk => {
+        const restantes = pk.total_sessoes - pk.sessoes_usadas;
+        const pct = Math.round((pk.sessoes_usadas / pk.total_sessoes) * 100);
+        const corBarra = restantes <= 1 ? '#f87171' : restantes <= 2 ? '#fbbf24' : '#34d399';
+        return `
+        <div style="background:#141d2b;border:1px solid rgba(139,92,246,${pk.pago ? '0.2' : '0.4'});border-radius:12px;padding:16px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                <div>
+                    <span style="font-size:14px;font-weight:600;color:#e2e8f0;">${pk.nome}</span>
+                    <span style="font-size:11px;color:#64748b;margin-left:8px;">${pk.total_sessoes} sessões · R$ ${parseFloat(pk.valor_total).toFixed(2).replace('.', ',')}</span>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    ${pk.pago
+                ? `<span style="font-size:10px;font-weight:700;color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);padding:2px 8px;border-radius:10px;">✅ Pago · ${pk.forma_pagamento}</span>`
+                : `<button onclick="marcarPacotePago(${pk.id})" style="font-size:11px;padding:4px 12px;background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.3);border-radius:8px;cursor:pointer;font-family:'Roboto',sans-serif;">💰 Marcar como pago</button>`
+            }
+                    <button onclick="encerrarPacote(${pk.id}, ${pacienteId})" style="background:transparent;border:none;color:#475569;cursor:pointer;font-size:13px;" title="Encerrar pacote">✕</button>
+                </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <div style="flex:1;background:rgba(15,23,42,.8);border-radius:20px;height:8px;overflow:hidden;">
+                    <div style="width:${pct}%;height:100%;background:${corBarra};border-radius:20px;transition:.3s;"></div>
+                </div>
+                <span style="font-size:12px;font-weight:600;color:${corBarra};">${pk.sessoes_usadas}/${pk.total_sessoes}</span>
+            </div>
+            <div style="font-size:11px;color:${restantes === 0 ? '#f87171' : '#64748b'};">
+                ${restantes === 0 ? '⚠️ Pacote encerrado — solicite renovação' : restantes === 1 ? '⚠️ Última sessão do pacote' : `${restantes} sessões restantes`}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function salvarNovoPacote(pacienteId) {
+    const nome = document.getElementById('pacote-nome')?.value.trim() || 'Pacote';
+    const sessoes = parseInt(document.getElementById('pacote-sessoes')?.value);
+    const valor = parseFloat(document.getElementById('pacote-valor')?.value);
+    const forma = document.getElementById('pacote-forma')?.value || 'pix';
+    const pago = document.getElementById('pacote-pago')?.checked;
+    const fb = document.getElementById('pacote-feedback');
+
+    if (!sessoes || !valor) {
+        if (fb) { fb.textContent = 'Preencha sessões e valor.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/pacotes`, {
+            method: 'POST',
+            headers: headersAuth(),
+            body: JSON.stringify({ nome, total_sessoes: sessoes, valor_total: valor, forma_pagamento: forma, pago })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            if (fb) { fb.textContent = '✅ Pacote criado!'; fb.style.color = '#34d399'; fb.style.display = 'block'; }
+            document.getElementById('form-novo-pacote').style.display = 'none';
+            setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
+            await carregarPacotesPaciente(pacienteId);
+        } else {
+            if (fb) { fb.textContent = '❌ ' + (data.erro || 'Erro.'); fb.style.color = '#f87171'; fb.style.display = 'block'; }
+        }
+    } catch (e) {
+        if (fb) { fb.textContent = '❌ Erro de conexão.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
+    }
+}
+
+async function marcarPacotePago(pacoteId) {
+    const forma = prompt('Forma de pagamento: 1=PIX, 2=Dinheiro, 3=Cartao credito, 4=Cartao debito, 5=Transferencia. Digite o numero:');
+    const formas = { '1': 'pix', '2': 'dinheiro', '3': 'cartao_credito', '4': 'cartao_debito', '5': 'transferencia' };
+    const formaPag = formas[forma] || 'pix';
+
+    try {
+        const res = await fetch(`${API_URL}/api/pacotes/${pacoteId}/pagar`, {
+            method: 'PUT',
+            headers: headersAuth(),
+            body: JSON.stringify({ forma_pagamento: formaPag })
+        });
+        if (res.ok) {
+            const pac = pacotesAtivos.find(p => p.id === pacoteId);
+            if (pac) renderizarPacotes(pac.paciente_id);
+            await carregarPacotesPaciente(pacotesAtivos[0]?.paciente_id);
+        }
+    } catch (e) { alert('Erro ao marcar como pago.'); }
+}
+
+async function encerrarPacote(pacoteId, pacienteId) {
+    if (!confirm('Encerrar este pacote?')) return;
+    try {
+        await fetch(`${API_URL}/api/pacotes/${pacoteId}`, { method: 'DELETE', headers: headersAuth() });
+        await carregarPacotesPaciente(pacienteId);
+    } catch (e) { alert('Erro ao encerrar pacote.'); }
+}
+
+async function carregarFinanceiro() {
+    const selMes = document.getElementById('fin-mes');
+    const inpAno = document.getElementById('fin-ano');
+    const tbody = document.getElementById('fin-tabela-body');
+    if (!tbody || !selMes || !inpAno) return;
+
+    const mes = parseInt(selMes.value);
+    const ano = parseInt(inpAno.value);
+
+    tbody.innerHTML = '<tr><td colspan="6" style="padding:40px;text-align:center;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>';
+
+    try {
+        const res = await fetch(`${API_URL}/api/financeiro?mes=${mes}&ano=${ano}`, { headers: headersAuth() });
+        if (!res.ok) throw new Error('Erro ao buscar financeiro');
+        const { online, manuais, pacotes } = await res.json();
+
+        // Combina todos os registros
+        const todos = [
+            ...online.map(a => ({ ...a, tipo: 'online' })),
+            ...manuais.map(a => ({ ...a, tipo: 'sessao' })),
+            ...(pacotes || []).map(a => ({ ...a, tipo: 'pacote' }))
+        ].sort((a, b) => new Date(b.data || b.data_consulta) - new Date(a.data || a.data_consulta));
+
+        // Totais
+        const totalOnline = online.filter(a => a.status === 'confirmado').reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+        const totalManuais = manuais.reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+        const totalPacotes = (pacotes || []).reduce((s, a) => s + parseFloat(a.valor || 0), 0);
+        const totalBruto = totalOnline + totalManuais + totalPacotes;
+
+        document.getElementById('fin-total-confirmados').textContent = online.filter(a => a.status === 'confirmado').length;
+        document.getElementById('fin-total-pendentes').textContent = online.filter(a => a.status === 'pendente').length;
+        document.getElementById('fin-total-cancelados').textContent = online.filter(a => a.status === 'cancelado').length;
+        document.getElementById('fin-total-valor').textContent = `R$ ${totalBruto.toFixed(2).replace('.', ',')}`;
+
+        // Calcula impostos
+        await calcularExibirImpostos(totalBruto, mes, ano);
+
+        if (!todos.length) {
+            tbody.innerHTML = '<tr><td colspan="6" style="padding:40px;text-align:center;color:#64748b;">Nenhum registro neste período.</td></tr>';
+            return;
+        }
+
+        const statusCor = { confirmado: '#34d399', pendente: '#fbbf24', cancelado: '#f87171', realizado: '#a78bfa', pago: '#34d399' };
+        const statusLabel = { confirmado: '✅ Confirmado', pendente: '⏳ Pendente', cancelado: '❌ Cancelado', realizado: '✅ Realizado', pago: '✅ Pago' };
+
+        tbody.innerHTML = todos.map(ag => {
+            const dataStr = ag.data || ag.data_consulta || '';
+            const dataFmt = dataStr ? new Date(dataStr + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+            const hora = ag.hora ? String(ag.hora).substring(0, 5) : (ag.hora_inicio ? String(ag.hora_inicio).substring(0, 5) : '');
+            const cor = statusCor[ag.status] || '#64748b';
+            const label = statusLabel[ag.status] || ag.status;
+
+            const tipoCores = {
+                online: { bg: 'rgba(52,211,153,.1)', color: '#34d399', border: 'rgba(52,211,153,.25)', label: 'Online' },
+                sessao: { bg: 'rgba(167,139,250,.12)', color: '#a78bfa', border: 'rgba(167,139,250,.25)', label: 'Sessão' },
+                pacote: { bg: 'rgba(96,165,250,.12)', color: '#60a5fa', border: 'rgba(96,165,250,.25)', label: 'Pacote' }
+            };
+            const t = tipoCores[ag.tipo] || tipoCores.sessao;
+            const origemBadge = `<span style="font-size:10px;background:${t.bg};color:${t.color};border:1px solid ${t.border};padding:1px 6px;border-radius:8px;margin-left:4px;">${t.label}</span>`;
+
+            const descricao = ag.descricao_pacote
+                ? `<br><span style="font-size:10px;color:#64748b;">${ag.descricao_pacote} · ${ag.total_sessoes} sessões · ${ag.convenio || ''}</span>`
+                : ag.convenio ? `<br><span style="font-size:10px;color:#64748b;">${ag.convenio}</span>` : '';
+
+            return `<tr>
+                <td style="padding:10px 14px;border-top:1px solid rgba(139,92,246,0.08);color:#e2e8f0;">
+                    <strong>${ag.paciente_nome || '—'}</strong>${origemBadge}${descricao}
+                </td>
+                <td style="padding:10px 14px;border-top:1px solid rgba(139,92,246,0.08);color:#94a3b8;font-size:12px;">
+                    ${dataFmt}${hora ? '<br>' + hora : ''}
+                </td>
+                <td style="padding:10px 14px;border-top:1px solid rgba(139,92,246,0.08);font-weight:600;color:#a78bfa;">
+                    R$ ${parseFloat(ag.valor || 0).toFixed(2).replace('.', ',')}
+                </td>
+                <td style="padding:10px 14px;border-top:1px solid rgba(139,92,246,0.08);">
+                    <span style="font-size:12px;font-weight:500;color:${cor};">${label}</span>
+                </td>
+                <td style="padding:10px 14px;border-top:1px solid rgba(139,92,246,0.08);">
+                    ${ag.tipo === 'online' && (ag.stripe_payment_intent || ag.stripe_session_id)
+                    ? `<span style="font-family:monospace;font-size:10px;color:#8b5cf6;">${(ag.stripe_payment_intent || ag.stripe_session_id).substring(0, 18)}...</span>`
+                    : `<span style="color:#475569;font-size:11px;">${ag.duracao_minutos ? ag.duracao_minutos + 'min' : '—'}</span>`}
+                </td>
+            </tr>`;
+        }).join('');
+
+    } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="6" style="padding:40px;text-align:center;color:#f87171;">Erro ao carregar. Tente novamente.</td></tr>';
+        console.error(err);
+    }
+}
+
+// ── CÁLCULO DE IMPOSTOS ──────────────────────────────────────────
+const TABELA_IRPF_2025 = [
+    { limite: 2428.80, aliquota: 0, deducao: 0 },
+    { limite: 2826.65, aliquota: 0.075, deducao: 182.16 },
+    { limite: 3751.05, aliquota: 0.15, deducao: 394.16 },
+    { limite: 4664.68, aliquota: 0.225, deducao: 675.49 },
+    { limite: Infinity, aliquota: 0.275, deducao: 908.73 }
+];
+
+function calcularIRPF(rendimento) {
+    for (const faixa of TABELA_IRPF_2025) {
+        if (rendimento <= faixa.limite) {
+            return Math.max(0, rendimento * faixa.aliquota - faixa.deducao);
+        }
+    }
+    return 0;
+}
+
+function calcularImpostoPorRegime(bruto, regime, iss) {
+    const result = { bruto, impostos: [], totalImpostos: 0, liquido: 0 };
+
+    if (regime === 'autonomo') {
+        // INSS: 11% sobre bruto (teto R$7.786,02 em 2025)
+        const baseINSS = Math.min(bruto, 7786.02);
+        const inss = baseINSS * 0.11;
+        const baseIR = bruto - inss;
+        const irrf = calcularIRPF(baseIR);
+        const issVal = bruto * (iss / 100);
+        result.impostos = [
+            { nome: 'INSS (11%)', valor: inss },
+            { nome: `ISS (${iss}%)`, valor: issVal },
+            { nome: 'IRRF', valor: irrf }
+        ];
+    } else if (regime === 'mei') {
+        // DAS fixo: ~R$76,90/mês (serviços)
+        result.impostos = [{ nome: 'DAS MEI (fixo)', valor: 76.90 }];
+    } else if (regime === 'simples_nacional') {
+        // Anexo III — serviços: faixas de receita bruta anual
+        // Para cálculo mensal, usa alíquota da faixa anual estimada
+        const anual = bruto * 12;
+        let aliquota = 0.06; // até R$180k/ano = 6%
+        if (anual > 360000) aliquota = 0.112;
+        else if (anual > 180000) aliquota = 0.09;
+        const simples = bruto * aliquota;
+        result.impostos = [{ nome: `Simples Nacional (${(aliquota * 100).toFixed(1)}%)`, valor: simples }];
+    } else if (regime === 'pessoa_fisica') {
+        // Carnê-leão: tabela progressiva mensal
+        const ir = calcularIRPF(bruto);
+        result.impostos = [{ nome: 'Carnê-leão (IRPF)', valor: ir }];
+    }
+
+    result.totalImpostos = result.impostos.reduce((s, i) => s + i.valor, 0);
+    result.liquido = bruto - result.totalImpostos;
+    return result;
+}
+
+async function calcularExibirImpostos(totalBruto, mes, ano) {
+    const blocoImp = document.getElementById('fin-impostos-bloco');
+    if (!blocoImp) return;
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/regime-fiscal`, { headers: headersAuth() });
+        const { regime_fiscal, iss_percentual } = await res.json();
+        if (!regime_fiscal) {
+            blocoImp.innerHTML = `<p style="color:#64748b;font-size:13px;"><i class="fas fa-info-circle" style="margin-right:6px;color:#fbbf24;"></i>Configure seu regime fiscal em <strong>Meu Perfil</strong> para ver o cálculo de impostos.</p>`;
+            return;
+        }
+        const calc = calcularImpostoPorRegime(totalBruto, regime_fiscal, iss_percentual || 3);
+        const regimeLabel = { autonomo: 'Autônomo/RPA', mei: 'MEI', simples_nacional: 'Simples Nacional', pessoa_fisica: 'Pessoa Física' };
+
+        blocoImp.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                <span style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">
+                    <i class="fas fa-calculator" style="color:#a78bfa;margin-right:6px;"></i>Impostos — ${regimeLabel[regime_fiscal] || regime_fiscal}
+                </span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px;">
+                <div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:8px;padding:12px;">
+                    <div style="font-size:11px;color:#64748b;margin-bottom:4px;">Receita bruta</div>
+                    <div style="font-size:18px;font-weight:700;color:#e2e8f0;">R$ ${calc.bruto.toFixed(2).replace('.', ',')}</div>
+                </div>
+                <div style="background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.15);border-radius:8px;padding:12px;">
+                    <div style="font-size:11px;color:#64748b;margin-bottom:4px;">Total impostos</div>
+                    <div style="font-size:18px;font-weight:700;color:#f87171;">- R$ ${calc.totalImpostos.toFixed(2).replace('.', ',')}</div>
+                    <div style="font-size:10px;color:#475569;margin-top:4px;">${calc.impostos.map(i => i.nome + ': R$ ' + i.valor.toFixed(2)).join(' · ')}</div>
+                </div>
+                <div style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:8px;padding:12px;">
+                    <div style="font-size:11px;color:#64748b;margin-bottom:4px;">Valor líquido</div>
+                    <div style="font-size:18px;font-weight:700;color:#34d399;">R$ ${calc.liquido.toFixed(2).replace('.', ',')}</div>
+                </div>
+            </div>`;
+    } catch (e) { console.error('Impostos:', e); }
+}
+
 async function carregarFinanceiro() {
     const selMes = document.getElementById('fin-mes');
     const inpAno = document.getElementById('fin-ano');
@@ -3351,6 +3662,46 @@ function sair() {
 // ============================================================
 //  LINK DE ATENDIMENTO ONLINE
 // ============================================================
+
+// ── REGIME FISCAL ─────────────────────────────────────────────
+async function carregarRegimeFiscal() {
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/regime-fiscal`, { headers: headersAuth() });
+        if (!res.ok) return;
+        const d = await res.json();
+        const sel = document.getElementById('regime-fiscal-sel');
+        const iss = document.getElementById('iss-percentual');
+        if (sel && d.regime_fiscal) sel.value = d.regime_fiscal;
+        if (iss && d.iss_percentual) iss.value = d.iss_percentual;
+        toggleISSField();
+    } catch (e) { console.error('Regime fiscal:', e); }
+}
+
+function toggleISSField() {
+    const regime = document.getElementById('regime-fiscal-sel')?.value;
+    const issWrap = document.getElementById('iss-wrap');
+    if (issWrap) issWrap.style.display = regime === 'autonomo' ? 'block' : 'none';
+}
+
+async function salvarRegimeFiscal() {
+    const regime = document.getElementById('regime-fiscal-sel')?.value;
+    const iss = document.getElementById('iss-percentual')?.value || 3;
+    const fb = document.getElementById('regime-feedback');
+    try {
+        const res = await fetch(`${API_URL}/api/perfil/regime-fiscal`, {
+            method: 'PUT',
+            headers: headersAuth(),
+            body: JSON.stringify({ regime_fiscal: regime, iss_percentual: parseFloat(iss) })
+        });
+        if (res.ok) {
+            if (fb) { fb.textContent = '✅ Regime fiscal salvo!'; fb.style.color = '#34d399'; fb.style.display = 'block'; }
+            setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
+        }
+    } catch (e) {
+        if (fb) { fb.textContent = '❌ Erro ao salvar.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
+    }
+}
+
 async function carregarLinkVideo() {
     try {
         const res = await fetch(`${API_URL}/api/perfil/link-video`, { headers: headersAuth() });
