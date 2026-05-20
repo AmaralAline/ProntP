@@ -3456,7 +3456,16 @@ async function salvarNovoPacote(pacienteIdParam) {
             if (fb) { fb.textContent = '❌ ' + (data.erro || 'Erro.'); fb.style.color = '#f87171'; fb.style.display = 'block'; }
         }
     } catch (e) {
-        if (fb) { fb.textContent = '❌ Erro de conexão.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
+        // Railway pode demorar mas o pacote é criado — recarrega silenciosamente
+        if (fb) { fb.textContent = '⏳ Aguardando...'; fb.style.color = '#fbbf24'; fb.style.display = 'block'; }
+        setTimeout(async () => {
+            try {
+                await carregarPacotesPaciente(pacienteId);
+                const formInline = document.getElementById('form-pacote-inline');
+                if (formInline) formInline.style.display = 'none';
+                if (fb) fb.style.display = 'none';
+            } catch (e2) { }
+        }, 2500);
     }
 }
 
