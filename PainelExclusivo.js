@@ -3379,7 +3379,18 @@ async function salvarNovoPacote(pacienteIdParam) {
         const data = await res.json();
         if (res.ok) {
             if (fb) { fb.textContent = '✅ Pacote criado!'; fb.style.color = '#34d399'; fb.style.display = 'block'; }
-            document.getElementById('form-novo-pacote').style.display = 'none';
+            // Esconde o form (pode ser form-pacote-inline ou form-novo-pacote)
+            const formInline = document.getElementById('form-pacote-inline');
+            const formNovo = document.getElementById('form-novo-pacote');
+            if (formInline) formInline.style.display = 'none';
+            if (formNovo) formNovo.style.display = 'none';
+            // Limpa campos
+            ['pacote-nome', 'pacote-sessoes', 'pacote-valor'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const pagoEl = document.getElementById('pacote-pago');
+            if (pagoEl) pagoEl.checked = false;
             setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
             await carregarPacotesPaciente(pacienteId);
         } else {
