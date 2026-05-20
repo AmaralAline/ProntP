@@ -3430,11 +3430,15 @@ async function salvarNovoPacote(pacienteIdParam) {
     }
 
     try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
         const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/pacotes`, {
             method: 'POST',
             headers: headersAuth(),
-            body: JSON.stringify({ nome, total_sessoes: sessoes, valor_total: valor, forma_pagamento: forma, pago })
+            body: JSON.stringify({ nome, total_sessoes: sessoes, valor_total: valor, forma_pagamento: forma, pago }),
+            signal: controller.signal
         });
+        clearTimeout(timeout);
         const data = await res.json();
         if (res.ok) {
             if (fb) { fb.textContent = '✅ Pacote criado!'; fb.style.color = '#34d399'; fb.style.display = 'block'; }
