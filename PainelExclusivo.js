@@ -3453,7 +3453,16 @@ async function salvarNovoPacote(pacienteIdParam) {
         }
     } catch (e) {
         if (btnCriar) { btnCriar.disabled = false; btnCriar.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote'; }
-        if (fb) { fb.textContent = '❌ Erro ao salvar. Tente novamente.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
+        // Mesmo com erro de conexão o pacote pode ter sido criado — recarrega a lista
+        if (fb) { fb.textContent = '⏳ Verificando...'; fb.style.color = '#fbbf24'; fb.style.display = 'block'; }
+        setTimeout(async () => {
+            await carregarPacotesPaciente(pacienteId);
+            const formInline = document.getElementById('form-pacote-inline');
+            const formNovo = document.getElementById('form-novo-pacote');
+            if (formInline) formInline.style.display = 'none';
+            if (formNovo) formNovo.style.display = 'none';
+            if (fb) fb.style.display = 'none';
+        }, 2000);
     }
 }
 
