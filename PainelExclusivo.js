@@ -3435,15 +3435,11 @@ async function salvarNovoPacote(pacienteIdParam) {
     if (fb) { fb.textContent = '⏳ Criando pacote...'; fb.style.color = '#fbbf24'; fb.style.display = 'block'; }
 
     try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
         const res = await fetch(`${API_URL}/api/pacientes/${pacienteId}/pacotes`, {
             method: 'POST',
             headers: headersAuth(),
-            body: JSON.stringify({ nome, total_sessoes: sessoes, valor_total: valor, forma_pagamento: forma, pago }),
-            signal: controller.signal
+            body: JSON.stringify({ nome, total_sessoes: sessoes, valor_total: valor, forma_pagamento: forma, pago })
         });
-        clearTimeout(timeout);
         const data = await res.json();
         if (res.ok) {
             if (btnCriar) { btnCriar.disabled = false; btnCriar.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote'; }
