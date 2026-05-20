@@ -3429,6 +3429,11 @@ async function salvarNovoPacote(pacienteIdParam) {
         return;
     }
 
+    // Mostra loading no botão
+    const btnCriar = document.querySelector('[onclick="salvarNovoPacote()"]');
+    if (btnCriar) { btnCriar.disabled = true; btnCriar.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Salvando...'; }
+    if (fb) { fb.textContent = '⏳ Criando pacote...'; fb.style.color = '#fbbf24'; fb.style.display = 'block'; }
+
     try {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 15000);
@@ -3441,15 +3446,18 @@ async function salvarNovoPacote(pacienteIdParam) {
         clearTimeout(timeout);
         const data = await res.json();
         if (res.ok) {
+            if (btnCriar) { btnCriar.disabled = false; btnCriar.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote'; }
             if (fb) { fb.textContent = '✅ Pacote criado!'; fb.style.color = '#34d399'; fb.style.display = 'block'; }
             document.getElementById('form-novo-pacote').style.display = 'none';
             setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
             await carregarPacotesPaciente(pacienteId);
         } else {
+            if (btnCriar) { btnCriar.disabled = false; btnCriar.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote'; }
             if (fb) { fb.textContent = '❌ ' + (data.erro || 'Erro.'); fb.style.color = '#f87171'; fb.style.display = 'block'; }
         }
     } catch (e) {
-        if (fb) { fb.textContent = '❌ Erro de conexão.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
+        if (btnCriar) { btnCriar.disabled = false; btnCriar.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote'; }
+        if (fb) { fb.textContent = '❌ Erro ao salvar. Tente novamente.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
     }
 }
 
