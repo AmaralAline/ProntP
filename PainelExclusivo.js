@@ -547,73 +547,66 @@ function popularSelectsPacientes() {
 }
 
 // Renderiza tabela/lista de pacientes na seção de cadastro
-function renderizarListaPacientes(filtro) {
+function renderizarListaPacientes() {
     const container = document.getElementById('lista-pacientes');
     if (!container) return;
 
     if (pacientes.length === 0) {
-        container.innerHTML = '<p style="color:#64748b;font-size:14px;">Nenhum paciente cadastrado ainda.</p>';
+        container.innerHTML = '<p style="color:#64748b; font-size:14px;">Nenhum paciente cadastrado ainda.</p>';
         return;
     }
 
-    const termo = (filtro !== undefined ? filtro : (document.getElementById('busca-paciente') ? document.getElementById('busca-paciente').value : '')).toLowerCase().trim();
-    const lista = termo ? pacientes.filter(p => p.nome.toLowerCase().includes(termo)) : pacientes;
-
-    const bs = 'display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:13px;';
-
-    let html = '<div style="margin-bottom:14px;position:relative;">';
-    html += '<i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#475569;font-size:13px;pointer-events:none;"></i>';
-    html += '<input type="text" id="busca-paciente" placeholder="Buscar paciente por nome..." value="' + (termo || '') + '" oninput="renderizarListaPacientes(this.value)" ';
-    html += 'style="width:100%;padding:9px 12px 9px 36px;background:#141d2b;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;font-family:Roboto,sans-serif;outline:none;box-sizing:border-box;">';
-    html += '</div>';
-
-    if (lista.length === 0) {
-        html += '<p style="color:#64748b;font-size:13px;text-align:center;padding:20px;">Nenhum paciente encontrado.</p>';
-    } else {
-        html += '<table style="width:100%;border-collapse:collapse;">';
-        html += '<thead><tr style="background:#141d2b;">';
-        html += '<th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Nome</th>';
-        html += '<th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Telefone</th>';
-        html += '<th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">E-mail</th>';
-        html += '<th style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;">Ações</th>';
-        html += '</tr></thead><tbody>';
-
-        lista.forEach(p => {
-            // this runs in node context just for syntax check — actual rendering in browser
-        });
-
-        html += '</tbody></table>';
-    }
-
-    // Use innerHTML with proper escaping via DOM
-    container.innerHTML = html;
-
-    // Render rows safely
-    if (lista.length > 0) {
-        const tbody = container.querySelector('tbody');
-        lista.forEach(p => {
-            const tr = document.createElement('tr');
-            tr.style.cssText = 'border-top:1px solid rgba(139,92,246,0.08);';
-            tr.onmouseover = () => tr.style.background = 'rgba(139,92,246,0.04)';
-            tr.onmouseout = () => tr.style.background = 'transparent';
-
-            const nomeSafe = p.nome.replace(/'/g, "\\'");
-
-            tr.innerHTML =
-                '<td style="padding:10px 14px;color:#e2e8f0;font-size:13px;font-weight:500;">' + p.nome + '</td>' +
-                '<td style="padding:10px 14px;color:#94a3b8;font-size:13px;">' + (p.telefone || '-') + '</td>' +
-                '<td style="padding:10px 14px;color:#94a3b8;font-size:13px;">' + (p.email || '-') + '</td>' +
-                '<td style="padding:10px 14px;">' +
-                '<div style="display:flex;gap:5px;align-items:center;">' +
-                '<button onclick="gerarRelatorioPDF(' + p.id + ',\'' + nomeSafe + '\')" title="PDF" style="' + bs + 'background:#7c3aed;color:#fff;border:none;"><i class="fas fa-file-pdf"></i></button>' +
-                '<button onclick="abrirEditarPaciente(' + p.id + ')" title="Editar" style="' + bs + 'background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3);"><i class="fas fa-edit"></i></button>' +
-                '<button onclick="abrirModalPacotes(' + p.id + ',\'' + nomeSafe + '\')" title="Pacotes" style="' + bs + 'background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);"><i class="fas fa-box"></i></button>' +
-                '<button onclick="inativarPaciente(' + p.id + ',\'' + nomeSafe + '\')" title="Inativar" style="' + bs + 'background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.25);"><i class="fas fa-user-times"></i></button>' +
-                '</div>' +
-                '</td>';
-            tbody.appendChild(tr);
-        });
-    }
+    container.innerHTML = `
+        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+            <thead>
+                <tr style="background:#141d2b;">
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Nome</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Telefone</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">E-mail</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Pagamento</th>
+                    <th style="padding:12px 16px; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${pacientes.map(p => `
+                    <tr style="border-top:1px solid rgba(139,92,246,0.08);">
+                        <td style="padding:12px 16px; color:#e2e8f0; font-size:14px;">${p.nome}</td>
+                        <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.telefone || '-'}</td>
+                        <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.email || '-'}</td>
+                        <td style="padding:12px 16px; color:#94a3b8; font-size:14px;">${p.modo_pagamento || '-'}</td>
+                        <td style="padding:12px 16px;">
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                <button onclick="gerarRelatorioPDF(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
+                                    background:#7c3aed; color:#fff; border:none;
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button onclick="abrirEditarPaciente(${p.id})" style="
+                                    background:rgba(139,92,246,0.15); color:#a78bfa; border:1px solid rgba(139,92,246,0.3);
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button onclick="abrirModalPacotes(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
+                                    background:rgba(96,165,250,0.12); color:#60a5fa; border:1px solid rgba(96,165,250,0.3);
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-box"></i> Pacote
+                                </button>
+                                <button onclick="inativarPaciente(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" style="
+                                    background:rgba(248,113,113,0.1); color:#f87171; border:1px solid rgba(248,113,113,0.25);
+                                    border-radius:6px; padding:6px 12px; cursor:pointer;
+                                    font-size:12px; font-family:'Roboto',sans-serif;">
+                                    <i class="fas fa-user-times"></i> Inativar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
 }
 
 async function gerarRelatorioPDF(pacienteId, nomePaciente) {
@@ -740,6 +733,56 @@ if (evolucaoForm) {
                 if (pacHist && pacHist.value === pacienteId) {
                     await carregarHistoricoEvolucao(pacienteId);
                 }
+
+                // Verifica se paciente tem pacote ativo e pergunta se quer usar uma sessão
+                try {
+                    const resPac = await fetch(`${API_URL}/api/pacientes/${pacienteId}/pacotes`, { headers: headersAuth() });
+                    if (resPac.ok) {
+                        const pacotesAtv = await resPac.json();
+                        const pacoteAtivo = pacotesAtv.find(pk => pk.ativo && pk.pago && pk.sessoes_usadas < pk.total_sessoes);
+                        if (pacoteAtivo) {
+                            const restantes = pacoteAtivo.total_sessoes - pacoteAtivo.sessoes_usadas;
+                            const usar = await new Promise(resolve => {
+                                const modal = document.createElement('div');
+                                modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+                                modal.innerHTML =
+                                    '<div style="background:#1a2332;border:1px solid rgba(96,165,250,.3);border-radius:14px;padding:28px;max-width:420px;width:100%;">' +
+                                    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
+                                    '<div style="width:40px;height:40px;border-radius:50%;background:rgba(96,165,250,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+                                    '<i class="fas fa-box" style="color:#60a5fa;"></i>' +
+                                    '</div>' +
+                                    '<div>' +
+                                    '<p style="color:#e2e8f0;font-size:14px;font-weight:600;margin:0;">Usar sessão do pacote?</p>' +
+                                    '<p style="color:#64748b;font-size:12px;margin:2px 0 0;">Pacote: <strong style="color:#94a3b8;">' + pacoteAtivo.nome + '</strong> · ' + restantes + ' sessão(ões) restante(s)</p>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div style="display:flex;gap:10px;">' +
+                                    '<button id="btn-usar-sim" style="flex:1;padding:10px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">✓ Sim, usar sessão</button>' +
+                                    '<button id="btn-usar-nao" style="flex:1;padding:10px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:8px;cursor:pointer;font-size:13px;">Não agora</button>' +
+                                    '</div>' +
+                                    '</div>';
+                                document.body.insertBefore(modal, document.body.firstChild);
+                                modal.querySelector('#btn-usar-sim').onclick = () => { modal.remove(); resolve(true); };
+                                modal.querySelector('#btn-usar-nao').onclick = () => { modal.remove(); resolve(false); };
+                            });
+
+                            if (usar) {
+                                const resUsar = await fetch(`${API_URL}/api/pacotes/${pacoteAtivo.id}/usar-sessao`, {
+                                    method: 'PUT',
+                                    headers: headersAuth()
+                                });
+                                if (resUsar.ok) {
+                                    const d = await resUsar.json();
+                                    if (d.encerrado) {
+                                        mostrarFeedback('evolucao-error', '📦 Pacote encerrado! E-mail enviado ao paciente.', 'sucesso');
+                                    } else {
+                                        mostrarFeedback('evolucao-error', `✅ Sessão registrada! ${d.sessoes_restantes} sessão(ões) restante(s) no pacote.`, 'sucesso');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (ePacote) { console.warn('Pacote:', ePacote); }
                 // Marca consulta do dia como realizada
                 try {
                     const dataConsulta = data_hora.split('T')[0];
@@ -3299,74 +3342,11 @@ let pacientePacoteAtual = { id: null, nome: '' };
 
 async function abrirModalPacotes(pacienteId, nomePaciente) {
     pacientePacoteAtual = { id: pacienteId, nome: nomePaciente };
-    const old = document.getElementById('modal-pacotes-paciente');
-    if (old) old.remove();
-
-    const modal = document.createElement('div');
-    modal.id = 'modal-pacotes-paciente';
-    modal.style.cssText = 'display:flex;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:20px;';
-
-    const inner = document.createElement('div');
-    inner.style.cssText = 'background:#1a2332;border:1px solid rgba(96,165,250,.3);border-radius:16px;padding:28px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;position:relative;';
-
-    // Header
-    const header = document.createElement('div');
-    header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;';
-    header.innerHTML = '<h3 style="font-size:16px;font-weight:600;color:#e2e8f0;margin:0;"><i class="fas fa-box" style="color:#60a5fa;margin-right:8px;"></i>Pacotes — ' + nomePaciente + '</h3>';
-    const btnFechar = document.createElement('button');
-    btnFechar.innerHTML = '✕';
-    btnFechar.style.cssText = 'background:transparent;border:none;color:#64748b;font-size:22px;cursor:pointer;';
-    btnFechar.onclick = fecharModalPacotes;
-    header.appendChild(btnFechar);
-    inner.appendChild(header);
-
-    // Container de pacotes
-    const container = document.createElement('div');
-    container.id = 'pacotes-container';
-    container.style.marginBottom = '16px';
-    inner.appendChild(container);
-
-    // Botão novo pacote
-    const btnNovo = document.createElement('button');
-    btnNovo.style.cssText = 'width:100%;padding:10px;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.25);border-radius:8px;cursor:pointer;font-size:13px;font-family:Roboto,sans-serif;margin-bottom:12px;';
-    btnNovo.innerHTML = '<i class="fas fa-plus" style="margin-right:6px;"></i>Criar novo pacote';
-    btnNovo.onclick = () => {
-        const f = document.getElementById('form-pacote-inline');
-        if (f) f.style.display = f.style.display === 'none' ? 'block' : 'none';
-    };
-    inner.appendChild(btnNovo);
-
-    // Form
-    const form = document.createElement('div');
-    form.id = 'form-pacote-inline';
-    form.style.cssText = 'display:none;background:#141d2b;border:1px solid rgba(96,165,250,.15);border-radius:10px;padding:16px;';
-    form.innerHTML =
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nome</label>' +
-        '<input type="text" id="pacote-nome" placeholder="Ex: Pacote 4 sessoes" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;"></div>' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nº sessoes *</label>' +
-        '<input type="number" id="pacote-sessoes" placeholder="4" min="1" max="50" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;"></div>' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Valor total (R$) *</label>' +
-        '<input type="number" id="pacote-valor" placeholder="600.00" step="0.01" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;"></div>' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Forma de pagamento</label>' +
-        '<select id="pacote-forma" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;outline:none;">' +
-        '<option value="pix">PIX</option><option value="dinheiro">Dinheiro</option>' +
-        '<option value="cartao_credito">Cartão crédito</option><option value="cartao_debito">Cartão débito</option>' +
-        '<option value="transferencia">Transferência</option></select></div>' +
-        '</div>' +
-        '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#94a3b8;margin-bottom:12px;">' +
-        '<input type="checkbox" id="pacote-pago" style="accent-color:#34d399;width:15px;height:15px;"> Paciente já pagou este pacote' +
-        '</label>' +
-        '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
-        '<button onclick="salvarNovoPacote()" style="padding:8px 20px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">' +
-        '<i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote</button>' +
-        '<button onclick="document.getElementById(&quot;form-pacote-inline&quot;).style.display=&quot;none&quot;" style="padding:8px 14px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:8px;cursor:pointer;font-size:13px;">Cancelar</button>' +
-        '<span id="pacote-feedback" style="font-size:12px;display:none;"></span>' +
-        '</div>';
-    inner.appendChild(form);
-    modal.appendChild(inner);
-
-    document.body.insertBefore(modal, document.body.firstChild);
+    const modal = document.getElementById('modal-pacotes-paciente');
+    const titulo = document.getElementById('modal-pacotes-titulo');
+    if (titulo) titulo.textContent = `Pacotes — ${nomePaciente}`;
+    if (modal) modal.style.display = 'flex';
+    document.getElementById('form-pacote-inline').style.display = 'none';
     await carregarPacotesPaciente(pacienteId);
 }
 
@@ -3456,16 +3436,7 @@ async function salvarNovoPacote(pacienteIdParam) {
             if (fb) { fb.textContent = '❌ ' + (data.erro || 'Erro.'); fb.style.color = '#f87171'; fb.style.display = 'block'; }
         }
     } catch (e) {
-        // Railway pode demorar mas o pacote é criado — recarrega silenciosamente
-        if (fb) { fb.textContent = '⏳ Aguardando...'; fb.style.color = '#fbbf24'; fb.style.display = 'block'; }
-        setTimeout(async () => {
-            try {
-                await carregarPacotesPaciente(pacienteId);
-                const formInline = document.getElementById('form-pacote-inline');
-                if (formInline) formInline.style.display = 'none';
-                if (fb) fb.style.display = 'none';
-            } catch (e2) { }
-        }, 2500);
+        if (fb) { fb.textContent = '❌ Erro de conexão.'; fb.style.color = '#f87171'; fb.style.display = 'block'; }
     }
 }
 
