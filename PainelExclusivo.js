@@ -3292,17 +3292,76 @@ let pacientePacoteAtual = { id: null, nome: '' };
 
 async function abrirModalPacotes(pacienteId, nomePaciente) {
     pacientePacoteAtual = { id: pacienteId, nome: nomePaciente };
-    const modal = document.getElementById('modal-pacotes-paciente');
-    const titulo = document.getElementById('modal-pacotes-titulo');
-    if (titulo) titulo.textContent = `Pacotes — ${nomePaciente}`;
-    if (modal) modal.style.display = 'flex';
-    document.getElementById('form-pacote-inline').style.display = 'none';
+
+    // Remove modal antigo se existir
+    const old = document.getElementById('modal-pacotes-paciente');
+    if (old) old.remove();
+
+    // Cria modal via JS direto no body
+    const modal = document.createElement('div');
+    modal.id = 'modal-pacotes-paciente';
+    modal.style.cssText = 'display:flex;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:20px;';
+    modal.innerHTML = `
+        <div style="background:#1a2332;border:1px solid rgba(96,165,250,.3);border-radius:16px;padding:28px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;position:relative;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <h3 style="font-size:16px;font-weight:600;color:#e2e8f0;margin:0;">
+                    <i class="fas fa-box" style="color:#60a5fa;margin-right:8px;"></i>Pacotes — ${nomePaciente}
+                </h3>
+                <button onclick="fecharModalPacotes()" style="background:transparent;border:none;color:#64748b;font-size:22px;cursor:pointer;line-height:1;">✕</button>
+            </div>
+            <div id="pacotes-container" style="margin-bottom:16px;"></div>
+            <button onclick="document.getElementById('form-pacote-inline').style.display=document.getElementById('form-pacote-inline').style.display==='none'?'block':'none'"
+                style="width:100%;padding:10px;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.25);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;margin-bottom:12px;">
+                <i class="fas fa-plus" style="margin-right:6px;"></i>Criar novo pacote
+            </button>
+            <div id="form-pacote-inline" style="display:none;background:#141d2b;border:1px solid rgba(96,165,250,.15);border-radius:10px;padding:16px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+                    <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nome do pacote</label>
+                        <input type="text" id="pacote-nome" placeholder="Ex: Pacote 4 sessões" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nº de sessões *</label>
+                        <input type="number" id="pacote-sessoes" placeholder="4" min="1" max="50" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Valor total (R$) *</label>
+                        <input type="number" id="pacote-valor" placeholder="600.00" step="0.01" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Forma de pagamento</label>
+                        <select id="pacote-forma" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;outline:none;font-family:'Roboto',sans-serif;">
+                            <option value="pix">PIX</option>
+                            <option value="dinheiro">Dinheiro</option>
+                            <option value="cartao_credito">Cartão crédito</option>
+                            <option value="cartao_debito">Cartão débito</option>
+                            <option value="transferencia">Transferência</option>
+                        </select>
+                    </div>
+                </div>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#94a3b8;margin-bottom:12px;">
+                    <input type="checkbox" id="pacote-pago" style="accent-color:#34d399;width:15px;height:15px;">
+                    Paciente já pagou este pacote
+                </label>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                    <button onclick="salvarNovoPacote()"
+                        style="padding:8px 20px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;font-weight:600;">
+                        <i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote
+                    </button>
+                    <button onclick="document.getElementById('form-pacote-inline').style.display='none'"
+                        style="padding:8px 14px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">Cancelar</button>
+                    <span id="pacote-feedback" style="font-size:12px;display:none;"></span>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
     await carregarPacotesPaciente(pacienteId);
 }
 
 function fecharModalPacotes() {
     const modal = document.getElementById('modal-pacotes-paciente');
-    if (modal) modal.style.display = 'none';
+    if (modal) modal.remove();
     pacientePacoteAtual = { id: null, nome: '' };
 }
 
@@ -3379,18 +3438,7 @@ async function salvarNovoPacote(pacienteIdParam) {
         const data = await res.json();
         if (res.ok) {
             if (fb) { fb.textContent = '✅ Pacote criado!'; fb.style.color = '#34d399'; fb.style.display = 'block'; }
-            // Esconde o form (pode ser form-pacote-inline ou form-novo-pacote)
-            const formInline = document.getElementById('form-pacote-inline');
-            const formNovo = document.getElementById('form-novo-pacote');
-            if (formInline) formInline.style.display = 'none';
-            if (formNovo) formNovo.style.display = 'none';
-            // Limpa campos
-            ['pacote-nome', 'pacote-sessoes', 'pacote-valor'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = '';
-            });
-            const pagoEl = document.getElementById('pacote-pago');
-            if (pagoEl) pagoEl.checked = false;
+            document.getElementById('form-novo-pacote').style.display = 'none';
             setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
             await carregarPacotesPaciente(pacienteId);
         } else {
