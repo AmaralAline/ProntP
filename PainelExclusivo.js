@@ -733,56 +733,6 @@ if (evolucaoForm) {
                 if (pacHist && pacHist.value === pacienteId) {
                     await carregarHistoricoEvolucao(pacienteId);
                 }
-
-                // Verifica se paciente tem pacote ativo e pergunta se quer usar uma sessão
-                try {
-                    const resPac = await fetch(`${API_URL}/api/pacientes/${pacienteId}/pacotes`, { headers: headersAuth() });
-                    if (resPac.ok) {
-                        const pacotesAtv = await resPac.json();
-                        const pacoteAtivo = pacotesAtv.find(pk => pk.ativo && pk.pago && pk.sessoes_usadas < pk.total_sessoes);
-                        if (pacoteAtivo) {
-                            const restantes = pacoteAtivo.total_sessoes - pacoteAtivo.sessoes_usadas;
-                            const usar = await new Promise(resolve => {
-                                const modal = document.createElement('div');
-                                modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
-                                modal.innerHTML =
-                                    '<div style="background:#1a2332;border:1px solid rgba(96,165,250,.3);border-radius:14px;padding:28px;max-width:420px;width:100%;">' +
-                                    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
-                                    '<div style="width:40px;height:40px;border-radius:50%;background:rgba(96,165,250,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-                                    '<i class="fas fa-box" style="color:#60a5fa;"></i>' +
-                                    '</div>' +
-                                    '<div>' +
-                                    '<p style="color:#e2e8f0;font-size:14px;font-weight:600;margin:0;">Usar sessão do pacote?</p>' +
-                                    '<p style="color:#64748b;font-size:12px;margin:2px 0 0;">Pacote: <strong style="color:#94a3b8;">' + pacoteAtivo.nome + '</strong> · ' + restantes + ' sessão(ões) restante(s)</p>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '<div style="display:flex;gap:10px;">' +
-                                    '<button id="btn-usar-sim" style="flex:1;padding:10px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">✓ Sim, usar sessão</button>' +
-                                    '<button id="btn-usar-nao" style="flex:1;padding:10px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:8px;cursor:pointer;font-size:13px;">Não agora</button>' +
-                                    '</div>' +
-                                    '</div>';
-                                document.body.insertBefore(modal, document.body.firstChild);
-                                modal.querySelector('#btn-usar-sim').onclick = () => { modal.remove(); resolve(true); };
-                                modal.querySelector('#btn-usar-nao').onclick = () => { modal.remove(); resolve(false); };
-                            });
-
-                            if (usar) {
-                                const resUsar = await fetch(`${API_URL}/api/pacotes/${pacoteAtivo.id}/usar-sessao`, {
-                                    method: 'PUT',
-                                    headers: headersAuth()
-                                });
-                                if (resUsar.ok) {
-                                    const d = await resUsar.json();
-                                    if (d.encerrado) {
-                                        mostrarFeedback('evolucao-error', '📦 Pacote encerrado! E-mail enviado ao paciente.', 'sucesso');
-                                    } else {
-                                        mostrarFeedback('evolucao-error', `✅ Sessão registrada! ${d.sessoes_restantes} sessão(ões) restante(s) no pacote.`, 'sucesso');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (ePacote) { console.warn('Pacote:', ePacote); }
                 // Marca consulta do dia como realizada
                 try {
                     const dataConsulta = data_hora.split('T')[0];
@@ -3342,79 +3292,14 @@ let pacientePacoteAtual = { id: null, nome: '' };
 
 async function abrirModalPacotes(pacienteId, nomePaciente) {
     pacientePacoteAtual = { id: pacienteId, nome: nomePaciente };
-
-    // Remove modal antigo
-    const old = document.getElementById('modal-pacotes-paciente');
-    if (old) old.remove();
-
-    // Cria modal
-    const modal = document.createElement('div');
-    modal.id = 'modal-pacotes-paciente';
-    modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:2147483647;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
-
-    const inner = document.createElement('div');
-    inner.style.cssText = 'background:#1a2332;border:1px solid rgba(96,165,250,.3);border-radius:16px;padding:28px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;position:relative;';
-
-    const header = document.createElement('div');
-    header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;';
-    const h3 = document.createElement('h3');
-    h3.style.cssText = 'font-size:16px;font-weight:600;color:#e2e8f0;margin:0;';
-    h3.innerHTML = '<i class="fas fa-box" style="color:#60a5fa;margin-right:8px;"></i>Pacotes — ' + nomePaciente;
-    const btnX = document.createElement('button');
-    btnX.innerHTML = '✕';
-    btnX.style.cssText = 'background:transparent;border:none;color:#64748b;font-size:22px;cursor:pointer;line-height:1;';
-    btnX.onclick = fecharModalPacotes;
-    header.appendChild(h3);
-    header.appendChild(btnX);
-    inner.appendChild(header);
-
-    const cont = document.createElement('div');
-    cont.id = 'pacotes-container';
-    cont.style.marginBottom = '16px';
-    inner.appendChild(cont);
-
-    const btnNovo = document.createElement('button');
-    btnNovo.style.cssText = 'width:100%;padding:10px;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.25);border-radius:8px;cursor:pointer;font-size:13px;margin-bottom:12px;';
-    btnNovo.innerHTML = '<i class="fas fa-plus" style="margin-right:6px;"></i>Criar novo pacote';
-    btnNovo.onclick = () => {
-        const f = document.getElementById('form-pacote-inline');
-        if (f) f.style.display = f.style.display === 'none' ? 'block' : 'none';
-    };
-    inner.appendChild(btnNovo);
-
-    const form = document.createElement('div');
-    form.id = 'form-pacote-inline';
-    form.style.cssText = 'display:none;background:#141d2b;border:1px solid rgba(96,165,250,.15);border-radius:10px;padding:16px;';
-    form.innerHTML =
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nome</label>' +
-        '<input type="text" id="pacote-nome" placeholder="Ex: Pacote 4 sessões" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;"></div>' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Nº sessões *</label>' +
-        '<input type="number" id="pacote-sessoes" placeholder="4" min="1" max="50" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;"></div>' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Valor total (R$) *</label>' +
-        '<input type="number" id="pacote-valor" placeholder="600.00" step="0.01" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;"></div>' +
-        '<div><label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Forma pagamento</label>' +
-        '<select id="pacote-forma" style="width:100%;padding:8px 12px;background:#0f1621;border:1px solid rgba(96,165,250,.2);border-radius:8px;color:#e2e8f0;font-size:13px;outline:none;">' +
-        '<option value="pix">PIX</option><option value="dinheiro">Dinheiro</option>' +
-        '<option value="cartao_credito">Cartão crédito</option><option value="cartao_debito">Cartão débito</option>' +
-        '<option value="transferencia">Transferência</option></select></div>' +
-        '</div>' +
-        '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#94a3b8;margin-bottom:12px;">' +
-        '<input type="checkbox" id="pacote-pago" style="accent-color:#34d399;width:15px;height:15px;"> Paciente já pagou este pacote' +
-        '</label>' +
-        '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-        '<button onclick="salvarNovoPacote()" style="padding:8px 20px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">' +
-        '<i class="fas fa-save" style="margin-right:6px;"></i>Criar pacote</button>' +
-        '<button onclick="var fp=document.getElementById(\'form-pacote-inline\');if(fp)fp.style.display=\'none\'" style="padding:8px 14px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,.2);border-radius:8px;cursor:pointer;font-size:13px;">Cancelar</button>' +
-        '<span id="pacote-feedback" style="font-size:12px;display:none;"></span>' +
-        '</div>';
-    inner.appendChild(form);
-    modal.appendChild(inner);
-
-    // Anexa direto ao documentElement para evitar qualquer bloqueio
-    document.documentElement.appendChild(modal);
+    const modal = document.getElementById('modal-pacotes-paciente');
+    const titulo = document.getElementById('modal-pacotes-titulo');
+    if (titulo) titulo.textContent = `Pacotes — ${nomePaciente}`;
+    if (modal) modal.style.display = 'flex';
+    document.getElementById('form-pacote-inline').style.display = 'none';
     await carregarPacotesPaciente(pacienteId);
 }
+
 function fecharModalPacotes() {
     const modal = document.getElementById('modal-pacotes-paciente');
     if (modal) modal.style.display = 'none';
@@ -3530,6 +3415,212 @@ async function encerrarPacote(pacoteId, pacienteId) {
         await fetch(`${API_URL}/api/pacotes/${pacoteId}`, { method: 'DELETE', headers: headersAuth() });
         await carregarPacotesPaciente(pacienteId);
     } catch (e) { alert('Erro ao encerrar pacote.'); }
+}
+
+
+// ── RELATÓRIO ANUAL DE IR ─────────────────────────────────────────
+async function gerarRelatorioIR() {
+    const ano = document.getElementById('ir-ano')?.value || new Date().getFullYear();
+    const fb = document.getElementById('ir-feedback');
+    if (fb) { fb.style.display = 'block'; fb.style.color = '#fbbf24'; fb.textContent = '⏳ Gerando relatório...'; }
+
+    try {
+        const res = await fetch(`${API_URL}/api/financeiro/relatorio-anual?ano=${ano}`, { headers: headersAuth() });
+        if (!res.ok) throw new Error('Erro ao buscar dados');
+        const d = await res.json();
+
+        const MESES_NOME = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        const regimeLabel = { autonomo: 'Autônomo / RPA', mei: 'MEI', simples_nacional: 'Simples Nacional', pessoa_fisica: 'Pessoa Física (Carnê-Leão)' };
+
+        // Calcula impostos por mês e totais
+        const TABELA_IRPF = [
+            { limite: 2428.80, aliquota: 0, deducao: 0 },
+            { limite: 2826.65, aliquota: 0.075, deducao: 182.16 },
+            { limite: 3751.05, aliquota: 0.15, deducao: 394.16 },
+            { limite: 4664.68, aliquota: 0.225, deducao: 675.49 },
+            { limite: Infinity, aliquota: 0.275, deducao: 908.73 }
+        ];
+
+        function calcIRPF(v) {
+            for (const f of TABELA_IRPF) {
+                if (v <= f.limite) return Math.max(0, v * f.aliquota - f.deducao);
+            }
+            return 0;
+        }
+
+        function calcImpostos(bruto, regime, iss) {
+            if (!bruto || bruto <= 0) return { total: 0, detalhes: [] };
+            if (regime === 'autonomo') {
+                const inss = Math.min(bruto, 7786.02) * 0.11;
+                const ir = calcIRPF(bruto - inss);
+                const issv = bruto * ((iss || 3) / 100);
+                return {
+                    total: inss + ir + issv, detalhes: [
+                        { nome: 'INSS (11%)', valor: inss },
+                        { nome: `ISS (${iss || 3}%)`, valor: issv },
+                        { nome: 'IRRF', valor: ir }
+                    ]
+                };
+            } else if (regime === 'mei') {
+                return { total: 76.90, detalhes: [{ nome: 'DAS MEI (fixo)', valor: 76.90 }] };
+            } else if (regime === 'simples_nacional') {
+                const anual = bruto * 12;
+                const aliq = anual > 360000 ? 0.112 : anual > 180000 ? 0.09 : 0.06;
+                const v = bruto * aliq;
+                return { total: v, detalhes: [{ nome: `Simples Nacional (${(aliq * 100).toFixed(1)}%)`, valor: v }] };
+            } else if (regime === 'pessoa_fisica') {
+                const v = calcIRPF(bruto);
+                return { total: v, detalhes: [{ nome: 'Carnê-leão (IRPF)', valor: v }] };
+            }
+            return { total: 0, detalhes: [] };
+        }
+
+        const fmt = v => 'R$ ' + parseFloat(v || 0).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        let totalBruto = 0, totalImpostos = 0;
+        const linhasMeses = d.meses.map((m, i) => {
+            if (m.total <= 0) return null;
+            const imp = calcImpostos(m.total, d.regime, d.iss);
+            const liquido = m.total - imp.total;
+            totalBruto += m.total;
+            totalImpostos += imp.total;
+            return { mes: MESES_NOME[i], bruto: m.total, manuais: m.manuais, pacotes: m.pacotes, online: m.online, impostos: imp, liquido };
+        }).filter(Boolean);
+
+        const totalLiquido = totalBruto - totalImpostos;
+
+        // Gera HTML do PDF
+        const htmlPDF = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório IR ${ano} — ${d.profissional}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Arial, sans-serif; color: #1e293b; background: #fff; padding: 40px; }
+  .header { text-align:center; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #7c3aed; }
+  .header h1 { font-size:24px; color:#7c3aed; margin-bottom:4px; }
+  .header p { font-size:13px; color:#64748b; }
+  .info-box { background:#f8f4ff; border:1px solid #e9d5ff; border-radius:8px; padding:16px; margin-bottom:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .info-item label { font-size:11px; color:#7c3aed; text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:2px; }
+  .info-item span { font-size:14px; font-weight:600; color:#1e293b; }
+  table { width:100%; border-collapse:collapse; margin-bottom:24px; font-size:13px; }
+  th { background:#7c3aed; color:#fff; padding:10px 14px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+  td { padding:10px 14px; border-bottom:1px solid #e2e8f0; }
+  tr:nth-child(even) td { background:#f8f4ff; }
+  .total-row td { background:#7c3aed !important; color:#fff; font-weight:700; font-size:14px; }
+  .resumo { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px; }
+  .resumo-card { border-radius:8px; padding:16px; text-align:center; }
+  .resumo-card.bruto { background:#f0fdf4; border:1px solid #bbf7d0; }
+  .resumo-card.impostos { background:#fef2f2; border:1px solid #fecaca; }
+  .resumo-card.liquido { background:#f0f9ff; border:1px solid #bae6fd; }
+  .resumo-card label { font-size:11px; text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:6px; }
+  .resumo-card.bruto label { color:#16a34a; }
+  .resumo-card.impostos label { color:#dc2626; }
+  .resumo-card.liquido label { color:#0284c7; }
+  .resumo-card .valor { font-size:22px; font-weight:700; }
+  .resumo-card.bruto .valor { color:#16a34a; }
+  .resumo-card.impostos .valor { color:#dc2626; }
+  .resumo-card.liquido .valor { color:#0284c7; }
+  .regime-box { background:#faf5ff; border:1px solid #e9d5ff; border-radius:8px; padding:14px; margin-bottom:24px; font-size:12px; color:#4b5563; line-height:1.6; }
+  .regime-box strong { color:#7c3aed; }
+  .footer { margin-top:32px; padding-top:16px; border-top:1px solid #e2e8f0; text-align:center; font-size:11px; color:#94a3b8; }
+  @media print { body { padding: 20px; } button { display:none; } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>ProntPsi — Relatório Anual para Declaração de IR</h1>
+    <p>Profissional: <strong>${d.profissional}</strong> &nbsp;|&nbsp; Ano-calendário: <strong>${ano}</strong> &nbsp;|&nbsp; Regime: <strong>${regimeLabel[d.regime] || d.regime || 'Não configurado'}</strong></p>
+    <p style="margin-top:6px;font-size:11px;">Gerado em: ${new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+  </div>
+
+  <div class="resumo">
+    <div class="resumo-card bruto">
+      <label>Receita Bruta Total</label>
+      <div class="valor">${fmt(totalBruto)}</div>
+    </div>
+    <div class="resumo-card impostos">
+      <label>Total de Impostos</label>
+      <div class="valor">${fmt(totalImpostos)}</div>
+    </div>
+    <div class="resumo-card liquido">
+      <label>Valor Líquido</label>
+      <div class="valor">${fmt(totalLiquido)}</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Mês</th>
+        <th>Sessões Manuais</th>
+        <th>Pacotes</th>
+        <th>Online (Stripe)</th>
+        <th>Receita Bruta</th>
+        <th>Impostos</th>
+        <th>Valor Líquido</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${linhasMeses.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">Nenhuma receita registrada no período.</td></tr>' :
+                linhasMeses.map(l => `
+        <tr>
+          <td><strong>${l.mes}</strong></td>
+          <td>${fmt(l.manuais)}</td>
+          <td>${fmt(l.pacotes)}</td>
+          <td>${fmt(l.online)}</td>
+          <td><strong>${fmt(l.bruto)}</strong></td>
+          <td style="color:#dc2626;">${fmt(l.impostos.total)}<br><small style="color:#94a3b8;">${l.impostos.detalhes.map(x => x.nome + ': ' + fmt(x.valor)).join(' · ')}</small></td>
+          <td style="color:#0284c7;font-weight:600;">${fmt(l.liquido)}</td>
+        </tr>`).join('')
+            }
+      <tr class="total-row">
+        <td>TOTAL ${ano}</td>
+        <td>${fmt(d.meses.reduce((s, m) => s + (m.manuais || 0), 0))}</td>
+        <td>${fmt(d.meses.reduce((s, m) => s + (m.pacotes || 0), 0))}</td>
+        <td>${fmt(d.meses.reduce((s, m) => s + (m.online || 0), 0))}</td>
+        <td>${fmt(totalBruto)}</td>
+        <td>${fmt(totalImpostos)}</td>
+        <td>${fmt(totalLiquido)}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="regime-box">
+    <strong>Regime fiscal utilizado: ${regimeLabel[d.regime] || 'Não configurado'}</strong><br>
+    ${d.regime === 'autonomo' ? `Cálculo: INSS (11% sobre bruto, teto R$ 7.786,02) + ISS (${d.iss || 3}% sobre bruto) + IRRF (tabela progressiva sobre base = bruto - INSS). Tabela IRPF vigente 2025.` : ''}
+    ${d.regime === 'mei' ? 'Cálculo: DAS MEI fixo de R$ 76,90/mês (serviços). Valor pode variar conforme reajuste anual.' : ''}
+    ${d.regime === 'simples_nacional' ? 'Cálculo: Simples Nacional Anexo III (serviços). Alíquota varia conforme receita bruta anual estimada.' : ''}
+    ${d.regime === 'pessoa_fisica' ? 'Cálculo: Carnê-leão (tabela progressiva IRPF 2025). Não inclui deduções de dependentes ou outras despesas.' : ''}
+    <br><br>
+    <strong style="color:#dc2626;">⚠️ Importante:</strong> Este relatório é um auxílio para sua declaração e não substitui a orientação de um contador. Os valores de impostos são estimativas baseadas nas informações fornecidas.
+  </div>
+
+  <div class="footer">
+    ProntPsi — Sistema Clínico Digital &nbsp;|&nbsp; www.prontpsi.com.br &nbsp;|&nbsp; Documento gerado automaticamente
+  </div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <button onclick="window.print()" style="background:#7c3aed;color:#fff;border:none;padding:12px 32px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">
+      🖨️ Imprimir / Salvar como PDF
+    </button>
+  </div>
+</body>
+</html>`;
+
+        // Abre em nova janela
+        const win = window.open('', '_blank');
+        win.document.write(htmlPDF);
+        win.document.close();
+
+        if (fb) { fb.style.display = 'block'; fb.style.color = '#34d399'; fb.textContent = '✅ Relatório gerado!'; }
+        setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
+
+    } catch (err) {
+        console.error('Relatório IR:', err);
+        if (fb) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = '❌ Erro ao gerar relatório.'; }
+    }
 }
 
 async function carregarFinanceiro() {
@@ -3714,6 +3805,212 @@ async function calcularExibirImpostos(totalBruto, mes, ano) {
                 </div>
             </div>`;
     } catch (e) { console.error('Impostos:', e); }
+}
+
+
+// ── RELATÓRIO ANUAL DE IR ─────────────────────────────────────────
+async function gerarRelatorioIR() {
+    const ano = document.getElementById('ir-ano')?.value || new Date().getFullYear();
+    const fb = document.getElementById('ir-feedback');
+    if (fb) { fb.style.display = 'block'; fb.style.color = '#fbbf24'; fb.textContent = '⏳ Gerando relatório...'; }
+
+    try {
+        const res = await fetch(`${API_URL}/api/financeiro/relatorio-anual?ano=${ano}`, { headers: headersAuth() });
+        if (!res.ok) throw new Error('Erro ao buscar dados');
+        const d = await res.json();
+
+        const MESES_NOME = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        const regimeLabel = { autonomo: 'Autônomo / RPA', mei: 'MEI', simples_nacional: 'Simples Nacional', pessoa_fisica: 'Pessoa Física (Carnê-Leão)' };
+
+        // Calcula impostos por mês e totais
+        const TABELA_IRPF = [
+            { limite: 2428.80, aliquota: 0, deducao: 0 },
+            { limite: 2826.65, aliquota: 0.075, deducao: 182.16 },
+            { limite: 3751.05, aliquota: 0.15, deducao: 394.16 },
+            { limite: 4664.68, aliquota: 0.225, deducao: 675.49 },
+            { limite: Infinity, aliquota: 0.275, deducao: 908.73 }
+        ];
+
+        function calcIRPF(v) {
+            for (const f of TABELA_IRPF) {
+                if (v <= f.limite) return Math.max(0, v * f.aliquota - f.deducao);
+            }
+            return 0;
+        }
+
+        function calcImpostos(bruto, regime, iss) {
+            if (!bruto || bruto <= 0) return { total: 0, detalhes: [] };
+            if (regime === 'autonomo') {
+                const inss = Math.min(bruto, 7786.02) * 0.11;
+                const ir = calcIRPF(bruto - inss);
+                const issv = bruto * ((iss || 3) / 100);
+                return {
+                    total: inss + ir + issv, detalhes: [
+                        { nome: 'INSS (11%)', valor: inss },
+                        { nome: `ISS (${iss || 3}%)`, valor: issv },
+                        { nome: 'IRRF', valor: ir }
+                    ]
+                };
+            } else if (regime === 'mei') {
+                return { total: 76.90, detalhes: [{ nome: 'DAS MEI (fixo)', valor: 76.90 }] };
+            } else if (regime === 'simples_nacional') {
+                const anual = bruto * 12;
+                const aliq = anual > 360000 ? 0.112 : anual > 180000 ? 0.09 : 0.06;
+                const v = bruto * aliq;
+                return { total: v, detalhes: [{ nome: `Simples Nacional (${(aliq * 100).toFixed(1)}%)`, valor: v }] };
+            } else if (regime === 'pessoa_fisica') {
+                const v = calcIRPF(bruto);
+                return { total: v, detalhes: [{ nome: 'Carnê-leão (IRPF)', valor: v }] };
+            }
+            return { total: 0, detalhes: [] };
+        }
+
+        const fmt = v => 'R$ ' + parseFloat(v || 0).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        let totalBruto = 0, totalImpostos = 0;
+        const linhasMeses = d.meses.map((m, i) => {
+            if (m.total <= 0) return null;
+            const imp = calcImpostos(m.total, d.regime, d.iss);
+            const liquido = m.total - imp.total;
+            totalBruto += m.total;
+            totalImpostos += imp.total;
+            return { mes: MESES_NOME[i], bruto: m.total, manuais: m.manuais, pacotes: m.pacotes, online: m.online, impostos: imp, liquido };
+        }).filter(Boolean);
+
+        const totalLiquido = totalBruto - totalImpostos;
+
+        // Gera HTML do PDF
+        const htmlPDF = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório IR ${ano} — ${d.profissional}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Arial, sans-serif; color: #1e293b; background: #fff; padding: 40px; }
+  .header { text-align:center; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #7c3aed; }
+  .header h1 { font-size:24px; color:#7c3aed; margin-bottom:4px; }
+  .header p { font-size:13px; color:#64748b; }
+  .info-box { background:#f8f4ff; border:1px solid #e9d5ff; border-radius:8px; padding:16px; margin-bottom:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .info-item label { font-size:11px; color:#7c3aed; text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:2px; }
+  .info-item span { font-size:14px; font-weight:600; color:#1e293b; }
+  table { width:100%; border-collapse:collapse; margin-bottom:24px; font-size:13px; }
+  th { background:#7c3aed; color:#fff; padding:10px 14px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+  td { padding:10px 14px; border-bottom:1px solid #e2e8f0; }
+  tr:nth-child(even) td { background:#f8f4ff; }
+  .total-row td { background:#7c3aed !important; color:#fff; font-weight:700; font-size:14px; }
+  .resumo { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px; }
+  .resumo-card { border-radius:8px; padding:16px; text-align:center; }
+  .resumo-card.bruto { background:#f0fdf4; border:1px solid #bbf7d0; }
+  .resumo-card.impostos { background:#fef2f2; border:1px solid #fecaca; }
+  .resumo-card.liquido { background:#f0f9ff; border:1px solid #bae6fd; }
+  .resumo-card label { font-size:11px; text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:6px; }
+  .resumo-card.bruto label { color:#16a34a; }
+  .resumo-card.impostos label { color:#dc2626; }
+  .resumo-card.liquido label { color:#0284c7; }
+  .resumo-card .valor { font-size:22px; font-weight:700; }
+  .resumo-card.bruto .valor { color:#16a34a; }
+  .resumo-card.impostos .valor { color:#dc2626; }
+  .resumo-card.liquido .valor { color:#0284c7; }
+  .regime-box { background:#faf5ff; border:1px solid #e9d5ff; border-radius:8px; padding:14px; margin-bottom:24px; font-size:12px; color:#4b5563; line-height:1.6; }
+  .regime-box strong { color:#7c3aed; }
+  .footer { margin-top:32px; padding-top:16px; border-top:1px solid #e2e8f0; text-align:center; font-size:11px; color:#94a3b8; }
+  @media print { body { padding: 20px; } button { display:none; } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>ProntPsi — Relatório Anual para Declaração de IR</h1>
+    <p>Profissional: <strong>${d.profissional}</strong> &nbsp;|&nbsp; Ano-calendário: <strong>${ano}</strong> &nbsp;|&nbsp; Regime: <strong>${regimeLabel[d.regime] || d.regime || 'Não configurado'}</strong></p>
+    <p style="margin-top:6px;font-size:11px;">Gerado em: ${new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+  </div>
+
+  <div class="resumo">
+    <div class="resumo-card bruto">
+      <label>Receita Bruta Total</label>
+      <div class="valor">${fmt(totalBruto)}</div>
+    </div>
+    <div class="resumo-card impostos">
+      <label>Total de Impostos</label>
+      <div class="valor">${fmt(totalImpostos)}</div>
+    </div>
+    <div class="resumo-card liquido">
+      <label>Valor Líquido</label>
+      <div class="valor">${fmt(totalLiquido)}</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Mês</th>
+        <th>Sessões Manuais</th>
+        <th>Pacotes</th>
+        <th>Online (Stripe)</th>
+        <th>Receita Bruta</th>
+        <th>Impostos</th>
+        <th>Valor Líquido</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${linhasMeses.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">Nenhuma receita registrada no período.</td></tr>' :
+                linhasMeses.map(l => `
+        <tr>
+          <td><strong>${l.mes}</strong></td>
+          <td>${fmt(l.manuais)}</td>
+          <td>${fmt(l.pacotes)}</td>
+          <td>${fmt(l.online)}</td>
+          <td><strong>${fmt(l.bruto)}</strong></td>
+          <td style="color:#dc2626;">${fmt(l.impostos.total)}<br><small style="color:#94a3b8;">${l.impostos.detalhes.map(x => x.nome + ': ' + fmt(x.valor)).join(' · ')}</small></td>
+          <td style="color:#0284c7;font-weight:600;">${fmt(l.liquido)}</td>
+        </tr>`).join('')
+            }
+      <tr class="total-row">
+        <td>TOTAL ${ano}</td>
+        <td>${fmt(d.meses.reduce((s, m) => s + (m.manuais || 0), 0))}</td>
+        <td>${fmt(d.meses.reduce((s, m) => s + (m.pacotes || 0), 0))}</td>
+        <td>${fmt(d.meses.reduce((s, m) => s + (m.online || 0), 0))}</td>
+        <td>${fmt(totalBruto)}</td>
+        <td>${fmt(totalImpostos)}</td>
+        <td>${fmt(totalLiquido)}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="regime-box">
+    <strong>Regime fiscal utilizado: ${regimeLabel[d.regime] || 'Não configurado'}</strong><br>
+    ${d.regime === 'autonomo' ? `Cálculo: INSS (11% sobre bruto, teto R$ 7.786,02) + ISS (${d.iss || 3}% sobre bruto) + IRRF (tabela progressiva sobre base = bruto - INSS). Tabela IRPF vigente 2025.` : ''}
+    ${d.regime === 'mei' ? 'Cálculo: DAS MEI fixo de R$ 76,90/mês (serviços). Valor pode variar conforme reajuste anual.' : ''}
+    ${d.regime === 'simples_nacional' ? 'Cálculo: Simples Nacional Anexo III (serviços). Alíquota varia conforme receita bruta anual estimada.' : ''}
+    ${d.regime === 'pessoa_fisica' ? 'Cálculo: Carnê-leão (tabela progressiva IRPF 2025). Não inclui deduções de dependentes ou outras despesas.' : ''}
+    <br><br>
+    <strong style="color:#dc2626;">⚠️ Importante:</strong> Este relatório é um auxílio para sua declaração e não substitui a orientação de um contador. Os valores de impostos são estimativas baseadas nas informações fornecidas.
+  </div>
+
+  <div class="footer">
+    ProntPsi — Sistema Clínico Digital &nbsp;|&nbsp; www.prontpsi.com.br &nbsp;|&nbsp; Documento gerado automaticamente
+  </div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <button onclick="window.print()" style="background:#7c3aed;color:#fff;border:none;padding:12px 32px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">
+      🖨️ Imprimir / Salvar como PDF
+    </button>
+  </div>
+</body>
+</html>`;
+
+        // Abre em nova janela
+        const win = window.open('', '_blank');
+        win.document.write(htmlPDF);
+        win.document.close();
+
+        if (fb) { fb.style.display = 'block'; fb.style.color = '#34d399'; fb.textContent = '✅ Relatório gerado!'; }
+        setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
+
+    } catch (err) {
+        console.error('Relatório IR:', err);
+        if (fb) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = '❌ Erro ao gerar relatório.'; }
+    }
 }
 
 async function carregarFinanceiro() {

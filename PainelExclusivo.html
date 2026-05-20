@@ -89,22 +89,22 @@
 
                 <div style="padding: 16px; margin-top: auto; border-top: 1px solid rgba(139,92,246,0.15);">
                     <a href="planos.html" style="
-                      display: flex; align-items: center; gap: 10px;
-                      color: #fbbf24; font-size: 13px; text-decoration: none;
-                      padding: 8px 12px; border-radius: 8px;
-                      background: rgba(251,191,36,0.08);
-                      border: 1px solid rgba(251,191,36,0.2);
+        display: flex; align-items: center; gap: 10px;
+        color: #fbbf24; font-size: 13px; text-decoration: none;
+        padding: 8px 12px; border-radius: 8px;
+        background: rgba(251,191,36,0.08);
+        border: 1px solid rgba(251,191,36,0.2);
     ">
                         <i class="fas fa-crown"></i> Ver meu plano
                     </a>
                 </div>
             </ul>
             <a href="admin.html" id="link-admin" style="
-                  display: none; align-items: center; gap: 10px;
-                  color: #f87171; font-size: 13px; text-decoration: none;
-                  padding: 8px 12px; border-radius: 8px; margin-top: 8px;
-                  background: rgba(248,113,113,0.08);
-                  border: 1px solid rgba(248,113,113,0.2);
+    display: none; align-items: center; gap: 10px;
+    color: #f87171; font-size: 13px; text-decoration: none;
+    padding: 8px 12px; border-radius: 8px; margin-top: 8px;
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.2);
 ">
                 <i class="fas fa-shield-alt"></i> Painel Admin
             </a>
@@ -925,6 +925,25 @@
                         <button onclick="carregarFinanceiro()" style="background:#7c3aed; color:#fff; border:none; padding:9px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif;">
                             <i class="fas fa-search" style="margin-right:6px;"></i>Filtrar
                         </button>
+                    </div>
+
+                    <!-- RELATÓRIO IR -->
+                    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(139,92,246,0.1);">
+                        <p style="font-size:13px;color:#94a3b8;margin-bottom:12px;">
+                            <i class="fas fa-file-invoice" style="color:#a78bfa;margin-right:6px;"></i>
+                            <strong style="color:#e2e8f0;">Relatório Anual para IR</strong> — Gere um PDF com todas as receitas do ano e cálculo de impostos para facilitar sua declaração.
+                        </p>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <div>
+                                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Ano do relatório</label>
+                                <input type="number" id="ir-ano" value="2025" min="2024" max="2030"
+                                       style="padding:9px 14px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;font-family:'Roboto',sans-serif;width:100px;">
+                            </div>
+                            <button onclick="gerarRelatorioIR()" style="margin-top:16px;background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.3);padding:9px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;font-weight:600;">
+                                <i class="fas fa-file-pdf" style="margin-right:6px;"></i>Gerar PDF para IR
+                            </button>
+                            <span id="ir-feedback" style="font-size:13px;display:none;margin-top:16px;"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -2620,46 +2639,26 @@
             <script src="financeiro-visual-prontpsi.js"></script>
             <script defer src="formularios2.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-            <!-- MODAL RECADO DO ADMIN -->
-            <div id="modal-recado-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
-                <div style="background:#1a2332;border:1px solid rgba(139,92,246,.3);border-radius:16px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);">
-                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-                        <div style="width:42px;height:42px;border-radius:50%;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="fas fa-envelope" style="color:#a78bfa;font-size:18px;"></i>
-                        </div>
-                        <div>
-                            <p style="font-size:15px;font-weight:600;color:#f1f5f9;margin:0;">Recado da equipe ProntPsi</p>
-                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;" id="recado-data-envio"></p>
-                        </div>
-                    </div>
-                    <div id="recado-admin-mensagem" style="font-size:14px;color:#cbd5e1;line-height:1.7;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:16px 18px;margin-bottom:20px;"></div>
-                    <button onclick="marcarRecadoLido()"
-                            style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">
-                        <i class="fas fa-check" style="margin-right:8px;"></i>Entendido, marcar como lido
-                    </button>
-                </div>
-            </div>
-
-
 
 
             <!-- MODAL PACOTES DO PACIENTE -->
-            <div id="modal-pacotes-paciente" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+            <div id="modal-pacotes-paciente" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:2000;align-items:center;justify-content:center;padding:20px;">
                 <div style="background:#1a2332;border:1px solid rgba(96,165,250,.3);border-radius:16px;padding:28px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;position:relative;">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-                        <h3 id="modal-pacotes-titulo" style="font-size:16px;font-weight:600;color:#e2e8f0;margin:0;">
-                            <i class="fas fa-box" style="color:#60a5fa;margin-right:8px;"></i>Pacotes
-                        </h3>
+                        <h3 id="modal-pacotes-titulo" style="font-size:16px;font-weight:600;color:#e2e8f0;margin:0;"><i class="fas fa-box" style="color:#60a5fa;margin-right:8px;"></i>Pacotes</h3>
                         <button onclick="fecharModalPacotes()" style="background:transparent;border:none;color:#64748b;font-size:20px;cursor:pointer;">✕</button>
                     </div>
 
+                    <!-- Lista de pacotes -->
                     <div id="pacotes-container" style="margin-bottom:16px;"></div>
 
+                    <!-- Botão novo pacote -->
                     <button onclick="document.getElementById('form-pacote-inline').style.display=document.getElementById('form-pacote-inline').style.display==='none'?'block':'none'"
                             style="width:100%;padding:10px;background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.25);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;margin-bottom:12px;">
                         <i class="fas fa-plus" style="margin-right:6px;"></i>Criar novo pacote
                     </button>
 
+                    <!-- Form inline -->
                     <div id="form-pacote-inline" style="display:none;background:#141d2b;border:1px solid rgba(96,165,250,.15);border-radius:10px;padding:16px;">
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
                             <div>
@@ -2703,6 +2702,26 @@
                     </div>
                 </div>
             </div>
-    </div>
+
+            <!-- MODAL RECADO DO ADMIN -->
+            <div id="modal-recado-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+                <div style="background:#1a2332;border:1px solid rgba(139,92,246,.3);border-radius:16px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                        <div style="width:42px;height:42px;border-radius:50%;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fas fa-envelope" style="color:#a78bfa;font-size:18px;"></i>
+                        </div>
+                        <div>
+                            <p style="font-size:15px;font-weight:600;color:#f1f5f9;margin:0;">Recado da equipe ProntPsi</p>
+                            <p style="font-size:11px;color:#64748b;margin:2px 0 0;" id="recado-data-envio"></p>
+                        </div>
+                    </div>
+                    <div id="recado-admin-mensagem" style="font-size:14px;color:#cbd5e1;line-height:1.7;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:16px 18px;margin-bottom:20px;"></div>
+                    <button onclick="marcarRecadoLido()"
+                            style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">
+                        <i class="fas fa-check" style="margin-right:8px;"></i>Entendido, marcar como lido
+                    </button>
+                </div>
+            </div>
+
 </body>
 </html>
