@@ -2471,19 +2471,12 @@
                                 <input type="hidden" id="n-img" />
                             </div>
                         </div>
-                        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
-                            <div class="form-group" style="margin:0;">
-                                <label class="form-label">Status</label>
-                                <select class="form-select" id="n-status" style="max-width:200px" onchange="toggleAgendamento()">
-                                    <option value="publicado">✅ Publicar agora</option>
-                                    <option value="agendado">🕐 Agendar publicação</option>
-                                    <option value="rascunho">📝 Rascunho</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="campo-agendamento" style="margin:0;display:none;">
-                                <label class="form-label">Data e hora de publicação</label>
-                                <input type="datetime-local" class="form-select" id="n-publicar-em" style="max-width:240px;">
-                            </div>
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="n-status" style="max-width:200px">
+                                <option value="publicado">✅ Publicado</option>
+                                <option value="rascunho">📝 Rascunho</option>
+                            </select>
                         </div>
                         <div style="display:flex;gap:10px;flex-wrap:wrap">
                             <button class="btn-preview" onclick="abrirPreview()"><i class="fas fa-eye"></i> Pré-visualizar</button>
@@ -2544,22 +2537,68 @@
                 <!-- PROFISSIONAIS -->
                 <div class="admin-section" id="sec-profissionais">
                     <div class="admin-card">
-                        <div class="admin-card-title"><i class="fas fa-plus-circle"></i> Adicionar profissional em destaque</div>
-                        <div class="form-row">
-                            <div class="form-group"><label class="form-label">Nome completo *</label><input class="form-input" id="p-nome" placeholder="Ex: Dra. Maria Silva" /></div>
-                            <div class="form-group"><label class="form-label">Especialidade *</label><input class="form-input" id="p-spec" placeholder="Ex: Psiquiatra · TDAH e Ansiedade" /></div>
+                        <div class="admin-card-title"><i class="fas fa-star"></i> Adicionar profissional em destaque</div>
+
+                        <!-- Seletor de origem -->
+                        <div style="display:flex;gap:10px;margin-bottom:20px;">
+                            <button id="btn-origem-vitrine" onclick="selecionarOrigem('vitrine')"
+                                    style="flex:1;padding:10px;border-radius:8px;border:2px solid #7c3aed;background:rgba(124,58,237,.12);color:#a78bfa;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;">
+                                🌐 Da Vitrine Pública
+                            </button>
+                            <button id="btn-origem-manual" onclick="selecionarOrigem('manual')"
+                                    style="flex:1;padding:10px;border-radius:8px;border:2px solid rgba(100,116,139,.3);background:transparent;color:#64748b;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;">
+                                ✏️ Cadastro Manual
+                            </button>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group"><label class="form-label">Cidade / Estado</label><input class="form-input" id="p-loc" placeholder="Ex: São Paulo, SP" /></div>
-                            <div class="form-group"><label class="form-label">Iniciais (para avatar) *</label><input class="form-input" id="p-iniciais" placeholder="Ex: MS" maxlength="2" style="max-width:100px" /></div>
+
+                        <!-- Formulário Vitrine -->
+                        <div id="form-vitrine-destaque">
+                            <p style="font-size:13px;color:#94a3b8;margin-bottom:14px;">Selecione um profissional verificado da vitrine. Os dados são puxados automaticamente.</p>
+                            <div class="form-group">
+                                <label class="form-label">Profissional verificado</label>
+                                <select class="form-select" id="p-prof-vitrine" onchange="previewProfVitrine()">
+                                    <option value="">Carregando...</option>
+                                </select>
+                            </div>
+                            <!-- Preview -->
+                            <div id="preview-prof-vitrine" style="display:none;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);border-radius:10px;padding:16px;margin-bottom:16px;display:none;">
+                                <div style="display:flex;align-items:center;gap:14px;">
+                                    <img id="preview-foto" src="" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid rgba(124,58,237,.3);display:none;">
+                                    <div id="preview-iniciais" style="width:56px;height:56px;border-radius:50%;background:rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#a78bfa;flex-shrink:0;"></div>
+                                    <div>
+                                        <div id="preview-nome" style="font-size:15px;font-weight:600;color:#e2e8f0;"></div>
+                                        <div id="preview-esp" style="font-size:12px;color:#94a3b8;margin-top:2px;"></div>
+                                        <div id="preview-loc" style="font-size:12px;color:#64748b;margin-top:2px;"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group"><label class="form-label">Link do perfil (opcional)</label><input class="form-input" id="p-link" placeholder="https://..." /></div>
-                        <button class="btn-submit" onclick="salvarProfissional()"><i class="fas fa-user-plus"></i> Adicionar ao destaque</button>
+
+                        <!-- Formulário Manual -->
+                        <div id="form-manual-destaque" style="display:none;">
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">Nome completo *</label><input class="form-input" id="p-nome" placeholder="Ex: Dra. Maria Silva" /></div>
+                                <div class="form-group"><label class="form-label">Especialidade *</label><input class="form-input" id="p-spec" placeholder="Ex: Psiquiatra · TDAH e Ansiedade" /></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">Cidade / Estado</label><input class="form-input" id="p-loc" placeholder="Ex: São Paulo, SP" /></div>
+                                <div class="form-group"><label class="form-label">Iniciais (para avatar)</label><input class="form-input" id="p-iniciais" placeholder="Ex: MS" maxlength="2" style="max-width:100px" /></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">Link do perfil (opcional)</label><input class="form-input" id="p-link" placeholder="https://..." /></div>
+                                <div class="form-group"><label class="form-label">URL da foto (opcional)</label><input class="form-input" id="p-foto" placeholder="https://..." /></div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex;gap:10px;align-items:center;margin-top:6px;">
+                            <button class="btn-submit" onclick="salvarProfissional()"><i class="fas fa-star"></i> Adicionar ao destaque</button>
+                            <span id="p-feedback" style="font-size:13px;display:none;"></span>
+                        </div>
                     </div>
                     <div class="admin-card">
-                        <div class="admin-card-title"><i class="fas fa-list"></i> Profissionais em destaque <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:8px">arraste para reordenar</span></div>
+                        <div class="admin-card-title"><i class="fas fa-list"></i> Profissionais em destaque <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:8px">máximo 4 · arraste para reordenar</span></div>
                         <table class="admin-table">
-                            <thead><tr><th></th><th>Nome</th><th>Especialidade</th><th>Cidade</th><th>Ações</th></tr></thead>
+                            <thead><tr><th></th><th>Foto</th><th>Nome</th><th>Especialidade</th><th>Origem</th><th>Ações</th></tr></thead>
                             <tbody id="profsTabela"></tbody>
                         </table>
                     </div>
@@ -2741,7 +2780,7 @@
         }
 
         function renderHero() {
-            const pubs = noticias.filter(n => n.status === 'publicado' && (!n.publicar_em || new Date(n.publicar_em) <= new Date()));
+            const pubs = noticias.filter(n => n.status === 'publicado');
             if (!pubs.length) return;
             const main = pubs[0];
             const s = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
@@ -2758,7 +2797,7 @@
         }
 
         function renderCards() {
-            const pubs = noticias.filter(n => n.status === 'publicado' && (!n.publicar_em || new Date(n.publicar_em) <= new Date()));
+            const pubs = noticias.filter(n => n.status === 'publicado');
             const grid = document.getElementById('cardsGrid');
             if (!grid) return;
             if (pubs.length <= 1) { grid.innerHTML = pubs.length === 0 ? `<div class="news-card" style="display:flex;align-items:center;justify-content:center;min-height:200px;border-style:dashed"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px"><i class="fas fa-newspaper" style="font-size:28px;margin-bottom:10px;display:block;color:var(--roxo-light);opacity:.4"></i>Publique artigos pelo painel admin</div></div>` : ''; return; }
@@ -2874,7 +2913,7 @@
         document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('open')) doLogin() });
 
         // ─── ADMIN ───
-        function openAdmin() { document.getElementById('admin-panel').classList.add('open'); renderAdminTables(); renderDashStats(); renderTickerAdmin(); }
+        function openAdmin() { document.getElementById('admin-panel').classList.add('open'); renderAdminTables(); renderDashStats(); renderTickerAdmin(); carregarProfVerificados(); }
         function closeAdmin() { document.getElementById('admin-panel').classList.remove('open') }
         function logout() {
             adminToken = null;
@@ -2905,23 +2944,6 @@
         }
 
         // ─── SALVAR NOTÍCIA ───
-        function toggleAgendamento() {
-            const status = document.getElementById('n-status').value;
-            const campo = document.getElementById('campo-agendamento');
-            const btnLabel = document.getElementById('btnSalvarLabel');
-            if (status === 'agendado') {
-                campo.style.display = 'block';
-                btnLabel.textContent = 'Agendar publicação';
-                // Define mínimo como agora + 1 hora
-                const min = new Date(Date.now() + 3600000);
-                const pad = n => String(n).padStart(2, '0');
-                document.getElementById('n-publicar-em').min = `${min.getFullYear()}-${pad(min.getMonth() + 1)}-${pad(min.getDate())}T${pad(min.getHours())}:${pad(min.getMinutes())}`;
-            } else {
-                campo.style.display = 'none';
-                btnLabel.textContent = status === 'publicado' ? 'Publicar agora' : 'Salvar rascunho';
-            }
-        }
-
         async function salvarNoticia() {
             const titulo = document.getElementById('n-titulo').value.trim();
             const resumo = document.getElementById('n-resumo').value.trim();
@@ -2930,9 +2952,7 @@
             if (!titulo) { showToast('Preencha o título', 'erro'); return; }
             if (!resumo) { showToast('Preencha o resumo', 'erro'); return; }
             if (!textoPlano) { showToast('Escreva o texto do artigo', 'erro'); return; }
-            const statusSel = document.getElementById('n-status').value;
-            const publicarEmVal = statusSel === 'agendado' ? document.getElementById('n-publicar-em')?.value : null;
-            const payload = { titulo, resumo, corpo, categoria: document.getElementById('n-cat').value, autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi', img_url: document.getElementById('n-img').value.trim() || null, status: statusSel, publicar_em: publicarEmVal || null };
+            const payload = { titulo, resumo, corpo, categoria: document.getElementById('n-cat').value, autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi', img_url: document.getElementById('n-img').value.trim() || null, status: document.getElementById('n-status').value };
             try {
                 if (editandoId) {
                     await api('PUT', '/noticias/' + editandoId, payload);
@@ -2940,7 +2960,7 @@
                     cancelarEdicao();
                 } else {
                     await api('POST', '/noticias', payload);
-                    showToast(payload.status === 'agendado' ? '🕐 Artigo agendado!' : payload.status === 'publicado' ? '✅ Artigo publicado!' : '📝 Rascunho salvo!');
+                    showToast(payload.status === 'publicado' ? '✅ Artigo publicado!' : '📝 Rascunho salvo!');
                     ['n-titulo', 'n-resumo', 'n-autor'].forEach(id => document.getElementById(id).value = '');
                     clearEditor(); removerImagem();
                     if (document.getElementById('n-ticker')) document.getElementById('n-ticker').checked = false;
@@ -3021,7 +3041,7 @@
                                 <td><span class="ordem-badge">${i + 1}</span></td>
                                 <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
                                 <td>${n.categoria}</td>
-                                <td>${n.status === 'publicado' || n.status_atual === 'publicado' ? '<span class="status-pub">● Publicado</span>' : n.status === 'agendado' ? '<span style="color:#f59e0b;font-size:12px;">🕐 Agendado<br><small style=\'color:#94a3b8;font-size:10px;\'>' + (n.publicar_em ? new Date(n.publicar_em).toLocaleString('pt-BR') : '') + '</small></span>' : '<span class="status-draft">● Rascunho</span>'}</td>
+                                <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td>
                                 <td><div class="table-actions">
                                     <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
                                     <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
@@ -3030,7 +3050,22 @@
             const et = document.getElementById('eventosTabela');
             et.innerHTML = !eventos.length ? `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">Nenhum evento cadastrado</td></tr>` : eventos.map(e => `<tr><td><div class="table-title">${e.titulo}</div></td><td>${formatDate(e.data)}</td><td><span class="event-tag ${e.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${e.modalidade}</span></td><td><button class="btn-danger" onclick="deletarEvento(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
             const pt = document.getElementById('profsTabela');
-            pt.innerHTML = !profissionais.length ? `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum profissional em destaque</td></tr>` : profissionais.map((p, i) => `<tr draggable="true" ondragstart="dragStart(${i})" ondragover="dragOver(event,${i})" ondrop="dragDrop(${i})" style="cursor:grab"><td style="color:var(--muted);font-size:18px;padding-left:10px">⠿</td><td><div class="table-title">${p.nome}</div></td><td>${p.spec || ''}</td><td>${p.loc || '—'}</td><td><button class="btn-danger" onclick="deletarProf(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+            pt.innerHTML = !profissionais.length ? `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Nenhum profissional em destaque</td></tr>` : profissionais.map((p, i) => {
+                const fotoHtml = (p.foto_final || p.foto_url)
+                    ? `<img src="${p.foto_final || p.foto_url}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(124,58,237,.3);">`
+                    : `<div style="width:36px;height:36px;border-radius:50%;background:rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#a78bfa;">${p.iniciais || 'PS'}</div>`;
+                const origemBadge = p.origem === 'vitrine'
+                    ? '<span style="font-size:10px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25);padding:1px 7px;border-radius:10px;">🌐 Vitrine</span>'
+                    : '<span style="font-size:10px;background:rgba(100,116,139,.1);color:#94a3b8;border:1px solid rgba(100,116,139,.2);padding:1px 7px;border-radius:10px;">✏️ Manual</span>';
+                return `<tr draggable="true" ondragstart="dragStart(${i})" ondragover="dragOver(event,${i})" ondrop="dragDrop(${i})" style="cursor:grab">
+                            <td style="color:var(--muted);font-size:18px;padding-left:10px">⠿</td>
+                            <td>${fotoHtml}</td>
+                            <td><div class="table-title">${p.nome}</div></td>
+                            <td>${p.especialidade || p.spec || ''}</td>
+                            <td>${origemBadge}</td>
+                            <td><button class="btn-danger" onclick="deletarProf(${p.id})"><i class="fas fa-trash"></i></button></td>
+                        </tr>`;
+            }).join('');
         }
 
         // ─── DRAG & DROP NOTÍCIAS ───
