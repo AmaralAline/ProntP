@@ -3010,17 +3010,91 @@
         }
 
         // ─── SALVAR PROFISSIONAL ───
-        async function salvarProfissional() {
-            const nome = document.getElementById('p-nome').value.trim();
-            const iniciais = document.getElementById('p-iniciais').value.trim().toUpperCase();
-            if (!nome || !iniciais) { showToast('Preencha nome e iniciais', 'erro'); return; }
-            try {
-                await api('POST', '/profissionais', { nome, iniciais, especialidade: document.getElementById('p-spec').value.trim(), cidade: document.getElementById('p-loc').value.trim() || null, link_perfil: document.getElementById('p-link').value.trim() || null });
-                ['p-nome', 'p-iniciais', 'p-spec', 'p-loc', 'p-link'].forEach(id => document.getElementById(id).value = '');
-                await carregarAdmin(); renderAdminTables(); renderProfissionais(); renderDashStats();
-                showToast('✅ Profissional adicionado!');
-            } catch (e) { console.error(e); showToast('Erro: ' + (e.erro || e.message || ''), 'erro'); }
+        // ─── DESTAQUE PROFISSIONAIS ───
+        let origemDestaque = 'vitrine';
+        let profVerificados = [];
+
+        function selecionarOrigem(origem) {
+            origemDestaque = origem;
+            document.getElementById('form-vitrine-destaque').style.display = origem === 'vitrine' ? 'block' : 'none';
+            document.getElementById('form-manual-destaque').style.display = origem === 'manual' ? 'block' : 'none';
+            const ativo = 'flex:1;padding:10px;border-radius:8px;border:2px solid #7c3aed;background:rgba(124,58,237,.12);color:#a78bfa;cursor:pointer;font-size:13px;font-weight:600;';
+            const inativo = 'flex:1;padding:10px;border-radius:8px;border:2px solid rgba(100,116,139,.3);background:transparent;color:#64748b;cursor:pointer;font-size:13px;font-weight:600;';
+            document.getElementById('btn-origem-vitrine').style.cssText = origem === 'vitrine' ? ativo : inativo;
+            document.getElementById('btn-origem-manual').style.cssText = origem === 'manual' ? ativo : inativo;
         }
+
+        async function carregarProfVerificados() {
+            try {
+                const res = await fetch(`${API}/profissionais-verificados`, { headers: { Authorization: `Bearer ${adminToken}` } });
+                if (!res.ok) { console.warn('profissionais-verificados:', res.status); return; }
+                profVerificados = await res.json();
+                const sel = document.getElementById('p-prof-vitrine');
+                if (!sel) return;
+                if (!profVerificados.length) {
+                    sel.innerHTML = '<option value="">Nenhum profissional verificado na vitrine ainda</option>';
+                    return;
+                }
+                sel.innerHTML = '<option value="">Selecione um profissional...</option>' +
+                    profVerificados.map(p => `<option value="${p.id}">${p.nome}${p.especialidade ? ' — ' + p.especialidade : ''}</option>`).join('');
+            } catch (e) { console.error('carregarProfVerificados:', e); }
+        }
+
+        function previewProfVitrine() {
+            const id = parseInt(document.getElementById('p-prof-vitrine').value);
+            const preview = document.getElementById('preview-prof-vitrine');
+            if (!id || !preview) { if (preview) preview.style.display = 'none'; return; }
+            const prof = profVerificados.find(p => p.id === id);
+            if (!prof) return;
+            document.getElementById('preview-nome').textContent = prof.nome;
+            document.getElementById('preview-esp').textContent = prof.especialidade || '';
+            const loc = [prof.vitrine_cidade, prof.vitrine_estado].filter(Boolean).join(', ');
+            document.getElementById('preview-loc').textContent = loc || '';
+            const fotoEl = document.getElementById('preview-foto');
+            const iniciaisEl = document.getElementById('preview-iniciais');
+            if (prof.foto_url) {
+                fotoEl.src = prof.foto_url; fotoEl.style.display = 'block'; iniciaisEl.style.display = 'none';
+            } else {
+                fotoEl.style.display = 'none'; iniciaisEl.style.display = 'flex';
+                iniciaisEl.textContent = prof.nome.split(' ').filter(p => p.length > 2).slice(0, 2).map(p => p[0]).join('').toUpperCase() || 'PS';
+            }
+            preview.style.display = 'block';
+        }
+
+        async function salvarProfissional() {
+            const fb = document.getElementById('p-feedback');
+            let payload = {};
+            if (origemDestaque === 'vitrine') {
+                const profId = document.getElementById('p-prof-vitrine')?.value;
+                if (!profId) { if (fb) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Selecione um profissional.'; } return; }
+                payload = { profissional_id: parseInt(profId), origem: 'vitrine' };
+            } else {
+                const nome = document.getElementById('p-nome')?.value.trim();
+                if (!nome) { if (fb) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Preencha o nome.'; } return; }
+                payload = {
+                    nome,
+                    iniciais: (document.getElementById('p-iniciais')?.value.trim() || nome.substring(0, 2)).toUpperCase(),
+                    especialidade: document.getElementById('p-spec')?.value.trim() || '',
+                    cidade: document.getElementById('p-loc')?.value.trim() || null,
+                    link_perfil: document.getElementById('p-link')?.value.trim() || null,
+                    foto_url: document.getElementById('p-foto')?.value.trim() || null,
+                    origem: 'manual'
+                };
+            }
+            try {
+                if (fb) { fb.style.display = 'block'; fb.style.color = '#fbbf24'; fb.textContent = '⏳ Salvando...'; }
+                await api('POST', '/profissionais', payload);
+                if (fb) { fb.style.display = 'block'; fb.style.color = '#34d399'; fb.textContent = '✅ Adicionado ao destaque!'; }
+                setTimeout(() => { if (fb) fb.style.display = 'none'; }, 3000);
+                await carregarAdmin(); renderAdminTables(); renderProfissionais(); renderDashStats();
+                document.getElementById('preview-prof-vitrine').style.display = 'none';
+                document.getElementById('p-prof-vitrine').value = '';
+            } catch (e) {
+                if (fb) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = '❌ ' + (e.erro || e.message || 'Erro ao salvar'); }
+                console.error(e);
+            }
+        }
+
 
         // ─── DELETE ───
         async function deletarNoticia(id) { if (!confirm('Remover este artigo?')) return; try { await api('DELETE', '/noticias/' + id); await carregarAdmin(); renderAdminTables(); renderPortal(); renderDashStats(); showToast('🗑 Artigo removido'); } catch { showToast('Erro ao remover', 'erro'); } }
