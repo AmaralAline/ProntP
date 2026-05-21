@@ -2119,7 +2119,6 @@
             <a href="#" onclick="filterCat('Psicologia',null);return false">Psicologia</a>
             <a href="#" onclick="filterCat('Psiquiatria',null);return false">Psiquiatria</a>
             <a href="#" onclick="filterCat('Neurociência',null);return false">Neurociência</a>
-            <a href="#" onclick="filterCat('Psicanálise',null);return false">Psicanálise</a>
             <a href="#" onclick="filterCat('Eventos',null);return false">Eventos</a>
         </div>
         <div class="nav-links">
@@ -2154,7 +2153,6 @@
                 <button class="portal-cat" onclick="filterCat('Psiquiatria',this)">Psiquiatria</button>
                 <button class="portal-cat" onclick="filterCat('Neurociência',this)">Neurociência</button>
                 <button class="portal-cat" onclick="filterCat('Carreira',this)">Carreira</button>
-                <button class="portal-cat" onclick="filterCat('Psicanálise',this)">Psicanálise</button>
             </div>
             <span class="portal-date" id="portalDate"></span>
         </div>
@@ -2252,8 +2250,8 @@
         <div class="sistema-cta">
             <div>
                 <div class="sistema-cta-label">⚡ Sistema clínico</div>
-                <div class="sistema-cta-title">Para psicólogos, psiquiatras<br>e psicanalistas</div>
-                <div class="sistema-cta-sub">Prontuário eletrônico, agenda online, escalas clínicas e vitrine para novos pacientes. Tudo que você precisa para organizar sua clínica e crescer.</div>
+                <div class="sistema-cta-title">Prontuário, agenda e escalas<br>em um só lugar</div>
+                <div class="sistema-cta-sub">Para psicólogos, psiquiatras e equipes multidisciplinares. Tudo que você precisa para organizar sua clínica.</div>
                 <div class="sistema-cta-feats">
                     <div class="sistema-feat"><i class="fas fa-check-circle"></i> Agenda com pagamento online</div>
                     <div class="sistema-feat"><i class="fas fa-check-circle"></i> 16 escalas clínicas validadas</div>
@@ -2291,7 +2289,7 @@
             <a href="mailto:prontpsii@gmail.com">Contato</a>
         </div>
         <p style="font-size:13px;color:var(--muted2);max-width:560px;margin:0 auto 16px;line-height:1.7">Portal de notícias, recursos e referência para psicólogos e psiquiatras brasileiros.</p>
-        <p class="footer-copy">© 2026 ProntPsi — O sistema clínico para psicólogos, psiquiatras e psicanalistas.</p>
+        <p class="footer-copy">© 2026 ProntPsi — O sistema clínico e portal de referência do universo Psi.</p>
         <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:24px">
             <a href="https://instagram.com/prontpsi" target="_blank" style="color:var(--muted);text-decoration:none;font-size:13px;display:inline-flex;align-items:center;gap:7px"><i class="fab fa-instagram" style="font-size:17px"></i> @prontpsi</a>
             <a href="#admin-acesso" onclick="openLogin();return false;" style="color:var(--muted);text-decoration:none;font-size:11px;opacity:.35;transition:opacity .2s" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.35'"><i class="fas fa-lock" style="font-size:10px"></i> admin</a>
@@ -2473,12 +2471,19 @@
                                 <input type="hidden" id="n-img" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" id="n-status" style="max-width:200px">
-                                <option value="publicado">✅ Publicado</option>
-                                <option value="rascunho">📝 Rascunho</option>
-                            </select>
+                        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
+                            <div class="form-group" style="margin:0;">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="n-status" style="max-width:200px" onchange="toggleAgendamento()">
+                                    <option value="publicado">✅ Publicar agora</option>
+                                    <option value="agendado">🕐 Agendar publicação</option>
+                                    <option value="rascunho">📝 Rascunho</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="campo-agendamento" style="margin:0;display:none;">
+                                <label class="form-label">Data e hora de publicação</label>
+                                <input type="datetime-local" class="form-select" id="n-publicar-em" style="max-width:240px;">
+                            </div>
                         </div>
                         <div style="display:flex;gap:10px;flex-wrap:wrap">
                             <button class="btn-preview" onclick="abrirPreview()"><i class="fas fa-eye"></i> Pré-visualizar</button>
@@ -2736,7 +2741,7 @@
         }
 
         function renderHero() {
-            const pubs = noticias.filter(n => n.status === 'publicado');
+            const pubs = noticias.filter(n => n.status === 'publicado' && (!n.publicar_em || new Date(n.publicar_em) <= new Date()));
             if (!pubs.length) return;
             const main = pubs[0];
             const s = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
@@ -2753,7 +2758,7 @@
         }
 
         function renderCards() {
-            const pubs = noticias.filter(n => n.status === 'publicado');
+            const pubs = noticias.filter(n => n.status === 'publicado' && (!n.publicar_em || new Date(n.publicar_em) <= new Date()));
             const grid = document.getElementById('cardsGrid');
             if (!grid) return;
             if (pubs.length <= 1) { grid.innerHTML = pubs.length === 0 ? `<div class="news-card" style="display:flex;align-items:center;justify-content:center;min-height:200px;border-style:dashed"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px"><i class="fas fa-newspaper" style="font-size:28px;margin-bottom:10px;display:block;color:var(--roxo-light);opacity:.4"></i>Publique artigos pelo painel admin</div></div>` : ''; return; }
@@ -2900,6 +2905,23 @@
         }
 
         // ─── SALVAR NOTÍCIA ───
+        function toggleAgendamento() {
+            const status = document.getElementById('n-status').value;
+            const campo = document.getElementById('campo-agendamento');
+            const btnLabel = document.getElementById('btnSalvarLabel');
+            if (status === 'agendado') {
+                campo.style.display = 'block';
+                btnLabel.textContent = 'Agendar publicação';
+                // Define mínimo como agora + 1 hora
+                const min = new Date(Date.now() + 3600000);
+                const pad = n => String(n).padStart(2, '0');
+                document.getElementById('n-publicar-em').min = `${min.getFullYear()}-${pad(min.getMonth() + 1)}-${pad(min.getDate())}T${pad(min.getHours())}:${pad(min.getMinutes())}`;
+            } else {
+                campo.style.display = 'none';
+                btnLabel.textContent = status === 'publicado' ? 'Publicar agora' : 'Salvar rascunho';
+            }
+        }
+
         async function salvarNoticia() {
             const titulo = document.getElementById('n-titulo').value.trim();
             const resumo = document.getElementById('n-resumo').value.trim();
@@ -2908,7 +2930,9 @@
             if (!titulo) { showToast('Preencha o título', 'erro'); return; }
             if (!resumo) { showToast('Preencha o resumo', 'erro'); return; }
             if (!textoPlano) { showToast('Escreva o texto do artigo', 'erro'); return; }
-            const payload = { titulo, resumo, corpo, categoria: document.getElementById('n-cat').value, autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi', img_url: document.getElementById('n-img').value.trim() || null, status: document.getElementById('n-status').value };
+            const statusSel = document.getElementById('n-status').value;
+            const publicarEmVal = statusSel === 'agendado' ? document.getElementById('n-publicar-em')?.value : null;
+            const payload = { titulo, resumo, corpo, categoria: document.getElementById('n-cat').value, autor: document.getElementById('n-autor').value.trim() || 'Redação ProntPsi', img_url: document.getElementById('n-img').value.trim() || null, status: statusSel, publicar_em: publicarEmVal || null };
             try {
                 if (editandoId) {
                     await api('PUT', '/noticias/' + editandoId, payload);
@@ -2916,7 +2940,7 @@
                     cancelarEdicao();
                 } else {
                     await api('POST', '/noticias', payload);
-                    showToast(payload.status === 'publicado' ? '✅ Artigo publicado!' : '📝 Rascunho salvo!');
+                    showToast(payload.status === 'agendado' ? '🕐 Artigo agendado!' : payload.status === 'publicado' ? '✅ Artigo publicado!' : '📝 Rascunho salvo!');
                     ['n-titulo', 'n-resumo', 'n-autor'].forEach(id => document.getElementById(id).value = '');
                     clearEditor(); removerImagem();
                     if (document.getElementById('n-ticker')) document.getElementById('n-ticker').checked = false;
@@ -2997,7 +3021,7 @@
                                 <td><span class="ordem-badge">${i + 1}</span></td>
                                 <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
                                 <td>${n.categoria}</td>
-                                <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : '<span class="status-draft">● Rascunho</span>'}</td>
+                                <td>${n.status === 'publicado' || n.status_atual === 'publicado' ? '<span class="status-pub">● Publicado</span>' : n.status === 'agendado' ? '<span style="color:#f59e0b;font-size:12px;">🕐 Agendado<br><small style=\'color:#94a3b8;font-size:10px;\'>' + (n.publicar_em ? new Date(n.publicar_em).toLocaleString('pt-BR') : '') + '</small></span>' : '<span class="status-draft">● Rascunho</span>'}</td>
                                 <td><div class="table-actions">
                                     <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
                                     <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
