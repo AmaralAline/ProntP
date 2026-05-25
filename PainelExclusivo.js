@@ -161,15 +161,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     const nomeEl = document.getElementById('nome-profissional');
     if (nomeEl) nomeEl.textContent = profissional.nome || 'Profissional';
 
-    // Verifica se o usuário é admin e exibe o link do painel admin apenas para admins
+    // Verifica se o usuário é super-admin e exibe o link do painel admin
     try {
         const resAdmin = await fetch(`${API_URL}/api/admin/metricas`, { headers: headersAuth() });
         if (resAdmin.ok) {
             const linkAdmin = document.getElementById('link-admin');
             if (linkAdmin) linkAdmin.style.display = 'flex';
         }
-    } catch (_) { /* não é admin ou sem conexão — mantém link oculto */ }
+    } catch (_) { /* não é super-admin — mantém link oculto */ }
 
+    // Verifica se é admin de alguma clínica
+    try {
+        const resClinicas = await fetch(`${API_URL}/api/minhas-clinicas`, { headers: headersAuth() });
+        if (resClinicas.ok) {
+            const clinicas = await resClinicas.json();
+            const ehAdminClinica = clinicas.some(c => c.papel === 'admin_clinica');
+            if (ehAdminClinica) {
+                const linkClinica = document.getElementById('link-clinica');
+                if (linkClinica) {
+                    linkClinica.style.display = 'flex';
+                    const clinicaAdmin = clinicas.find(c => c.papel === 'admin_clinica');
+                    localStorage.setItem('clinica_id', clinicaAdmin.id);
+                    localStorage.setItem('token_clinica', localStorage.getItem('token'));
+                    localStorage.setItem('profissional_clinica', localStorage.getItem('profissional'));
+                }
+            }
+        }
+    } catch (_) { /* não é admin de clínica — mantém link oculto */ }
     // Botões do menu lateral
     const botoes = [
         { btn: 'btn-clock', section: 'clock-section' },
