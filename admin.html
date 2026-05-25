@@ -1647,14 +1647,14 @@
         }
 
         async function enviarRecado() {
-            const profissional_id = document.getElementById('recado-destinatario').value;
+            const profissional_id = parseInt(document.getElementById('recado-destinatario').value, 10);
             const tipo = document.getElementById('recado-tipo').value;
             const mensagem = document.getElementById('recado-mensagem').value.trim();
             const fb = document.getElementById('recado-feedback');
 
-            if (!profissional_id) {
+            if (!profissional_id || isNaN(profissional_id)) {
                 fb.style.display = 'block'; fb.style.color = '#f87171';
-                fb.textContent = 'Selecione o destinatário.';
+                fb.textContent = '❌ Selecione o destinatário.';
                 setTimeout(() => fb.style.display = 'none', 3000);
                 return;
             }
@@ -1664,6 +1664,8 @@
                 setTimeout(() => fb.style.display = 'none', 3000);
                 return;
             }
+
+            fb.style.display = 'block'; fb.style.color = '#fbbf24'; fb.textContent = '⏳ Enviando...';
 
             try {
                 const res = await fetch(`${API_URL}/api/admin/recados`, {
