@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProntPsi — O universo Psi em um só lugar</title>
     <meta name="description" content="Notícias, artigos e recursos para psicólogos e psiquiatras. O sistema clínico do universo Psi." />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K97XCYXYHC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K97XCYXYHC');
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
@@ -2109,6 +2117,135 @@
             .wa-btn:hover {
                 transform: scale(1.1)
             }
+        /* ─── ANALYTICS ─── */
+        @keyframes gaPulse {
+            0%,100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .2
+            }
+        }
+
+        .ga-period-btn {
+            background: none;
+            border: none;
+            color: var(--muted2);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+            .ga-period-btn.active {
+                background: var(--roxo);
+                color: #fff;
+            }
+
+        .ga-stat-cell {
+            padding: 20px 24px;
+        }
+
+        .ga-stat-lbl {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 6px;
+        }
+
+        .ga-stat-val {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .ga-stat-delta {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted2);
+        }
+
+        .ga-page-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+        }
+
+            .ga-page-row:last-child {
+                border-bottom: none;
+            }
+
+        .ga-page-name {
+            flex: 1;
+            font-size: 12px;
+            color: var(--muted2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ga-page-bar-track {
+            width: 60px;
+            height: 4px;
+            background: rgba(255,255,255,.07);
+            border-radius: 99px;
+            flex-shrink: 0;
+        }
+
+        .ga-page-bar-fill {
+            height: 4px;
+            border-radius: 99px;
+            background: var(--roxo-light);
+        }
+
+        .ga-page-count {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text);
+            min-width: 36px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .ga-source-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+        }
+
+            .ga-source-row:last-child {
+                border-bottom: none;
+            }
+
+        .ga-source-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .ga-source-name {
+            flex: 1;
+            font-size: 12px;
+            color: var(--muted2);
+        }
+
+        .ga-source-pct {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text);
+        }
     </style>
 </head>
 <body>
@@ -2380,6 +2517,7 @@
                     <div class="admin-nav-item" onclick="showAdminSection('eventos',this)"><i class="fas fa-calendar-alt"></i> Eventos</div>
                     <div class="admin-nav-item" onclick="showAdminSection('ticker',this)"><i class="fas fa-broadcast-tower"></i> Ticker AO VIVO</div>
                     <div class="admin-nav-item" onclick="showAdminSection('profissionais',this)"><i class="fas fa-user-md"></i> Profissionais Destaque</div>
+                    <div class="admin-nav-item" onclick="showAdminSection('analytics',this)"><i class="fas fa-chart-line"></i> Analytics</div>
                     <div class="admin-nav-sep"></div>
                     <div class="admin-nav-item" onclick="closeAdmin()"><i class="fas fa-arrow-left"></i> Voltar ao portal</div>
                     <div class="admin-nav-item" onclick="logout()" style="color:#ef4444;margin-top:4px"><i class="fas fa-sign-out-alt"></i> Encerrar sessão</div>
@@ -2603,6 +2741,68 @@
                     </div>
                 </div>
 
+                <!-- ANALYTICS -->
+                <div class="admin-section" id="sec-analytics">
+                    <div class="admin-card" style="padding:0;overflow:hidden;border:1px solid rgba(139,92,246,.15);">
+                        <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <i class="fas fa-chart-line" style="color:var(--roxo-light);font-size:16px"></i>
+                                <span style="font-size:14px;font-weight:600;color:var(--text)">Visitas do site</span>
+                                <span id="ga-live-badge" style="display:none;font-size:11px;color:#10b981;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:99px;padding:2px 8px;">
+                                    <span style="display:inline-block;width:6px;height:6px;background:#10b981;border-radius:50%;margin-right:4px;animation:gaPulse 1.5s ease-in-out infinite;vertical-align:middle"></span>ao vivo
+                                </span>
+                            </div>
+                            <div style="display:flex;gap:4px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:3px;">
+                                <button class="ga-period-btn active" onclick="gaSetPeriod('7daysAgo',this)">7 dias</button>
+                                <button class="ga-period-btn" onclick="gaSetPeriod('30daysAgo',this)">30 dias</button>
+                                <button class="ga-period-btn" onclick="gaSetPeriod('90daysAgo',this)">90 dias</button>
+                            </div>
+                        </div>
+                        <div id="ga-loading" style="padding:48px;text-align:center;color:var(--muted);font-size:13px;">
+                            <i class="fas fa-spinner fa-spin" style="margin-right:8px;color:var(--roxo-light)"></i> Carregando dados do Google Analytics...
+                        </div>
+                        <div id="ga-content" style="display:none;">
+                            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid rgba(255,255,255,.06);">
+                                <div class="ga-stat-cell" id="ga-sessions"><div class="ga-stat-lbl">Sessões</div><div class="ga-stat-val">—</div><div class="ga-stat-delta"></div></div>
+                                <div class="ga-stat-cell" style="border-left:1px solid rgba(255,255,255,.06)" id="ga-users"><div class="ga-stat-lbl">Usuários</div><div class="ga-stat-val">—</div><div class="ga-stat-delta"></div></div>
+                                <div class="ga-stat-cell" style="border-left:1px solid rgba(255,255,255,.06)" id="ga-pageviews"><div class="ga-stat-lbl">Pageviews</div><div class="ga-stat-val">—</div><div class="ga-stat-delta"></div></div>
+                                <div class="ga-stat-cell" style="border-left:1px solid rgba(255,255,255,.06)" id="ga-bounce"><div class="ga-stat-lbl">Taxa de rejeição</div><div class="ga-stat-val">—</div><div class="ga-stat-delta"></div></div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid rgba(255,255,255,.06);">
+                                <div style="padding:20px 24px;">
+                                    <div style="font-size:12px;font-weight:600;color:var(--muted2);margin-bottom:14px;display:flex;align-items:center;gap:6px;"><i class="fas fa-chart-area" style="color:var(--roxo-light)"></i> Visitantes por dia</div>
+                                    <canvas id="ga-chart-visitors" height="110"></canvas>
+                                </div>
+                                <div style="padding:20px 24px;border-left:1px solid rgba(255,255,255,.06);">
+                                    <div style="font-size:12px;font-weight:600;color:var(--muted2);margin-bottom:14px;display:flex;align-items:center;gap:6px;"><i class="fas fa-mobile-alt" style="color:var(--roxo-light)"></i> Dispositivos</div>
+                                    <canvas id="ga-chart-devices" height="110"></canvas>
+                                </div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
+                                <div style="padding:20px 24px;border-right:1px solid rgba(255,255,255,.06);">
+                                    <div style="font-size:12px;font-weight:600;color:var(--muted2);margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i class="fas fa-fire" style="color:var(--roxo-light)"></i> Páginas mais visitadas</div>
+                                    <div id="ga-top-pages"></div>
+                                </div>
+                                <div style="padding:20px 24px;">
+                                    <div style="font-size:12px;font-weight:600;color:var(--muted2);margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i class="fas fa-search" style="color:var(--roxo-light)"></i> Origem do tráfego</div>
+                                    <div id="ga-sources"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ga-error" style="display:none;padding:32px 24px;text-align:center;">
+                            <i class="fas fa-exclamation-triangle" style="font-size:24px;color:#f59e0b;margin-bottom:12px;display:block"></i>
+                            <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;" id="ga-error-msg">Não foi possível carregar os dados.</div>
+                            <a href="https://analytics.google.com/analytics/web/#/p487930000/reports/intelligenthome" target="_blank" style="font-size:12px;color:var(--roxo-light);text-decoration:none;border:1px solid rgba(139,92,246,.3);padding:7px 14px;border-radius:8px;">
+                                <i class="fas fa-external-link-alt" style="margin-right:6px"></i>Abrir Google Analytics
+                            </a>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;padding:10px 14px;background:rgba(109,40,217,.06);border:1px solid rgba(139,92,246,.15);border-radius:8px;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-info-circle" style="color:var(--roxo-light);font-size:13px;flex-shrink:0"></i>
+                        <span style="font-size:12px;color:var(--muted2)">Os dados são fornecidos pelo Google Analytics 4. Novos visitantes podem levar até 24h para aparecer. Para dados em tempo real completos, acesse <a href="https://analytics.google.com" target="_blank" style="color:var(--roxo-light)">analytics.google.com</a>.</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -2820,11 +3020,11 @@
                     ? `<div class="prof-avatar" style="padding:0;overflow:hidden;"><img src="${foto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.innerHTML='${p.iniciais || 'PS'}';this.parentElement.style.padding='';"></div>`
                     : `<div class="prof-avatar">${p.iniciais || 'PS'}</div>`;
                 return `<div class="prof-card" onclick="${p.link || p.link_perfil ? `window.open('${p.link || p.link_perfil}','_blank')` : ''}">
-                            ${avatarHtml}
-                            <div class="prof-name">${p.nome}</div>
-                            <div class="prof-spec">${p.especialidade || p.spec || ''}</div>
-                            <div class="prof-loc"><i class="fas fa-map-marker-alt" style="font-size:10px"></i> ${p.cidade || p.loc || ''}</div>
-                        </div>`;
+                                ${avatarHtml}
+                                <div class="prof-name">${p.nome}</div>
+                                <div class="prof-spec">${p.especialidade || p.spec || ''}</div>
+                                <div class="prof-loc"><i class="fas fa-map-marker-alt" style="font-size:10px"></i> ${p.cidade || p.loc || ''}</div>
+                            </div>`;
             }).join('');
         }
 
@@ -2936,21 +3136,22 @@
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
             document.getElementById('sec-' + id).classList.add('active');
             if (el) el.classList.add('active');
-            const titles = { dashboard: ['Dashboard', 'Visão geral do portal'], noticias: ['Notícias & Artigos', 'Publique e gerencie o conteúdo editorial'], eventos: ['Eventos Psi', 'Gerencie congressos, webinars e cursos'], ticker: ['Ticker AO VIVO', 'Manchetes que aparecem no topo do site'], profissionais: ['Profissionais em Destaque', 'Quem aparece na vitrine da home'] };
+            const titles = { dashboard: ['Dashboard', 'Visão geral do portal'], noticias: ['Notícias & Artigos', 'Publique e gerencie o conteúdo editorial'], eventos: ['Eventos Psi', 'Gerencie congressos, webinars e cursos'], ticker: ['Ticker AO VIVO', 'Manchetes que aparecem no topo do site'], profissionais: ['Profissionais em Destaque', 'Quem aparece na vitrine da home'], analytics: ['Analytics', 'Visitas e desempenho do site'] };
             const t = titles[id] || ['Admin', ''];
             document.getElementById('adminPageTitle').textContent = t[0];
             document.getElementById('adminPageSub').textContent = t[1];
             if (id === 'ticker') renderTickerAdmin();
+            if (id === 'analytics') initAnalytics();
         }
 
         function renderDashStats() {
             const pubs = noticias.filter(n => n.status === 'publicado').length;
             const drafts = noticias.filter(n => n.status === 'rascunho').length;
             document.getElementById('dashStats').innerHTML = `
-                        <div class="stat-card"><div class="stat-label">Publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">artigos no portal</div></div>
-                        <div class="stat-card"><div class="stat-label">Rascunhos</div><div class="stat-val">${drafts}</div><div class="stat-sub">aguardando</div></div>
-                        <div class="stat-card"><div class="stat-label">Eventos</div><div class="stat-val">${eventos.length}</div><div class="stat-sub">cadastrados</div></div>
-                        <div class="stat-card"><div class="stat-label">Manchetes</div><div class="stat-val">${tickerItens.length}</div><div class="stat-sub">no ticker</div></div>`;
+                            <div class="stat-card"><div class="stat-label">Publicados</div><div class="stat-val">${pubs}</div><div class="stat-sub">artigos no portal</div></div>
+                            <div class="stat-card"><div class="stat-label">Rascunhos</div><div class="stat-val">${drafts}</div><div class="stat-sub">aguardando</div></div>
+                            <div class="stat-card"><div class="stat-label">Eventos</div><div class="stat-val">${eventos.length}</div><div class="stat-sub">cadastrados</div></div>
+                            <div class="stat-card"><div class="stat-label">Manchetes</div><div class="stat-val">${tickerItens.length}</div><div class="stat-sub">no ticker</div></div>`;
         }
 
         // ─── SALVAR NOTÍCIA ───
@@ -3118,20 +3319,20 @@
             nt.innerHTML = !noticias.length
                 ? `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Nenhum artigo ainda</td></tr>`
                 : noticias.map((n, i) => `<tr class="drag-row" draggable="true"
-                                    ondragstart="dragNoticia(${i})"
-                                    ondragover="dragOverNoticia(event,${i})"
-                                    ondrop="dropNoticia(${i})"
-                                    ondragleave="this.classList.remove('drag-over')">
-                                    <td style="padding-left:10px"><span class="drag-handle" style="font-size:18px;color:var(--muted)">⠿</span></td>
-                                    <td><span class="ordem-badge">${i + 1}</span></td>
-                                    <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
-                                    <td>${n.categoria}</td>
-                                    <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : n.status === 'agendado' ? `<span style="color:#f59e0b;font-size:12px;">🕐 Agendado<br><small style="color:#94a3b8;font-size:10px;">${n.publicar_em ? new Date(n.publicar_em).toLocaleString('pt-BR') : ''}</small></span>` : '<span class="status-draft">● Rascunho</span>'}</td>
-                                    <td><div class="table-actions">
-                                        <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
-                                        <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
-                                    </div></td>
-                                </tr>`).join('');
+                                        ondragstart="dragNoticia(${i})"
+                                        ondragover="dragOverNoticia(event,${i})"
+                                        ondrop="dropNoticia(${i})"
+                                        ondragleave="this.classList.remove('drag-over')">
+                                        <td style="padding-left:10px"><span class="drag-handle" style="font-size:18px;color:var(--muted)">⠿</span></td>
+                                        <td><span class="ordem-badge">${i + 1}</span></td>
+                                        <td><div class="table-title">${n.titulo}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${i === 0 ? '⭐ Destaque principal' : ''}</div></td>
+                                        <td>${n.categoria}</td>
+                                        <td>${n.status === 'publicado' ? '<span class="status-pub">● Publicado</span>' : n.status === 'agendado' ? `<span style="color:#f59e0b;font-size:12px;">🕐 Agendado<br><small style="color:#94a3b8;font-size:10px;">${n.publicar_em ? new Date(n.publicar_em).toLocaleString('pt-BR') : ''}</small></span>` : '<span class="status-draft">● Rascunho</span>'}</td>
+                                        <td><div class="table-actions">
+                                            <button class="btn-edit" onclick="editarNoticia(${n.id})"><i class="fas fa-edit"></i> Editar</button>
+                                            <button class="btn-danger" onclick="deletarNoticia(${n.id})"><i class="fas fa-trash"></i></button>
+                                        </div></td>
+                                    </tr>`).join('');
             const et = document.getElementById('eventosTabela');
             et.innerHTML = !eventos.length ? `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">Nenhum evento cadastrado</td></tr>` : eventos.map(e => `<tr><td><div class="table-title">${e.titulo}</div></td><td>${formatDate(e.data)}</td><td><span class="event-tag ${e.modalidade === 'online' ? 'etag-online' : 'etag-presencial'}">${e.modalidade}</span></td><td><button class="btn-danger" onclick="deletarEvento(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
             const pt = document.getElementById('profsTabela');
@@ -3146,13 +3347,13 @@
                         ? '<span style="font-size:10px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25);padding:1px 7px;border-radius:10px;">🌐 Vitrine</span>'
                         : '<span style="font-size:10px;background:rgba(100,116,139,.1);color:#94a3b8;border:1px solid rgba(100,116,139,.2);padding:1px 7px;border-radius:10px;">✏️ Manual</span>';
                     return `<tr draggable="true" ondragstart="dragStart(${i})" ondragover="dragOver(event,${i})" ondrop="dragDrop(${i})" style="cursor:grab">
-                            <td style="color:var(--muted);font-size:18px;padding-left:10px">⠿</td>
-                            <td>${fotoHtml}</td>
-                            <td><div class="table-title">${p.nome}</div></td>
-                            <td>${p.especialidade || p.spec || ''}</td>
-                            <td>${badge}</td>
-                            <td><button class="btn-danger" onclick="deletarProf(${p.id})"><i class="fas fa-trash"></i></button></td>
-                        </tr>`;
+                                <td style="color:var(--muted);font-size:18px;padding-left:10px">⠿</td>
+                                <td>${fotoHtml}</td>
+                                <td><div class="table-title">${p.nome}</div></td>
+                                <td>${p.especialidade || p.spec || ''}</td>
+                                <td>${badge}</td>
+                                <td><button class="btn-danger" onclick="deletarProf(${p.id})"><i class="fas fa-trash"></i></button></td>
+                            </tr>`;
                 }).join('');
         }
 
@@ -3248,6 +3449,189 @@
         // ─── FADE UP ───
         const scrollObs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }), { threshold: .12 });
         document.querySelectorAll('.fade-up').forEach(el => scrollObs.observe(el));
+
+        // ─── ANALYTICS ───
+        let gaVisitorsChart = null, gaDevicesChart = null;
+        let gaCurrentPeriod = '7daysAgo';
+        let gaInitialized = false;
+
+        function gaSetPeriod(period, btn) {
+            document.querySelectorAll('.ga-period-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            gaCurrentPeriod = period;
+            loadGAData(period);
+        }
+
+        async function initAnalytics() {
+            if (gaInitialized) return;
+            gaInitialized = true;
+            // Carrega Chart.js dinamicamente se necessário
+            if (!window.Chart) {
+                await new Promise((res, rej) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
+                    s.onload = res; s.onerror = rej;
+                    document.head.appendChild(s);
+                });
+            }
+            loadGAData(gaCurrentPeriod);
+        }
+
+        async function loadGAData(startDate) {
+            const loading = document.getElementById('ga-loading');
+            const content = document.getElementById('ga-content');
+            const errorDiv = document.getElementById('ga-error');
+            loading.style.display = 'block';
+            content.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            try {
+                // Busca dados via backend do ProntPsi (rota que você deve criar no Railway)
+                const res = await fetch(`${API}/analytics?startDate=${startDate}&endDate=today`, {
+                    headers: { 'Authorization': 'Bearer ' + adminToken }
+                });
+
+                if (!res.ok) throw new Error('backend_unavailable');
+                const data = await res.json();
+                loading.style.display = 'none';
+                content.style.display = 'block';
+                renderGAData(data, startDate);
+
+            } catch (err) {
+                // Fallback: exibe dados demonstrativos com aviso
+                loading.style.display = 'none';
+                content.style.display = 'block';
+                document.getElementById('ga-live-badge').style.display = 'none';
+                renderGADemoData(startDate);
+            }
+        }
+
+        function renderGAData(data, period) {
+            document.getElementById('ga-live-badge').style.display = 'inline-flex';
+            // Métricas principais
+            setGAStat('ga-sessions', data.sessions, data.sessionsDelta);
+            setGAStat('ga-users', data.users, data.usersDelta);
+            setGAStat('ga-pageviews', data.pageviews, data.pageviewsDelta);
+            setGAStatRaw('ga-bounce', (data.bounceRate * 100).toFixed(1) + '%', data.bounceDelta, true);
+            // Gráfico de visitantes
+            renderGAVisitorsChart(data.dailyUsers, data.dailyLabels);
+            // Dispositivos
+            renderGADevicesChart(data.devices);
+            // Top páginas
+            renderGATopPages(data.topPages);
+            // Fontes
+            renderGASources(data.sources);
+        }
+
+        function renderGADemoData(period) {
+            // Dados demonstrativos enquanto o backend GA não está configurado
+            const demos = {
+                '7daysAgo': { sessions: 3847, users: 2910, pageviews: 11240, bounce: 38, delta: '+12%', labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'], daily: [420, 510, 680, 590, 740, 510, 397] },
+                '30daysAgo': { sessions: 14290, users: 10820, pageviews: 43810, bounce: 41, delta: '+8%', labels: ['S1', 'S2', 'S3', 'S4'], daily: [3200, 3840, 3650, 3600] },
+                '90daysAgo': { sessions: 41200, users: 31500, pageviews: 128000, bounce: 43, delta: '+5%', labels: ['Jan', 'Fev', 'Mar'], daily: [12800, 14200, 14200] },
+            };
+            const d = demos[period] || demos['7daysAgo'];
+            document.getElementById('ga-sessions').querySelector('.ga-stat-val').textContent = d.sessions.toLocaleString('pt-BR');
+            document.getElementById('ga-users').querySelector('.ga-stat-val').textContent = d.users.toLocaleString('pt-BR');
+            document.getElementById('ga-pageviews').querySelector('.ga-stat-val').textContent = d.pageviews.toLocaleString('pt-BR');
+            document.getElementById('ga-bounce').querySelector('.ga-stat-val').textContent = d.bounce + '%';
+            ['ga-sessions', 'ga-users', 'ga-pageviews', 'ga-bounce'].forEach(id => {
+                const el = document.getElementById(id).querySelector('.ga-stat-delta');
+                el.innerHTML = `<span style="color:#f59e0b;font-size:10px">⚠ dados demo — configure o backend</span>`;
+            });
+            renderGAVisitorsChart(d.daily, d.labels);
+            renderGADevicesChart([{ name: 'Mobile', value: 58 }, { name: 'Desktop', value: 36 }, { name: 'Tablet', value: 6 }]);
+            renderGATopPages([
+                { page: '/honorarios-psicologia-2025', views: 1840 },
+                { page: '/tcc-para-ansiedade', views: 1420 },
+                { page: '/psicologo-vs-psiquiatra', views: 980 },
+                { page: '/escalas-avaliacao', views: 760 },
+                { page: '/atendimento-online', views: 630 },
+            ]);
+            renderGASources([
+                { name: 'Busca orgânica', pct: 54, color: '#8b5cf6' },
+                { name: 'Direto', pct: 22, color: '#3b82f6' },
+                { name: 'Redes sociais', pct: 14, color: '#10b981' },
+                { name: 'Outros', pct: 10, color: '#6b7280' },
+            ]);
+        }
+
+        function setGAStat(id, value, delta) {
+            const el = document.getElementById(id);
+            el.querySelector('.ga-stat-val').textContent = Number(value).toLocaleString('pt-BR');
+            const d = el.querySelector('.ga-stat-delta');
+            if (delta !== undefined) {
+                const up = parseFloat(delta) >= 0;
+                d.innerHTML = `<span style="color:${up ? '#10b981' : '#ef4444'}">${up ? '▲' : '▼'} ${Math.abs(parseFloat(delta)).toFixed(1)}%</span> vs período anterior`;
+            }
+        }
+        function setGAStatRaw(id, valueStr, delta, invertColor) {
+            const el = document.getElementById(id);
+            el.querySelector('.ga-stat-val').textContent = valueStr;
+            const d = el.querySelector('.ga-stat-delta');
+            if (delta !== undefined) {
+                const up = parseFloat(delta) >= 0;
+                const good = invertColor ? !up : up;
+                d.innerHTML = `<span style="color:${good ? '#10b981' : '#ef4444'}">${up ? '▲' : '▼'} ${Math.abs(parseFloat(delta)).toFixed(1)}%</span> vs período anterior`;
+            }
+        }
+
+        function renderGAVisitorsChart(data, labels) {
+            const ctx = document.getElementById('ga-chart-visitors').getContext('2d');
+            if (gaVisitorsChart) gaVisitorsChart.destroy();
+            gaVisitorsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{ data, borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,.08)', borderWidth: 2, fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#8b5cf6' }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#6b7280', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.05)' } },
+                        y: { ticks: { color: '#6b7280', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.05)' } }
+                    }
+                }
+            });
+        }
+
+        function renderGADevicesChart(devices) {
+            const ctx = document.getElementById('ga-chart-devices').getContext('2d');
+            if (gaDevicesChart) gaDevicesChart.destroy();
+            gaDevicesChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: devices.map(d => d.name),
+                    datasets: [{ data: devices.map(d => d.value), backgroundColor: ['#8b5cf6', '#3b82f6', '#10b981'], borderWidth: 0, hoverOffset: 4 }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '62%',
+                    plugins: { legend: { position: 'right', labels: { color: '#9ca3af', font: { size: 11 }, boxWidth: 10, padding: 10 } } }
+                }
+            });
+        }
+
+        function renderGATopPages(pages) {
+            const max = pages[0]?.views || 1;
+            document.getElementById('ga-top-pages').innerHTML = pages.map(p => `
+                    <div class="ga-page-row">
+                        <span class="ga-page-name" title="${p.page}">${p.page}</span>
+                        <div class="ga-page-bar-track"><div class="ga-page-bar-fill" style="width:${Math.round(p.views / max * 60)}px"></div></div>
+                        <span class="ga-page-count">${Number(p.views).toLocaleString('pt-BR')}</span>
+                    </div>`).join('');
+        }
+
+        function renderGASources(sources) {
+            const colors = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#6b7280'];
+            document.getElementById('ga-sources').innerHTML = sources.map((s, i) => `
+                    <div class="ga-source-row">
+                        <span class="ga-source-dot" style="background:${s.color || colors[i]}"></span>
+                        <span class="ga-source-name">${s.name}</span>
+                        <span class="ga-source-pct">${s.pct}%</span>
+                    </div>`).join('');
+        }
 
         // ─── START ───
         init();
