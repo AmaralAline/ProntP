@@ -1671,7 +1671,7 @@
                 const res = await fetch(`${API_URL}/api/admin/recados`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ profissional_id, tipo, mensagem })
+                    body: JSON.stringify({ para_prof: profissional_id, mensagem })
                 });
                 const data = await res.json();
                 fb.style.display = 'block';
@@ -1725,8 +1725,8 @@
                                 <div style="flex:1;">
                                     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
                                         <span style="font-size:15px;">${tipoIcon[r.tipo] || '💬'}</span>
-                                        <strong style="color:#f1f5f9;font-size:13px;">${r.profissional_nome || 'Profissional'}</strong>
-                                        <span style="font-size:11px;color:#475569;">${r.profissional_email || ''}</span>
+                                        <strong style="color:#f1f5f9;font-size:13px;">${r.prof_nome || 'Profissional'}</strong>
+                                        <span style="font-size:11px;color:#475569;">${r.prof_email || ''}</span>
                                         ${r.lido ? '<span style="font-size:10px;color:#34d399;background:rgba(52,211,153,0.1);padding:2px 8px;border-radius:10px;">✓ Lido</span>' : '<span style="font-size:10px;color:#fbbf24;background:rgba(251,191,36,0.1);padding:2px 8px;border-radius:10px;">Não lido</span>'}
                                     </div>
                                     <p style="color:#cbd5e1;font-size:13px;line-height:1.5;margin:0;">${r.mensagem}</p>
