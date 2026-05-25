@@ -823,6 +823,126 @@
             </div>
         </div>
 
+        <!-- =====================================================
+             CLÍNICAS
+        ====================================================== -->
+        <div style="margin-top:40px; margin-bottom:32px;" id="secao-clinicas">
+            <p class="section-title">
+                <i class="fas fa-hospital" style="color:#60a5fa; margin-right:8px;"></i>
+                Clínicas
+            </p>
+
+            <!-- Criar clínica -->
+            <div style="background:#1a2332; border:1px solid rgba(96,165,250,0.2); border-radius:12px; padding:24px; margin-bottom:24px;">
+                <p style="font-size:13px; color:#94a3b8; margin-bottom:16px;">
+                    Crie uma clínica e defina quem será o administrador dela. O admin da clínica poderá adicionar secretarias e profissionais pelo próprio painel dele.
+                </p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+                    <div>
+                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Nome da clínica *</label>
+                        <input type="text" id="clinica-nome" placeholder="Ex: Clínica Mente Sã"
+                               style="width:100%; padding:10px 14px; background:#141d2b; border:1px solid rgba(96,165,250,0.3); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; outline:none;">
+                    </div>
+                    <div>
+                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">CNPJ</label>
+                        <input type="text" id="clinica-cnpj" placeholder="00.000.000/0000-00"
+                               style="width:100%; padding:10px 14px; background:#141d2b; border:1px solid rgba(96,165,250,0.3); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; outline:none;">
+                    </div>
+                    <div>
+                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">E-mail</label>
+                        <input type="email" id="clinica-email" placeholder="contato@clinica.com"
+                               style="width:100%; padding:10px 14px; background:#141d2b; border:1px solid rgba(96,165,250,0.3); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; outline:none;">
+                    </div>
+                    <div>
+                        <label style="font-size:11px; color:#64748b; display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Telefone</label>
+                        <input type="text" id="clinica-telefone" placeholder="(11) 99999-9999"
+                               style="width:100%; padding:10px 14px; background:#141d2b; border:1px solid rgba(96,165,250,0.3); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; outline:none;">
+                    </div>
+                </div>
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:11px; color:#64748b; display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Endereço</label>
+                    <input type="text" id="clinica-endereco" placeholder="Rua, número, bairro, cidade"
+                           style="width:100%; padding:10px 14px; background:#141d2b; border:1px solid rgba(96,165,250,0.3); border-radius:8px; color:#e2e8f0; font-size:14px; font-family:'Roboto',sans-serif; outline:none;">
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <button onclick="criarClinica()"
+                            style="padding:10px 22px; background:rgba(96,165,250,0.15); color:#60a5fa; border:1px solid rgba(96,165,250,0.35); border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; font-weight:500;">
+                        <i class="fas fa-plus" style="margin-right:6px;"></i>Criar clínica
+                    </button>
+                    <span id="clinica-feedback" style="font-size:13px; display:none;"></span>
+                </div>
+            </div>
+
+            <!-- Lista de clínicas -->
+            <div class="table-card" id="card-lista-clinicas">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Clínica</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Membros</th>
+                            <th>Status</th>
+                            <th>Criada em</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-clinicas">
+                        <tr><td colspan="7" class="loading">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal: gerenciar membros da clínica -->
+        <div id="modal-clinica-membros" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:1000; align-items:center; justify-content:center; padding:20px;">
+            <div style="background:#1a2332; border:1px solid rgba(96,165,250,0.25); border-radius:16px; padding:28px; width:100%; max-width:680px; max-height:85vh; overflow-y:auto; position:relative;">
+                <button onclick="fecharModalMembros()"
+                        style="position:absolute; top:14px; right:16px; background:transparent; border:none; color:#64748b; font-size:20px; cursor:pointer;">
+                    ✕
+                </button>
+                <h2 style="color:#60a5fa; font-size:16px; margin-bottom:4px;">
+                    <i class="fas fa-hospital" style="margin-right:8px;"></i>
+                    <span id="modal-clinica-nome">Clínica</span>
+                </h2>
+                <p style="font-size:12px; color:#475569; margin-bottom:20px;">Gerencie os membros desta clínica</p>
+
+                <!-- Adicionar membro -->
+                <div style="background:#141d2b; border:1px solid rgba(96,165,250,0.15); border-radius:10px; padding:18px; margin-bottom:20px;">
+                    <p style="font-size:12px; color:#64748b; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Adicionar membro</p>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+                        <div style="flex:2; min-width:200px;">
+                            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:5px;">Profissional</label>
+                            <select id="modal-membro-prof"
+                                    style="width:100%; padding:9px 12px; background:#0f1621; border:1px solid rgba(96,165,250,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; outline:none;">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                        <div style="flex:1; min-width:150px;">
+                            <label style="font-size:11px; color:#64748b; display:block; margin-bottom:5px;">Papel</label>
+                            <select id="modal-membro-papel"
+                                    style="width:100%; padding:9px 12px; background:#0f1621; border:1px solid rgba(96,165,250,0.2); border-radius:8px; color:#e2e8f0; font-size:13px; font-family:'Roboto',sans-serif; outline:none;">
+                                <option value="admin_clinica">Admin da clínica</option>
+                                <option value="secretaria">Secretaria</option>
+                                <option value="profissional">Profissional</option>
+                            </select>
+                        </div>
+                        <button onclick="adicionarMembroClinica()"
+                                style="padding:9px 18px; background:rgba(96,165,250,0.15); color:#60a5fa; border:1px solid rgba(96,165,250,0.3); border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; white-space:nowrap;">
+                            <i class="fas fa-plus" style="margin-right:5px;"></i>Adicionar
+                        </button>
+                    </div>
+                    <p id="modal-membro-feedback" style="font-size:12px; margin-top:8px; display:none;"></p>
+                </div>
+
+                <!-- Lista de membros -->
+                <p style="font-size:12px; color:#64748b; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">Membros atuais</p>
+                <div id="modal-membros-lista">
+                    <p style="color:#475569; font-size:13px;">Carregando...</p>
+                </div>
+            </div>
+        </div>
+
     </div><!-- fim .main -->
     <!-- MODAL AVALIAÇÃO -->
     <div id="modal-avaliacao" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; overflow-y:auto; padding:40px 20px;">
@@ -894,32 +1014,32 @@
             }
 
             tbody.innerHTML = profissionais.map(p => `
-                                    <tr id="row-${p.id}">
-                                        <td>
-                                            <strong style="color:#f1f5f9;">${p.nome}</strong>
-                                            ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
-                                            ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
-                                        </td>
-                                        <td>${p.email}</td>
-                                        <td>${p.especialidade || '-'}</td>
-                                        <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
-                                        <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
-                                        <td>${p.total_pacientes}</td>
-                                        <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
-                                        <td>
-                                            ${!p.is_admin ? `
-                                                ${p.ativo
+                                        <tr id="row-${p.id}">
+                                            <td>
+                                                <strong style="color:#f1f5f9;">${p.nome}</strong>
+                                                ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
+                                                ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
+                                            </td>
+                                            <td>${p.email}</td>
+                                            <td>${p.especialidade || '-'}</td>
+                                            <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
+                                            <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
+                                            <td>${p.total_pacientes}</td>
+                                            <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
+                                            <td>
+                                                ${!p.is_admin ? `
+                                                    ${p.ativo
                         ? `<button class="btn-acao btn-suspender" onclick="suspender(${p.id})">Suspender</button>`
                         : `<button class="btn-acao btn-ativar" onclick="ativar(${p.id})">Ativar</button>`
                     }
-                                                ${p.plano !== 'pago'
+                                                    ${p.plano !== 'pago'
                         ? `<button class="btn-acao btn-pago" onclick="tornarPago(${p.id})">Tornar pago</button>`
                         : ''
                     }
-                                            ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
-                                        </td>
-                                    </tr>
-                                `).join('');
+                                                ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
+                                            </td>
+                                        </tr>
+                                    `).join('');
         }
 
         function filtrar(tipo, btn) {
@@ -1015,20 +1135,20 @@
                 `<p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.7;">${l}</p>`
             ).join('');
             return `
-                            <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
-                                <div style="background:#7c3aed;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
-                                    <h1 style="color:#fff;margin:0;font-size:22px;">ProntPsi</h1>
-                                </div>
-                                <div style="background:#fff;padding:32px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-                                    <p style="color:#334155;font-size:15px;margin:0 0 20px;">Olá, <strong>${nomeProf}</strong>! 👋</p>
-                                    ${paragrafos}
-                                    <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-                                    <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
-                                        ProntPsi — Sistema Clínico para Psicólogos, Psiquiatras e Psicanalistas<br>
-                                        <a href="https://www.prontpsi.com.br" style="color:#7c3aed;">www.prontpsi.com.br</a>
-                                    </p>
-                                </div>
-                            </div>`;
+                                <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
+                                    <div style="background:#7c3aed;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+                                        <h1 style="color:#fff;margin:0;font-size:22px;">ProntPsi</h1>
+                                    </div>
+                                    <div style="background:#fff;padding:32px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+                                        <p style="color:#334155;font-size:15px;margin:0 0 20px;">Olá, <strong>${nomeProf}</strong>! 👋</p>
+                                        ${paragrafos}
+                                        <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
+                                        <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
+                                            ProntPsi — Sistema Clínico para Psicólogos, Psiquiatras e Psicanalistas<br>
+                                            <a href="https://www.prontpsi.com.br" style="color:#7c3aed;">www.prontpsi.com.br</a>
+                                        </p>
+                                    </div>
+                                </div>`;
         }
 
         function previewEmail() {
@@ -1085,13 +1205,13 @@
             const item = document.createElement('div');
             item.className = 'historico-email';
             item.innerHTML = `
-                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                                <div>
-                                    <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${assunto}</div>
-                                    <div style="font-size:11px;color:#475569;margin-top:2px;">${data}</div>
-                                </div>
-                                <span style="font-size:12px;color:#34d399;font-weight:600;">${enviados}/${total} enviados</span>
-                            </div>`;
+                                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${assunto}</div>
+                                        <div style="font-size:11px;color:#475569;margin-top:2px;">${data}</div>
+                                    </div>
+                                    <span style="font-size:12px;color:#34d399;font-weight:600;">${enviados}/${total} enviados</span>
+                                </div>`;
             container.insertBefore(item, container.firstChild);
             container.querySelector('p') && container.querySelector('p').remove();
         }
@@ -1121,22 +1241,22 @@
                 badge.textContent = data.length + ' pendente' + (data.length > 1 ? 's' : '');
 
                 tbody.innerHTML = data.map(v => `
-                                        <tr id="verif-row-${v.id}">
-                                            <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
-                                            <td style="color:#94a3b8;">${v.email}</td>
-                                            <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
-                                            <td style="color:#94a3b8;">${v.cpf || '—'}</td>
-                                            <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
-                                            <td>
-                                                <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
-                                                    <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
-                                                </button>
-                                                <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
-                                                    <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    `).join('');
+                                            <tr id="verif-row-${v.id}">
+                                                <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
+                                                <td style="color:#94a3b8;">${v.email}</td>
+                                                <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
+                                                <td style="color:#94a3b8;">${v.cpf || '—'}</td>
+                                                <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
+                                                <td>
+                                                    <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
+                                                        <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
+                                                    </button>
+                                                    <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
+                                                        <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        `).join('');
             } catch (err) {
                 console.error('Erro ao carregar verificações:', err);
             }
@@ -1269,20 +1389,20 @@
                     : '<span style="color:#475569;">—</span>';
 
                 return `<tr>
-                                        <td><strong style="color:#f1f5f9;">${ag.profissional_nome || '—'}</strong></td>
-                                        <td>
-                                            <span style="color:#cbd5e1;">${ag.paciente_nome}</span><br>
-                                            <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
-                                        </td>
-                                        <td style="color:#94a3b8;">${dataConsulta}<br>
-                                            <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
-                                        </td>
-                                        <td style="font-weight:600; color:#a78bfa;">R$ ${parseFloat(ag.valor || 0).toFixed(2)}</td>
-                                        <td><span style="color:${cor}; font-size:12px; font-weight:500;">${label}</span></td>
-                                        <td>${reembolso}</td>
-                                        <td>${stripeCell}</td>
-                                        <td style="color:#64748b; font-size:12px;">${criadoEm}</td>
-                                    </tr>`;
+                                            <td><strong style="color:#f1f5f9;">${ag.profissional_nome || '—'}</strong></td>
+                                            <td>
+                                                <span style="color:#cbd5e1;">${ag.paciente_nome}</span><br>
+                                                <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
+                                            </td>
+                                            <td style="color:#94a3b8;">${dataConsulta}<br>
+                                                <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
+                                            </td>
+                                            <td style="font-weight:600; color:#a78bfa;">R$ ${parseFloat(ag.valor || 0).toFixed(2)}</td>
+                                            <td><span style="color:${cor}; font-size:12px; font-weight:500;">${label}</span></td>
+                                            <td>${reembolso}</td>
+                                            <td>${stripeCell}</td>
+                                            <td style="color:#64748b; font-size:12px;">${criadoEm}</td>
+                                        </tr>`;
             }).join('');
         }
 
@@ -1367,8 +1487,8 @@
                     } else if (diasRestantes !== null) {
                         const cor = diasRestantes <= 3 ? '#f87171' : diasRestantes <= 7 ? '#fbbf24' : '#34d399';
                         statusBadge = `<span class="badge" style="background:rgba(52,211,153,0.1);color:${cor};">
-                                                ${diasRestantes > 0 ? diasRestantes + 'd restantes' : 'Expira hoje'}
-                                            </span>`;
+                                                    ${diasRestantes > 0 ? diasRestantes + 'd restantes' : 'Expira hoje'}
+                                                </span>`;
                     }
 
                     const formularioBadge = u.teste_formulario_respondido
@@ -1382,47 +1502,47 @@
                     } else if (u.teste_formulario_respondido) {
                         extensaoBadge = `<span class="badge" style="background:rgba(96,165,250,0.15);color:#60a5fa;">Pronto p/ enviar</span>`;
                         btnExtensao = `<button class="btn-acao" onclick="enviarEmailExtensao(${u.id}, '${u.nome}')"
-                                                style="background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);">
-                                                <i class="fas fa-paper-plane" style="margin-right:3px;"></i>Enviar +6 meses
-                                            </button>`;
+                                                    style="background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);">
+                                                    <i class="fas fa-paper-plane" style="margin-right:3px;"></i>Enviar +6 meses
+                                                </button>`;
                     } else {
                         extensaoBadge = `<span style="color:#475569;font-size:12px;">—</span>`;
                     }
 
                     const uso = `<span style="font-size:11px;color:#64748b;">
-                                            ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
-                                        </span>`;
+                                                ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
+                                            </span>`;
 
                     return `<tr id="teste-row-${u.id}">
-                                            <td>
-                                                <strong style="color:#f1f5f9;">${u.nome}</strong><br>
-                                                <span style="font-size:11px;color:#64748b;">${u.email}</span>
-                                            </td>
-                                            <td style="color:#64748b;font-size:12px;">${inicio}</td>
-                                            <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
-                                            <td>${statusBadge}</td>
-                                            <td>
-                                                ${formularioBadge}
-                                                ${u.teste_formulario_respondido
+                                                <td>
+                                                    <strong style="color:#f1f5f9;">${u.nome}</strong><br>
+                                                    <span style="font-size:11px;color:#64748b;">${u.email}</span>
+                                                </td>
+                                                <td style="color:#64748b;font-size:12px;">${inicio}</td>
+                                                <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
+                                                <td>${statusBadge}</td>
+                                                <td>
+                                                    ${formularioBadge}
+                                                    ${u.teste_formulario_respondido
                             ? `<br><button class="btn-acao" onclick="verAvaliacao(${u.id})"
-                                                        style="margin-top:4px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);">
-                                                        <i class="fas fa-eye" style="margin-right:3px;"></i>Ver
-                                                       </button>`
+                                                            style="margin-top:4px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);">
+                                                            <i class="fas fa-eye" style="margin-right:3px;"></i>Ver
+                                                           </button>`
                             : ''
                         }
-                                            </td>
-                                            <td>${extensaoBadge}</td>
-                                            <td>${uso}<br>
-                                                <span style="font-size:10px;color:#475569;">pac/evol/agenda</span>
-                                            </td>
-                                            <td>
-                                                ${btnExtensao}
-                                                ${!u.ativo
+                                                </td>
+                                                <td>${extensaoBadge}</td>
+                                                <td>${uso}<br>
+                                                    <span style="font-size:10px;color:#475569;">pac/evol/agenda</span>
+                                                </td>
+                                                <td>
+                                                    ${btnExtensao}
+                                                    ${!u.ativo
                             ? `<button class="btn-acao btn-ativar" onclick="ativar(${u.id})">Reativar</button>`
                             : `<button class="btn-acao btn-suspender" onclick="suspender(${u.id})">Suspender</button>`
                         }
-                                            </td>
-                                        </tr>`;
+                                                </td>
+                                            </tr>`;
                 }).join('');
 
             } catch (err) {
@@ -1461,52 +1581,52 @@
                 const sim_nao = (v) => v ? '<span style="color:#34d399;">✓ Sim</span>' : '<span style="color:#f87171;">✗ Não</span>';
 
                 document.getElementById('conteudo-avaliacao').innerHTML = `
-                                        <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.15);">
-                                            <p style="color:#94a3b8; font-size:13px; margin-bottom:4px;">Profissional</p>
-                                            <p style="color:#f1f5f9; font-size:15px; font-weight:500;">${a.nome} — <span style="color:#64748b; font-size:13px;">${a.email}</span></p>
-                                            <p style="color:#64748b; font-size:12px;">Respondido em ${new Date(a.respondido_em).toLocaleString('pt-BR')}</p>
-                                        </div>
-                                        <p style="color:#a78bfa; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Notas gerais</p>
-                                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
-                                            ${[['Usabilidade', a.usabilidade], ['Funcionalidades', a.funcionalidades], ['Desempenho', a.desempenho],
+                                            <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.15);">
+                                                <p style="color:#94a3b8; font-size:13px; margin-bottom:4px;">Profissional</p>
+                                                <p style="color:#f1f5f9; font-size:15px; font-weight:500;">${a.nome} — <span style="color:#64748b; font-size:13px;">${a.email}</span></p>
+                                                <p style="color:#64748b; font-size:12px;">Respondido em ${new Date(a.respondido_em).toLocaleString('pt-BR')}</p>
+                                            </div>
+                                            <p style="color:#a78bfa; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Notas gerais</p>
+                                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                                                ${[['Usabilidade', a.usabilidade], ['Funcionalidades', a.funcionalidades], ['Desempenho', a.desempenho],
                     ['Prontuário', a.prontuario_nota], ['Agenda', a.agenda_nota], ['Formulários', a.formularios_nota],
                     ['Recibos', a.recibos_nota], ['Relatório', a.relatorio_nota]].map(([label, nota]) => `
-                                                <div style="background:#141d2b; border-radius:8px; padding:10px 14px;">
-                                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">${label}</p>
-                                                    <p style="color:#fbbf24; font-size:16px; margin:0;">${estrelas(nota)}</p>
-                                                </div>`).join('')}
-                                        </div>
-                                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
-                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Recomendaria?</p>
-                                                <p style="margin:0;">${sim_nao(a.recomendaria)}</p>
+                                                    <div style="background:#141d2b; border-radius:8px; padding:10px 14px;">
+                                                        <p style="color:#64748b; font-size:11px; margin-bottom:4px;">${label}</p>
+                                                        <p style="color:#fbbf24; font-size:16px; margin:0;">${estrelas(nota)}</p>
+                                                    </div>`).join('')}
                                             </div>
-                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Quer continuar?</p>
-                                                <p style="margin:0;">${sim_nao(a.continuar_usando)}</p>
+                                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Recomendaria?</p>
+                                                    <p style="margin:0;">${sim_nao(a.recomendaria)}</p>
+                                                </div>
+                                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Quer continuar?</p>
+                                                    <p style="margin:0;">${sim_nao(a.continuar_usando)}</p>
+                                                </div>
+                                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Usou tudo?</p>
+                                                    <p style="margin:0;">${sim_nao(a.usou_todas_funcionalidades)}</p>
+                                                </div>
+                                                <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Favorita</p>
+                                                    <p style="margin:0; color:#e2e8f0; font-size:13px;">${a.funcionalidade_favorita || '—'}</p>
+                                                </div>
                                             </div>
-                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Usou tudo?</p>
-                                                <p style="margin:0;">${sim_nao(a.usou_todas_funcionalidades)}</p>
-                                            </div>
-                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Favorita</p>
-                                                <p style="margin:0; color:#e2e8f0; font-size:13px;">${a.funcionalidade_favorita || '—'}</p>
-                                            </div>
-                                        </div>
-                                        ${a.sugestao_melhoria ? `<div style="background:#141d2b; border-radius:8px; padding:14px; margin-bottom:12px;">
-                                            <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Sugestão de melhoria</p>
-                                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.sugestao_melhoria}</p>
-                                        </div>` : ''}
-                                        ${a.bug_encontrado ? `<div style="background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); border-radius:8px; padding:14px; margin-bottom:12px;">
-                                            <p style="color:#f87171; font-size:11px; margin-bottom:6px;">Bug encontrado</p>
-                                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.bug_encontrado}</p>
-                                        </div>` : ''}
-                                        ${a.comentario_livre ? `<div style="background:#141d2b; border-radius:8px; padding:14px;">
-                                            <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Comentário livre</p>
-                                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.comentario_livre}</p>
-                                        </div>` : ''}
-                                    `;
+                                            ${a.sugestao_melhoria ? `<div style="background:#141d2b; border-radius:8px; padding:14px; margin-bottom:12px;">
+                                                <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Sugestão de melhoria</p>
+                                                <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.sugestao_melhoria}</p>
+                                            </div>` : ''}
+                                            ${a.bug_encontrado ? `<div style="background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); border-radius:8px; padding:14px; margin-bottom:12px;">
+                                                <p style="color:#f87171; font-size:11px; margin-bottom:6px;">Bug encontrado</p>
+                                                <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.bug_encontrado}</p>
+                                            </div>` : ''}
+                                            ${a.comentario_livre ? `<div style="background:#141d2b; border-radius:8px; padding:14px;">
+                                                <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Comentário livre</p>
+                                                <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.comentario_livre}</p>
+                                            </div>` : ''}
+                                        `;
 
                 document.getElementById('modal-avaliacao').style.display = 'block';
             } catch (err) {
@@ -1720,23 +1840,23 @@
 
                 const tipoIcon = { info: '💬', dica: '💡', atencao: '⚠️', parabens: '🎉' };
                 container.innerHTML = data.map(r => `
-                        <div style="background:#141d2b;border:1px solid rgba(139,92,246,${r.lido ? '0.08' : '0.25'});border-radius:10px;padding:14px 16px;margin-bottom:10px;opacity:${r.lido ? '0.6' : '1'};">
-                            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
-                                <div style="flex:1;">
-                                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                                        <span style="font-size:15px;">${tipoIcon[r.tipo] || '💬'}</span>
-                                        <strong style="color:#f1f5f9;font-size:13px;">${r.prof_nome || 'Profissional'}</strong>
-                                        <span style="font-size:11px;color:#475569;">${r.prof_email || ''}</span>
-                                        ${r.lido ? '<span style="font-size:10px;color:#34d399;background:rgba(52,211,153,0.1);padding:2px 8px;border-radius:10px;">✓ Lido</span>' : '<span style="font-size:10px;color:#fbbf24;background:rgba(251,191,36,0.1);padding:2px 8px;border-radius:10px;">Não lido</span>'}
+                            <div style="background:#141d2b;border:1px solid rgba(139,92,246,${r.lido ? '0.08' : '0.25'});border-radius:10px;padding:14px 16px;margin-bottom:10px;opacity:${r.lido ? '0.6' : '1'};">
+                                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+                                    <div style="flex:1;">
+                                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                                            <span style="font-size:15px;">${tipoIcon[r.tipo] || '💬'}</span>
+                                            <strong style="color:#f1f5f9;font-size:13px;">${r.prof_nome || 'Profissional'}</strong>
+                                            <span style="font-size:11px;color:#475569;">${r.prof_email || ''}</span>
+                                            ${r.lido ? '<span style="font-size:10px;color:#34d399;background:rgba(52,211,153,0.1);padding:2px 8px;border-radius:10px;">✓ Lido</span>' : '<span style="font-size:10px;color:#fbbf24;background:rgba(251,191,36,0.1);padding:2px 8px;border-radius:10px;">Não lido</span>'}
+                                        </div>
+                                        <p style="color:#cbd5e1;font-size:13px;line-height:1.5;margin:0;">${r.mensagem}</p>
+                                        <p style="color:#475569;font-size:11px;margin:6px 0 0;">${new Date(r.criado_em).toLocaleString('pt-BR')}</p>
                                     </div>
-                                    <p style="color:#cbd5e1;font-size:13px;line-height:1.5;margin:0;">${r.mensagem}</p>
-                                    <p style="color:#475569;font-size:11px;margin:6px 0 0;">${new Date(r.criado_em).toLocaleString('pt-BR')}</p>
+                                    <button onclick="excluirRecado(${r.id})" style="padding:4px 10px;background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.2);border-radius:6px;cursor:pointer;font-size:11px;font-family:'Roboto',sans-serif;white-space:nowrap;">
+                                        <i class="fas fa-trash" style="margin-right:3px;"></i>Excluir
+                                    </button>
                                 </div>
-                                <button onclick="excluirRecado(${r.id})" style="padding:4px 10px;background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.2);border-radius:6px;cursor:pointer;font-size:11px;font-family:'Roboto',sans-serif;white-space:nowrap;">
-                                    <i class="fas fa-trash" style="margin-right:3px;"></i>Excluir
-                                </button>
-                            </div>
-                        </div>`).join('');
+                            </div>`).join('');
             } catch (err) {
                 container.innerHTML = '<p style="color:#f87171;font-size:13px;">Erro de conexão.</p>';
             }
@@ -1757,6 +1877,213 @@
         }
 
         carregarRecados();
+
+        // =====================================================
+        //  CLÍNICAS
+        // =====================================================
+        let todasClinicas = [];
+        let clinicaAtualId = null;
+
+        async function carregarClinicas() {
+            try {
+                const res = await fetch(`${API_URL}/api/super/clinicas`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) return;
+                todasClinicas = await res.json();
+                renderizarClinicas(todasClinicas);
+            } catch (err) {
+                console.error('Erro ao carregar clínicas:', err);
+            }
+        }
+
+        function renderizarClinicas(lista) {
+            const tbody = document.getElementById('tabela-clinicas');
+            if (!lista.length) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#475569;">Nenhuma clínica cadastrada ainda.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = lista.map(c => `
+                    <tr>
+                        <td><strong style="color:#f1f5f9;">${c.nome}</strong>${c.cnpj ? `<br><span style="font-size:11px;color:#475569;">${c.cnpj}</span>` : ''}</td>
+                        <td style="color:#64748b;font-size:12px;">${c.email || '—'}</td>
+                        <td style="color:#64748b;font-size:12px;">${c.telefone || '—'}</td>
+                        <td style="color:#a78bfa;">${c.total_membros || 0}</td>
+                        <td>
+                            <span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;
+                                  background:${c.ativa ? 'rgba(52,211,153,0.15)' : 'rgba(248,113,113,0.15)'};
+                                  color:${c.ativa ? '#34d399' : '#f87171'};">
+                                ${c.ativa ? 'Ativa' : 'Inativa'}
+                            </span>
+                        </td>
+                        <td style="color:#64748b;font-size:12px;">${c.criada_em ? new Date(c.criada_em).toLocaleDateString('pt-BR') : '—'}</td>
+                        <td>
+                            <button class="btn-acao" onclick="abrirModalMembros(${c.id}, '${c.nome.replace(/'/g, "\\'")}')"
+                                    style="background:rgba(96,165,250,0.12);color:#60a5fa;border:1px solid rgba(96,165,250,0.3);">
+                                <i class="fas fa-users"></i> Membros
+                            </button>
+                            <button class="btn-acao btn-suspender" onclick="desativarClinica(${c.id})" ${!c.ativa ? 'style="display:none"' : ''}>
+                                Desativar
+                            </button>
+                        </td>
+                    </tr>`).join('');
+        }
+
+        async function criarClinica() {
+            const nome = document.getElementById('clinica-nome').value.trim();
+            const cnpj = document.getElementById('clinica-cnpj').value.trim();
+            const email = document.getElementById('clinica-email').value.trim();
+            const telefone = document.getElementById('clinica-telefone').value.trim();
+            const endereco = document.getElementById('clinica-endereco').value.trim();
+            const fb = document.getElementById('clinica-feedback');
+
+            if (!nome) {
+                fb.style.display = 'inline';
+                fb.style.color = '#f87171';
+                fb.textContent = 'Nome da clínica é obrigatório.';
+                return;
+            }
+            try {
+                const res = await fetch(`${API_URL}/api/super/clinicas`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, cnpj, email, telefone, endereco })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.erro || 'Erro ao criar clínica.');
+                fb.style.display = 'inline';
+                fb.style.color = '#34d399';
+                fb.textContent = '✓ Clínica criada com sucesso!';
+                document.getElementById('clinica-nome').value = '';
+                document.getElementById('clinica-cnpj').value = '';
+                document.getElementById('clinica-email').value = '';
+                document.getElementById('clinica-telefone').value = '';
+                document.getElementById('clinica-endereco').value = '';
+                setTimeout(() => { fb.style.display = 'none'; }, 3000);
+                carregarClinicas();
+            } catch (err) {
+                fb.style.display = 'inline';
+                fb.style.color = '#f87171';
+                fb.textContent = err.message;
+            }
+        }
+
+        async function desativarClinica(id) {
+            if (!confirm('Desativar esta clínica?')) return;
+            try {
+                await fetch(`${API_URL}/api/super/clinicas/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                carregarClinicas();
+            } catch (err) { alert('Erro ao desativar clínica.'); }
+        }
+
+        async function abrirModalMembros(clinicaId, clinicaNome) {
+            clinicaAtualId = clinicaId;
+            document.getElementById('modal-clinica-nome').textContent = clinicaNome;
+            document.getElementById('modal-clinica-membros').style.display = 'flex';
+            document.getElementById('modal-membro-feedback').style.display = 'none';
+
+            // Popula select de profissionais
+            const sel = document.getElementById('modal-membro-prof');
+            sel.innerHTML = '<option value="">Carregando...</option>';
+            try {
+                const res = await fetch(`${API_URL}/api/super/profissionais`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const profs = await res.json();
+                sel.innerHTML = '<option value="">Selecione...</option>' +
+                    profs.filter(p => p.ativo).map(p =>
+                        `<option value="${p.id}">${p.nome} — ${p.email}</option>`
+                    ).join('');
+            } catch { sel.innerHTML = '<option value="">Erro ao carregar</option>'; }
+
+            carregarMembrosModal(clinicaId);
+        }
+
+        async function carregarMembrosModal(clinicaId) {
+            const container = document.getElementById('modal-membros-lista');
+            container.innerHTML = '<p style="color:#475569;font-size:13px;">Carregando...</p>';
+            try {
+                const res = await fetch(`${API_URL}/api/super/clinicas/${clinicaId}/membros`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const membros = await res.json();
+                if (!membros.length) {
+                    container.innerHTML = '<p style="color:#475569;font-size:13px;">Nenhum membro ainda.</p>';
+                    return;
+                }
+                const labelPapel = { admin_clinica: 'Admin', secretaria: 'Secretaria', profissional: 'Profissional' };
+                const corPapel = { admin_clinica: '#60a5fa', secretaria: '#a78bfa', profissional: '#34d399' };
+                container.innerHTML = membros.map(m => `
+                        <div style="display:flex;align-items:center;justify-content:space-between;
+                                    padding:12px 14px;background:#0f1621;border-radius:8px;margin-bottom:8px;gap:12px;flex-wrap:wrap;">
+                            <div>
+                                <strong style="color:#f1f5f9;font-size:14px;">${m.nome}</strong>
+                                <span style="display:inline-block;margin-left:8px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;
+                                      background:rgba(96,165,250,0.1);color:${corPapel[m.papel] || '#94a3b8'};">
+                                    ${labelPapel[m.papel] || m.papel}
+                                </span>
+                                <br><span style="font-size:11px;color:#475569;">${m.email}</span>
+                            </div>
+                            <button onclick="removerMembroClinica(${m.profissional_id})"
+                                    style="padding:5px 12px;background:rgba(248,113,113,0.1);color:#f87171;
+                                           border:1px solid rgba(248,113,113,0.3);border-radius:6px;cursor:pointer;
+                                           font-size:12px;font-family:'Roboto',sans-serif;">
+                                <i class="fas fa-user-minus"></i> Remover
+                            </button>
+                        </div>`).join('');
+            } catch {
+                container.innerHTML = '<p style="color:#f87171;font-size:13px;">Erro ao carregar membros.</p>';
+            }
+        }
+
+        async function adicionarMembroClinica() {
+            const profId = document.getElementById('modal-membro-prof').value;
+            const papel = document.getElementById('modal-membro-papel').value;
+            const fb = document.getElementById('modal-membro-feedback');
+            if (!profId) {
+                fb.style.display = 'block'; fb.style.color = '#f87171';
+                fb.textContent = 'Selecione um profissional.'; return;
+            }
+            try {
+                const res = await fetch(`${API_URL}/api/super/clinicas/${clinicaAtualId}/membros`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ profissional_id: parseInt(profId), papel })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.erro || 'Erro ao adicionar.');
+                fb.style.display = 'block'; fb.style.color = '#34d399';
+                fb.textContent = '✓ Membro adicionado!';
+                setTimeout(() => { fb.style.display = 'none'; }, 2500);
+                carregarMembrosModal(clinicaAtualId);
+                carregarClinicas();
+            } catch (err) {
+                fb.style.display = 'block'; fb.style.color = '#f87171';
+                fb.textContent = err.message;
+            }
+        }
+
+        async function removerMembroClinica(profId) {
+            if (!confirm('Remover este membro da clínica?')) return;
+            try {
+                await fetch(`${API_URL}/api/super/clinicas/${clinicaAtualId}/membros/${profId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                carregarMembrosModal(clinicaAtualId);
+                carregarClinicas();
+            } catch { alert('Erro ao remover membro.'); }
+        }
+
+        function fecharModalMembros() {
+            document.getElementById('modal-clinica-membros').style.display = 'none';
+            clinicaAtualId = null;
+        }
+
+        carregarClinicas();
 
     </script>
 </body>
