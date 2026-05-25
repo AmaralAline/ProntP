@@ -894,32 +894,32 @@
             }
 
             tbody.innerHTML = profissionais.map(p => `
-                                <tr id="row-${p.id}">
-                                    <td>
-                                        <strong style="color:#f1f5f9;">${p.nome}</strong>
-                                        ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
-                                        ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
-                                    </td>
-                                    <td>${p.email}</td>
-                                    <td>${p.especialidade || '-'}</td>
-                                    <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
-                                    <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
-                                    <td>${p.total_pacientes}</td>
-                                    <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
-                                    <td>
-                                        ${!p.is_admin ? `
-                                            ${p.ativo
+                                    <tr id="row-${p.id}">
+                                        <td>
+                                            <strong style="color:#f1f5f9;">${p.nome}</strong>
+                                            ${p.is_admin ? '<span style="font-size:10px;color:#a78bfa;margin-left:6px;">ADMIN</span>' : ''}
+                                            ${p.verificado ? '<span style="font-size:10px;color:#34d399;margin-left:6px;">✓ Verificado</span>' : ''}
+                                        </td>
+                                        <td>${p.email}</td>
+                                        <td>${p.especialidade || '-'}</td>
+                                        <td><span class="badge badge-${p.plano}">${p.plano}</span></td>
+                                        <td><span class="badge badge-${p.ativo ? 'ativo' : 'suspenso'}">${p.ativo ? 'Ativo' : 'Suspenso'}</span></td>
+                                        <td>${p.total_pacientes}</td>
+                                        <td>${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '-'}</td>
+                                        <td>
+                                            ${!p.is_admin ? `
+                                                ${p.ativo
                         ? `<button class="btn-acao btn-suspender" onclick="suspender(${p.id})">Suspender</button>`
                         : `<button class="btn-acao btn-ativar" onclick="ativar(${p.id})">Ativar</button>`
                     }
-                                            ${p.plano !== 'pago'
+                                                ${p.plano !== 'pago'
                         ? `<button class="btn-acao btn-pago" onclick="tornarPago(${p.id})">Tornar pago</button>`
                         : ''
                     }
-                                        ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
-                                    </td>
-                                </tr>
-                            `).join('');
+                                            ` : '<span style="color:#64748b;font-size:12px;">—</span>'}
+                                        </td>
+                                    </tr>
+                                `).join('');
         }
 
         function filtrar(tipo, btn) {
@@ -1015,20 +1015,20 @@
                 `<p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.7;">${l}</p>`
             ).join('');
             return `
-                        <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
-                            <div style="background:#7c3aed;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
-                                <h1 style="color:#fff;margin:0;font-size:22px;">ProntPsi</h1>
-                            </div>
-                            <div style="background:#fff;padding:32px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-                                <p style="color:#334155;font-size:15px;margin:0 0 20px;">Olá, <strong>${nomeProf}</strong>! 👋</p>
-                                ${paragrafos}
-                                <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-                                <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
-                                    ProntPsi — Sistema Clínico para Psicólogos, Psiquiatras e Psicanalistas<br>
-                                    <a href="https://www.prontpsi.com.br" style="color:#7c3aed;">www.prontpsi.com.br</a>
-                                </p>
-                            </div>
-                        </div>`;
+                            <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
+                                <div style="background:#7c3aed;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+                                    <h1 style="color:#fff;margin:0;font-size:22px;">ProntPsi</h1>
+                                </div>
+                                <div style="background:#fff;padding:32px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
+                                    <p style="color:#334155;font-size:15px;margin:0 0 20px;">Olá, <strong>${nomeProf}</strong>! 👋</p>
+                                    ${paragrafos}
+                                    <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
+                                    <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
+                                        ProntPsi — Sistema Clínico para Psicólogos, Psiquiatras e Psicanalistas<br>
+                                        <a href="https://www.prontpsi.com.br" style="color:#7c3aed;">www.prontpsi.com.br</a>
+                                    </p>
+                                </div>
+                            </div>`;
         }
 
         function previewEmail() {
@@ -1085,13 +1085,13 @@
             const item = document.createElement('div');
             item.className = 'historico-email';
             item.innerHTML = `
-                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                            <div>
-                                <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${assunto}</div>
-                                <div style="font-size:11px;color:#475569;margin-top:2px;">${data}</div>
-                            </div>
-                            <span style="font-size:12px;color:#34d399;font-weight:600;">${enviados}/${total} enviados</span>
-                        </div>`;
+                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                                <div>
+                                    <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${assunto}</div>
+                                    <div style="font-size:11px;color:#475569;margin-top:2px;">${data}</div>
+                                </div>
+                                <span style="font-size:12px;color:#34d399;font-weight:600;">${enviados}/${total} enviados</span>
+                            </div>`;
             container.insertBefore(item, container.firstChild);
             container.querySelector('p') && container.querySelector('p').remove();
         }
@@ -1121,22 +1121,22 @@
                 badge.textContent = data.length + ' pendente' + (data.length > 1 ? 's' : '');
 
                 tbody.innerHTML = data.map(v => `
-                                    <tr id="verif-row-${v.id}">
-                                        <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
-                                        <td style="color:#94a3b8;">${v.email}</td>
-                                        <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
-                                        <td style="color:#94a3b8;">${v.cpf || '—'}</td>
-                                        <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
-                                        <td>
-                                            <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
-                                                <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
-                                            </button>
-                                            <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
-                                                <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                `).join('');
+                                        <tr id="verif-row-${v.id}">
+                                            <td><strong style="color:#f1f5f9;">${v.nome}</strong></td>
+                                            <td style="color:#94a3b8;">${v.email}</td>
+                                            <td style="color:#a78bfa; font-weight:500;">${v.crp_crm || '—'}</td>
+                                            <td style="color:#94a3b8;">${v.cpf || '—'}</td>
+                                            <td style="color:#64748b;">${v.solicitado_em ? new Date(v.solicitado_em).toLocaleDateString('pt-BR') : '—'}</td>
+                                            <td>
+                                                <button class="btn-acao btn-verificar" onclick="aprovarVerificacao(${v.id})">
+                                                    <i class="fas fa-check" style="margin-right:4px;"></i>Aprovar
+                                                </button>
+                                                <button class="btn-acao btn-rejeitar" onclick="rejeitarVerificacao(${v.id})">
+                                                    <i class="fas fa-times" style="margin-right:4px;"></i>Rejeitar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `).join('');
             } catch (err) {
                 console.error('Erro ao carregar verificações:', err);
             }
@@ -1269,20 +1269,20 @@
                     : '<span style="color:#475569;">—</span>';
 
                 return `<tr>
-                                    <td><strong style="color:#f1f5f9;">${ag.profissional_nome || '—'}</strong></td>
-                                    <td>
-                                        <span style="color:#cbd5e1;">${ag.paciente_nome}</span><br>
-                                        <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
-                                    </td>
-                                    <td style="color:#94a3b8;">${dataConsulta}<br>
-                                        <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
-                                    </td>
-                                    <td style="font-weight:600; color:#a78bfa;">R$ ${parseFloat(ag.valor || 0).toFixed(2)}</td>
-                                    <td><span style="color:${cor}; font-size:12px; font-weight:500;">${label}</span></td>
-                                    <td>${reembolso}</td>
-                                    <td>${stripeCell}</td>
-                                    <td style="color:#64748b; font-size:12px;">${criadoEm}</td>
-                                </tr>`;
+                                        <td><strong style="color:#f1f5f9;">${ag.profissional_nome || '—'}</strong></td>
+                                        <td>
+                                            <span style="color:#cbd5e1;">${ag.paciente_nome}</span><br>
+                                            <span style="font-size:11px; color:#64748b;">${ag.paciente_email || ''}</span>
+                                        </td>
+                                        <td style="color:#94a3b8;">${dataConsulta}<br>
+                                            <span style="font-size:11px; color:#64748b;">${ag.hora_inicio ? ag.hora_inicio.substring(0, 5) : ''}</span>
+                                        </td>
+                                        <td style="font-weight:600; color:#a78bfa;">R$ ${parseFloat(ag.valor || 0).toFixed(2)}</td>
+                                        <td><span style="color:${cor}; font-size:12px; font-weight:500;">${label}</span></td>
+                                        <td>${reembolso}</td>
+                                        <td>${stripeCell}</td>
+                                        <td style="color:#64748b; font-size:12px;">${criadoEm}</td>
+                                    </tr>`;
             }).join('');
         }
 
@@ -1319,133 +1319,6 @@
                     msg.textContent = '✅ ' + data.mensagem;
                     document.getElementById('input-email-teste').value = '';
                     carregarUsuariosTeste();
-
-                    // ── E-MAIL MARKETING ─────────────────────────────────────────
-                    let filtroEmailAtual = 'todos';
-                    let destinatariosEmail = [];
-
-                    function selecionarFiltroEmail(filtro, btn) {
-                        filtroEmailAtual = filtro;
-                        document.querySelectorAll('.filtro-dest-btn').forEach(b => b.classList.remove('ativo'));
-                        btn.classList.add('ativo');
-                        atualizarPreviewDestinatarios();
-                    }
-
-                    function atualizarPreviewDestinatarios() {
-                        const hoje = new Date();
-                        destinatariosEmail = todosProfissionais.filter(p => {
-                            if (p.is_admin || !p.email) return false;
-                            const esp = (p.especialidade || '').toLowerCase();
-                            switch (filtroEmailAtual) {
-                                case 'todos': return true;
-                                case 'trial': return p.plano === 'trial' || p.tipo_usuario === 'teste';
-                                case 'pagantes': return p.plano === 'pago';
-                                case 'inativos':
-                                    if (!p.ultimo_acesso) return true;
-                                    return (hoje - new Date(p.ultimo_acesso)) > 7 * 24 * 60 * 60 * 1000;
-                                case 'psicologos': return esp.includes('psicolog');
-                                case 'psiquiatras': return esp.includes('psiquiat');
-                                case 'psicanalistas': return esp.includes('psicanalit') || esp.includes('psicanalista');
-                                default: return true;
-                            }
-                        });
-
-                        const countEl = document.getElementById('preview-dest-count');
-                        const nomesEl = document.getElementById('preview-dest-nomes');
-                        countEl.textContent = destinatariosEmail.length;
-                        countEl.style.color = destinatariosEmail.length > 0 ? '#a78bfa' : '#f87171';
-                        const preview = destinatariosEmail.slice(0, 5).map(p => p.nome).join(', ');
-                        nomesEl.textContent = destinatariosEmail.length > 0
-                            ? preview + (destinatariosEmail.length > 5 ? ` e mais ${destinatariosEmail.length - 5}...` : '')
-                            : 'Nenhum usuário encontrado com esse filtro.';
-                    }
-
-                    function gerarHTMLEmail(nomeProf, corpo) {
-                        const paragrafos = corpo.split('\n').filter(l => l.trim()).map(l =>
-                            `<p style="margin:0 0 16px;color:#334155;font-size:15px;line-height:1.7;">${l}</p>`
-                        ).join('');
-                        return `
-                        <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
-                            <div style="background:#7c3aed;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
-                                <h1 style="color:#fff;margin:0;font-size:22px;">ProntPsi</h1>
-                            </div>
-                            <div style="background:#fff;padding:32px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;">
-                                <p style="color:#334155;font-size:15px;margin:0 0 20px;">Olá, <strong>${nomeProf}</strong>! 👋</p>
-                                ${paragrafos}
-                                <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-                                <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
-                                    ProntPsi — Sistema Clínico para Psicólogos, Psiquiatras e Psicanalistas<br>
-                                    <a href="https://www.prontpsi.com.br" style="color:#7c3aed;">www.prontpsi.com.br</a>
-                                </p>
-                            </div>
-                        </div>`;
-                    }
-
-                    function previewEmail() {
-                        const corpo = document.getElementById('email-corpo').value.trim();
-                        const assunto = document.getElementById('email-assunto').value.trim();
-                        if (!corpo) { alert('Escreva a mensagem antes de visualizar.'); return; }
-                        document.getElementById('preview-email-content').innerHTML = gerarHTMLEmail('Nome do Profissional', corpo);
-                        document.getElementById('modal-preview-email').style.display = 'flex';
-                    }
-
-                    async function confirmarEnvioEmail() {
-                        const assunto = document.getElementById('email-assunto').value.trim();
-                        const corpo = document.getElementById('email-corpo').value.trim();
-                        const fb = document.getElementById('email-feedback');
-
-                        if (!assunto) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Preencha o assunto.'; return; }
-                        if (!corpo) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Escreva a mensagem.'; return; }
-                        if (!destinatariosEmail.length) { fb.style.display = 'block'; fb.style.color = '#f87171'; fb.textContent = 'Nenhum destinatário encontrado.'; return; }
-
-                        const confirmado = confirm(`Enviar e-mail para ${destinatariosEmail.length} usuário(s)?\n\nAssunto: ${assunto}`);
-                        if (!confirmado) return;
-
-                        fb.style.display = 'block'; fb.style.color = '#fbbf24'; fb.textContent = `⏳ Enviando para ${destinatariosEmail.length} usuários...`;
-
-                        try {
-                            const res = await fetch(`${API_URL}/api/admin/email-marketing`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                                body: JSON.stringify({
-                                    assunto,
-                                    corpo,
-                                    destinatarios: destinatariosEmail.map(p => ({ id: p.id, nome: p.nome, email: p.email }))
-                                })
-                            });
-                            const data = await res.json();
-                            if (res.ok) {
-                                fb.style.color = '#34d399';
-                                fb.textContent = `✅ E-mail enviado para ${data.enviados} usuários!`;
-                                document.getElementById('email-assunto').value = '';
-                                document.getElementById('email-corpo').value = '';
-                                adicionarHistoricoEmail(assunto, destinatariosEmail.length, data.enviados);
-                            } else {
-                                fb.style.color = '#f87171';
-                                fb.textContent = '❌ ' + (data.erro || 'Erro ao enviar.');
-                            }
-                        } catch (err) {
-                            fb.style.color = '#f87171'; fb.textContent = '❌ Erro de conexão.';
-                        }
-                    }
-
-                    function adicionarHistoricoEmail(assunto, total, enviados) {
-                        const container = document.getElementById('historico-emails-container');
-                        const data = new Date().toLocaleString('pt-BR');
-                        const item = document.createElement('div');
-                        item.className = 'historico-email';
-                        item.innerHTML = `
-                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                            <div>
-                                <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${assunto}</div>
-                                <div style="font-size:11px;color:#475569;margin-top:2px;">${data}</div>
-                            </div>
-                            <span style="font-size:12px;color:#34d399;font-weight:600;">${enviados}/${total} enviados</span>
-                        </div>`;
-                        container.insertBefore(item, container.firstChild);
-                        container.querySelector('p') && container.querySelector('p').remove();
-                    }
-
                     carregarMetricas();
                 } else {
                     msg.style.color = '#f87171';
@@ -1494,8 +1367,8 @@
                     } else if (diasRestantes !== null) {
                         const cor = diasRestantes <= 3 ? '#f87171' : diasRestantes <= 7 ? '#fbbf24' : '#34d399';
                         statusBadge = `<span class="badge" style="background:rgba(52,211,153,0.1);color:${cor};">
-                                            ${diasRestantes > 0 ? diasRestantes + 'd restantes' : 'Expira hoje'}
-                                        </span>`;
+                                                ${diasRestantes > 0 ? diasRestantes + 'd restantes' : 'Expira hoje'}
+                                            </span>`;
                     }
 
                     const formularioBadge = u.teste_formulario_respondido
@@ -1509,47 +1382,47 @@
                     } else if (u.teste_formulario_respondido) {
                         extensaoBadge = `<span class="badge" style="background:rgba(96,165,250,0.15);color:#60a5fa;">Pronto p/ enviar</span>`;
                         btnExtensao = `<button class="btn-acao" onclick="enviarEmailExtensao(${u.id}, '${u.nome}')"
-                                            style="background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);">
-                                            <i class="fas fa-paper-plane" style="margin-right:3px;"></i>Enviar +6 meses
-                                        </button>`;
+                                                style="background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);">
+                                                <i class="fas fa-paper-plane" style="margin-right:3px;"></i>Enviar +6 meses
+                                            </button>`;
                     } else {
                         extensaoBadge = `<span style="color:#475569;font-size:12px;">—</span>`;
                     }
 
                     const uso = `<span style="font-size:11px;color:#64748b;">
-                                        ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
-                                    </span>`;
+                                            ${u.total_pacientes}p / ${u.total_evolucoes}e / ${u.total_agenda}a
+                                        </span>`;
 
                     return `<tr id="teste-row-${u.id}">
-                                        <td>
-                                            <strong style="color:#f1f5f9;">${u.nome}</strong><br>
-                                            <span style="font-size:11px;color:#64748b;">${u.email}</span>
-                                        </td>
-                                        <td style="color:#64748b;font-size:12px;">${inicio}</td>
-                                        <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
-                                        <td>${statusBadge}</td>
-                                        <td>
-                                            ${formularioBadge}
-                                            ${u.teste_formulario_respondido
+                                            <td>
+                                                <strong style="color:#f1f5f9;">${u.nome}</strong><br>
+                                                <span style="font-size:11px;color:#64748b;">${u.email}</span>
+                                            </td>
+                                            <td style="color:#64748b;font-size:12px;">${inicio}</td>
+                                            <td style="color:#64748b;font-size:12px;">${expira ? expira.toLocaleDateString('pt-BR') : '—'}</td>
+                                            <td>${statusBadge}</td>
+                                            <td>
+                                                ${formularioBadge}
+                                                ${u.teste_formulario_respondido
                             ? `<br><button class="btn-acao" onclick="verAvaliacao(${u.id})"
-                                                    style="margin-top:4px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);">
-                                                    <i class="fas fa-eye" style="margin-right:3px;"></i>Ver
-                                                   </button>`
+                                                        style="margin-top:4px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);">
+                                                        <i class="fas fa-eye" style="margin-right:3px;"></i>Ver
+                                                       </button>`
                             : ''
                         }
-                                        </td>
-                                        <td>${extensaoBadge}</td>
-                                        <td>${uso}<br>
-                                            <span style="font-size:10px;color:#475569;">pac/evol/agenda</span>
-                                        </td>
-                                        <td>
-                                            ${btnExtensao}
-                                            ${!u.ativo
+                                            </td>
+                                            <td>${extensaoBadge}</td>
+                                            <td>${uso}<br>
+                                                <span style="font-size:10px;color:#475569;">pac/evol/agenda</span>
+                                            </td>
+                                            <td>
+                                                ${btnExtensao}
+                                                ${!u.ativo
                             ? `<button class="btn-acao btn-ativar" onclick="ativar(${u.id})">Reativar</button>`
                             : `<button class="btn-acao btn-suspender" onclick="suspender(${u.id})">Suspender</button>`
                         }
-                                        </td>
-                                    </tr>`;
+                                            </td>
+                                        </tr>`;
                 }).join('');
 
             } catch (err) {
@@ -1588,52 +1461,52 @@
                 const sim_nao = (v) => v ? '<span style="color:#34d399;">✓ Sim</span>' : '<span style="color:#f87171;">✗ Não</span>';
 
                 document.getElementById('conteudo-avaliacao').innerHTML = `
-                                    <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.15);">
-                                        <p style="color:#94a3b8; font-size:13px; margin-bottom:4px;">Profissional</p>
-                                        <p style="color:#f1f5f9; font-size:15px; font-weight:500;">${a.nome} — <span style="color:#64748b; font-size:13px;">${a.email}</span></p>
-                                        <p style="color:#64748b; font-size:12px;">Respondido em ${new Date(a.respondido_em).toLocaleString('pt-BR')}</p>
-                                    </div>
-                                    <p style="color:#a78bfa; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Notas gerais</p>
-                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
-                                        ${[['Usabilidade', a.usabilidade], ['Funcionalidades', a.funcionalidades], ['Desempenho', a.desempenho],
+                                        <div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(139,92,246,0.15);">
+                                            <p style="color:#94a3b8; font-size:13px; margin-bottom:4px;">Profissional</p>
+                                            <p style="color:#f1f5f9; font-size:15px; font-weight:500;">${a.nome} — <span style="color:#64748b; font-size:13px;">${a.email}</span></p>
+                                            <p style="color:#64748b; font-size:12px;">Respondido em ${new Date(a.respondido_em).toLocaleString('pt-BR')}</p>
+                                        </div>
+                                        <p style="color:#a78bfa; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">Notas gerais</p>
+                                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                                            ${[['Usabilidade', a.usabilidade], ['Funcionalidades', a.funcionalidades], ['Desempenho', a.desempenho],
                     ['Prontuário', a.prontuario_nota], ['Agenda', a.agenda_nota], ['Formulários', a.formularios_nota],
                     ['Recibos', a.recibos_nota], ['Relatório', a.relatorio_nota]].map(([label, nota]) => `
-                                            <div style="background:#141d2b; border-radius:8px; padding:10px 14px;">
-                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">${label}</p>
-                                                <p style="color:#fbbf24; font-size:16px; margin:0;">${estrelas(nota)}</p>
-                                            </div>`).join('')}
-                                    </div>
-                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
-                                        <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                            <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Recomendaria?</p>
-                                            <p style="margin:0;">${sim_nao(a.recomendaria)}</p>
+                                                <div style="background:#141d2b; border-radius:8px; padding:10px 14px;">
+                                                    <p style="color:#64748b; font-size:11px; margin-bottom:4px;">${label}</p>
+                                                    <p style="color:#fbbf24; font-size:16px; margin:0;">${estrelas(nota)}</p>
+                                                </div>`).join('')}
                                         </div>
-                                        <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                            <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Quer continuar?</p>
-                                            <p style="margin:0;">${sim_nao(a.continuar_usando)}</p>
+                                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Recomendaria?</p>
+                                                <p style="margin:0;">${sim_nao(a.recomendaria)}</p>
+                                            </div>
+                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Quer continuar?</p>
+                                                <p style="margin:0;">${sim_nao(a.continuar_usando)}</p>
+                                            </div>
+                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Usou tudo?</p>
+                                                <p style="margin:0;">${sim_nao(a.usou_todas_funcionalidades)}</p>
+                                            </div>
+                                            <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
+                                                <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Favorita</p>
+                                                <p style="margin:0; color:#e2e8f0; font-size:13px;">${a.funcionalidade_favorita || '—'}</p>
+                                            </div>
                                         </div>
-                                        <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                            <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Usou tudo?</p>
-                                            <p style="margin:0;">${sim_nao(a.usou_todas_funcionalidades)}</p>
-                                        </div>
-                                        <div style="background:#141d2b; border-radius:8px; padding:12px 14px;">
-                                            <p style="color:#64748b; font-size:11px; margin-bottom:4px;">Favorita</p>
-                                            <p style="margin:0; color:#e2e8f0; font-size:13px;">${a.funcionalidade_favorita || '—'}</p>
-                                        </div>
-                                    </div>
-                                    ${a.sugestao_melhoria ? `<div style="background:#141d2b; border-radius:8px; padding:14px; margin-bottom:12px;">
-                                        <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Sugestão de melhoria</p>
-                                        <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.sugestao_melhoria}</p>
-                                    </div>` : ''}
-                                    ${a.bug_encontrado ? `<div style="background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); border-radius:8px; padding:14px; margin-bottom:12px;">
-                                        <p style="color:#f87171; font-size:11px; margin-bottom:6px;">Bug encontrado</p>
-                                        <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.bug_encontrado}</p>
-                                    </div>` : ''}
-                                    ${a.comentario_livre ? `<div style="background:#141d2b; border-radius:8px; padding:14px;">
-                                        <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Comentário livre</p>
-                                        <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.comentario_livre}</p>
-                                    </div>` : ''}
-                                `;
+                                        ${a.sugestao_melhoria ? `<div style="background:#141d2b; border-radius:8px; padding:14px; margin-bottom:12px;">
+                                            <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Sugestão de melhoria</p>
+                                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.sugestao_melhoria}</p>
+                                        </div>` : ''}
+                                        ${a.bug_encontrado ? `<div style="background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); border-radius:8px; padding:14px; margin-bottom:12px;">
+                                            <p style="color:#f87171; font-size:11px; margin-bottom:6px;">Bug encontrado</p>
+                                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.bug_encontrado}</p>
+                                        </div>` : ''}
+                                        ${a.comentario_livre ? `<div style="background:#141d2b; border-radius:8px; padding:14px;">
+                                            <p style="color:#64748b; font-size:11px; margin-bottom:6px;">Comentário livre</p>
+                                            <p style="color:#e2e8f0; font-size:13px; line-height:1.6; margin:0;">${a.comentario_livre}</p>
+                                        </div>` : ''}
+                                    `;
 
                 document.getElementById('modal-avaliacao').style.display = 'block';
             } catch (err) {
@@ -1758,6 +1631,130 @@
         }
 
         carregarAviso();
+
+        // ============================================================
+        //  RECADOS PARA USUÁRIOS (escopo global)
+        // ============================================================
+        function popularSelectRecados(profissionais) {
+            const sel = document.getElementById('recado-destinatario');
+            sel.innerHTML = '<option value="">Selecione o profissional...</option>';
+            profissionais.filter(p => !p.is_admin).forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = `${p.nome} (${p.email})`;
+                sel.appendChild(opt);
+            });
+        }
+
+        async function enviarRecado() {
+            const profissional_id = document.getElementById('recado-destinatario').value;
+            const tipo = document.getElementById('recado-tipo').value;
+            const mensagem = document.getElementById('recado-mensagem').value.trim();
+            const fb = document.getElementById('recado-feedback');
+
+            if (!profissional_id) {
+                fb.style.display = 'block'; fb.style.color = '#f87171';
+                fb.textContent = 'Selecione o destinatário.';
+                setTimeout(() => fb.style.display = 'none', 3000);
+                return;
+            }
+            if (!mensagem) {
+                fb.style.display = 'block'; fb.style.color = '#f87171';
+                fb.textContent = 'Escreva a mensagem.';
+                setTimeout(() => fb.style.display = 'none', 3000);
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/api/admin/recados`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ profissional_id, tipo, mensagem })
+                });
+                const data = await res.json();
+                fb.style.display = 'block';
+                if (res.ok) {
+                    fb.style.color = '#34d399';
+                    fb.textContent = '✅ Recado enviado com sucesso!';
+                    document.getElementById('recado-mensagem').value = '';
+                    document.getElementById('recado-destinatario').value = '';
+                    carregarRecados();
+                } else {
+                    fb.style.color = '#f87171';
+                    fb.textContent = '❌ ' + (data.erro || 'Erro ao enviar recado.');
+                }
+                setTimeout(() => fb.style.display = 'none', 4000);
+            } catch (err) {
+                fb.style.display = 'block'; fb.style.color = '#f87171';
+                fb.textContent = '❌ Erro de conexão.';
+                setTimeout(() => fb.style.display = 'none', 4000);
+            }
+        }
+
+        async function carregarRecados() {
+            const container = document.getElementById('recados-container');
+            const mostrarLidos = document.getElementById('mostrar-lidos').checked;
+            const badge = document.getElementById('badge-recados-nao-lidos');
+
+            try {
+                const res = await fetch(`${API_URL}/api/admin/recados?mostrar_lidos=${mostrarLidos}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) { container.innerHTML = '<p style="color:#f87171;font-size:13px;">Erro ao carregar recados.</p>'; return; }
+                const data = await res.json();
+
+                const naoLidos = data.filter(r => !r.lido).length;
+                if (naoLidos > 0) {
+                    badge.style.display = 'inline';
+                    badge.textContent = naoLidos + ' não lido' + (naoLidos > 1 ? 's' : '');
+                } else {
+                    badge.style.display = 'none';
+                }
+
+                if (!data.length) {
+                    container.innerHTML = '<p style="color:#475569;font-size:13px;">Nenhum recado encontrado.</p>';
+                    return;
+                }
+
+                const tipoIcon = { info: '💬', dica: '💡', atencao: '⚠️', parabens: '🎉' };
+                container.innerHTML = data.map(r => `
+                        <div style="background:#141d2b;border:1px solid rgba(139,92,246,${r.lido ? '0.08' : '0.25'});border-radius:10px;padding:14px 16px;margin-bottom:10px;opacity:${r.lido ? '0.6' : '1'};">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+                                <div style="flex:1;">
+                                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                                        <span style="font-size:15px;">${tipoIcon[r.tipo] || '💬'}</span>
+                                        <strong style="color:#f1f5f9;font-size:13px;">${r.profissional_nome || 'Profissional'}</strong>
+                                        <span style="font-size:11px;color:#475569;">${r.profissional_email || ''}</span>
+                                        ${r.lido ? '<span style="font-size:10px;color:#34d399;background:rgba(52,211,153,0.1);padding:2px 8px;border-radius:10px;">✓ Lido</span>' : '<span style="font-size:10px;color:#fbbf24;background:rgba(251,191,36,0.1);padding:2px 8px;border-radius:10px;">Não lido</span>'}
+                                    </div>
+                                    <p style="color:#cbd5e1;font-size:13px;line-height:1.5;margin:0;">${r.mensagem}</p>
+                                    <p style="color:#475569;font-size:11px;margin:6px 0 0;">${new Date(r.criado_em).toLocaleString('pt-BR')}</p>
+                                </div>
+                                <button onclick="excluirRecado(${r.id})" style="padding:4px 10px;background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.2);border-radius:6px;cursor:pointer;font-size:11px;font-family:'Roboto',sans-serif;white-space:nowrap;">
+                                    <i class="fas fa-trash" style="margin-right:3px;"></i>Excluir
+                                </button>
+                            </div>
+                        </div>`).join('');
+            } catch (err) {
+                container.innerHTML = '<p style="color:#f87171;font-size:13px;">Erro de conexão.</p>';
+            }
+        }
+
+        async function excluirRecado(id) {
+            if (!confirm('Excluir este recado?')) return;
+            try {
+                const res = await fetch(`${API_URL}/api/admin/recados/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) carregarRecados();
+                else alert('Erro ao excluir recado.');
+            } catch (err) {
+                alert('Erro de conexão.');
+            }
+        }
+
+        carregarRecados();
 
     </script>
 </body>
