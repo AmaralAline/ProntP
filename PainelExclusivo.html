@@ -2048,107 +2048,393 @@
             <section id="recursos-terapeuticos-section" class="hidden-section">
                 <button class="btn-back"><i class="fas fa-arrow-left" style="margin-right:6px;"></i>Início</button>
                 <div class="page-header">
-                    <h2><i class="fas fa-gamepad" style="color:#8b5cf6; margin-right:10px;"></i>Recursos Terapêuticos — Atendimento Online Infantil</h2>
+                    <h2><i class="fas fa-gamepad" style="color:#8b5cf6; margin-right:10px;"></i>Recursos Terapêuticos — Atendimento Online</h2>
                     <p>Compartilhe sua tela e use estes jogos interativos com seus pacientes durante a sessão online</p>
                 </div>
 
-                <!-- GRID DE JOGOS -->
-                <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:32px;">
-
-                    <!-- Memória das Emoções -->
-                    <div class="card" onclick="abrirJogo('memoria-emocoes')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🎴</div>
-                            <div>
-                                <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Memória das Emoções</p>
-                                <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Reconhecimento emocional</p>
-                            </div>
-                        </div>
-                        <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Encontre os pares de emoções. Cada descoberta gera uma pergunta terapêutica.</p>
-                        <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">4 a 10 anos</span>
-                    </div>
-
-                    <!-- Quem Sou Eu -->
-                    <div class="card" onclick="abrirJogo('quem-sou-eu')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:42px;height:42px;border-radius:10px;background:rgba(96,165,250,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🪞</div>
-                            <div>
-                                <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Quem Sou Eu?</p>
-                                <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Autoconhecimento</p>
-                            </div>
-                        </div>
-                        <p style="font-size:12px;color:#94a3b8;line-height:1.5;">A criança responde perguntas sobre si mesma revelando uma imagem por vez.</p>
-                        <span style="font-size:11px;background:rgba(96,165,250,0.15);color:#60a5fa;padding:3px 8px;border-radius:6px;">5 a 12 anos</span>
-                    </div>
-
-                    <!-- Termômetro das Emoções -->
-                    <div class="card" onclick="abrirJogo('termometro')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🌡️</div>
-                            <div>
-                                <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Termômetro das Emoções</p>
-                                <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Regulação emocional</p>
-                            </div>
-                        </div>
-                        <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Arraste o ponteiro para mostrar a intensidade do que está sentindo agora.</p>
-                        <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">4 a 14 anos</span>
-                    </div>
-
-                    <!-- Memória Comidas Saudáveis -->
-                    <div class="card" onclick="abrirJogo('memoria-comidas')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:42px;height:42px;border-radius:10px;background:rgba(52,211,153,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🥦</div>
-                            <div>
-                                <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Memória Saudável</p>
-                                <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Hábitos alimentares</p>
-                            </div>
-                        </div>
-                        <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Jogo da memória com alimentos saudáveis e seus benefícios para o corpo.</p>
-                        <span style="font-size:11px;background:rgba(52,211,153,0.15);color:#34d399;padding:3px 8px;border-radius:6px;">4 a 10 anos</span>
-                    </div>
-
-                    <!-- Jogo dos 7 Erros -->
-                    <div class="card" onclick="abrirJogo('sete-erros')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:42px;height:42px;border-radius:10px;background:rgba(248,113,113,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🔍</div>
-                            <div>
-                                <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Jogo dos 7 Erros</p>
-                                <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Atenção e foco</p>
-                            </div>
-                        </div>
-                        <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Encontre as diferenças entre duas imagens. Trabalha atenção e concentração.</p>
-                        <span style="font-size:11px;background:rgba(248,113,113,0.15);color:#f87171;padding:3px 8px;border-radius:6px;">5 a 12 anos</span>
-                    </div>
-
-                    <!-- Bolha da Respiração -->
-                    <div class="card" onclick="abrirJogo('respiracao')" style="flex-direction:column; align-items:flex-start; gap:8px; cursor:pointer;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🫧</div>
-                            <div>
-                                <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Bolha da Respiração</p>
-                                <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Regulação / Ansiedade</p>
-                            </div>
-                        </div>
-                        <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Exercício de respiração guiada com animação visual para acalmar a criança.</p>
-                        <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">3 a 14 anos</span>
-                    </div>
-
-                    <!-- Em breve -->
-                    <div class="card" style="flex-direction:column; align-items:flex-start; gap:8px; opacity:0.5; cursor:default;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:42px;height:42px;border-radius:10px;background:rgba(100,116,139,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🧩</div>
-                            <div>
-                                <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Mais jogos em breve</p>
-                                <p style="font-size:11px;color:#64748b;margin:2px 0 0;">Em desenvolvimento</p>
-                            </div>
-                        </div>
-                        <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Quebra-cabeça temático, Situações Sociais, Rotina do Dia e mais.</p>
-                        <span style="font-size:11px;background:rgba(100,116,139,0.15);color:#94a3b8;padding:3px 8px;border-radius:6px;">Em breve</span>
-                    </div>
-
+                <!-- ABAS DE NAVEGAÇÃO -->
+                <div id="abas-recursos" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; border-bottom:1px solid rgba(139,92,246,0.15); padding-bottom:12px;">
+                    <button onclick="trocarAbaRecursos('infantil-emocoes')" id="aba-infantil-emocoes" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(139,92,246,0.35);background:rgba(139,92,246,0.18);color:#a78bfa;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">🧒 Crianças — Emoções</button>
+                    <button onclick="trocarAbaRecursos('infantil-cognitivo')" id="aba-infantil-cognitivo" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(139,92,246,0.15);background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">🧠 Reestr. Cognitiva (7–12)</button>
+                    <button onclick="trocarAbaRecursos('infantil-alimentacao')" id="aba-infantil-alimentacao" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(139,92,246,0.15);background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">🥗 Alimentação (10+)</button>
+                    <button onclick="trocarAbaRecursos('tdah')" id="aba-tdah" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(139,92,246,0.15);background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">⚡ TDAH</button>
+                    <button onclick="trocarAbaRecursos('adultos')" id="aba-adultos" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(139,92,246,0.15);background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">🧑 Adultos — TCC & Outras</button>
+                    <button onclick="trocarAbaRecursos('alimentacao-adulto')" id="aba-alimentacao-adulto" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(139,92,246,0.15);background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;transition:.2s;">🍽️ Alimentação Adultos</button>
                 </div>
 
-                <!-- MODAL DO JOGO (fullscreen) -->
+                <!-- ===== ABA: CRIANÇAS — EMOÇÕES ===== -->
+                <div id="conteudo-infantil-emocoes" class="aba-conteudo-recursos">
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:24px;">
+
+                        <div class="card" onclick="abrirJogo('memoria-emocoes')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🎴</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Memória das Emoções</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Reconhecimento emocional</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Encontre os pares de emoções. Cada descoberta gera uma pergunta terapêutica.</p>
+                            <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">4 a 10 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogo('quem-sou-eu')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(96,165,250,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🪞</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Quem Sou Eu?</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Autoconhecimento</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">A criança responde perguntas sobre si mesma revelando uma imagem por vez.</p>
+                            <span style="font-size:11px;background:rgba(96,165,250,0.15);color:#60a5fa;padding:3px 8px;border-radius:6px;">5 a 12 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogo('termometro')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🌡️</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Termômetro das Emoções</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Regulação emocional</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Arraste o ponteiro para mostrar a intensidade do que está sentindo agora.</p>
+                            <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">4 a 14 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogo('sete-erros')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(248,113,113,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🔍</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Jogo dos 7 Erros</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Atenção e foco</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Encontre as diferenças entre duas imagens. Trabalha atenção e concentração.</p>
+                            <span style="font-size:11px;background:rgba(248,113,113,0.15);color:#f87171;padding:3px 8px;border-radius:6px;">5 a 12 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogo('respiracao')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🫧</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Bolha da Respiração</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Regulação / Ansiedade</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Exercício de respiração guiada com animação visual para acalmar a criança.</p>
+                            <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">3 a 14 anos</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===== ABA: REESTRUTURAÇÃO COGNITIVA (7-12) ===== -->
+                <div id="conteudo-infantil-cognitivo" class="aba-conteudo-recursos" style="display:none;">
+                    <p style="font-size:12px;color:#64748b;margin-bottom:16px;">Jogos baseados em TCC infantil — reestruturação de pensamentos automáticos, distorções cognitivas e flexibilidade cognitiva para crianças de 7 a 12 anos.</p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px;">
+
+                        <div class="card" onclick="abrirJogoInterno('caca-pensamento')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🔎</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Caça ao Pensamento</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">TCC — 4 passos</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Situação → Pensamento → É verdade? → Pensamento alternativo. Passo a passo visual.</p>
+                            <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">7 a 12 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('oculos-pensamento')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(96,165,250,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🕶️</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Óculos do Pensamento</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Distorções cognitivas</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Identifica distorções como catastrofização, tudo-ou-nada e leitura mental de forma visual.</p>
+                            <span style="font-size:11px;background:rgba(96,165,250,0.15);color:#60a5fa;padding:3px 8px;border-radius:6px;">8 a 12 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('balanca-pensamentos')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(52,211,153,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">⚖️</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Balança dos Pensamentos</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Evidências pró e contra</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Coloca evidências nos dois lados da balança para questionar pensamentos automáticos.</p>
+                            <span style="font-size:11px;background:rgba(52,211,153,0.15);color:#34d399;padding:3px 8px;border-radius:6px;">9 a 12 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('maquina-tempo')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">⏰</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Máquina do Tempo</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Descatastrofização</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Projeção temporal: "E daqui a 1 semana? 1 mês? 1 ano?" — combate a catastrofização.</p>
+                            <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">8 a 12 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('historias-mudam')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(248,113,113,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">📖</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Histórias que Mudam</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Flexibilidade cognitiva</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Situação com múltiplos finais possíveis — exercita pensar de formas diferentes (TCC + ACT).</p>
+                            <span style="font-size:11px;background:rgba(248,113,113,0.15);color:#f87171;padding:3px 8px;border-radius:6px;">7 a 12 anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('velocimetro-pensamentos')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🏎️</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Velocímetro Mental</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Mindfulness cognitivo</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Slider de velocidade dos pensamentos + técnicas de desaceleração e ancoragem.</p>
+                            <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">8 a 12 anos</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===== ABA: ALIMENTAÇÃO INFANTIL (10+) ===== -->
+                <div id="conteudo-infantil-alimentacao" class="aba-conteudo-recursos" style="display:none;">
+                    <p style="font-size:12px;color:#64748b;margin-bottom:16px;">Psicoeducação alimentar baseada em Alimentação Intuitiva e mindful eating — sem julgamento, sem dieta. Foco em conexão corpo-mente.</p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px;">
+
+                        <div class="card" onclick="abrirJogoInterno('fome-vontade')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(52,211,153,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🤔</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Fome ou Vontade?</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Fome física × emocional</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Quiz com situações cotidianas para identificar fome real versus vontade emocional.</p>
+                            <span style="font-size:11px;background:rgba(52,211,153,0.15);color:#34d399;padding:3px 8px;border-radius:6px;">10+ anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('mastigacao-consciente')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(96,165,250,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">😋</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Mastigação Consciente</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Mindful eating</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Contador de mastigadas (até 20) com reflexão sensorial a cada 5 mastigadas.</p>
+                            <span style="font-size:11px;background:rgba(96,165,250,0.15);color:#60a5fa;padding:3px 8px;border-radius:6px;">10+ anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('prato-colorido')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🍽️</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Monte Seu Prato</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Escolhas alimentares</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Clique para montar um prato colorido e variado — sem regras rígidas, sem culpa.</p>
+                            <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">10+ anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('diario-fome')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">📊</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Escala da Fome</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Sinais corporais</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Slider 1–10 com labels descritivos — avalia fome antes e satisfação depois de comer.</p>
+                            <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">10+ anos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('emocoes-comida')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(248,113,113,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">💛</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Emoções & Comida</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Comer emocional</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Mapa emoção → gatilho alimentar. Explora sem julgamento o comer por emoção.</p>
+                            <span style="font-size:11px;background:rgba(248,113,113,0.15);color:#f87171;padding:3px 8px;border-radius:6px;">10+ anos</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===== ABA: TDAH ===== -->
+                <div id="conteudo-tdah" class="aba-conteudo-recursos" style="display:none;">
+                    <p style="font-size:12px;color:#64748b;margin-bottom:16px;">Atividades para foco, impulsividade e planejamento — adaptadas para TDAH. Curtas, dinâmicas e com reforço visual imediato.</p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px;">
+
+                        <div class="card" onclick="abrirJogoInterno('missao-foco')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🎯</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Missão Foco</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Gamificação de tarefa</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Define uma micro-tarefa + timer 3 a 10 min + recompensa ao completar. Reforço positivo.</p>
+                            <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">TDAH — foco</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('pausa-pensa')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(248,113,113,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🛑</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Pausa & Pensa</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Impulsividade</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Situações cotidianas com timer de 3 segundos antes de agir — treino de inibição.</p>
+                            <span style="font-size:11px;background:rgba(248,113,113,0.15);color:#f87171;padding:3px 8px;border-radius:6px;">TDAH — impulsividade</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('planejador-missoes')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(52,211,153,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">📋</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Planejador de Missões</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Organização</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Quebra uma tarefa grande em micro-missões com barra de progresso gamificada.</p>
+                            <span style="font-size:11px;background:rgba(52,211,153,0.15);color:#34d399;padding:3px 8px;border-radius:6px;">TDAH — planejamento</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('pomodoro-kids')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(96,165,250,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🍅</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Pomodoro Terapêutico</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Foco sustentado</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Timer ajustável 5–20 min com ciclos foco + pausa. Adaptado para crianças e adolescentes.</p>
+                            <span style="font-size:11px;background:rgba(96,165,250,0.15);color:#60a5fa;padding:3px 8px;border-radius:6px;">TDAH — foco</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('detetive-agora')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🕵️</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Detetive do Agora</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Atenção plena — TDAH</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Exercício dos 5 sentidos adaptado — ancora no presente de forma dinâmica e curta.</p>
+                            <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">TDAH — mindfulness</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('automonitoramento')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">📡</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Como Estou Agora?</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Automonitoramento</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Check-in rápido de foco, energia, humor e agitação + dica terapêutica gerada automaticamente.</p>
+                            <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">TDAH — consciência</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===== ABA: ADULTOS — TCC & OUTRAS ===== -->
+                <div id="conteudo-adultos" class="aba-conteudo-recursos" style="display:none;">
+                    <p style="font-size:12px;color:#64748b;margin-bottom:16px;">TCC, ACT, DBT e Terapia do Esquema — recursos para adultos em atendimento online.</p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;">
+
+                        <button onclick="abrirJogo('respiracao-adulto')" style="background:rgba(91,155,213,0.08);border:1px solid rgba(91,155,213,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(91,155,213,0.15)'" onmouseout="this.style.background='rgba(91,155,213,0.08)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🫁</div>
+                            <div style="font-size:14px;font-weight:500;color:#7eb8e8;margin-bottom:4px;">Respiração 4·7·8</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Regulação do sistema nervoso autônomo via respiração controlada</div>
+                        </button>
+
+                        <button onclick="abrirJogo('roda-emocoes')" style="background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(245,200,66,0.12)'" onmouseout="this.style.background='rgba(245,200,66,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🎡</div>
+                            <div style="font-size:14px;font-weight:500;color:#f5c842;margin-bottom:4px;">Roda das Emoções</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Identificação emocional baseada no modelo de Plutchik</div>
+                        </button>
+
+                        <button onclick="abrirJogo('escala-intensidade')" style="background:rgba(224,92,75,0.06);border:1px solid rgba(224,92,75,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(224,92,75,0.12)'" onmouseout="this.style.background='rgba(224,92,75,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">📊</div>
+                            <div style="font-size:14px;font-weight:500;color:#e05c4b;margin-bottom:4px;">Escala de Intensidade</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Mensuração visual da intensidade de ansiedade, tristeza, raiva e outros</div>
+                        </button>
+
+                        <button onclick="abrirJogo('reestruturacao-cognitiva')" style="background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.25);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🧠</div>
+                            <div style="font-size:14px;font-weight:500;color:#a78bfa;margin-bottom:4px;">Reestruturação Cognitiva</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Registro de pensamento automático — técnica central da TCC</div>
+                        </button>
+
+                        <button onclick="abrirJogo('relaxamento-progressivo')" style="background:rgba(92,122,62,0.08);border:1px solid rgba(92,122,62,0.25);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(92,122,62,0.15)'" onmouseout="this.style.background='rgba(92,122,62,0.08)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🌿</div>
+                            <div style="font-size:14px;font-weight:500;color:#8bc48c;margin-bottom:4px;">Relaxamento Progressivo</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Técnica de Jacobson — tensão e relaxamento de grupos musculares</div>
+                        </button>
+
+                        <button onclick="abrirJogo('semaforo-emocional')" style="background:rgba(196,154,60,0.06);border:1px solid rgba(196,154,60,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(196,154,60,0.12)'" onmouseout="this.style.background='rgba(196,154,60,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🚦</div>
+                            <div style="font-size:14px;font-weight:500;color:#c49a3c;margin-bottom:4px;">Semáforo Emocional</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Identificação do nível de regulação e estratégias contextuais</div>
+                        </button>
+
+                        <!-- Novos — ACT / DBT / Esquema -->
+                        <button onclick="abrirJogoInterno('matriz-act')" style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(52,211,153,0.12)'" onmouseout="this.style.background='rgba(52,211,153,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🧭</div>
+                            <div style="font-size:14px;font-weight:500;color:#34d399;margin-bottom:4px;">Matriz ACT</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Quadrante valores×evitação, interno×externo — terapia de aceitação e compromisso</div>
+                        </button>
+
+                        <button onclick="abrirJogoInterno('defusao-cognitiva')" style="background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🎭</div>
+                            <div style="font-size:14px;font-weight:500;color:#a78bfa;margin-bottom:4px;">Defusão Cognitiva</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">3 técnicas ACT: canto do pensamento, folhas no rio, rotulagem</div>
+                        </button>
+
+                        <button onclick="abrirJogoInterno('habilidades-dbt')" style="background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(96,165,250,0.12)'" onmouseout="this.style.background='rgba(96,165,250,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🛟</div>
+                            <div style="font-size:14px;font-weight:500;color:#60a5fa;margin-bottom:4px;">Habilidades DBT</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">TIPP, ACCEPTS e autocuidado sensorial — terapia comportamental dialética</div>
+                        </button>
+
+                        <button onclick="abrirJogoInterno('mapa-esquemas')" style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(248,113,113,0.12)'" onmouseout="this.style.background='rgba(248,113,113,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🗺️</div>
+                            <div style="font-size:14px;font-weight:500;color:#f87171;margin-bottom:4px;">Mapa de Esquemas</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">8 esquemas disfuncionais clicáveis — Terapia do Esquema de Young</div>
+                        </button>
+
+                        <button onclick="abrirJogoInterno('bussola-valores')" style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(52,211,153,0.12)'" onmouseout="this.style.background='rgba(52,211,153,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🧲</div>
+                            <div style="font-size:14px;font-weight:500;color:#34d399;margin-bottom:4px;">Bússola de Valores</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">8 domínios da vida — importância vs como está vivendo (ACT)</div>
+                        </button>
+
+                        <button onclick="abrirJogoInterno('exposicao-imaginaria')" style="background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:18px 16px;cursor:pointer;text-align:left;transition:all 0.2s;color:#e2e8f0;" onmouseover="this.style.background='rgba(251,191,36,0.12)'" onmouseout="this.style.background='rgba(251,191,36,0.06)'">
+                            <div style="font-size:24px;margin-bottom:8px;">🪜</div>
+                            <div style="font-size:14px;font-weight:500;color:#fbbf24;margin-bottom:4px;">Hierarquia de Exposição</div>
+                            <div style="font-size:11px;color:#64748b;line-height:1.4;">Escada SUDS dinâmica para construir hierarquia de exposição gradual</div>
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- ===== ABA: ALIMENTAÇÃO ADULTOS ===== -->
+                <div id="conteudo-alimentacao-adulto" class="aba-conteudo-recursos" style="display:none;">
+                    <p style="font-size:12px;color:#64748b;margin-bottom:16px;">Psicoeducação alimentar para adultos — Alimentação Intuitiva, mindful eating, análise funcional do comportamento alimentar.</p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px;">
+
+                        <div class="card" onclick="abrirJogoInterno('mindful-eating-adulto')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(52,211,153,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🍃</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Comer com Atenção</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Mindful eating adulto</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Guia passo a passo de uma refeição consciente com timers e reflexões sensoriais.</p>
+                            <span style="font-size:11px;background:rgba(52,211,153,0.15);color:#34d399;padding:3px 8px;border-radius:6px;">Adultos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('fome-saciedade-adulto')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(96,165,250,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">📏</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Escala Fome–Saciedade</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Sinais interoceptivos</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Slider 1–10 com emoji + label + dica dinâmica para reconectar com os sinais corporais.</p>
+                            <span style="font-size:11px;background:rgba(96,165,250,0.15);color:#60a5fa;padding:3px 8px;border-radius:6px;">Adultos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('gatilhos-alimentares')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(248,113,113,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🔥</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Gatilhos Alimentares</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Análise funcional</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Mapa de 6 categorias: emocional, situacional, cognitivo, físico, o que busco, alternativas.</p>
+                            <span style="font-size:11px;background:rgba(248,113,113,0.15);color:#f87171;padding:3px 8px;border-radius:6px;">Adultos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('prato-valores')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">💚</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">O Prato e os Valores</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">ACT — alimentação</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Conecta escolhas alimentares aos valores pessoais — sem regras rígidas, com propósito.</p>
+                            <span style="font-size:11px;background:rgba(139,92,246,0.15);color:#a78bfa;padding:3px 8px;border-radius:6px;">Adultos — ACT</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('diario-comer')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(251,191,36,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">📓</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Diário do Comer</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Registro comportamental</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Registro completo: o quê, quando, onde, como estava emocionalmente, o que buscou.</p>
+                            <span style="font-size:11px;background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 8px;border-radius:6px;">Adultos</span>
+                        </div>
+
+                        <div class="card" onclick="abrirJogoInterno('mastigacao-adulto')" style="flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:42px;height:42px;border-radius:10px;background:rgba(52,211,153,0.18);display:flex;align-items:center;justify-content:center;font-size:20px;">🦷</div>
+                                <div><p style="font-size:14px;font-weight:600;color:#e2e8f0;margin:0;">Mastigação 20×</p><p style="font-size:11px;color:#64748b;margin:2px 0 0;">Psicoeducação digestiva</p></div>
+                            </div>
+                            <p style="font-size:12px;color:#94a3b8;line-height:1.5;">Contador + psicoeducação sobre digestão, saciedade e o papel da mastigação lenta.</p>
+                            <span style="font-size:11px;background:rgba(52,211,153,0.15);color:#34d399;padding:3px 8px;border-radius:6px;">Adultos</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- MODAL DO JOGO EXTERNO (fullscreen — para jogos existentes via iframe) -->
                 <div id="jogo-modal" style="display:none; position:fixed; inset:0; background:#0a0f1a; z-index:9999; flex-direction:column;">
                     <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#1a2332; border-bottom:1px solid rgba(139,92,246,0.2);">
                         <div style="display:flex; align-items:center; gap:12px;">
@@ -2164,137 +2450,1118 @@
                     </div>
                 </div>
 
-                <!-- Separador de seção -->
-                <div style="
-    border-top: 1px solid rgba(139,92,246,0.15);
-    margin: 32px 0 24px;
-    padding-top: 24px;
-">
-                    <div style="
-        font-size: 10px;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: rgba(139,92,246,0.6);
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    ">
-                        <span>Recursos para Adultos</span>
-                        <div style="flex:1; height:1px; background:rgba(139,92,246,0.15);"></div>
+                <!-- MODAL DO JOGO INTERNO (fullscreen — para novos jogos embutidos) -->
+                <div id="jogo-interno-modal" style="display:none; position:fixed; inset:0; background:#0a0f1a; z-index:9999; flex-direction:column;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#1a2332; border-bottom:1px solid rgba(139,92,246,0.2);">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span style="font-size:11px; background:rgba(139,92,246,0.2); color:#a78bfa; padding:3px 10px; border-radius:6px; text-transform:uppercase; letter-spacing:1px;">ProntPsi</span>
+                            <span id="jogo-interno-titulo" style="font-size:15px; font-weight:600; color:#e2e8f0;"></span>
+                        </div>
+                        <button onclick="fecharJogoInterno()" style="background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.3); color:#f87171; padding:7px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'Roboto',sans-serif; display:flex; align-items:center; gap:6px;">
+                            <i class="fas fa-times"></i> Fechar jogo
+                        </button>
                     </div>
-
-                    <div style="
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 14px;
-    ">
-
-                        <!-- Respiração 4-7-8 -->
-                        <button onclick="abrirJogo('respiracao-adulto')" style="
-            background: rgba(91,155,213,0.08);
-            border: 1px solid rgba(91,155,213,0.2);
-            border-radius: 12px;
-            padding: 18px 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            color: #e2e8f0;
-        " onmouseover="this.style.background='rgba(91,155,213,0.15)'"
-                                onmouseout="this.style.background='rgba(91,155,213,0.08)'">
-                            <div style="font-size:24px; margin-bottom:8px;">🫁</div>
-                            <div style="font-size:14px; font-weight:500; color:#7eb8e8; margin-bottom:4px;">Respiração 4·7·8</div>
-                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Regulação do sistema nervoso autônomo via respiração controlada</div>
-                        </button>
-
-                        <!-- Roda das Emoções -->
-                        <button onclick="abrirJogo('roda-emocoes')" style="
-            background: rgba(245,200,66,0.06);
-            border: 1px solid rgba(245,200,66,0.2);
-            border-radius: 12px;
-            padding: 18px 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            color: #e2e8f0;
-        " onmouseover="this.style.background='rgba(245,200,66,0.12)'"
-                                onmouseout="this.style.background='rgba(245,200,66,0.06)'">
-                            <div style="font-size:24px; margin-bottom:8px;">🎡</div>
-                            <div style="font-size:14px; font-weight:500; color:#f5c842; margin-bottom:4px;">Roda das Emoções</div>
-                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Identificação emocional baseada no modelo de Plutchik</div>
-                        </button>
-
-                        <!-- Escala de Intensidade -->
-                        <button onclick="abrirJogo('escala-intensidade')" style="
-            background: rgba(224,92,75,0.06);
-            border: 1px solid rgba(224,92,75,0.2);
-            border-radius: 12px;
-            padding: 18px 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            color: #e2e8f0;
-        " onmouseover="this.style.background='rgba(224,92,75,0.12)'"
-                                onmouseout="this.style.background='rgba(224,92,75,0.06)'">
-                            <div style="font-size:24px; margin-bottom:8px;">📊</div>
-                            <div style="font-size:14px; font-weight:500; color:#e05c4b; margin-bottom:4px;">Escala de Intensidade</div>
-                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Mensuração visual da intensidade de ansiedade, tristeza, raiva e outros</div>
-                        </button>
-
-                        <!-- Reestruturação Cognitiva -->
-                        <button onclick="abrirJogo('reestruturacao-cognitiva')" style="
-            background: rgba(139,92,246,0.06);
-            border: 1px solid rgba(139,92,246,0.25);
-            border-radius: 12px;
-            padding: 18px 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            color: #e2e8f0;
-        " onmouseover="this.style.background='rgba(139,92,246,0.12)'"
-                                onmouseout="this.style.background='rgba(139,92,246,0.06)'">
-                            <div style="font-size:24px; margin-bottom:8px;">🧠</div>
-                            <div style="font-size:14px; font-weight:500; color:#a78bfa; margin-bottom:4px;">Reestruturação Cognitiva</div>
-                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Registro de pensamento automático — técnica central da TCC</div>
-                        </button>
-
-                        <!-- Relaxamento Muscular -->
-                        <button onclick="abrirJogo('relaxamento-progressivo')" style="
-            background: rgba(92,122,62,0.08);
-            border: 1px solid rgba(92,122,62,0.25);
-            border-radius: 12px;
-            padding: 18px 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            color: #e2e8f0;
-        " onmouseover="this.style.background='rgba(92,122,62,0.15)'"
-                                onmouseout="this.style.background='rgba(92,122,62,0.08)'">
-                            <div style="font-size:24px; margin-bottom:8px;">🌿</div>
-                            <div style="font-size:14px; font-weight:500; color:#8bc48c; margin-bottom:4px;">Relaxamento Progressivo</div>
-                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Técnica de Jacobson — tensão e relaxamento de grupos musculares</div>
-                        </button>
-
-                        <!-- Semáforo Emocional -->
-                        <button onclick="abrirJogo('semaforo-emocional')" style="
-            background: rgba(196,154,60,0.06);
-            border: 1px solid rgba(196,154,60,0.2);
-            border-radius: 12px;
-            padding: 18px 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            color: #e2e8f0;
-        " onmouseover="this.style.background='rgba(196,154,60,0.12)'"
-                                onmouseout="this.style.background='rgba(196,154,60,0.06)'">
-                            <div style="font-size:24px; margin-bottom:8px;">🚦</div>
-                            <div style="font-size:14px; font-weight:500; color:#c49a3c; margin-bottom:4px;">Semáforo Emocional</div>
-                            <div style="font-size:11px; color:#64748b; line-height:1.4;">Identificação do nível de regulação e estratégias contextuais</div>
-                        </button>
-
-                    </div>
+                    <div id="jogo-interno-container" style="flex:1; overflow:auto; background:#0a0f1a;"></div>
                 </div>
 
+                <!-- SCRIPT: Abas + Jogos Internos -->
+                <script>
+                    // ---- ABAS ----
+                    function trocarAbaRecursos(id) {
+                        document.querySelectorAll('.aba-conteudo-recursos').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('#abas-recursos button').forEach(btn => {
+                            btn.style.background = 'transparent';
+                            btn.style.color = '#64748b';
+                            btn.style.borderColor = 'rgba(139,92,246,0.15)';
+                        });
+                        var cont = document.getElementById('conteudo-' + id);
+                        var btn = document.getElementById('aba-' + id);
+                        if (cont) cont.style.display = 'block';
+                        if (btn) { btn.style.background = 'rgba(139,92,246,0.18)'; btn.style.color = '#a78bfa'; btn.style.borderColor = 'rgba(139,92,246,0.35)'; }
+                    }
+
+                    // ---- MODAL INTERNO ----
+                    var jogosInternos = {
+
+                        // ===== REESTRUTURAÇÃO COGNITIVA INFANTIL =====
+                        'caca-pensamento': {
+                            titulo: '🔎 Caça ao Pensamento',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;display:flex;flex-direction:column;align-items:center;">
+<h2 style="color:#a78bfa;margin-bottom:8px;">🔎 Caça ao Pensamento</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:24px;">4 passos para entender o que você está pensando</p>
+<div id="ct-steps" style="width:100%;max-width:560px;">
+                  <div id="ct-passo1" style="background:#1a2332;border:1px solid rgba(139,92,246,0.3);border-radius:14px;padding:22px;margin-bottom:16px;">
+                    <div style="font-size:13px;color:#a78bfa;font-weight:600;margin-bottom:10px;">PASSO 1 — A Situação 📍</div>
+                    <p style="font-size:13px;color:#94a3b8;margin-bottom:10px;">O que aconteceu? Onde você estava?</p>
+                    <textarea id="ct-situacao" placeholder="Ex: Na escola, a professora me chamou pra ler em voz alta..." style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;font-family:'Roboto',sans-serif;resize:vertical;min-height:70px;box-sizing:border-box;"></textarea>
+                    <button onclick="document.getElementById('ct-passo2').style.display='block';this.style.display='none';" style="margin-top:12px;padding:9px 20px;background:rgba(139,92,246,0.2);color:#a78bfa;border:1px solid rgba(139,92,246,0.4);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">Próximo →</button>
+                  </div>
+                  <div id="ct-passo2" style="display:none;background:#1a2332;border:1px solid rgba(96,165,250,0.3);border-radius:14px;padding:22px;margin-bottom:16px;">
+                    <div style="font-size:13px;color:#60a5fa;font-weight:600;margin-bottom:10px;">PASSO 2 — O Pensamento 💭</div>
+                    <p style="font-size:13px;color:#94a3b8;margin-bottom:10px;">O que passou pela sua cabeça nessa hora?</p>
+                    <textarea id="ct-pensamento" placeholder="Ex: Todo mundo vai rir de mim..." style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(96,165,250,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;font-family:'Roboto',sans-serif;resize:vertical;min-height:70px;box-sizing:border-box;"></textarea>
+                    <button onclick="document.getElementById('ct-passo3').style.display='block';this.style.display='none';" style="margin-top:12px;padding:9px 20px;background:rgba(96,165,250,0.15);color:#60a5fa;border:1px solid rgba(96,165,250,0.4);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">Próximo →</button>
+                  </div>
+                  <div id="ct-passo3" style="display:none;background:#1a2332;border:1px solid rgba(251,191,36,0.3);border-radius:14px;padding:22px;margin-bottom:16px;">
+                    <div style="font-size:13px;color:#fbbf24;font-weight:600;margin-bottom:10px;">PASSO 3 — É verdade mesmo? 🤔</div>
+                    <p style="font-size:13px;color:#94a3b8;margin-bottom:14px;">Alguma vez isso realmente aconteceu? O que as provas dizem?</p>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                      <button onclick="mostrarPasso4('sim')" style="flex:1;min-width:120px;padding:12px;background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:10px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">😬 Sim, tenho provas</button>
+                      <button onclick="mostrarPasso4('talvez')" style="flex:1;min-width:120px;padding:12px;background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);border-radius:10px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">🤷 Talvez...</button>
+                      <button onclick="mostrarPasso4('nao')" style="flex:1;min-width:120px;padding:12px;background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:10px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">😲 Na verdade, não!</button>
+                    </div>
+                  </div>
+                  <div id="ct-passo4" style="display:none;background:#1a2332;border:1px solid rgba(52,211,153,0.3);border-radius:14px;padding:22px;">
+                    <div style="font-size:13px;color:#34d399;font-weight:600;margin-bottom:10px;">PASSO 4 — Pensamento Alternativo ✨</div>
+                    <p id="ct-dica4" style="font-size:13px;color:#94a3b8;margin-bottom:10px;"></p>
+                    <textarea id="ct-alternativo" placeholder="Escreva um pensamento mais justo..." style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(52,211,153,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;font-family:'Roboto',sans-serif;resize:vertical;min-height:70px;box-sizing:border-box;"></textarea>
+                    <div id="ct-resultado" style="display:none;margin-top:16px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:10px;padding:16px;text-align:center;">
+                      <div style="font-size:28px;margin-bottom:8px;">🎉</div>
+                      <p style="color:#34d399;font-weight:600;margin-bottom:4px;">Muito bem!</p>
+                      <p style="font-size:12px;color:#64748b;">Você completou o Caça ao Pensamento. Seu pensamento alternativo foi capturado!</p>
+                      <button onclick="reiniciarCaca()" style="margin-top:12px;padding:8px 18px;background:rgba(139,92,246,0.2);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);border-radius:8px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">Fazer de novo</button>
+                    </div>
+                    <button id="ct-btn-finalizar" onclick="document.getElementById('ct-resultado').style.display='block';this.style.display='none';" style="margin-top:12px;padding:9px 20px;background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.4);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">✨ Finalizar!</button>
+                  </div>
+</div>
+<script>
+function mostrarPasso4(resp){
+                  var dicas={sim:"Mesmo sendo verdade às vezes, isso vai acontecer agora? Que pensamento mais realista você pode ter?",talvez:"Quais seriam as chances reais disso acontecer? E se acontecer, o que você faria?",nao:"Ótimo! Seu pensamento estava exagerando. Como você pode pensar de forma mais justa sobre isso?"};
+                  document.getElementById('ct-dica4').innerText=dicas[resp];
+                  document.getElementById('ct-passo4').style.display='block';
+                  document.getElementById('ct-passo3').querySelector('button') && null;
+}
+function reiniciarCaca(){
+                  ['ct-passo2','ct-passo3','ct-passo4','ct-resultado'].forEach(function(id){document.getElementById(id).style.display='none';});
+                  document.getElementById('ct-passo1').querySelector('button').style.display='inline-block';
+                  ['ct-situacao','ct-pensamento','ct-alternativo'].forEach(function(id){document.getElementById(id).value='';});
+                  document.getElementById('ct-btn-finalizar').style.display='inline-block';
+}
+<\/script></div>`
+                        },
+
+                        'oculos-pensamento': {
+                            titulo: '🕶️ Óculos do Pensamento',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:640px;margin:0 auto;">
+<h2 style="color:#60a5fa;margin-bottom:8px;">🕶️ Óculos do Pensamento</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:24px;">Às vezes usamos "óculos" que distorcem como vemos as coisas. Qual você está usando?</p>
+<div style="display:grid;gap:14px;">
+                  ${[
+                                    { emoji: '🌪️', nome: 'Catástrofe', cor: 'rgba(248,113,113', desc: 'Achar que vai ser horrível, o pior do mundo', ex: '"Se eu errar, vou ser o maior fracasso da turma"', fix: 'Pergunta: Qual a pior coisa real que pode acontecer?' },
+                                    { emoji: '⚫⬜', nome: 'Tudo ou Nada', cor: 'rgba(96,165,250', desc: 'Só enxergar extremos — ótimo ou péssimo, nunca no meio', ex: '"Se não fui perfeito, fui um lixo"', fix: 'Pergunta: Existe um meio-termo aqui?' },
+                                    { emoji: '🔮', nome: 'Leitura Mental', cor: 'rgba(139,92,246', desc: 'Achar que sabe o que o outro está pensando', ex: '"Sei que ela está com raiva de mim"', fix: 'Pergunta: Você realmente sabe ou está supondo?' },
+                                    { emoji: '🪟', nome: 'Filtro Mental', cor: 'rgba(251,191,36', desc: 'Só enxergar o lado negativo, ignorar o positivo', ex: '"Tirei 8, mas errei 2 questões — sou burro"', fix: 'Pergunta: O que de bom você está ignorando?' },
+                                    { emoji: '😒', nome: 'Personalização', cor: 'rgba(52,211,153', desc: 'Achar que tudo de ruim é culpa sua', ex: '"Minha mãe está triste por minha causa"', fix: 'Pergunta: Existe outra razão para isso?' },
+                                ].map(d => `
+                  <div style="background:#1a2332;border:1px solid ${d.cor},0.25);border-radius:12px;padding:18px;cursor:pointer;" onclick="this.querySelector('.oculos-detalhes').style.display=this.querySelector('.oculos-detalhes').style.display==='none'?'block':'none'">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span style="font-size:24px;">${d.emoji}</span>
+                      <div><p style="margin:0;font-size:14px;font-weight:600;color:#e2e8f0;">${d.nome}</p><p style="margin:2px 0 0;font-size:11px;color:#64748b;">${d.desc}</p></div>
+                    </div>
+                    <div class="oculos-detalhes" style="display:none;margin-top:14px;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;">
+                      <p style="font-size:12px;color:#94a3b8;margin-bottom:8px;"><strong style="color:#e2e8f0;">Exemplo:</strong> ${d.ex}</p>
+                      <p style="font-size:12px;background:${d.cor},0.1);color:#e2e8f0;padding:10px;border-radius:8px;">${d.fix}</p>
+                    </div>
+                  </div>`).join('')}
+</div>
+<p style="margin-top:20px;font-size:12px;color:#64748b;text-align:center;">Clique em cada óculos para ver mais detalhes e perguntas para questionar o pensamento.</p>
+</div>`
+                        },
+
+                        'balanca-pensamentos': {
+                            titulo: '⚖️ Balança dos Pensamentos',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:620px;margin:0 auto;">
+<h2 style="color:#34d399;margin-bottom:8px;">⚖️ Balança dos Pensamentos</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Escreva o pensamento e coloque evidências nos dois lados da balança</p>
+<div style="background:#1a2332;border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:18px;margin-bottom:16px;">
+                  <label style="font-size:12px;color:#64748b;display:block;margin-bottom:6px;">Pensamento a investigar:</label>
+                  <input type="text" id="bal-pensamento" placeholder="Ex: Ninguém gosta de mim" style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(52,211,153,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                  <div style="background:#1a2332;border:1px solid rgba(248,113,113,0.25);border-radius:12px;padding:16px;">
+                    <p style="font-size:12px;color:#f87171;font-weight:600;margin-bottom:8px;">❌ Provas de que É VERDADE</p>
+                    <textarea id="bal-contra" placeholder="Escreva uma evidência..." style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(248,113,113,0.2);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:100px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+                  <div style="background:#1a2332;border:1px solid rgba(52,211,153,0.25);border-radius:12px;padding:16px;">
+                    <p style="font-size:12px;color:#34d399;font-weight:600;margin-bottom:8px;">✅ Provas de que NÃO É VERDADE</p>
+                    <textarea id="bal-pro" placeholder="Escreva uma evidência..." style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(52,211,153,0.2);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:100px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+</div>
+<div id="bal-conclusao" style="display:none;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:16px;margin-bottom:12px;">
+                  <p style="font-size:13px;color:#a78bfa;font-weight:600;margin-bottom:8px;">💡 Pensamento mais equilibrado:</p>
+                  <textarea placeholder="Escreva uma conclusão mais justa para si mesmo..." style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;resize:vertical;min-height:70px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+</div>
+<button onclick="document.getElementById('bal-conclusao').style.display='block';this.style.display='none';" style="padding:10px 22px;background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">Ver a balança completa ⚖️</button>
+</div>`
+                        },
+
+                        'maquina-tempo': {
+                            titulo: '⏰ Máquina do Tempo',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#fbbf24;margin-bottom:8px;">⏰ Máquina do Tempo</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Quando um pensamento parece enorme, vamos viajar no tempo para ver o quanto ele vai importar...</p>
+<div style="background:#1a2332;border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:18px;margin-bottom:16px;">
+                  <label style="font-size:12px;color:#64748b;display:block;margin-bottom:6px;">O que está me preocupando agora:</label>
+                  <input type="text" id="mt-preocupacao" placeholder="Ex: Errei na prova de matemática" style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(251,191,36,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+</div>
+<div style="display:grid;gap:12px;">
+                  ${[
+                                    { tempo: '1 semana', cor: 'rgba(248,113,113', placeholder: 'Em 1 semana, isso ainda vai doer muito?' },
+                                    { tempo: '1 mês', cor: 'rgba(251,191,36', placeholder: 'Daqui a 1 mês, o que você vai lembrar disso?' },
+                                    { tempo: '1 ano', cor: 'rgba(52,211,153', placeholder: 'Em 1 ano, isso vai fazer diferença na sua vida?' },
+                                ].map(t => `
+                  <div style="background:#1a2332;border:1px solid ${t.cor},0.2);border-radius:12px;padding:16px;">
+                    <p style="font-size:12px;font-weight:600;color:#e2e8f0;margin-bottom:8px;">🚀 Daqui a ${t.tempo}...</p>
+                    <textarea placeholder="${t.placeholder}" style="width:100%;padding:8px;background:#0f1621;border:1px solid ${t.cor},0.15);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:60px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>`).join('')}
+</div>
+<div style="margin-top:16px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:14px;text-align:center;">
+                  <p style="font-size:13px;color:#a78bfa;">💜 Depois de viajar no tempo... como você se sente sobre essa preocupação agora?</p>
+</div>
+</div>`
+                        },
+
+                        'historias-mudam': {
+                            titulo: '📖 Histórias que Mudam',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:600px;margin:0 auto;">
+<h2 style="color:#f87171;margin-bottom:8px;">📖 Histórias que Mudam</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">A mesma situação pode ter muitos finais diferentes. Vamos explorar!</p>
+<div id="hist-situacao" style="background:#1a2332;border:1px solid rgba(248,113,113,0.25);border-radius:12px;padding:20px;margin-bottom:16px;">
+                  <p style="font-size:14px;color:#e2e8f0;font-weight:600;margin-bottom:12px;">📍 A situação:</p>
+                  <p style="font-size:13px;color:#94a3b8;line-height:1.6;">Você vai se apresentar na frente da sala. Enquanto se levanta, tropeça levemente e ri nervoso. Você pensa: <em style="color:#f87171">"Todo mundo vai rir de mim e nunca vão esquecer isso."</em></p>
+</div>
+<p style="font-size:13px;color:#e2e8f0;font-weight:600;margin-bottom:12px;">🌈 Que outros finais são possíveis?</p>
+<div style="display:grid;gap:10px;margin-bottom:16px;">
+                  ${[
+                                    { emoji: '😂', titulo: 'Final Engraçado', desc: 'Alguém ri, mas com carinho. Você ri junto e fica mais descontraído. A turma aprecia sua leveza.' },
+                                    { emoji: '🙈', titulo: 'Final Indiferente', desc: 'Ninguém prestou atenção. Todos estavam nos próprios pensamentos. Passaram 5 minutos e esqueceram.' },
+                                    { emoji: '💪', titulo: 'Final Corajoso', desc: 'Você se levanta, respira fundo e faz a melhor apresentação que consegue. Todos aplaudem.' },
+                                    { emoji: '🤝', titulo: 'Final Inesperado', desc: 'Alguém da turma faz o mesmo depois e vocês riem juntos. Isso cria uma conexão.' },
+                                ].map(f => `
+                  <div style="background:#1a2332;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+                    <span style="font-size:22px;">${f.emoji}</span>
+                    <div><p style="font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 4px;">${f.titulo}</p><p style="font-size:12px;color:#94a3b8;margin:0;line-height:1.5;">${f.desc}</p></div>
+                  </div>`).join('')}
+</div>
+<div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:14px;">
+                  <p style="font-size:12px;color:#a78bfa;margin-bottom:8px;">💜 De todos esses finais, qual parece mais provável de verdade?</p>
+                  <textarea placeholder="Escreva o final mais realista..." style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:60px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+</div>
+</div>`
+                        },
+
+                        'velocimetro-pensamentos': {
+                            titulo: '🏎️ Velocímetro Mental',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:560px;margin:0 auto;text-align:center;">
+<h2 style="color:#a78bfa;margin-bottom:8px;">🏎️ Velocímetro Mental</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:24px;">Em que velocidade estão seus pensamentos agora?</p>
+<div style="background:#1a2332;border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:24px;margin-bottom:20px;">
+                  <div style="font-size:48px;margin-bottom:12px;" id="vel-emoji">😐</div>
+                  <div id="vel-label" style="font-size:16px;font-weight:600;color:#a78bfa;margin-bottom:16px;">Velocidade normal</div>
+                  <input type="range" min="1" max="10" value="5" id="vel-slider" oninput="atualizarVel(this.value)" style="width:100%;accent-color:#8b5cf6;cursor:pointer;">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-top:6px;"><span>🐢 Devagar</span><span>🚀 Super rápido</span></div>
+</div>
+<div id="vel-tecnica" style="background:#1a2332;border:1px solid rgba(139,92,246,0.15);border-radius:14px;padding:18px;text-align:left;">
+                  <p style="font-size:12px;color:#a78bfa;font-weight:600;margin-bottom:8px;">💡 Técnica sugerida:</p>
+                  <p id="vel-tecnica-texto" style="font-size:13px;color:#94a3b8;line-height:1.6;">Seus pensamentos estão em ritmo normal. Que bom! Continue prestando atenção em como eles se comportam.</p>
+</div>
+<script>
+var tecnicas=[
+                  'Seus pensamentos estão muito lentos. Às vezes isso é cansaço — tudo bem descansar a mente.',
+                  'Ritmo tranquilo. Aproveite essa calma para notar o que está sentindo agora.',
+                  'Velocidade normal. Continue prestando atenção em como seus pensamentos se comportam.',
+                  'Um pouco acelerado. Tente respirar fundo 3 vezes antes de continuar.',
+                  'Bastante acelerado! Experimente: olhe 5 coisas ao seu redor e nomeie cada uma em voz alta.',
+                  'Muito rápido! Técnica de ancoragem: pressione os pés no chão por 10 segundos e sinta o contato.',
+                  'Turbinado! Pause tudo. Inspire contando até 4, segure 4, expire 4. Repita 3 vezes.',
+                  'Velocidade máxima! Seu cérebro precisa de um break urgente. Feche os olhos 1 minuto e escute apenas sua respiração.'
+];
+var emojis=['😴','😌','😐','🙂','😬','😰','😱','🤯'];
+var labels=['Muito devagar','Devagar','Normal','Um pouco acelerado','Acelerado','Bem acelerado','Muito rápido!','Turbinado!'];
+function atualizarVel(v){
+                  var idx=Math.min(Math.round((v-1)*7/9),7);
+                  document.getElementById('vel-emoji').innerText=emojis[idx];
+                  document.getElementById('vel-label').innerText=labels[idx];
+                  document.getElementById('vel-tecnica-texto').innerText=tecnicas[idx];
+}
+<\/script>
+</div>`
+                        },
+
+                        // ===== ALIMENTAÇÃO INFANTIL =====
+                        'fome-vontade': {
+                            titulo: '🤔 Fome ou Vontade?',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:600px;margin:0 auto;">
+<h2 style="color:#34d399;margin-bottom:8px;">🤔 Fome ou Vontade?</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:24px;">Vamos descobrir se o corpo está com fome de verdade ou se é outra coisa</p>
+<div id="fv-quiz" style="display:grid;gap:14px;">
+                  ${[
+                                    { sit: 'Você acabou de almoçar há 30 minutos e quer comer biscoito.', resp: 'vontade', motivo: 'Acabou de comer! Isso é vontade, não fome. Seu estômago ainda está cheio.' },
+                                    { sit: 'Seu estômago está roncando, você está com dor de cabeça e não comeu há 4 horas.', resp: 'fome', motivo: 'Esses são sinais físicos reais de fome! Seu corpo precisa de energia.' },
+                                    { sit: 'Você está entediado em casa e fica pensando em comer.', resp: 'vontade', motivo: 'Tédio pode parecer fome. Isso se chama fome emocional — fome de ocupação!' },
+                                    { sit: 'Você viu comercial de pizza e ficou com água na boca, mas acabou de jantar.', resp: 'vontade', motivo: 'Nossos olhos e nariz podem despertar vontade mesmo sem fome. Isso é normal!' },
+                                ].map((q, i) => `
+                  <div id="fv-q${i}" style="background:#1a2332;border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:18px;">
+                    <p style="font-size:13px;color:#e2e8f0;margin-bottom:14px;">${q.sit}</p>
+                    <div style="display:flex;gap:10px;">
+                      <button onclick="respFV(${i},'fome','${q.resp}','${q.motivo}')" style="flex:1;padding:10px;background:rgba(248,113,113,0.12);color:#f87171;border:1px solid rgba(248,113,113,0.25);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">🍽️ Fome real</button>
+                      <button onclick="respFV(${i},'vontade','${q.resp}','${q.motivo}')" style="flex:1;padding:10px;background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.25);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">💛 Vontade</button>
+                    </div>
+                    <div id="fv-resp${i}" style="display:none;margin-top:12px;padding:12px;border-radius:8px;font-size:12px;line-height:1.5;"></div>
+                  </div>`).join('')}
+</div>
+<script>
+function respFV(idx,escolha,correto,motivo){
+                  var el=document.getElementById('fv-resp'+idx);
+                  var acertou=escolha===correto;
+                  el.style.display='block';
+                  el.style.background=acertou?'rgba(52,211,153,0.1)':'rgba(251,191,36,0.1)';
+                  el.style.border='1px solid '+(acertou?'rgba(52,211,153,0.3)':'rgba(251,191,36,0.3)');
+                  el.style.color=acertou?'#34d399':'#fbbf24';
+                  el.innerText=(acertou?'✅ Exato! ':'💡 Quase! ')+motivo;
+}
+<\/script>
+</div>`
+                        },
+
+                        'mastigacao-consciente': {
+                            titulo: '😋 Mastigação Consciente',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:500px;margin:0 auto;text-align:center;">
+<h2 style="color:#60a5fa;margin-bottom:8px;">😋 Mastigação Consciente</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:24px;">Pegue um pedaço de comida. Clique cada vez que mastigar.</p>
+<div style="background:#1a2332;border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:28px;margin-bottom:20px;">
+                  <div id="mc-count" style="font-size:72px;font-weight:700;color:#60a5fa;line-height:1;">0</div>
+                  <div style="font-size:14px;color:#64748b;margin-top:8px;margin-bottom:20px;">mastigadas</div>
+                  <button onclick="mastigar()" id="mc-btn" style="width:140px;height:140px;border-radius:50%;background:rgba(96,165,250,0.15);border:3px solid rgba(96,165,250,0.4);color:#60a5fa;font-size:40px;cursor:pointer;transition:.2s;" onmousedown="this.style.transform='scale(0.92)'" onmouseup="this.style.transform='scale(1)'">😋</button>
+                  <div id="mc-dica" style="margin-top:16px;min-height:40px;font-size:13px;color:#94a3b8;"></div>
+</div>
+<button onclick="resetMastigacao()" style="padding:8px 18px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,0.2);border-radius:8px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">Reiniciar</button>
+<script>
+var mcN=0;
+var mcDicas={5:'Está sentindo algum sabor diferente agora?',10:'A textura mudou? Está mais mole?',15:'Quase lá! Como está se sentindo — ainda com fome?',20:'🎉 Parabéns! 20 mastigadas! Seu estômago agradece. A digestão começa aqui!'};
+function mastigar(){
+                  if(mcN>=20)return;
+                  mcN++;
+                  document.getElementById('mc-count').innerText=mcN;
+                  if(mcDicas[mcN])document.getElementById('mc-dica').innerText=mcDicas[mcN];
+                  if(mcN===20){document.getElementById('mc-btn').style.background='rgba(52,211,153,0.2)';document.getElementById('mc-btn').style.borderColor='rgba(52,211,153,0.5)';}
+}
+function resetMastigacao(){mcN=0;document.getElementById('mc-count').innerText=0;document.getElementById('mc-dica').innerText='';document.getElementById('mc-btn').style.background='rgba(96,165,250,0.15)';document.getElementById('mc-btn').style.borderColor='rgba(96,165,250,0.4)';}
+<\/script>
+</div>`
+                        },
+
+                        'prato-colorido': {
+                            titulo: '🍽️ Monte Seu Prato',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:640px;margin:0 auto;">
+<h2 style="color:#fbbf24;margin-bottom:8px;">🍽️ Monte Seu Prato</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Escolha os alimentos que você gostaria de ter no seu prato hoje. Sem regras, sem julgamentos!</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-bottom:20px;" id="prato-opcoes">
+                  ${['🥦 Brócolis', '🍗 Frango', '🍚 Arroz', '🥕 Cenoura', '🫘 Feijão', '🥑 Abacate', '🍅 Tomate', '🥚 Ovo', '🍌 Banana', '🫐 Mirtilo', '🥝 Kiwi', '🧀 Queijo', '🥗 Salada', '🍞 Pão', '🐟 Peixe', '🥩 Carne'].map(a => `
+                  <button onclick="toggleAlimento(this)" style="padding:10px 6px;background:#1a2332;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;font-size:12px;color:#94a3b8;text-align:center;transition:.2s;font-family:'Roboto',sans-serif;">${a}</button>`).join('')}
+</div>
+<div id="prato-visual" style="background:#1a2332;border:2px dashed rgba(251,191,36,0.3);border-radius:50%;width:200px;height:200px;margin:0 auto 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;font-size:18px;" id="prato-circulo">
+                  <span style="font-size:12px;color:#64748b;">Seu prato</span>
+</div>
+<p style="text-align:center;font-size:12px;color:#64748b;">Escolhidos: <span id="prato-contagem">0</span> alimentos</p>
+<div id="prato-msg" style="margin-top:12px;text-align:center;font-size:13px;color:#fbbf24;"></div>
+<script>
+var selecionados=[];
+function toggleAlimento(btn){
+                  var nome=btn.innerText;
+                  var idx=selecionados.indexOf(nome);
+                  if(idx>-1){selecionados.splice(idx,1);btn.style.background='#1a2332';btn.style.color='#94a3b8';btn.style.borderColor='rgba(255,255,255,0.08)';}
+                  else{selecionados.push(nome);btn.style.background='rgba(251,191,36,0.15)';btn.style.color='#fbbf24';btn.style.borderColor='rgba(251,191,36,0.4)';}
+                  var circ=document.getElementById('prato-circulo');
+                  circ.innerHTML=selecionados.length===0?'<span style="font-size:12px;color:#64748b;">Seu prato</span>':selecionados.slice(0,8).map(a=>'<span>'+a.split(' ')[0]+'</span>').join('');
+                  document.getElementById('prato-contagem').innerText=selecionados.length;
+                  var msgs=['','Boa escolha!','Variado!','Colorido e nutritivo! 🌈','Incrível variedade! 🎉'];
+                  document.getElementById('prato-msg').innerText=msgs[Math.min(selecionados.length,4)];
+}
+<\/script>
+</div>`
+                        },
+
+                        'diario-fome': {
+                            titulo: '📊 Escala da Fome',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:520px;margin:0 auto;text-align:center;">
+<h2 style="color:#a78bfa;margin-bottom:8px;">📊 Escala da Fome</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:24px;">Antes de comer: como está sua fome? Depois de comer: como está sua saciedade?</p>
+<div style="background:#1a2332;border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:22px;margin-bottom:16px;">
+                  <p style="font-size:13px;color:#94a3b8;margin-bottom:14px;">Arraste o slider:</p>
+                  <div style="font-size:36px;margin-bottom:8px;" id="ef-emoji">😐</div>
+                  <div id="ef-label" style="font-size:15px;font-weight:600;color:#a78bfa;margin-bottom:16px;">Neutro</div>
+                  <input type="range" min="1" max="10" value="5" oninput="atualizarEscala(this.value)" style="width:100%;accent-color:#8b5cf6;cursor:pointer;">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-top:6px;"><span>1 - Com muita fome</span><span>10 - Muito satisfeito</span></div>
+</div>
+<div id="ef-dica" style="background:#1a2332;border:1px solid rgba(139,92,246,0.15);border-radius:12px;padding:14px;font-size:12px;color:#94a3b8;line-height:1.5;text-align:left;">
+                  Escala neutra. O que seu corpo está sentindo agora?
+</div>
+<script>
+var efDados={
+                  1:{emoji:'😵',label:'Fome intensa',cor:'#f87171',dica:'Você está com fome muito forte! Tente comer algo, mas devagar para reconhecer quando estiver satisfeito.'},
+                  2:{emoji:'😩',label:'Com bastante fome',cor:'#f87171',dica:'Hora de comer! Seu corpo está pedindo energia.'},
+                  3:{emoji:'😟',label:'Com fome',cor:'#fbbf24',dica:'Você está com fome, mas não urgente. Uma boa hora para fazer uma refeição.'},
+                  4:{emoji:'🙁',label:'Um pouquinho de fome',cor:'#fbbf24',dica:'Leve fome. Talvez seja hora de um lanchinho.'},
+                  5:{emoji:'😐',label:'Neutro',cor:'#a78bfa',dica:'Você está neutro — nem com fome nem cheio. Preste atenção em como seu corpo se sente.'},
+                  6:{emoji:'🙂',label:'Levemente satisfeito',cor:'#34d399',dica:'Você comeu um pouco. Como está se sentindo?'},
+                  7:{emoji:'😌',label:'Satisfeito',cor:'#34d399',dica:'Ótimo momento para parar de comer! Seu corpo agradece.'},
+                  8:{emoji:'😊',label:'Bem satisfeito',cor:'#34d399',dica:'Você comeu bem! Seu corpo está confortável.'},
+                  9:{emoji:'😅',label:'Muito cheio',cor:'#60a5fa',dica:'Comeu um pouco mais do que precisava — tudo bem! Na próxima, tente parar um pouco antes.'},
+                  10:{emoji:'🤢',label:'Excessivamente cheio',cor:'#60a5fa',dica:'Você está muito cheio. Que sinais seu corpo dá quando isso acontece?'}
+};
+function atualizarEscala(v){
+                  var d=efDados[v];
+                  document.getElementById('ef-emoji').innerText=d.emoji;
+                  document.getElementById('ef-label').style.color=d.cor;
+                  document.getElementById('ef-label').innerText=d.label;
+                  document.getElementById('ef-dica').innerText=d.dica;
+}
+<\/script>
+</div>`
+                        },
+
+                        'emocoes-comida': {
+                            titulo: '💛 Emoções & Comida',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:600px;margin:0 auto;">
+<h2 style="color:#f87171;margin-bottom:8px;">💛 Emoções & Comida</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Às vezes comemos por causa do que estamos sentindo. Isso é normal! Vamos entender.</p>
+<p style="font-size:13px;color:#e2e8f0;margin-bottom:14px;">Como você está se sentindo agora?</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:20px;" id="ec-emocoes">
+                  ${[['😟', 'Ansioso', 'Conforto, leveza'], ['😢', 'Triste', 'Alegria, afeto'], ['😠', 'Com raiva', 'Alívio, desabafar'], ['😴', 'Entediado', 'Estímulo, algo interessante'], ['😊', 'Feliz', 'Celebração, prazer'], ['😰', 'Com medo', 'Segurança, tranquilidade'], ['🤩', 'Animado', 'Compartilhar a alegria'], ['😶', 'Vazio', 'Preenchimento, conexão']].map(e => `
+                  <button onclick="selecionarEmocao('${e[1]}','${e[2]}')" style="padding:12px 8px;background:#1a2332;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;text-align:center;font-family:'Roboto',sans-serif;transition:.2s;">
+                    <div style="font-size:22px;margin-bottom:4px;">${e[0]}</div>
+                    <div style="font-size:11px;color:#94a3b8;">${e[1]}</div>
+                  </button>`).join('')}
+</div>
+<div id="ec-resultado" style="display:none;background:#1a2332;border:1px solid rgba(248,113,113,0.2);border-radius:14px;padding:18px;">
+                  <p style="font-size:13px;color:#f87171;font-weight:600;margin-bottom:10px;">💡 O que você pode estar buscando na comida:</p>
+                  <p id="ec-busca" style="font-size:13px;color:#94a3b8;margin-bottom:14px;"></p>
+                  <p style="font-size:12px;color:#64748b;margin-bottom:8px;">E o que mais poderia te ajudar a encontrar isso?</p>
+                  <textarea placeholder="Escreva suas ideias..." style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(248,113,113,0.15);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:60px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  <p style="font-size:11px;color:#475569;margin-top:10px;">💜 Não há julgamento aqui. Comer por emoção é humano.</p>
+</div>
+<script>
+function selecionarEmocao(emocao,busca){
+                  document.querySelectorAll('#ec-emocoes button').forEach(b=>b.style.background='#1a2332');
+                  document.getElementById('ec-busca').innerText='Você está '+emocao.toLowerCase()+'. Talvez esteja buscando: '+busca+'.';
+                  document.getElementById('ec-resultado').style.display='block';
+}
+<\/script>
+</div>`
+                        },
+
+                        // ===== TDAH =====
+                        'missao-foco': {
+                            titulo: '🎯 Missão Foco',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:500px;margin:0 auto;text-align:center;">
+<h2 style="color:#fbbf24;margin-bottom:8px;">🎯 Missão Foco</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Defina uma missão pequena e complete-a! Você consegue!</p>
+<div id="mf-setup" style="background:#1a2332;border:1px solid rgba(251,191,36,0.2);border-radius:14px;padding:20px;margin-bottom:16px;">
+                  <input type="text" id="mf-tarefa" placeholder="Qual é a missão? Ex: Fazer 5 exercícios de matemática" style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(251,191,36,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;margin-bottom:14px;">
+                  <p style="font-size:12px;color:#64748b;margin-bottom:8px;">Quanto tempo você quer?</p>
+                  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;">
+                    ${[3, 5, 10, 15].map(t => `<button onclick="selecionarTempo(${t})" id="mf-t${t}" style="padding:8px 16px;background:#1a2332;border:1px solid rgba(251,191,36,0.2);border-radius:8px;cursor:pointer;color:#64748b;font-size:13px;font-family:'Roboto',sans-serif;transition:.2s;">${t}min</button>`).join('')}
+                  </div>
+                  <button onclick="iniciarMissao()" style="padding:12px 28px;background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.4);border-radius:10px;cursor:pointer;font-size:14px;font-family:'Roboto',sans-serif;font-weight:600;">🚀 INICIAR MISSÃO!</button>
+</div>
+<div id="mf-timer" style="display:none;">
+                  <div style="background:#1a2332;border:2px solid rgba(251,191,36,0.3);border-radius:50%;width:160px;height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;">
+                    <div id="mf-tempo-display" style="font-size:38px;font-weight:700;color:#fbbf24;"></div>
+                    <div style="font-size:11px;color:#64748b;">restante</div>
+                  </div>
+                  <p id="mf-tarefa-display" style="font-size:14px;color:#e2e8f0;margin-bottom:16px;"></p>
+                  <button onclick="concluirMissao()" style="padding:12px 28px;background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.4);border-radius:10px;cursor:pointer;font-size:14px;font-family:'Roboto',sans-serif;font-weight:600;">✅ CONCLUÍ!</button>
+</div>
+<div id="mf-vitoria" style="display:none;background:#1a2332;border:1px solid rgba(52,211,153,0.3);border-radius:14px;padding:28px;">
+                  <div style="font-size:48px;margin-bottom:12px;">🏆</div>
+                  <p style="font-size:18px;font-weight:700;color:#34d399;margin-bottom:8px;">MISSÃO CONCLUÍDA!</p>
+                  <p style="font-size:13px;color:#94a3b8;margin-bottom:16px;">Você conseguiu! Isso merece uma recompensa.</p>
+                  <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:14px;margin-bottom:16px;">
+                    <p style="font-size:13px;color:#fbbf24;">🎁 Sua recompensa: escolha 5 minutos fazendo algo que você gosta!</p>
+                  </div>
+                  <button onclick="resetMissao()" style="padding:8px 18px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,0.2);border-radius:8px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">Nova missão</button>
+</div>
+<script>
+var mfIntervalo,mfSegundos=0,mfTempoSel=5;
+function selecionarTempo(t){mfTempoSel=t;document.querySelectorAll('[id^="mf-t"]').forEach(b=>{b.style.background='#1a2332';b.style.color='#64748b';});document.getElementById('mf-t'+t).style.background='rgba(251,191,36,0.2)';document.getElementById('mf-t'+t).style.color='#fbbf24';}
+function iniciarMissao(){
+                  var tarefa=document.getElementById('mf-tarefa').value||'Sua missão de foco';
+                  document.getElementById('mf-tarefa-display').innerText='🎯 '+tarefa;
+                  mfSegundos=mfTempoSel*60;
+                  document.getElementById('mf-setup').style.display='none';
+                  document.getElementById('mf-timer').style.display='block';
+                  atualizarTimerMF();
+                  mfIntervalo=setInterval(function(){mfSegundos--;atualizarTimerMF();if(mfSegundos<=0){clearInterval(mfIntervalo);concluirMissao();}},1000);
+}
+function atualizarTimerMF(){var m=Math.floor(mfSegundos/60),s=mfSegundos%60;document.getElementById('mf-tempo-display').innerText=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function concluirMissao(){clearInterval(mfIntervalo);document.getElementById('mf-timer').style.display='none';document.getElementById('mf-vitoria').style.display='block';}
+function resetMissao(){document.getElementById('mf-vitoria').style.display='none';document.getElementById('mf-setup').style.display='block';document.getElementById('mf-tarefa').value='';mfSegundos=0;}
+<\/script>
+</div>`
+                        },
+
+                        'pausa-pensa': {
+                            titulo: '🛑 Pausa & Pensa',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#f87171;margin-bottom:8px;">🛑 Pausa & Pensa</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Antes de agir, pause 3 segundos e pense. Vamos praticar!</p>
+<div id="pp-card" style="background:#1a2332;border:1px solid rgba(248,113,113,0.25);border-radius:14px;padding:22px;margin-bottom:16px;">
+                  <div id="pp-situacao" style="font-size:14px;color:#e2e8f0;line-height:1.6;margin-bottom:18px;"></div>
+                  <div id="pp-timer-area" style="display:none;text-align:center;margin-bottom:16px;">
+                    <div id="pp-countdown" style="font-size:64px;font-weight:700;color:#f87171;"></div>
+                    <div style="font-size:12px;color:#64748b;">Respire... pense antes de agir</div>
+                  </div>
+                  <div id="pp-opcoes" style="display:none;display:grid;gap:10px;"></div>
+                  <div id="pp-resultado" style="display:none;padding:14px;border-radius:10px;font-size:13px;line-height:1.5;margin-top:10px;"></div>
+                  <button id="pp-btn-pausar" onclick="iniciarPausa()" style="padding:10px 22px;background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.35);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;">🛑 PAUSAR e pensar</button>
+                  <button id="pp-btn-prox" onclick="proximaSit()" style="display:none;padding:10px 22px;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;margin-left:8px;">Próxima situação →</button>
+</div>
+<script>
+var ppSits=[
+                  {sit:'Seu amigo usou sua borracha sem pedir e você ficou com raiva.',ops:[{txt:'Grito com ele na hora',ok:false,exp:'Gritar pode machucar a amizade. Respirou antes?'},{txt:'Pauso, respiro e falo como me senti',ok:true,exp:'Ótimo! Falar com calma resolve muito melhor.'},{txt:'Fico com raiva o dia todo',ok:false,exp:'Guardar a raiva cansa. É melhor conversar.'}]},
+                  {sit:'Você está jogando videogame e sua mãe pediu pra desligar agora.',ops:[{txt:'Ignoro e continuo jogando',ok:false,exp:'Ignorar gera conflito. O que acontece depois?'},{txt:'Falo: "Posso terminar essa fase?" com calma',ok:true,exp:'Negociar com calma aumenta a chance de conseguir!'},{txt:'Jogo o controle no chão',ok:false,exp:'Isso vai piorar tudo. A raiva passou rápido?'}]},
+                  {sit:'Você errou na frente de todo mundo e quer sumir.',ops:[{txt:'Sair correndo da sala',ok:false,exp:'Fugir parece alívio, mas depois piora.'},{txt:'Respiro fundo, dou uma risada e continuo',ok:true,exp:'Coragem! Errar é humano e isso passa muito rápido.'},{txt:'Fico com vergonha pro resto do dia',ok:false,exp:'A vergonha é real, mas geralmente passa em minutos.'}]},
+];
+var ppIdx=0,ppInter;
+function carregarSit(){
+                  var s=ppSits[ppIdx%ppSits.length];
+                  document.getElementById('pp-situacao').innerText=s.sit;
+                  document.getElementById('pp-opcoes').style.display='none';
+                  document.getElementById('pp-resultado').style.display='none';
+                  document.getElementById('pp-timer-area').style.display='none';
+                  document.getElementById('pp-btn-pausar').style.display='inline-block';
+                  document.getElementById('pp-btn-prox').style.display='none';
+}
+function iniciarPausa(){
+                  document.getElementById('pp-btn-pausar').style.display='none';
+                  document.getElementById('pp-timer-area').style.display='block';
+                  var n=3;document.getElementById('pp-countdown').innerText=n;
+                  ppInter=setInterval(function(){n--;document.getElementById('pp-countdown').innerText=n;if(n<=0){clearInterval(ppInter);mostrarOpcoes();}},1000);
+}
+function mostrarOpcoes(){
+                  document.getElementById('pp-timer-area').style.display='none';
+                  var ops=ppSits[ppIdx%ppSits.length].ops;
+                  var el=document.getElementById('pp-opcoes');
+                  el.innerHTML=ops.map((o,i)=>'<button onclick="escolherOpcaoPP('+i+')" style="padding:12px;background:#0f1621;border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;color:#e2e8f0;font-size:13px;text-align:left;font-family:Roboto,sans-serif;">'+o.txt+'</button>').join('');
+                  el.style.display='grid';
+}
+function escolherOpcaoPP(i){
+                  var op=ppSits[ppIdx%ppSits.length].ops[i];
+                  var el=document.getElementById('pp-resultado');
+                  el.style.display='block';
+                  el.style.background=op.ok?'rgba(52,211,153,0.1)':'rgba(248,113,113,0.1)';
+                  el.style.color=op.ok?'#34d399':'#f87171';
+                  el.innerText=(op.ok?'✅ ':'💡 ')+op.exp;
+                  document.getElementById('pp-btn-prox').style.display='inline-block';
+                  document.getElementById('pp-opcoes').style.display='none';
+}
+function proximaSit(){ppIdx++;carregarSit();}
+carregarSit();
+<\/script>
+</div>`
+                        },
+
+                        'planejador-missoes': {
+                            titulo: '📋 Planejador de Missões',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#34d399;margin-bottom:8px;">📋 Planejador de Missões</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Tarefas grandes parecem impossíveis. Quebre em pedaços pequenos!</p>
+<div style="background:#1a2332;border:1px solid rgba(52,211,153,0.2);border-radius:14px;padding:18px;margin-bottom:16px;">
+                  <label style="font-size:12px;color:#64748b;display:block;margin-bottom:6px;">A grande missão:</label>
+                  <input type="text" id="pm-grande" placeholder="Ex: Fazer o trabalho de ciências" style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(52,211,153,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;margin-bottom:12px;">
+                  <label style="font-size:12px;color:#64748b;display:block;margin-bottom:6px;">Micro-missão (passo pequeno):</label>
+                  <div style="display:flex;gap:8px;">
+                    <input type="text" id="pm-micro" placeholder="Ex: Pesquisar sobre o tema" style="flex:1;padding:10px;background:#0f1621;border:1px solid rgba(52,211,153,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;outline:none;font-family:'Roboto',sans-serif;">
+                    <button onclick="adicionarMicro()" style="padding:10px 16px;background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:8px;cursor:pointer;font-size:13px;font-family:'Roboto',sans-serif;white-space:nowrap;">+ Adicionar</button>
+                  </div>
+</div>
+<div id="pm-lista" style="display:grid;gap:8px;margin-bottom:16px;"></div>
+<div id="pm-progresso" style="display:none;background:#1a2332;border:1px solid rgba(52,211,153,0.15);border-radius:12px;padding:16px;text-align:center;">
+                  <div style="background:#0f1621;border-radius:20px;height:14px;overflow:hidden;margin-bottom:8px;">
+                    <div id="pm-barra" style="height:100%;background:linear-gradient(90deg,#34d399,#059669);border-radius:20px;transition:.4s;width:0%;"></div>
+                  </div>
+                  <p id="pm-pct" style="font-size:13px;color:#34d399;font-weight:600;">0% concluído</p>
+                  <p id="pm-parabens" style="display:none;font-size:14px;color:#fbbf24;">🎉 Missão concluída! Você é incrível!</p>
+</div>
+<script>
+var pmMicros=[];
+function adicionarMicro(){
+                  var v=document.getElementById('pm-micro').value.trim();
+                  if(!v)return;
+                  pmMicros.push({texto:v,feito:false});
+                  document.getElementById('pm-micro').value='';
+                  renderizarLista();
+}
+function renderizarLista(){
+                  var el=document.getElementById('pm-lista');
+                  el.innerHTML=pmMicros.map((m,i)=>'<div style="display:flex;align-items:center;gap:10px;background:#1a2332;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px 14px;"><input type="checkbox" '+(m.feito?'checked':'')+' onchange="toggleMicro('+i+')" style="accent-color:#34d399;width:16px;height:16px;cursor:pointer;"><span style="font-size:13px;color:'+(m.feito?'#475569':'#e2e8f0')+';text-decoration:'+(m.feito?'line-through':'none')+';">'+m.texto+'</span></div>').join('');
+                  var feitas=pmMicros.filter(m=>m.feito).length;
+                  var pct=pmMicros.length?Math.round(feitas/pmMicros.length*100):0;
+                  if(pmMicros.length){document.getElementById('pm-progresso').style.display='block';document.getElementById('pm-barra').style.width=pct+'%';document.getElementById('pm-pct').innerText=pct+'% concluído';document.getElementById('pm-parabens').style.display=pct===100?'block':'none';}
+}
+function toggleMicro(i){pmMicros[i].feito=!pmMicros[i].feito;renderizarLista();}
+<\/script>
+</div>`
+                        },
+
+                        'pomodoro-kids': {
+                            titulo: '🍅 Pomodoro Terapêutico',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:500px;margin:0 auto;text-align:center;">
+<h2 style="color:#60a5fa;margin-bottom:8px;">🍅 Pomodoro Terapêutico</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Foque por um tempo, depois descanse. Seu cérebro funciona melhor assim!</p>
+<div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px;">
+                  ${[5, 10, 15, 20].map(t => `<button onclick="selecionarPom(${t})" id="pom-t${t}" style="padding:7px 14px;background:#1a2332;border:1px solid rgba(96,165,250,0.15);border-radius:8px;cursor:pointer;color:#64748b;font-size:12px;font-family:'Roboto',sans-serif;">${t}min</button>`).join('')}
+</div>
+<div id="pom-fase" style="font-size:12px;background:rgba(96,165,250,0.1);color:#60a5fa;display:inline-block;padding:4px 14px;border-radius:20px;margin-bottom:16px;">Foco 🎯</div>
+<div style="background:#1a2332;border:2px solid rgba(96,165,250,0.3);border-radius:50%;width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;">
+                  <div id="pom-display" style="font-size:42px;font-weight:700;color:#60a5fa;"></div>
+                  <div style="font-size:11px;color:#64748b;">minutos</div>
+</div>
+<div style="display:flex;gap:10px;justify-content:center;">
+                  <button onclick="iniciarPom()" id="pom-btn-start" style="padding:11px 24px;background:rgba(96,165,250,0.15);color:#60a5fa;border:1px solid rgba(96,165,250,0.4);border-radius:10px;cursor:pointer;font-size:14px;font-family:'Roboto',sans-serif;font-weight:600;">▶ Iniciar</button>
+                  <button onclick="resetPom()" style="padding:11px 16px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,0.2);border-radius:10px;cursor:pointer;font-size:14px;font-family:'Roboto',sans-serif;">↺ Reset</button>
+</div>
+<div id="pom-msg" style="margin-top:16px;font-size:13px;color:#94a3b8;min-height:20px;"></div>
+<script>
+var pomSel=10,pomSeg=0,pomInter,pomFoco=true,pomRodando=false;
+function selecionarPom(t){pomSel=t;document.querySelectorAll('[id^="pom-t"]').forEach(b=>{b.style.background='#1a2332';b.style.color='#64748b';});document.getElementById('pom-t'+t).style.background='rgba(96,165,250,0.15)';document.getElementById('pom-t'+t).style.color='#60a5fa';if(!pomRodando)atualizarDisplayPom();}
+function atualizarDisplayPom(){var total=pomFoco?pomSel*60:Math.floor(pomSel/5)*60;var s=pomSeg||total;var m=Math.floor(s/60),sec=s%60;document.getElementById('pom-display').innerText=(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;}
+function iniciarPom(){
+                  if(pomRodando){clearInterval(pomInter);pomRodando=false;document.getElementById('pom-btn-start').innerText='▶ Iniciar';return;}
+                  pomRodando=true;
+                  document.getElementById('pom-btn-start').innerText='⏸ Pausar';
+                  if(!pomSeg)pomSeg=(pomFoco?pomSel:Math.floor(pomSel/5))*60;
+                  pomInter=setInterval(function(){
+                    pomSeg--;atualizarDisplayPom();
+                    if(pomSeg<=0){clearInterval(pomInter);pomRodando=false;pomFoco=!pomFoco;pomSeg=0;
+                    document.getElementById('pom-fase').innerText=pomFoco?'Foco 🎯':'Pausa 😌';
+                    document.getElementById('pom-msg').innerText=pomFoco?'Modo foco! Respira e começa.':'🎉 Pausa! Levanta, bebe água, descanse.';
+                    document.getElementById('pom-btn-start').innerText='▶ Iniciar';}
+                  },1000);
+}
+function resetPom(){clearInterval(pomInter);pomRodando=false;pomFoco=true;pomSeg=0;document.getElementById('pom-fase').innerText='Foco 🎯';document.getElementById('pom-msg').innerText='';document.getElementById('pom-btn-start').innerText='▶ Iniciar';atualizarDisplayPom();}
+selecionarPom(10);
+<\/script>
+</div>`
+                        },
+
+                        'detetive-agora': {
+                            titulo: '🕵️ Detetive do Agora',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#a78bfa;margin-bottom:8px;">🕵️ Detetive do Agora</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Seu trabalho: investigar o presente com os 5 sentidos. Prontos?</p>
+<div style="display:grid;gap:12px;">
+                  ${[
+                                    { emoji: '👁️', sentido: 'VISÃO', pergunta: 'Olhe ao redor. Nome 3 coisas que você vê agora:', cor: 'rgba(96,165,250' },
+                                    { emoji: '👂', sentido: 'AUDIÇÃO', pergunta: 'Feche os olhos por 10 segundos. O que você ouviu?', cor: 'rgba(52,211,153' },
+                                    { emoji: '✋', sentido: 'TATO', pergunta: 'Toque algo perto de você. Como é a textura?', cor: 'rgba(251,191,36' },
+                                    { emoji: '👃', sentido: 'OLFATO', pergunta: 'Tem algum cheiro no ar agora? Qual?', cor: 'rgba(248,113,113' },
+                                    { emoji: '👅', sentido: 'PALADAR', pergunta: 'Qual gosto tem na sua boca agora? (água, comida, nada...)', cor: 'rgba(139,92,246' },
+                                ].map(s => `
+                  <div style="background:#1a2332;border:1px solid ${s.cor},0.2);border-radius:12px;padding:16px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                      <span style="font-size:20px;">${s.emoji}</span>
+                      <span style="font-size:11px;font-weight:700;color:#e2e8f0;letter-spacing:1px;">${s.sentido}</span>
+                    </div>
+                    <p style="font-size:12px;color:#94a3b8;margin-bottom:8px;">${s.pergunta}</p>
+                    <input type="text" placeholder="Responda aqui..." style="width:100%;padding:8px 10px;background:#0f1621;border:1px solid ${s.cor},0.15);border-radius:8px;color:#e2e8f0;font-size:12px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+                  </div>`).join('')}
+</div>
+<div style="margin-top:16px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:14px;text-align:center;">
+                  <p style="font-size:13px;color:#a78bfa;">💜 Parabéns, Detetive! Você está 100% no presente agora.</p>
+</div>
+</div>`
+                        },
+
+                        'automonitoramento': {
+                            titulo: '📡 Como Estou Agora?',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:560px;margin:0 auto;">
+<h2 style="color:#fbbf24;margin-bottom:8px;">📡 Como Estou Agora?</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Check-in rápido de 4 áreas. Arraste os sliders!</p>
+<div style="display:grid;gap:14px;margin-bottom:20px;">
+                  ${[
+                                    { id: 'foco', label: '🎯 Foco', cor: '#60a5fa' },
+                                    { id: 'energia', label: '⚡ Energia', cor: '#fbbf24' },
+                                    { id: 'humor', label: '😊 Humor', cor: '#34d399' },
+                                    { id: 'agitacao', label: '🌀 Agitação', cor: '#f87171' },
+                                ].map(s => `
+                  <div style="background:#1a2332;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                      <span style="font-size:13px;font-weight:500;color:#e2e8f0;">${s.label}</span>
+                      <span id="am-${s.id}-val" style="font-size:13px;font-weight:600;color:${s.cor};">5</span>
+                    </div>
+                    <input type="range" min="1" max="10" value="5" oninput="atualizarAM('${s.id}',this.value)" style="width:100%;accent-color:${s.cor};cursor:pointer;">
+                    <div style="display:flex;justify-content:space-between;font-size:10px;color:#475569;margin-top:4px;"><span>Baixo</span><span>Alto</span></div>
+                  </div>`).join('')}
+</div>
+<button onclick="gerarDicaAM()" style="width:100%;padding:12px;background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);border-radius:10px;cursor:pointer;font-size:14px;font-family:'Roboto',sans-serif;font-weight:600;margin-bottom:14px;">📊 Ver dica terapêutica</button>
+<div id="am-dica" style="display:none;background:#1a2332;border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:16px;font-size:13px;color:#94a3b8;line-height:1.6;"></div>
+<script>
+var amVals={foco:5,energia:5,humor:5,agitacao:5};
+function atualizarAM(id,v){amVals[id]=parseInt(v);document.getElementById('am-'+id+'-val').innerText=v;}
+function gerarDicaAM(){
+                  var dicas=[];
+                  if(amVals.foco<4)dicas.push('Seu foco está baixo — tente o Pomodoro com tempo curto (5 min).');
+                  if(amVals.foco>8)dicas.push('Ótimo foco! Aproveite para trabalhar em algo importante.');
+                  if(amVals.energia<4)dicas.push('Energia baixa — movimente o corpo por 2 minutos ou beba água.');
+                  if(amVals.agitacao>7)dicas.push('Muita agitação — respire: inspire 4s, segure 4s, expire 4s. Repita 3x.');
+                  if(amVals.humor<4)dicas.push('Humor baixo — tudo bem. Nomeie o que está sentindo: isso já ajuda.');
+                  if(amVals.humor>7&&amVals.energia>7)dicas.push('Você está bem hoje! Bom momento para enfrentar um desafio.');
+                  if(!dicas.length)dicas.push('Você está em equilíbrio. Continue prestando atenção em como seu corpo se sente ao longo do dia.');
+                  var el=document.getElementById('am-dica');el.style.display='block';el.innerHTML='💡 <strong style="color:#fbbf24;">Dica para você:</strong><br><br>'+dicas.join('<br><br>');
+}
+<\/script>
+</div>`
+                        },
+
+                        // ===== ADULTOS NOVOS =====
+                        'matriz-act': {
+                            titulo: '🧭 Matriz ACT',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:640px;margin:0 auto;">
+<h2 style="color:#34d399;margin-bottom:8px;">🧭 Matriz ACT</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">A Matriz de Kevin Polk ajuda a ver o que nos afasta e o que nos aproxima de uma vida com sentido.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.2);border-radius:12px;overflow:hidden;margin-bottom:20px;">
+                  <div style="background:#1a2332;padding:16px;">
+                    <p style="font-size:10px;color:#475569;letter-spacing:1px;margin-bottom:6px;">INTERNO × APROXIMAÇÃO</p>
+                    <p style="font-size:12px;color:#34d399;font-weight:600;margin-bottom:8px;">Quem/o que importa para mim?</p>
+                    <textarea placeholder="Valores, pessoas, o que dá sentido à minha vida..." style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(52,211,153,0.15);border-radius:6px;color:#e2e8f0;font-size:11px;resize:vertical;min-height:80px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+                  <div style="background:#1a2332;padding:16px;">
+                    <p style="font-size:10px;color:#475569;letter-spacing:1px;margin-bottom:6px;">EXTERNO × APROXIMAÇÃO</p>
+                    <p style="font-size:12px;color:#60a5fa;font-weight:600;margin-bottom:8px;">O que faço em direção ao que importa?</p>
+                    <textarea placeholder="Ações concretas voltadas aos meus valores..." style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(96,165,250,0.15);border-radius:6px;color:#e2e8f0;font-size:11px;resize:vertical;min-height:80px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+                  <div style="background:#1a2332;padding:16px;">
+                    <p style="font-size:10px;color:#475569;letter-spacing:1px;margin-bottom:6px;">INTERNO × EVITAÇÃO</p>
+                    <p style="font-size:12px;color:#f87171;font-weight:600;margin-bottom:8px;">O que não quero sentir/pensar?</p>
+                    <textarea placeholder="Pensamentos e sentimentos difíceis que evito..." style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(248,113,113,0.15);border-radius:6px;color:#e2e8f0;font-size:11px;resize:vertical;min-height:80px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+                  <div style="background:#1a2332;padding:16px;">
+                    <p style="font-size:10px;color:#475569;letter-spacing:1px;margin-bottom:6px;">EXTERNO × EVITAÇÃO</p>
+                    <p style="font-size:12px;color:#fbbf24;font-weight:600;margin-bottom:8px;">O que faço para evitar o desconforto?</p>
+                    <textarea placeholder="Comportamentos de evitação, fuga, procrastinação..." style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(251,191,36,0.15);border-radius:6px;color:#e2e8f0;font-size:11px;resize:vertical;min-height:80px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+</div>
+<div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:10px;padding:14px;font-size:12px;color:#64748b;line-height:1.6;">
+                  💡 <strong style="color:#34d399;">Pergunta ACT:</strong> Olhando para a matriz, o que você está fazendo — se aproximando ou se afastando do que realmente importa?
+</div>
+</div>`
+                        },
+
+                        'defusao-cognitiva': {
+                            titulo: '🎭 Defusão Cognitiva',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#a78bfa;margin-bottom:8px;">🎭 Defusão Cognitiva</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Na ACT, defusão significa criar distância de pensamentos difíceis — vê-los como eventos mentais, não fatos.</p>
+<div style="background:#1a2332;border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:16px;margin-bottom:16px;">
+                  <label style="font-size:12px;color:#64748b;display:block;margin-bottom:6px;">O pensamento difícil que está me incomodando:</label>
+                  <input type="text" id="def-pensamento" placeholder="Ex: Eu não sou capaz" style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;">
+</div>
+<p style="font-size:13px;color:#e2e8f0;font-weight:600;margin-bottom:12px;">Escolha uma técnica de defusão:</p>
+<div style="display:grid;gap:12px;">
+                  <div style="background:#1a2332;border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:16px;cursor:pointer;" onclick="this.querySelector('.def-detalhe').style.display=this.querySelector('.def-detalhe').style.display==='none'?'block':'none'">
+                    <p style="font-size:14px;font-weight:600;color:#fbbf24;margin-bottom:4px;">🎵 Cante o pensamento</p>
+                    <p style="font-size:12px;color:#64748b;">Coloca o pensamento com uma música boba (tipo parabéns pra você)</p>
+                    <div class="def-detalhe" style="display:none;margin-top:12px;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
+                      <p style="font-size:12px;color:#94a3b8;line-height:1.6;">Pegue o pensamento acima e cante-o mentalmente com uma melodia ridícula. Isso ajuda a ver que é apenas um amontoado de palavras — não um fato sobre você.</p>
+                      <p style="font-size:12px;color:#fbbf24;margin-top:8px;">✨ Como se sentiu depois de cantá-lo?</p>
+                    </div>
+                  </div>
+                  <div style="background:#1a2332;border:1px solid rgba(96,165,250,0.2);border-radius:12px;padding:16px;cursor:pointer;" onclick="this.querySelector('.def-detalhe').style.display=this.querySelector('.def-detalhe').style.display==='none'?'block':'none'">
+                    <p style="font-size:14px;font-weight:600;color:#60a5fa;margin-bottom:4px;">🍂 Folhas no rio</p>
+                    <p style="font-size:12px;color:#64748b;">Observe o pensamento passando, como uma folha num rio</p>
+                    <div class="def-detalhe" style="display:none;margin-top:12px;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
+                      <p style="font-size:12px;color:#94a3b8;line-height:1.6;">Feche os olhos. Imagine um rio tranquilo. Coloque seu pensamento sobre uma folha e observe-a flutuando e se afastando. Você não precisa lutar contra ele — só observe.</p>
+                      <p style="font-size:12px;color:#60a5fa;margin-top:8px;">✨ Respire 3 vezes enquanto visualiza.</p>
+                    </div>
+                  </div>
+                  <div style="background:#1a2332;border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:16px;cursor:pointer;" onclick="this.querySelector('.def-detalhe').style.display=this.querySelector('.def-detalhe').style.display==='none'?'block':'none'">
+                    <p style="font-size:14px;font-weight:600;color:#34d399;margin-bottom:4px;">🏷️ Rotulagem</p>
+                    <p style="font-size:12px;color:#64748b;">Nomear o pensamento cria distância dele</p>
+                    <div class="def-detalhe" style="display:none;margin-top:12px;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
+                      <p style="font-size:12px;color:#94a3b8;line-height:1.6;">Em vez de "Eu não sou capaz", tente: "Estou tendo o <em>pensamento</em> de que não sou capaz" ou "Minha mente está contando a história de que não sou capaz."</p>
+                      <textarea placeholder="Reescreva o pensamento usando rotulagem..." style="width:100%;margin-top:10px;padding:8px;background:#0f1621;border:1px solid rgba(52,211,153,0.15);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:60px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                    </div>
+                  </div>
+</div>
+</div>`
+                        },
+
+                        'habilidades-dbt': {
+                            titulo: '🛟 Habilidades DBT',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:600px;margin:0 auto;">
+<h2 style="color:#60a5fa;margin-bottom:8px;">🛟 Habilidades DBT</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Terapia Comportamental Dialética — habilidades para momentos de crise e regulação emocional.</p>
+<div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+                  <button onclick="trocarDbt('tipp')" id="dbt-tipp" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(96,165,250,0.35);background:rgba(96,165,250,0.15);color:#60a5fa;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;">TIPP</button>
+                  <button onclick="trocarDbt('accepts')" id="dbt-accepts" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(96,165,250,0.1);background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;">ACCEPTS</button>
+                  <button onclick="trocarDbt('autocuidado')" id="dbt-autocuidado" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(96,165,250,0.1);background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif;">Autocuidado</button>
+</div>
+<div id="dbt-tipp-cont">
+                  ${[['T', 'Temperatura', 'Mergulhe o rosto em água gelada por 30s, ou segure gelo na mão. Isso ativa o reflexo de mergulho e desacelera o coração imediatamente.', 'rgba(96,165,250'], ['I', 'Exercício Intenso', 'Faça 1 minuto de atividade física intensa (polichinelos, corrida no lugar). Queima a adrenalina do momento de crise.', 'rgba(52,211,153'], ['P', 'Respiração Pausada', 'Expire mais devagar que inspira. Ex: inspire 4s, expire 7s. Ativa o sistema nervoso parassimpático.', 'rgba(139,92,246'], ['P', 'Relaxamento Muscular', 'Contraia e relaxe grupos musculares. Comece pelos pés, suba até o rosto.', 'rgba(251,191,36']].map(d => `
+                  <div style="display:flex;gap:14px;background:#1a2332;border:1px solid ${d[3]},0.2);border-radius:12px;padding:16px;margin-bottom:10px;">
+                    <div style="width:36px;height:36px;border-radius:8px;background:${d[3]},0.15);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#e2e8f0;flex-shrink:0;">${d[0]}</div>
+                    <div><p style="font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 4px;">${d[1]}</p><p style="font-size:12px;color:#94a3b8;margin:0;line-height:1.5;">${d[2]}</p></div>
+                  </div>`).join('')}
+</div>
+<div id="dbt-accepts-cont" style="display:none;">
+                  <p style="font-size:12px;color:#64748b;margin-bottom:14px;">ACCEPTS — habilidades de tolerância à crise:</p>
+                  ${[['A', 'Atividades', 'Faça algo absorvente: jogo, exercício, hobby. Ocupe a mente.'], ['C', 'Contribuição', 'Ajude alguém — isso desvia o foco de si mesmo.'], ['C', 'Comparações', 'Compare a situação atual com momentos que foram piores.'], ['E', 'Emoções Opostas', 'Assista a algo engraçado quando estiver triste; músicas calmas quando ansioso.'], ['P', 'Pensamentos Outros', 'Conte objetos ao redor, memorize uma poesia, faça cálculo mental.'], ['T', 'Sensações', 'Banho quente ou frio, aconchego, segure algo familiar.'], ['S', 'Substâncias (evite)', 'Evite álcool e substâncias como forma de lidar com a crise.']].map(d => `
+                  <div style="display:flex;gap:14px;background:#1a2332;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:8px;">
+                    <div style="width:30px;height:30px;border-radius:6px;background:rgba(96,165,250,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#60a5fa;flex-shrink:0;">${d[0]}</div>
+                    <div><p style="font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 4px;">${d[1]}</p><p style="font-size:12px;color:#94a3b8;margin:0;line-height:1.5;">${d[2]}</p></div>
+                  </div>`).join('')}
+</div>
+<div id="dbt-autocuidado-cont" style="display:none;">
+                  <p style="font-size:12px;color:#64748b;margin-bottom:14px;">Autocuidado sensorial — cuide de si com os 5 sentidos:</p>
+                  ${[['👁️', 'Visão', 'Observe algo belo: natureza, arte, fotos de momentos felizes.'], ['👂', 'Audição', 'Música que acalme, sons da natureza, silêncio deliberado.'], ['✋', 'Tato', 'Banho quente, cobertor macio, massagem nas mãos.'], ['👃', 'Olfato', 'Aromas que acalmem: lavanda, café, perfume favorito.'], ['👅', 'Paladar', 'Tome um chá devagar, prove algo que você gosta com atenção plena.']].map(d => `
+                  <div style="display:flex;gap:14px;background:#1a2332;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:8px;">
+                    <span style="font-size:22px;flex-shrink:0;">${d[0]}</span>
+                    <div><p style="font-size:13px;font-weight:600;color:#e2e8f0;margin:0 0 4px;">${d[1]}</p><p style="font-size:12px;color:#94a3b8;margin:0;line-height:1.5;">${d[2]}</p></div>
+                  </div>`).join('')}
+</div>
+<script>
+function trocarDbt(aba){
+                  ['tipp','accepts','autocuidado'].forEach(function(a){
+                    document.getElementById('dbt-'+a+'-cont').style.display='none';
+                    document.getElementById('dbt-'+a).style.background='transparent';
+                    document.getElementById('dbt-'+a).style.color='#64748b';
+                    document.getElementById('dbt-'+a).style.borderColor='rgba(96,165,250,0.1)';
+                  });
+                  document.getElementById('dbt-'+aba+'-cont').style.display='block';
+                  document.getElementById('dbt-'+aba).style.background='rgba(96,165,250,0.15)';
+                  document.getElementById('dbt-'+aba).style.color='#60a5fa';
+                  document.getElementById('dbt-'+aba).style.borderColor='rgba(96,165,250,0.35)';
+}
+<\/script>
+</div>`
+                        },
+
+                        'mapa-esquemas': {
+                            titulo: '🗺️ Mapa de Esquemas',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:640px;margin:0 auto;">
+<h2 style="color:#f87171;margin-bottom:8px;">🗺️ Mapa de Esquemas</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Clique nos esquemas para explorar. Baseado na Terapia do Esquema de Jeffrey Young.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">
+                  ${[
+                                    { nome: 'Abandono / Instabilidade', desc: 'Crença de que pessoas próximas vão embora ou são imprevisíveis. Cria medo constante de perda.', tag: '🚪', ori: 'Cuidadores ausentes ou imprevisíveis na infância' },
+                                    { nome: 'Desconfiança / Abuso', desc: 'Expectativa de que outros vão machucar, enganar ou humilhar. Dificuldade de confiar.', tag: '🔐', ori: 'Experiências de abuso, traição ou manipulação' },
+                                    { nome: 'Privação Emocional', desc: 'Crença de que nunca terá suas necessidades emocionais atendidas. Sente-se invisível.', tag: '🫙', ori: 'Pais frios, pouco afetivos ou sobrecarregados' },
+                                    { nome: 'Defeito / Vergonha', desc: 'Sentimento de ser fundamentalmente defeituoso, inferior ou indesejável.', tag: '🪞', ori: 'Críticas severas, humilhação, comparações' },
+                                    { nome: 'Fracasso', desc: 'Crença de que vai inevitavelmente fracassar — em trabalho, estudos, relações.', tag: '📉', ori: 'Alta exigência, comparação com irmãos, fracassos reforçados' },
+                                    { nome: 'Subjugação', desc: 'Sacrifica constantemente as próprias necessidades para agradar os outros.', tag: '🎭', ori: 'Pais controladores ou que punem autonomia' },
+                                    { nome: 'Padrões Rígidos', desc: 'Esforça-se obsessivamente para atingir padrões muito elevados. Perfeccionismo.', tag: '📐', ori: 'Pais exigentes ou críticos com erros' },
+                                    { nome: 'Grandiosidade', desc: 'Crença de merecer tratamento especial. Dificuldade de seguir regras comuns.', tag: '👑', ori: 'Falta de limites na infância, superindulgência' },
+                                ].map(e => `
+                  <div style="background:#1a2332;border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:14px;cursor:pointer;" onclick="this.querySelector('.esq-det').style.display=this.querySelector('.esq-det').style.display==='none'?'block':'none'">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                      <span style="font-size:18px;">${e.tag}</span>
+                      <span style="font-size:13px;font-weight:600;color:#e2e8f0;">${e.nome}</span>
+                    </div>
+                    <p style="font-size:11px;color:#94a3b8;margin:0;">${e.desc}</p>
+                    <div class="esq-det" style="display:none;margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
+                      <p style="font-size:11px;color:#64748b;"><strong style="color:#f87171;">Origem comum:</strong> ${e.ori}</p>
+                      <textarea placeholder="O que você percebe em si mesmo sobre isso?" style="width:100%;margin-top:8px;padding:8px;background:#0f1621;border:1px solid rgba(248,113,113,0.1);border-radius:6px;color:#e2e8f0;font-size:11px;resize:vertical;min-height:50px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                    </div>
+                  </div>`).join('')}
+</div>
+</div>`
+                        },
+
+                        'bussola-valores': {
+                            titulo: '🧲 Bússola de Valores',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:640px;margin:0 auto;">
+<h2 style="color:#34d399;margin-bottom:8px;">🧲 Bússola de Valores</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Para cada área da vida, avalie: importância (1–10) e como está vivendo alinhado(a) com isso (1–10).</p>
+<div style="display:grid;gap:12px;">
+                  ${['🤝 Relacionamentos', '👔 Trabalho / Carreira', '🏋️ Saúde e Corpo', '📚 Crescimento Pessoal', '👨‍👩‍👧 Família', '🎨 Lazer e Criatividade', '🧘 Espiritualidade', '🌍 Comunidade / Mundo'].map((area, i) => `
+                  <div style="background:#1a2332;border:1px solid rgba(52,211,153,0.15);border-radius:12px;padding:16px;">
+                    <p style="font-size:14px;font-weight:600;color:#e2e8f0;margin-bottom:12px;">${area}</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                      <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Importância</label>
+                        <input type="range" min="1" max="10" value="5" oninput="document.getElementById('bv-imp${i}').innerText=this.value" style="width:100%;accent-color:#34d399;cursor:pointer;">
+                        <div style="text-align:center;font-size:13px;font-weight:600;color:#34d399;" id="bv-imp${i}">5</div>
+                      </div>
+                      <div>
+                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Como estou vivendo</label>
+                        <input type="range" min="1" max="10" value="5" oninput="document.getElementById('bv-viv${i}').innerText=this.value" style="width:100%;accent-color:#60a5fa;cursor:pointer;">
+                        <div style="text-align:center;font-size:13px;font-weight:600;color:#60a5fa;" id="bv-viv${i}">5</div>
+                      </div>
+                    </div>
+                  </div>`).join('')}
+</div>
+<div style="margin-top:16px;background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:10px;padding:14px;">
+                  <p style="font-size:12px;color:#34d399;font-weight:600;margin-bottom:6px;">💡 Reflexão ACT:</p>
+                  <p style="font-size:12px;color:#64748b;line-height:1.6;">Observe as áreas onde a importância é alta mas o como estou vivendo é baixo. Esse é o "gap de valores" — onde mais há sofrimento e também mais oportunidade de crescimento.</p>
+</div>
+</div>`
+                        },
+
+                        'exposicao-imaginaria': {
+                            titulo: '🪜 Hierarquia de Exposição',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#fbbf24;margin-bottom:8px;">🪜 Hierarquia de Exposição</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Monte uma escada gradual de situações que provocam ansiedade (SUDS 0–100). Ordene do mais fácil ao mais difícil.</p>
+<div style="background:#1a2332;border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:16px;margin-bottom:14px;">
+                  <p style="font-size:12px;color:#64748b;margin-bottom:8px;">O medo/situação que quero trabalhar:</p>
+                  <input type="text" id="exp-contexto" placeholder="Ex: Falar em público" style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(251,191,36,0.2);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;font-family:'Roboto',sans-serif;margin-bottom:12px;">
+                  <p style="font-size:12px;color:#64748b;margin-bottom:8px;">Adicionar um degrau:</p>
+                  <div style="display:flex;gap:8px;">
+                    <input type="text" id="exp-situacao" placeholder="Situação..." style="flex:1;padding:9px;background:#0f1621;border:1px solid rgba(251,191,36,0.15);border-radius:8px;color:#e2e8f0;font-size:12px;outline:none;font-family:'Roboto',sans-serif;">
+                    <input type="number" id="exp-suds" placeholder="SUDS" min="0" max="100" style="width:70px;padding:9px;background:#0f1621;border:1px solid rgba(251,191,36,0.15);border-radius:8px;color:#e2e8f0;font-size:12px;outline:none;font-family:'Roboto',sans-serif;">
+                    <button onclick="adicionarDegrau()" style="padding:9px 14px;background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);border-radius:8px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;white-space:nowrap;">+ Add</button>
+                  </div>
+</div>
+<div id="exp-escada" style="display:grid;gap:8px;"></div>
+<script>
+var expDegraus=[];
+function adicionarDegrau(){
+                  var sit=document.getElementById('exp-situacao').value.trim();
+                  var suds=parseInt(document.getElementById('exp-suds').value)||50;
+                  if(!sit)return;
+                  expDegraus.push({sit,suds});
+                  expDegraus.sort((a,b)=>a.suds-b.suds);
+                  renderizarEscada();
+                  document.getElementById('exp-situacao').value='';
+                  document.getElementById('exp-suds').value='';
+}
+function renderizarEscada(){
+                  var el=document.getElementById('exp-escada');
+                  var total=expDegraus.length;
+                  el.innerHTML=expDegraus.slice().reverse().map((d,i)=>{
+                    var nivel=d.suds<=30?'rgba(52,211,153':d.suds<=60?'rgba(251,191,36':'rgba(248,113,113';
+                    var step=total-i;
+                    return '<div style="display:flex;align-items:center;gap:10px;background:#1a2332;border:1px solid '+nivel+',0.25);border-radius:10px;padding:12px 14px;"><div style="font-size:11px;font-weight:700;color:#e2e8f0;min-width:18px;">'+step+'</div><div style="flex:1;"><p style="font-size:12px;color:#e2e8f0;margin:0 0 2px;">'+d.sit+'</p><div style="height:4px;background:#0f1621;border-radius:2px;overflow:hidden;"><div style="height:100%;background:linear-gradient(90deg,'+nivel+',0.6),'+nivel+',0.9));width:'+d.suds+'%;border-radius:2px;"></div></div></div><div style="font-size:13px;font-weight:700;color:#e2e8f0;min-width:32px;text-align:right;">'+d.suds+'</div></div>';
+                  }).join('');
+}
+<\/script>
+</div>`
+                        },
+
+                        // ===== ALIMENTAÇÃO ADULTOS =====
+                        'mindful-eating-adulto': {
+                            titulo: '🍃 Comer com Atenção',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:560px;margin:0 auto;">
+<h2 style="color:#34d399;margin-bottom:8px;">🍃 Comer com Atenção</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Guia passo a passo de uma refeição consciente. Pegue seu alimento.</p>
+<div style="display:grid;gap:12px;" id="me-passos">
+                  ${[
+                                    { emoji: '🛑', titulo: 'Pause antes', desc: 'Antes de comer, faça uma pausa de 30 segundos. Observe o alimento. Sinta o cheiro. Qual é sua fome agora (1-10)?', timer: 30 },
+                                    { emoji: '👁️', titulo: 'Observe', desc: 'Observe as cores, formas e textura. Que pensamentos aparecem ao ver a comida?', timer: 0 },
+                                    { emoji: '👃', titulo: 'Cheire', desc: 'Feche os olhos e cheire o alimento por alguns segundos. Que memórias ou sensações surgem?', timer: 10 },
+                                    { emoji: '😋', titulo: 'Primeira mordida', desc: 'Dê uma mordida pequena. Mastigue devagar, 15-20 vezes. Que sabores você percebe?', timer: 0 },
+                                    { emoji: '⏸️', titulo: 'Pausa no meio', desc: 'Na metade da refeição, pare por 1 minuto. Sua fome mudou? Como está seu nível de saciedade (1-10)?', timer: 60 },
+                                    { emoji: '🏁', titulo: 'Finalize conscientemente', desc: 'Ao terminar, sente-se por 1 minuto. Como está se sentindo? Satisfeito, cheio, ainda com fome?', timer: 60 },
+                                ].map((p, i) => `
+                  <div style="background:#1a2332;border:1px solid rgba(52,211,153,0.15);border-radius:12px;padding:16px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                      <span style="font-size:20px;">${p.emoji}</span>
+                      <span style="font-size:13px;font-weight:600;color:#e2e8f0;">Passo ${i + 1}: ${p.titulo}</span>
+                    </div>
+                    <p style="font-size:12px;color:#94a3b8;margin-bottom:${p.timer ? '10px' : '0'};">${p.desc}</p>
+                    ${p.timer ? `<button onclick="iniciarTimerME(this,${p.timer})" style="padding:6px 14px;background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:6px;cursor:pointer;font-size:11px;font-family:'Roboto',sans-serif;">⏱ ${p.timer}s</button>` : ''}
+                  </div>`).join('')}
+</div>
+<script>
+function iniciarTimerME(btn,seg){
+                  var n=seg;
+                  btn.disabled=true;
+                  var inter=setInterval(function(){n--;btn.innerText='⏱ '+n+'s';if(n<=0){clearInterval(inter);btn.innerText='✅ Concluído';btn.style.background='rgba(52,211,153,0.2)';}},1000);
+}
+<\/script>
+</div>`
+                        },
+
+                        'fome-saciedade-adulto': {
+                            titulo: '📏 Escala Fome–Saciedade',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:520px;margin:0 auto;text-align:center;">
+<h2 style="color:#60a5fa;margin-bottom:8px;">📏 Escala Fome–Saciedade</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:24px;">Use esta escala antes e depois de comer para reconectar com seus sinais corporais.</p>
+<div style="background:#1a2332;border:1px solid rgba(96,165,250,0.2);border-radius:16px;padding:24px;margin-bottom:16px;">
+                  <div style="font-size:40px;margin-bottom:8px;" id="fsa-emoji">😐</div>
+                  <div id="fsa-label" style="font-size:16px;font-weight:600;color:#60a5fa;margin-bottom:4px;">Neutro</div>
+                  <div id="fsa-num" style="font-size:28px;font-weight:700;color:#e2e8f0;margin-bottom:16px;">5</div>
+                  <input type="range" min="1" max="10" value="5" oninput="atualizarFSA(this.value)" style="width:100%;accent-color:#3b82f6;cursor:pointer;">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-top:6px;"><span>1 — Faminto</span><span>10 — Estufado</span></div>
+</div>
+<div id="fsa-dica" style="background:#1a2332;border:1px solid rgba(96,165,250,0.15);border-radius:12px;padding:14px;font-size:13px;color:#94a3b8;line-height:1.6;text-align:left;margin-bottom:14px;"></div>
+<div style="background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.15);border-radius:10px;padding:12px;font-size:12px;color:#64748b;text-align:left;line-height:1.6;">
+                  💡 <strong style="color:#60a5fa;">Zona ideal:</strong> Comece a comer entre 3–4 e pare entre 6–7. Comer nessa faixa respeita os sinais do corpo.
+</div>
+<script>
+var fsaDados={
+                  1:{e:'😵',l:'Fome extrema',d:'Fome muito intensa — você pode estar hipoglicêmico. Coma algo logo, mas com atenção.'},
+                  2:{e:'😩',l:'Muita fome',d:'Fome forte. Bom momento para começar a comer. Tente fazer isso devagar.'},
+                  3:{e:'😟',l:'Com fome',d:'Hora de comer. Este é um ótimo nível para iniciar a refeição.'},
+                  4:{e:'🙁',l:'Leve fome',d:'Fome leve. Se ainda falta tempo para a refeição, um lanche leve pode ajudar.'},
+                  5:{e:'😐',l:'Neutro',d:'Sem fome nem saciedade. Preste atenção: você realmente precisa comer agora?'},
+                  6:{e:'🙂',l:'Levemente satisfeito',d:'Você começou a ficar satisfeito. Continue comendo devagar.'},
+                  7:{e:'😌',l:'Satisfeito',d:'Zona ideal para parar! Seu corpo está confortável e nutrido.'},
+                  8:{e:'😊',l:'Muito satisfeito',d:'Um pouco além do ideal — tudo bem. Na próxima, tente parar antes.'},
+                  9:{e:'😅',l:'Cheio demais',d:'Desconforto leve. Respire fundo. O que te levou a comer além do necessário?'},
+                  10:{e:'🤢',l:'Estufado',d:'Desconforto significativo. Sem julgamento — o que estava acontecendo emocionalmente?'}
+};
+function atualizarFSA(v){
+                  var d=fsaDados[v];
+                  document.getElementById('fsa-emoji').innerText=d.e;
+                  document.getElementById('fsa-label').innerText=d.l;
+                  document.getElementById('fsa-num').innerText=v;
+                  document.getElementById('fsa-dica').innerText=d.d;
+}
+atualizarFSA(5);
+<\/script>
+</div>`
+                        },
+
+                        'gatilhos-alimentares': {
+                            titulo: '🔥 Gatilhos Alimentares',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:640px;margin:0 auto;">
+<h2 style="color:#f87171;margin-bottom:8px;">🔥 Gatilhos Alimentares</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Mapa de análise funcional do comportamento alimentar — sem julgamento, com curiosidade.</p>
+<div style="display:grid;gap:12px;">
+                  ${[
+                                    { emoji: '💭', titulo: 'Emocional', descPlaceholder: 'Que emoção estava presente? (ansiedade, tédio, tristeza, estresse...)', cor: 'rgba(248,113,113' },
+                                    { emoji: '🌍', titulo: 'Situacional', descPlaceholder: 'Onde estava? Com quem? O que estava fazendo? (reunião, TV, sozinho...)', cor: 'rgba(251,191,36' },
+                                    { emoji: '🧠', titulo: 'Cognitivo', descPlaceholder: 'Que pensamento veio antes? ("Mereço isso", "Tanto faz", "Já errei o dia"...)', cor: 'rgba(139,92,246' },
+                                    { emoji: '🏃', titulo: 'Físico / Biológico', descPlaceholder: 'Estava cansado, com privação de sono, PMS, doença?', cor: 'rgba(96,165,250' },
+                                    { emoji: '🎯', titulo: 'O que eu buscava', descPlaceholder: 'Conforto, prazer, distração, punição, controle...?', cor: 'rgba(52,211,153' },
+                                    { emoji: '💡', titulo: 'Possíveis alternativas', descPlaceholder: 'O que poderia ter ajudado da mesma forma, sem ser a comida?', cor: 'rgba(52,211,153' },
+                                ].map(c => `
+                  <div style="background:#1a2332;border:1px solid ${c.cor},0.2);border-radius:12px;padding:16px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                      <span style="font-size:18px;">${c.emoji}</span>
+                      <span style="font-size:13px;font-weight:600;color:#e2e8f0;">${c.titulo}</span>
+                    </div>
+                    <textarea placeholder="${c.descPlaceholder}" style="width:100%;padding:8px;background:#0f1621;border:1px solid ${c.cor},0.12);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:60px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>`).join('')}
+</div>
+<div style="margin-top:14px;background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.15);border-radius:10px;padding:14px;font-size:12px;color:#64748b;line-height:1.6;">
+                  💜 Este mapa não é para criar culpa — é para criar compreensão. Cada episódio é uma mensagem do seu sistema emocional.
+</div>
+</div>`
+                        },
+
+                        'prato-valores': {
+                            titulo: '💚 O Prato e os Valores',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#a78bfa;margin-bottom:8px;">💚 O Prato e os Valores</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Abordagem ACT para alimentação: conecte suas escolhas ao que realmente importa para você.</p>
+<div style="display:grid;gap:14px;">
+                  <div style="background:#1a2332;border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:16px;">
+                    <p style="font-size:13px;color:#a78bfa;font-weight:600;margin-bottom:10px;">1. O que importa para você em relação à sua saúde e corpo?</p>
+                    <p style="font-size:11px;color:#64748b;margin-bottom:8px;line-height:1.6;">Não "o que você deveria valorizar" — mas o que genuinamente importa para você? (energia, longevidade, prazer, cuidado, saúde mental...)</p>
+                    <textarea placeholder="Escreva seus valores relacionados à saúde..." style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(139,92,246,0.15);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:70px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+                  <div style="background:#1a2332;border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:16px;">
+                    <p style="font-size:13px;color:#34d399;font-weight:600;margin-bottom:10px;">2. Como suas escolhas alimentares recentes refletem esses valores?</p>
+                    <div style="display:flex;gap:10px;margin-bottom:10px;">
+                      <div style="flex:1;background:#0f1621;border:1px solid rgba(52,211,153,0.15);border-radius:8px;padding:10px;">
+                        <p style="font-size:11px;color:#34d399;margin-bottom:6px;">✅ Alinhadas com meus valores:</p>
+                        <textarea placeholder="Ex: Comer devagar, beber água..." style="width:100%;background:transparent;border:none;color:#e2e8f0;font-size:12px;resize:none;min-height:60px;outline:none;font-family:'Roboto',sans-serif;box-sizing:border-box;"></textarea>
+                      </div>
+                      <div style="flex:1;background:#0f1621;border:1px solid rgba(248,113,113,0.15);border-radius:8px;padding:10px;">
+                        <p style="font-size:11px;color:#f87171;margin-bottom:6px;">↔️ Não tão alinhadas:</p>
+                        <textarea placeholder="Ex: Comer às pressas, pular refeições..." style="width:100%;background:transparent;border:none;color:#e2e8f0;font-size:12px;resize:none;min-height:60px;outline:none;font-family:'Roboto',sans-serif;box-sizing:border-box;"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="background:#1a2332;border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:16px;">
+                    <p style="font-size:13px;color:#fbbf24;font-weight:600;margin-bottom:10px;">3. Uma pequena ação alinhada aos seus valores que você pode fazer amanhã:</p>
+                    <textarea placeholder="Ex: Fazer uma refeição sentado, sem celular, mastigando devagar..." style="width:100%;padding:10px;background:#0f1621;border:1px solid rgba(251,191,36,0.15);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:60px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>
+</div>
+<div style="margin-top:14px;background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:10px;padding:12px;font-size:12px;color:#64748b;line-height:1.6;">
+                  💜 Na ACT, não existe alimentação "perfeita" — existe alimentação <em>comprometida com seus valores</em>. E isso inclui prazer, flexibilidade e auto-compaixão.
+</div>
+</div>`
+                        },
+
+                        'diario-comer': {
+                            titulo: '📓 Diário do Comer',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:580px;margin:0 auto;">
+<h2 style="color:#fbbf24;margin-bottom:8px;">📓 Diário do Comer</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">Registro de um episódio alimentar para análise funcional — sem julgamento.</p>
+<div style="display:grid;gap:12px;">
+                  ${[
+                                    { label: 'O que comi:', placeholder: 'Descreva o alimento/refeição' },
+                                    { label: 'Horário e local:', placeholder: 'Ex: 22h, sozinho no quarto' },
+                                    { label: 'Fome antes de comer (1-10):', placeholder: '1 = sem fome, 10 = fome extrema' },
+                                    { label: 'O que estava fazendo antes:', placeholder: 'Ex: Trabalhando, assistindo série, discutindo...' },
+                                    { label: 'O que estava sentindo:', placeholder: 'Emoções, tensão corporal, cansaço...' },
+                                    { label: 'O que buscava na comida:', placeholder: 'Conforto, prazer, distração, recompensa...' },
+                                    { label: 'Como me senti depois:', placeholder: 'Satisfeito, culpado, aliviado, indiferente...' },
+                                    { label: 'O que eu percebo sobre isso:', placeholder: 'Algum padrão? O que aprendeu sobre si mesmo?' },
+                                ].map(f => `
+                  <div style="background:#1a2332;border:1px solid rgba(251,191,36,0.12);border-radius:12px;padding:14px;">
+                    <label style="font-size:12px;color:#fbbf24;display:block;margin-bottom:6px;">${f.label}</label>
+                    <textarea placeholder="${f.placeholder}" style="width:100%;padding:8px;background:#0f1621;border:1px solid rgba(251,191,36,0.1);border-radius:8px;color:#e2e8f0;font-size:12px;resize:vertical;min-height:50px;box-sizing:border-box;font-family:'Roboto',sans-serif;"></textarea>
+                  </div>`).join('')}
+</div>
+<div style="margin-top:14px;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;font-size:12px;color:#64748b;line-height:1.6;">
+                  💛 O diário não é uma lista de confissões — é uma ferramenta de autoconsciência. Cada registro revela um padrão que pode ser compreendido e acolhido.
+</div>
+</div>`
+                        },
+
+                        'mastigacao-adulto': {
+                            titulo: '🦷 Mastigação 20×',
+                            html: `<div style="min-height:100vh;background:#0a0f1a;color:#e2e8f0;font-family:'Roboto',sans-serif;padding:24px;max-width:480px;margin:0 auto;text-align:center;">
+<h2 style="color:#34d399;margin-bottom:8px;">🦷 Mastigação 20×</h2>
+<p style="color:#64748b;font-size:13px;margin-bottom:20px;">A digestão começa na boca. Mastigar 20 vezes cada mordida melhora a absorção e a saciedade.</p>
+<div style="background:#1a2332;border:1px solid rgba(52,211,153,0.2);border-radius:16px;padding:20px;margin-bottom:16px;font-size:13px;color:#94a3b8;line-height:1.7;text-align:left;">
+                  <p style="color:#34d399;font-weight:600;margin-bottom:8px;">Por que mastigar mais?</p>
+                  <p>• A amilase salivar inicia a digestão do amido na boca<br>• Mastigar despacio ativa hormônios de saciedade (leptina, GLP-1) com 20 min de atraso<br>• Reduz o volume ingerido em até 15% sem esforço<br>• Aumenta a absorção de nutrientes no intestino</p>
+</div>
+<div style="background:#1a2332;border:2px solid rgba(52,211,153,0.3);border-radius:20px;padding:24px;margin-bottom:16px;">
+                  <div id="ma-count" style="font-size:80px;font-weight:700;color:#34d399;line-height:1;">0</div>
+                  <div style="font-size:13px;color:#64748b;margin:6px 0 20px;">de 20 mastigadas</div>
+                  <button onclick="mastigarAdulto()" id="ma-btn" style="width:130px;height:130px;border-radius:50%;background:rgba(52,211,153,0.12);border:3px solid rgba(52,211,153,0.35);color:#34d399;font-size:36px;cursor:pointer;transition:.15s;font-family:'Roboto',sans-serif;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">🦷</button>
+                  <div id="ma-dica" style="margin-top:14px;font-size:12px;color:#94a3b8;min-height:36px;line-height:1.6;"></div>
+                  <div style="margin-top:12px;height:6px;background:#0f1621;border-radius:4px;overflow:hidden;">
+                    <div id="ma-barra" style="height:100%;background:linear-gradient(90deg,#34d399,#059669);border-radius:4px;transition:.3s;width:0%;"></div>
+                  </div>
+</div>
+<button onclick="resetMA()" style="padding:8px 18px;background:transparent;color:#64748b;border:1px solid rgba(100,116,139,0.2);border-radius:8px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">Reiniciar</button>
+<script>
+var maN=0;
+var maDicas={5:'Que sabores você está percebendo?',10:'A textura está mudando? O alimento está se dissolvendo?',15:'Já está sentindo algum sinal de saciedade?',20:'🎉 Perfeito! 20 mastigadas. Faça isso com cada mordida!'};
+function mastigarAdulto(){
+                  if(maN>=20)return;
+                  maN++;
+                  document.getElementById('ma-count').innerText=maN;
+                  document.getElementById('ma-barra').style.width=(maN/20*100)+'%';
+                  if(maDicas[maN])document.getElementById('ma-dica').innerText=maDicas[maN];
+                  if(maN===20){var btn=document.getElementById('ma-btn');btn.style.background='rgba(52,211,153,0.25)';btn.style.borderColor='rgba(52,211,153,0.6)';}
+}
+function resetMA(){maN=0;document.getElementById('ma-count').innerText=0;document.getElementById('ma-dica').innerText='';document.getElementById('ma-barra').style.width='0%';var btn=document.getElementById('ma-btn');btn.style.background='rgba(52,211,153,0.12)';btn.style.borderColor='rgba(52,211,153,0.35)';}
+<\/script>
+</div>`
+                        },
+                    };
+
+                    function abrirJogoInterno(id) {
+                        var jogo = jogosInternos[id];
+                        if (!jogo) return;
+                        document.getElementById('jogo-interno-titulo').innerText = jogo.titulo;
+                        document.getElementById('jogo-interno-container').innerHTML = jogo.html;
+                        // Re-executar scripts embutidos
+                        var scripts = document.getElementById('jogo-interno-container').querySelectorAll('script');
+                        scripts.forEach(function (sc) {
+                            var novo = document.createElement('script');
+                            novo.textContent = sc.textContent;
+                            sc.parentNode.replaceChild(novo, sc);
+                        });
+                        var modal = document.getElementById('jogo-interno-modal');
+                        modal.style.display = 'flex';
+                    }
+
+                    function fecharJogoInterno() {
+                        document.getElementById('jogo-interno-modal').style.display = 'none';
+                        document.getElementById('jogo-interno-container').innerHTML = '';
+                    }
+                </script>
 
             </section>
 
@@ -2703,6 +3970,7 @@
                     </button>
                 </div>
             </div>
-
+        </div>
+    </div>
 </body>
 </html>
