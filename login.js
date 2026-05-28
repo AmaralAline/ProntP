@@ -65,14 +65,17 @@ async function realizarLogin(email, senha) {
                             localStorage.setItem('token_clinica', resultado.token);
                             localStorage.setItem('profissional_clinica', JSON.stringify(resultado.profissional));
 
-                            if (clinica.papel === 'secretaria') {
+                            if (clinica.papel === 'admin_clinica') {
+                                window.location.href = 'PainelClinica.html';
+                                return;
+                            } else if (clinica.papel === 'secretaria') {
                                 window.location.href = 'PainelSecretaria.html';
                                 return;
                             } else if (clinica.papel === 'profissional') {
                                 window.location.href = 'PainelProfissionalClinica.html';
                                 return;
                             }
-                            // admin_clinica e super-admin seguem para o PainelExclusivo
+                            // super-admin segue para o PainelExclusivo
                         }
                     }
                 } catch (_) { /* sem clínica vinculada — painel normal */ }
