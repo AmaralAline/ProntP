@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntPsi — Profissional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', sans-serif; background: #0a0f1a; color: #e2e8f0; min-height: 100vh; display: flex; }
+        .container { display: flex; width: 100%; min-height: 100vh; }
+        .sidebar {
+            width: 240px; min-width: 240px; background: #0d1424;
+            border-right: 1px solid rgba(52,211,153,0.15);
+            display: flex; flex-direction: column; padding: 0 0 16px;
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+            overflow-y: auto; scrollbar-width: thin;
+            scrollbar-color: rgba(52,211,153,0.3) transparent;
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(52,211,153,0.3); border-radius: 4px; }
+        .sidebar-logo { padding: 24px 20px 16px; border-bottom: 1px solid rgba(52,211,153,0.12); margin-bottom: 8px; }
+        .sidebar-logo h2 { font-size: 20px; font-weight: 700; color: #34d399; letter-spacing: -0.5px; }
+        .sidebar-logo span { font-size: 11px; color: #475569; letter-spacing: 1px; text-transform: uppercase; }
+        .clinica-badge { margin: 0 12px 8px; background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.18); border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #34d399; }
+        .clinica-badge span { display: block; font-size: 10px; color: #475569; margin-bottom: 2px; }
+        .sidebar ul { list-style: none; padding: 0 8px; flex: 1; }
+        .sidebar ul li button {
+            width: 100%; background: transparent; border: none; color: #94a3b8;
+            font-family: 'Roboto', sans-serif; font-size: 13.5px; padding: 9px 12px;
+            border-radius: 8px; cursor: pointer; display: flex; align-items: center;
+            gap: 10px; text-align: left; transition: all 0.18s;
+        }
+        .sidebar ul li button:hover { background: rgba(52,211,153,0.07); color: #6ee7b7; }
+        .sidebar ul li button.active { background: rgba(52,211,153,0.13); color: #34d399; font-weight: 500; }
+        .sidebar ul li button i { width: 16px; text-align: center; font-size: 14px; }
+        .menu-group-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #475569; font-weight: 600; padding: 12px 10px 4px; list-style: none; }
+        .sidebar-footer { padding: 12px; border-top: 1px solid rgba(52,211,153,0.1); margin-top: 8px; }
+        .btn-sair { width: 100%; background: transparent; border: 1px solid rgba(100,116,139,0.2); color: #64748b; font-family: 'Roboto', sans-serif; font-size: 13px; padding: 8px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s; }
+        .btn-sair:hover { color: #f87171; border-color: rgba(248,113,113,0.3); }
+        .main-content { margin-left: 240px; flex: 1; padding: 32px; min-height: 100vh; }
+        .section { display: none; }
+        .section.active-section { display: block; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+        .section-header h2 { font-size: 22px; font-weight: 700; color: #f1f5f9; }
+        .section-header p { font-size: 13px; color: #64748b; margin-top: 2px; }
+        .table-card { background: #111827; border: 1px solid rgba(52,211,153,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+        .table-card-header { padding: 16px 20px; border-bottom: 1px solid rgba(52,211,153,0.06); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        .table-card-header h3 { font-size: 15px; font-weight: 600; color: #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #475569; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid rgba(52,211,153,0.05); }
+        td { padding: 12px 16px; font-size: 13.5px; color: #cbd5e1; border-bottom: 1px solid rgba(52,211,153,0.04); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(52,211,153,0.03); }
+        .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; }
+        .badge-agendado { background: rgba(52,211,153,0.12); color: #34d399; }
+        .badge-confirmado { background: rgba(96,165,250,0.12); color: #60a5fa; }
+        .badge-realizado { background: rgba(139,92,246,0.15); color: #a78bfa; }
+        .badge-cancelado { background: rgba(248,113,113,0.15); color: #f87171; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.18s; }
+        .btn-primary { background: #059669; color: #fff; }
+        .btn-primary:hover { background: #047857; }
+        .btn-outline { background: transparent; border: 1px solid rgba(52,211,153,0.3); color: #34d399; }
+        .btn-outline:hover { background: rgba(52,211,153,0.07); }
+        .btn-purple { background: transparent; border: 1px solid rgba(139,92,246,0.3); color: #a78bfa; }
+        .btn-purple:hover { background: rgba(139,92,246,0.08); }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 6px; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; background: #0a0f1a; border: 1px solid rgba(52,211,153,0.18);
+            border-radius: 8px; color: #e2e8f0; font-family: 'Roboto', sans-serif;
+            font-size: 14px; padding: 10px 14px; outline: none; transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #34d399; }
+        .form-group select option { background: #111827; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 500; align-items: center; justify-content: center; padding: 16px; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #111827; border: 1px solid rgba(52,211,153,0.18); border-radius: 14px; padding: 28px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
+        .modal h3 { font-size: 17px; font-weight: 700; color: #f1f5f9; margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+        .evolucao-card { background: #0d1424; border: 1px solid rgba(52,211,153,0.08); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .evolucao-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
+        .evolucao-card-header strong { font-size: 13px; color: #34d399; }
+        .evolucao-card-header span { font-size: 11px; color: #475569; }
+        .evolucao-card p { font-size: 13.5px; color: #cbd5e1; line-height: 1.65; white-space: pre-wrap; }
+        .status-btn { padding: 6px 14px; border-radius: 20px; border: none; cursor: pointer; font-size: 12px; font-family: 'Roboto', sans-serif; font-weight: 600; transition: all 0.2s; }
+        .status-iniciado { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+        .status-nao-iniciado { background: rgba(100,116,139,0.15); color: #64748b; border: 1px solid rgba(100,116,139,0.2); }
+        .empty-state { text-align: center; padding: 40px 20px; color: #475569; }
+        .empty-state i { font-size: 36px; margin-bottom: 12px; display: block; }
+        #toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; border: 1px solid rgba(52,211,153,0.3); color: #e2e8f0; padding: 12px 20px; border-radius: 10px; font-size: 14px; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; }
+        #toast.show { opacity: 1; transform: translateY(0); }
+        #toast.erro { border-color: rgba(248,113,113,0.4); color: #f87171; }
+        .hamburger { display: none; position: fixed; top: 14px; left: 14px; z-index: 200; background: #111827; border: 1px solid rgba(52,211,153,0.2); color: #34d399; border-radius: 8px; padding: 8px 11px; cursor: pointer; font-size: 18px; }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.open { display: block; }
+            .main-content { margin-left: 0; padding: 20px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <h2>ProntPsi</h2>
+            <span>Profissional</span>
+        </div>
+        <div class="clinica-badge">
+            <span>Clínica</span>
+            <strong id="nome-clinica-badge">—</strong>
+        </div>
+        <ul>
+            <li><button id="btn-agenda" class="active" onclick="mostrarSecao('agenda')"><i class="fas fa-calendar-alt"></i> Minha Agenda</button></li>
+            <li class="menu-group-label">Clínico</li>
+            <li><button id="btn-prontuario" onclick="mostrarSecao('prontuario')"><i class="fas fa-notes-medical"></i> Prontuário</button></li>
+            <li class="menu-group-label">Ferramentas</li>
+            <li><button id="btn-ferramentas" onclick="mostrarSecao('ferramentas')"><i class="fas fa-toolbox"></i> Ferramentas</button></li>
+            <li><button id="btn-recibos" onclick="mostrarSecao('recibos')"><i class="fas fa-receipt"></i> Recibos</button></li>
+        </ul>
+        <div class="sidebar-footer">
+            <div style="font-size:12px;color:#475569;margin-bottom:10px;padding:0 4px;">
+                <i class="fas fa-user-md" style="color:#34d399;margin-right:6px;"></i>
+                <span id="nome-prof-sidebar">Profissional</span>
+            </div>
+            <button class="btn-sair" onclick="sair()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+        </div>
+    </nav>
+    <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <main class="main-content">
+
+        <!-- AGENDA -->
+        <section id="sec-agenda" class="section active-section">
+            <div class="section-header">
+                <div><h2>Minha Agenda</h2><p id="saudacao-prof">Bem-vindo!</p></div>
+            </div>
+            <!-- Filtro de data -->
+            <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+                <div class="form-group" style="margin:0;flex:1;min-width:140px;"><label>Data início</label><input type="date" id="agenda-inicio" onchange="carregarAgenda()"></div>
+                <div class="form-group" style="margin:0;flex:1;min-width:140px;"><label>Data fim</label><input type="date" id="agenda-fim" onchange="carregarAgenda()"></div>
+            </div>
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3><i class="fas fa-calendar-alt" style="color:#34d399;margin-right:8px;"></i>Agendamentos</h3>
+                </div>
+                <table>
+                    <thead><tr><th>Data / Hora</th><th>Paciente</th><th>Tipo</th><th>Status</th><th>Chamada</th><th>Prontuário</th></tr></thead>
+                    <tbody id="tbody-agenda"><tr><td colspan="6"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div></td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PRONTUÁRIO -->
+        <section id="sec-prontuario" class="section">
+            <div class="section-header">
+                <div><h2>Prontuário</h2><p>Meus pacientes e suas evoluções</p></div>
+            </div>
+            <!-- Busca -->
+            <div style="margin-bottom:16px;">
+                <input type="text" id="busca-pac-pront" placeholder="Buscar paciente..." oninput="filtrarPacientesPront()"
+                    style="width:100%;max-width:400px;background:#111827;border:1px solid rgba(52,211,153,0.18);border-radius:8px;color:#e2e8f0;font-family:Roboto,sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+            </div>
+
+            <!-- Lista de pacientes -->
+            <div id="painel-pacientes-pront">
+                <div class="table-card">
+                    <table>
+                        <thead><tr><th>Paciente</th><th>Contato</th><th>Ações</th></tr></thead>
+                        <tbody id="tbody-pront-pacientes"><tr><td colspan="3"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div></td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Painel de evolução de um paciente -->
+            <div id="painel-evolucao" style="display:none;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                    <button class="btn btn-outline btn-sm" onclick="voltarParaPacientes()"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    <h3 id="titulo-evolucao-pac" style="font-size:16px;color:#f1f5f9;"></h3>
+                    <button class="btn btn-primary btn-sm" onclick="abrirModalEvolucao()"><i class="fas fa-plus"></i> Nova evolução</button>
+                </div>
+                <div id="lista-evolucoes-pac"></div>
+            </div>
+        </section>
+
+        <!-- FERRAMENTAS -->
+        <section id="sec-ferramentas" class="section">
+            <div class="section-header">
+                <div><h2>Ferramentas Terapêuticas</h2><p>Recursos para uso em atendimento online</p></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
+                <a href="https://prontpsi.com.br/PainelExclusivo.html#recursos-terapeuticos-section" target="_blank"
+                   style="background:#111827;border:1px solid rgba(52,211,153,0.1);border-radius:12px;padding:24px;text-decoration:none;display:flex;flex-direction:column;gap:10px;transition:border-color 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(52,211,153,0.35)'" onmouseout="this.style.borderColor='rgba(52,211,153,0.1)'">
+                    <i class="fas fa-gamepad" style="font-size:28px;color:#34d399;"></i>
+                    <strong style="color:#f1f5f9;font-size:14px;">Atend. Online</strong>
+                    <span style="color:#64748b;font-size:12px;">Jogos e atividades interativas para sessões online</span>
+                </a>
+                <a href="https://prontpsi.com.br/PainelExclusivo.html#form-section" target="_blank"
+                   style="background:#111827;border:1px solid rgba(139,92,246,0.1);border-radius:12px;padding:24px;text-decoration:none;display:flex;flex-direction:column;gap:10px;transition:border-color 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(139,92,246,0.35)'" onmouseout="this.style.borderColor='rgba(139,92,246,0.1)'">
+                    <i class="fas fa-paper-plane" style="font-size:28px;color:#a78bfa;"></i>
+                    <strong style="color:#f1f5f9;font-size:14px;">Formulários</strong>
+                    <span style="color:#64748b;font-size:12px;">Envie questionários e escalas aos pacientes</span>
+                </a>
+                <a href="https://prontpsi.com.br/PainelExclusivo.html#termos-section" target="_blank"
+                   style="background:#111827;border:1px solid rgba(251,191,36,0.1);border-radius:12px;padding:24px;text-decoration:none;display:flex;flex-direction:column;gap:10px;transition:border-color 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(251,191,36,0.35)'" onmouseout="this.style.borderColor='rgba(251,191,36,0.1)'">
+                    <i class="fas fa-file-signature" style="font-size:28px;color:#fbbf24;"></i>
+                    <strong style="color:#f1f5f9;font-size:14px;">Termos</strong>
+                    <span style="color:#64748b;font-size:12px;">Termos de consentimento e documentos</span>
+                </a>
+                <a href="https://cav.receita.fazenda.gov.br/autenticacao/login" target="_blank"
+                   style="background:#111827;border:1px solid rgba(52,211,153,0.1);border-radius:12px;padding:24px;text-decoration:none;display:flex;flex-direction:column;gap:10px;transition:border-color 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(52,211,153,0.35)'" onmouseout="this.style.borderColor='rgba(52,211,153,0.1)'">
+                    <i class="fas fa-file-medical" style="font-size:28px;color:#34d399;"></i>
+                    <strong style="color:#f1f5f9;font-size:14px;">Receita Saúde</strong>
+                    <span style="color:#64748b;font-size:12px;">Emissão de notas via Receita Federal</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- RECIBOS -->
+        <section id="sec-recibos" class="section">
+            <div class="section-header">
+                <div><h2>Recibos</h2><p>Gere recibos para seus pacientes</p></div>
+            </div>
+            <div style="background:#111827;border:1px solid rgba(52,211,153,0.08);border-radius:12px;padding:24px;">
+                <p style="font-size:13px;color:#94a3b8;margin-bottom:16px;">Selecione o paciente para gerar o recibo da sessão.</p>
+                <div class="form-group"><label>Paciente</label>
+                    <select id="recibo-paciente-sel">
+                        <option value="">Selecione...</option>
+                    </select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group"><label>Data da sessão</label><input type="date" id="recibo-data"></div>
+                    <div class="form-group"><label>Valor (R$)</label><input type="number" id="recibo-valor" placeholder="0,00" step="0.01"></div>
+                </div>
+                <div class="form-group"><label>Descrição do serviço</label>
+                    <input type="text" id="recibo-descricao" placeholder="Ex: Consulta de psicoterapia individual">
+                </div>
+                <button class="btn btn-primary" onclick="gerarRecibo()"><i class="fas fa-file-pdf"></i> Gerar recibo</button>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Modal: Nova evolução -->
+<div class="modal-overlay" id="modal-evolucao">
+    <div class="modal">
+        <h3><i class="fas fa-notes-medical" style="color:#34d399;margin-right:8px;"></i>Nova evolução</h3>
+        <input type="hidden" id="ev-paciente-id">
+        <div class="form-group"><label>Data e hora da sessão</label><input type="datetime-local" id="ev-data-hora"></div>
+        <div class="form-group"><label>Evolução / Registro clínico *</label><textarea id="ev-texto" placeholder="Descreva a sessão..." rows="6"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group"><label>CID-10 (opcional)</label><input type="text" id="ev-cid" placeholder="Ex: F41.1"></div>
+            <div class="form-group"><label>Duração (min)</label><input type="number" id="ev-duracao" value="50"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="fecharModal('modal-evolucao')">Cancelar</button>
+            <button class="btn btn-primary" onclick="salvarEvolucao()"><i class="fas fa-save"></i> Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = 'https://prontpsiback-production.up.railway.app';
+let TOKEN     = localStorage.getItem('token');
+let CLINICA_ID = localStorage.getItem('clinica_id');
+let profAtual  = JSON.parse(localStorage.getItem('profissional') || '{}');
+let meusPacientes = [];
+let pacienteAtual = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!TOKEN) return location.href = 'login.html';
+
+    document.getElementById('nome-prof-sidebar').textContent = profAtual.nome || 'Profissional';
+    document.getElementById('saudacao-prof').textContent     = `Olá, ${profAtual.nome || 'Profissional'}!`;
+
+    if (!CLINICA_ID) {
+        const r = await apiFetch('/api/minhas-clinicas').catch(() => []);
+        if (r.length) { CLINICA_ID = r[0].id; localStorage.setItem('clinica_id', CLINICA_ID); }
+    }
+
+    const clinica = await apiFetch(`/api/clinicas/${CLINICA_ID}`).catch(() => null);
+    if (clinica) document.getElementById('nome-clinica-badge').textContent = clinica.nome;
+
+    const hoje = new Date();
+    const fim7 = new Date(); fim7.setDate(hoje.getDate() + 7);
+    document.getElementById('agenda-inicio').value = hoje.toISOString().split('T')[0];
+    document.getElementById('agenda-fim').value    = fim7.toISOString().split('T')[0];
+
+    await carregarPacientes();
+    await carregarAgenda();
+});
+
+async function apiFetch(path, opts = {}) {
+    const res = await fetch(API + path, { ...opts, headers: { 'Authorization': `Bearer ${TOKEN}`, 'Content-Type': 'application/json', ...(opts.headers || {}) } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.erro || 'Erro na requisição');
+    return data;
+}
+
+// ── AGENDA ──
+async function carregarAgenda() {
+    if (!profAtual.id && !CLINICA_ID) return;
+    const ini = document.getElementById('agenda-inicio').value;
+    const fim = document.getElementById('agenda-fim').value;
+    let url = `/api/clinicas/${CLINICA_ID}/agenda/${profAtual.id}?clinicaId=${CLINICA_ID}`;
+    if (ini) url += `&inicio=${ini}T00:00:00`;
+    if (fim) url += `&fim=${fim}T23:59:59`;
+    const agenda = await apiFetch(url).catch(() => []);
+    const tbody = document.getElementById('tbody-agenda');
+    tbody.innerHTML = agenda.length ? agenda.map(a => `
+        <tr id="row-ag-${a.id}">
+            <td>${fmtDt(a.data_hora_inicio)}</td>
+            <td>${a.paciente_nome || '—'}</td>
+            <td>${a.tipo || 'consulta'}</td>
+            <td><span class="badge badge-${a.status}">${a.status}</span></td>
+            <td>
+                <button class="status-btn ${a.status === 'confirmado' ? 'status-iniciado' : 'status-nao-iniciado'}"
+                    onclick="alternarStatus(${a.id}, '${a.status}')">
+                    ${a.status === 'confirmado' ? '✓ Iniciado' : 'Marcar como iniciado'}
+                </button>
+            </td>
+            <td>
+                ${a.paciente_id ? `<button class="btn btn-purple btn-sm" onclick="abrirProntPaciente(${a.paciente_id}, '${(a.paciente_nome||'').replace(/'/g,"\\'")}')"><i class="fas fa-notes-medical"></i> Ver</button>` : '—'}
+            </td>
+        </tr>`).join('') : '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-calendar"></i><p>Nenhum agendamento neste período</p></div></td></tr>';
+}
+
+async function alternarStatus(agendaId, statusAtual) {
+    const novoStatus = statusAtual === 'confirmado' ? 'realizado' : 'confirmado';
+    try {
+        await apiFetch(`/api/clinicas/${CLINICA_ID}/agenda/${agendaId}?clinicaId=${CLINICA_ID}`, {
+            method: 'PUT',
+            body: JSON.stringify({ clinicaId: CLINICA_ID, status: novoStatus, data_hora_inicio: '', data_hora_fim: '' })
+        });
+        toast(novoStatus === 'realizado' ? 'Chamada iniciada!' : 'Status atualizado.');
+        carregarAgenda();
+    } catch (e) { toast(e.message, true); }
+}
+
+// ── PRONTUÁRIO ──
+async function carregarPacientes() {
+    meusPacientes = await apiFetch(`/api/pacientes`).catch(() => []);
+    renderPacientesPront(meusPacientes);
+
+    // Select recibo
+    const sel = document.getElementById('recibo-paciente-sel');
+    sel.innerHTML = '<option value="">Selecione...</option>' +
+        meusPacientes.map(p => `<option value="${p.id}">${p.nome}</option>`).join('');
+}
+
+function renderPacientesPront(lista) {
+    const tbody = document.getElementById('tbody-pront-pacientes');
+    tbody.innerHTML = lista.length ? lista.map(p => `
+        <tr>
+            <td><strong style="color:#f1f5f9;">${p.nome}</strong></td>
+            <td style="color:#64748b;font-size:12px;">${p.telefone || p.email || '—'}</td>
+            <td>
+                <button class="btn btn-outline btn-sm" onclick="abrirProntPaciente(${p.id}, '${p.nome.replace(/'/g,"\\'")}')">
+                    <i class="fas fa-notes-medical"></i> Prontuário
+                </button>
+            </td>
+        </tr>`).join('') : '<tr><td colspan="3"><div class="empty-state"><i class="fas fa-user-injured"></i><p>Nenhum paciente</p></div></td></tr>';
+}
+
+function filtrarPacientesPront() {
+    const q = document.getElementById('busca-pac-pront').value.toLowerCase();
+    renderPacientesPront(meusPacientes.filter(p => p.nome.toLowerCase().includes(q)));
+}
+
+async function abrirProntPaciente(id, nome) {
+    mostrarSecao('prontuario');
+    pacienteAtual = { id, nome };
+    document.getElementById('painel-pacientes-pront').style.display = 'none';
+    document.getElementById('painel-evolucao').style.display = 'block';
+    document.getElementById('titulo-evolucao-pac').textContent = nome;
+    document.getElementById('lista-evolucoes-pac').innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div>';
+
+    try {
+        // Tenta buscar evoluções via rota da clínica (vê todos os profissionais)
+        const evs = await apiFetch(`/api/clinicas/${CLINICA_ID}/pacientes/${id}/evolucoes?clinicaId=${CLINICA_ID}`);
+        renderEvolucoes(evs);
+    } catch {
+        // Fallback: rota padrão (só as suas)
+        const evs = await apiFetch(`/api/pacientes/${id}/evolucoes`).catch(() => []);
+        renderEvolucoes(evs);
+    }
+}
+
+function renderEvolucoes(evs) {
+    const el = document.getElementById('lista-evolucoes-pac');
+    if (!evs.length) { el.innerHTML = '<div class="empty-state"><i class="fas fa-notes-medical"></i><p>Nenhuma evolução registrada</p></div>'; return; }
+    el.innerHTML = evs.map(e => `
+        <div class="evolucao-card">
+            <div class="evolucao-card-header">
+                <strong><i class="fas fa-user-md"></i> ${e.profissional_nome || 'Profissional'}</strong>
+                <span>${fmtDt(e.data_hora)}</span>
+            </div>
+            ${e.cid10 ? `<div style="font-size:11px;color:#475569;margin-bottom:6px;">CID-10: ${e.cid10} · Duração: ${e.duracao_minutos || 50}min</div>` : ''}
+            <p>${e.texto_evolucao}</p>
+        </div>`).join('');
+}
+
+function voltarParaPacientes() {
+    pacienteAtual = null;
+    document.getElementById('painel-evolucao').style.display = 'none';
+    document.getElementById('painel-pacientes-pront').style.display = 'block';
+}
+
+function abrirModalEvolucao() {
+    if (!pacienteAtual) return;
+    document.getElementById('ev-paciente-id').value = pacienteAtual.id;
+    document.getElementById('ev-texto').value = '';
+    document.getElementById('ev-cid').value = '';
+    document.getElementById('ev-duracao').value = '50';
+    document.getElementById('ev-data-hora').value = new Date().toISOString().slice(0,16);
+    document.getElementById('modal-evolucao').classList.add('open');
+}
+
+async function salvarEvolucao() {
+    const pacId = document.getElementById('ev-paciente-id').value;
+    const texto = document.getElementById('ev-texto').value.trim();
+    if (!texto) return toast('Escreva o texto da evolução.', true);
+    const body = {
+        texto_evolucao:   texto,
+        data_hora:        document.getElementById('ev-data-hora').value,
+        cid10:            document.getElementById('ev-cid').value || null,
+        duracao_minutos:  parseInt(document.getElementById('ev-duracao').value) || 50
+    };
+    try {
+        await apiFetch(`/api/pacientes/${pacId}/evolucoes`, { method: 'POST', body: JSON.stringify(body) });
+        fecharModal('modal-evolucao');
+        toast('Evolução registrada!');
+        abrirProntPaciente(pacienteAtual.id, pacienteAtual.nome);
+    } catch (e) { toast(e.message, true); }
+}
+
+// ── RECIBOS ──
+function gerarRecibo() {
+    const pacId  = document.getElementById('recibo-paciente-sel').value;
+    const data   = document.getElementById('recibo-data').value;
+    const valor  = document.getElementById('recibo-valor').value;
+    const desc   = document.getElementById('recibo-descricao').value;
+    const pac    = meusPacientes.find(p => p.id == pacId);
+    if (!pacId || !data || !valor) return toast('Preencha paciente, data e valor.', true);
+
+    // Abre a rota de geração de recibo do sistema principal
+    const url = `${API}/api/recibos/gerar?paciente_id=${pacId}&data=${data}&valor=${valor}&descricao=${encodeURIComponent(desc)}`;
+    window.open(url, '_blank');
+}
+
+// ── UTILS ──
+function mostrarSecao(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+    document.getElementById('sec-' + id).classList.add('active-section');
+    document.querySelectorAll('.sidebar ul li button').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-' + id)?.classList.add('active');
+    if (window.innerWidth <= 768) toggleSidebar();
+}
+function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('open'); }
+function sair() { ['token','clinica_id','profissional'].forEach(k => localStorage.removeItem(k)); location.href = 'login.html'; }
+function toast(msg, erro = false) { const el = document.getElementById('toast'); el.textContent = msg; el.className = 'show' + (erro ? ' erro' : ''); setTimeout(() => el.className = '', 3500); }
+function fmtDt(s) { if (!s) return '—'; const d = new Date(s); return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' }); }
+</script>
+</body>
+</html>
