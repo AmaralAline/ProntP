@@ -51,17 +51,40 @@ async function realizarLogin(email, senha) {
 
             exibirMensagem('Login realizado! Redirecionando...', 'sucesso');
 
-            // Redireciona para a home do sistema
-            setTimeout(() => {
-                window.location.href = 'PainelExclusivo.html';            }, 1000);
+            // Verifica papel na clínica e redireciona para o painel correto
+            setTimeout(async () => {
+                try {
+                    const resClinica = await fetch(`${API_URL}/api/minhas-clinicas`, {
+                        headers: { 'Authorization': `Bearer ${resultado.token}` }
+                    });
+                    if (resClinica.ok) {
+                        const clinicas = await resClinica.json();
+                        if (clinicas.length) {
+                            const clinica = clinicas[0];
+                            localStorage.setItem('clinica_id', clinica.id);
+                            localStorage.setItem('token_clinica', resultado.token);
+                            localStorage.setItem('profissional_clinica', JSON.stringify(resultado.profissional));
+
+                            if (clinica.papel === 'secretaria') {
+                                window.location.href = 'PainelSecretaria.html';
+                                return;
+                            } else if (clinica.papel === 'profissional') {
+                                window.location.href = 'PainelProfissionalClinica.html';
+                                return;
+                            }
+                            // admin_clinica e super-admin seguem para o PainelExclusivo
+                        }
+                    }
+                } catch (_) { /* sem clínica vinculada — painel normal */ }
+
+                window.location.href = 'PainelExclusivo.html';
+            }, 1000);
 
         } else {
-            // Erro retornado pela API (senha errada, usuário não encontrado etc.)
             exibirMensagem(resultado.erro || 'E-mail ou senha incorretos.', 'erro');
         }
 
     } catch (error) {
-        // Erro de conexão (backend fora do ar, CORS etc.)
         exibirMensagem('Não foi possível conectar ao servidor. Verifique se o backend está rodando.', 'erro');
         console.error('Erro de conexão:', error);
     } finally {
@@ -74,10 +97,8 @@ async function realizarLogin(email, senha) {
 //  Exibe mensagem de erro ou sucesso na tela
 // ------------------------------------------------------------
 function exibirMensagem(mensagem, tipo) {
-    // Tenta usar o elemento spnErro se existir
     let spnErro = document.getElementById('spnErro');
 
-    // Se não existir, cria um dinamicamente
     if (!spnErro) {
         spnErro = document.createElement('p');
         spnErro.id = 'spnErro';
@@ -103,4 +124,4 @@ function exibirMensagem(mensagem, tipo) {
             spnErro.style.display = 'none';
         }, 5000);
     }
-}N
+}
