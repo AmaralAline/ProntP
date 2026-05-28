@@ -724,6 +724,7 @@
                 <li class="menu-group-label">Gestão</li>
                 <li><button id="btn-financeiro" onclick="mostrarSecao('financeiro')"><i class="fas fa-chart-line"></i> Financeiro</button></li>
                 <li><button id="btn-relatorio" onclick="mostrarSecao('relatorio')"><i class="fas fa-file-alt"></i> Relatórios</button></li>
+                <li><button id="btn-config" onclick="mostrarSecao('config')"><i class="fas fa-cog"></i> Configurações</button></li>
             </ul>
             <div class="sidebar-footer">
                 <div style="font-size:12px;color:#475569;margin-bottom:10px;padding:0 4px;"><i class="fas fa-user-shield" style="color:#a78bfa;margin-right:6px;"></i><span id="nome-admin-sidebar">Admin</span></div>
@@ -862,6 +863,46 @@
                     </div>
                 </div>
             </section>
+            <!-- CONFIGURAÇÕES -->
+            <section id="sec-config" class="section">
+                <div class="section-header"><div><h2>Configurações da Clínica</h2><p>Dados que aparecem em todos os relatórios e documentos</p></div></div>
+                <!-- Logo -->
+                <div style="background:#111827;border:1px solid rgba(139,92,246,0.12);border-radius:12px;padding:24px;margin-bottom:20px;">
+                    <h3 style="font-size:14px;color:#a78bfa;margin-bottom:16px;"><i class="fas fa-image" style="margin-right:8px;"></i>Logo da Clínica</h3>
+                    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+                        <div id="logo-preview" style="width:120px;height:120px;background:#0a0f1a;border:2px dashed rgba(139,92,246,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+                            <i class="fas fa-image" style="font-size:32px;color:#475569;" id="logo-icon"></i>
+                            <img id="logo-img" src="" style="width:100%;height:100%;object-fit:contain;display:none;">
+                        </div>
+                        <div>
+                            <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Formatos aceitos: PNG, JPG, SVG. Máximo 5MB.<br>Recomendado: fundo transparente (PNG).</p>
+                            <label style="cursor:pointer;" class="btn btn-outline"><i class="fas fa-upload"></i> Escolher logo<input type="file" id="input-logo" accept="image/*" style="display:none;" onchange="previewLogo(this)"></label>
+                            <button class="btn btn-primary" style="margin-left:8px;" onclick="uploadLogo()"><i class="fas fa-save"></i> Salvar logo</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dados da clínica -->
+                <div style="background:#111827;border:1px solid rgba(139,92,246,0.12);border-radius:12px;padding:24px;">
+                    <h3 style="font-size:14px;color:#a78bfa;margin-bottom:16px;"><i class="fas fa-building" style="margin-right:8px;"></i>Dados da Clínica</h3>
+                    <div class="form-grid-2">
+                        <div class="form-group"><label>Nome da clínica *</label><input type="text" id="cfg-nome" placeholder="Nome oficial"></div>
+                        <div class="form-group"><label>CNPJ</label><input type="text" id="cfg-cnpj" placeholder="00.000.000/0000-00"></div>
+                        <div class="form-group"><label>Telefone</label><input type="text" id="cfg-telefone" placeholder="(11) 99999-9999"></div>
+                        <div class="form-group"><label>E-mail</label><input type="email" id="cfg-email" placeholder="contato@clinica.com"></div>
+                        <div class="form-group"><label>Endereço</label><input type="text" id="cfg-endereco" placeholder="Rua, número"></div>
+                        <div class="form-group"><label>Cidade</label><input type="text" id="cfg-cidade" placeholder="São Paulo"></div>
+                        <div class="form-group"><label>Estado</label><input type="text" id="cfg-estado" placeholder="SP" maxlength="2"></div>
+                        <div class="form-group"><label>CEP</label><input type="text" id="cfg-cep" placeholder="00000-000"></div>
+                        <div class="form-group"><label>Site</label><input type="text" id="cfg-site" placeholder="www.clinica.com.br"></div>
+                    </div>
+                    <div class="form-group"><label>Descrição / Especialidade da clínica</label><textarea id="cfg-descricao" rows="2" placeholder="Ex: Clínica especializada em saúde mental..."></textarea></div>
+                    <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                        <button class="btn btn-primary" onclick="salvarConfig()"><i class="fas fa-save"></i> Salvar dados</button>
+                        <span id="cfg-feedback" style="font-size:13px;display:none;"></span>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -991,6 +1032,7 @@
             await carregarPacientes();
             await carregarDashboard();
             await carregarFinanceiro();
+            await carregarConfig();
         });
 
         async function apiFetch(path, opts = {}) {
@@ -1254,6 +1296,86 @@
         function toast(msg, erro = false) { const el = document.getElementById('toast'); el.textContent = msg; el.className = 'show' + (erro ? ' erro' : ''); setTimeout(() => el.className = '', 3500); }
         function fmtDt(s) { if (!s) return '—'; const d = new Date(s); return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
         function fmtData(s) { if (!s) return '—'; return new Date(s).toLocaleDateString('pt-BR'); }
+
+        // ── CONFIGURAÇÕES ──
+        async function carregarConfig() {
+            try {
+                const c = await apiFetch(`/api/clinicas/${CLINICA_ID}/config?clinicaId=${CLINICA_ID}`);
+                document.getElementById('cfg-nome').value = c.nome || '';
+                document.getElementById('cfg-cnpj').value = c.cnpj || '';
+                document.getElementById('cfg-telefone').value = c.telefone || '';
+                document.getElementById('cfg-email').value = c.email || '';
+                document.getElementById('cfg-endereco').value = c.endereco || '';
+                document.getElementById('cfg-cidade').value = c.cidade || '';
+                document.getElementById('cfg-estado').value = c.estado || '';
+                document.getElementById('cfg-cep').value = c.cep || '';
+                document.getElementById('cfg-site').value = c.site || '';
+                document.getElementById('cfg-descricao').value = c.descricao || '';
+                if (c.logo_url) {
+                    document.getElementById('logo-img').src = c.logo_url;
+                    document.getElementById('logo-img').style.display = 'block';
+                    document.getElementById('logo-icon').style.display = 'none';
+                }
+                window.CLINICA_CONFIG = c;
+                document.getElementById('nome-clinica-badge').textContent = c.nome;
+            } catch (e) { console.error('Erro ao carregar config:', e); }
+        }
+
+        function previewLogo(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('logo-img').src = e.target.result;
+                document.getElementById('logo-img').style.display = 'block';
+                document.getElementById('logo-icon').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function uploadLogo() {
+            const input = document.getElementById('input-logo');
+            if (!input.files[0]) return toast('Selecione uma imagem primeiro.', true);
+            const formData = new FormData();
+            formData.append('logo', input.files[0]);
+            try {
+                const res = await fetch(`${API}/api/clinicas/${CLINICA_ID}/logo?clinicaId=${CLINICA_ID}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${TOKEN}` },
+                    body: formData
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.erro);
+                toast('Logo salvo!');
+                window.CLINICA_CONFIG = { ...window.CLINICA_CONFIG, logo_url: data.url };
+            } catch (e) { toast(e.message, true); }
+        }
+
+        async function salvarConfig() {
+            const body = {
+                clinicaId: CLINICA_ID,
+                nome: document.getElementById('cfg-nome').value.trim(),
+                cnpj: document.getElementById('cfg-cnpj').value.trim(),
+                telefone: document.getElementById('cfg-telefone').value.trim(),
+                email: document.getElementById('cfg-email').value.trim(),
+                endereco: document.getElementById('cfg-endereco').value.trim(),
+                cidade: document.getElementById('cfg-cidade').value.trim(),
+                estado: document.getElementById('cfg-estado').value.trim(),
+                cep: document.getElementById('cfg-cep').value.trim(),
+                site: document.getElementById('cfg-site').value.trim(),
+                descricao: document.getElementById('cfg-descricao').value.trim()
+            };
+            if (!body.nome) return toast('Nome é obrigatório.', true);
+            const fb = document.getElementById('cfg-feedback');
+            try {
+                await apiFetch(`/api/clinicas/${CLINICA_ID}/config?clinicaId=${CLINICA_ID}`, { method: 'PUT', body: JSON.stringify(body) });
+                fb.style.display = 'inline'; fb.style.color = '#34d399'; fb.textContent = '✓ Dados salvos!';
+                setTimeout(() => fb.style.display = 'none', 2500);
+                window.CLINICA_CONFIG = { ...window.CLINICA_CONFIG, ...body };
+                document.getElementById('nome-clinica-badge').textContent = body.nome;
+            } catch (e) { fb.style.display = 'inline'; fb.style.color = '#f87171'; fb.textContent = e.message; }
+        }
+
         function labelPapel(p) { return { admin_clinica: 'Admin', secretaria: 'Secretaria', profissional: 'Profissional' }[p] || p; }
     </script>
 </body>
