@@ -4873,7 +4873,7 @@ function renderizarPacotes() {
                     <p style="font-size:15px;font-weight:600;color:#e2e8f0;margin:0 0 4px;">${p.nome}</p>
                     ${p.descricao ? `<p style="font-size:12px;color:#64748b;margin:0 0 8px;">${p.descricao}</p>` : ''}
                     <div style="display:flex;gap:16px;flex-wrap:wrap;">
-                        <span style="font-size:13px;color:#a78bfa;"><i class="fas fa-calendar-check" style="margin-right:4px;"></i>${p.num_sessoes} sessão${p.num_sessoes > 1 ? 'ões' : ''}</span>
+                        <span style="font-size:13px;color:#a78bfa;"><i class="fas fa-calendar-check" style="margin-right:4px;"></i>${p.num_sessoes} ${p.num_sessoes > 1 ? 'sessões' : 'sessão'}</span>
                         <span style="font-size:15px;font-weight:700;color:#34d399;">R$ ${parseFloat(p.valor).toFixed(2)}</span>
                     </div>
                 </div>
