@@ -170,24 +170,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (_) { /* não é super-admin — mantém link oculto */ }
 
-    // Verifica se é admin de alguma clínica
+    // Verifica papel na clínica e redireciona se necessário
     try {
         const resClinicas = await fetch(`${API_URL}/api/minhas-clinicas`, { headers: headersAuth() });
         if (resClinicas.ok) {
             const clinicas = await resClinicas.json();
-            const ehAdminClinica = clinicas.some(c => c.papel === 'admin_clinica');
-            if (ehAdminClinica) {
-                const linkClinica = document.getElementById('link-clinica');
-                if (linkClinica) {
-                    linkClinica.style.display = 'flex';
-                    const clinicaAdmin = clinicas.find(c => c.papel === 'admin_clinica');
-                    localStorage.setItem('clinica_id', clinicaAdmin.id);
-                    localStorage.setItem('token_clinica', localStorage.getItem('token'));
-                    localStorage.setItem('profissional_clinica', localStorage.getItem('profissional'));
+            if (clinicas.length) {
+                const clinica = clinicas[0]; // pega a primeira clínica vinculada
+                localStorage.setItem('clinica_id', clinica.id);
+                localStorage.setItem('token_clinica', localStorage.getItem('token'));
+                localStorage.setItem('profissional_clinica', localStorage.getItem('profissional'));
+
+                if (clinica.papel === 'admin_clinica') {
+                    // Mostra botão azul no menu
+                    const linkClinica = document.getElementById('link-clinica');
+                    if (linkClinica) linkClinica.style.display = 'flex';
+
+                } else if (clinica.papel === 'secretaria') {
+                    // Redireciona direto para o painel da secretaria
+                    window.location.href = 'PainelSecretaria.html';
+                    return;
+
+                } else if (clinica.papel === 'profissional') {
+                    // Redireciona direto para o painel do profissional da clínica
+                    window.location.href = 'PainelProfissionalClinica.html';
+                    return;
                 }
             }
         }
-    } catch (_) { /* não é admin de clínica — mantém link oculto */ }
+    } catch (_) { /* sem clínica vinculada — continua no painel normal */ }
     // Botões do menu lateral
     const botoes = [
         { btn: 'btn-clock', section: 'clock-section' },
@@ -202,6 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { btn: 'btn-resultados', section: 'resultados-section' },
         { btn: 'btn-termos', section: 'termos-section' },
         { btn: 'btn-agenda-online', section: 'agenda-online-section' },
+        { btn: 'btn-pacotes', section: 'pacotes-section' },
         { btn: 'btn-recibos', section: 'recibos-section' },
         { btn: 'btn-vitrine', section: 'vitrine-section' },
         { btn: 'btn-perfil', section: 'perfil-section' },
@@ -237,6 +249,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!grid || grid.children.length === 0) renderizarDiasConfig();
             carregarDisponibilidade();
             carregarAgendamentosOnline();
+        }
+        if (id === 'pacotes-section') {
+            carregarPacotes();
         }
         if (id === 'termos-section') {
             popularSelectTermos();
@@ -4816,4 +4831,219 @@ async function gerarPrescricaoPDF() {
 // Inicializa prescrição quando a seção é aberta
 document.getElementById('btn-prescricao')?.addEventListener('click', () => {
     iniciarPrescricao();
-});
+});// ============================================================
+//  PACOTES DE PAGAMENTO — Adicionar ao PainelExclusivo.js
+//  Cole este bloco no final do arquivo
+// ============================================================
+
+// ── Estado local dos pacotes ─────────────────────────────────
+let pacotesLista = [];
+let pacoteEditandoId = null;
+
+// ── Carregar pacotes do profissional ─────────────────────────
+async function carregarPacotes() {
+    try {
+        const res = await fetch(`${API_URL}/api/pacotes`, { headers: headersAuth() });
+        pacotesLista = await res.json();
+        renderizarPacotes();
+        renderizarVendasPacotes();
+    } catch (err) { console.error('Erro ao carregar pacotes:', err); }
+}
+
+// ── Renderizar lista de pacotes ──────────────────────────────
+function renderizarPacotes() {
+    const container = document.getElementById('pacotes-lista');
+    if (!container) return;
+
+    if (!pacotesLista.length) {
+        container.innerHTML = `
+            <div style="text-align:center;padding:32px;color:#64748b;">
+                <i class="fas fa-box-open" style="font-size:32px;margin-bottom:12px;display:block;opacity:0.4;"></i>
+                Nenhum pacote criado ainda. Crie seu primeiro acima!
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = pacotesLista.map(p => {
+        const linkPagamento = `${window.location.origin}/pacote.html?id=${p.id}`;
+        return `
+        <div style="background:#0f1621;border:1px solid rgba(139,92,246,0.15);border-radius:12px;padding:20px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+                <div style="flex:1;min-width:200px;">
+                    <p style="font-size:15px;font-weight:600;color:#e2e8f0;margin:0 0 4px;">${p.nome}</p>
+                    ${p.descricao ? `<p style="font-size:12px;color:#64748b;margin:0 0 8px;">${p.descricao}</p>` : ''}
+                    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                        <span style="font-size:13px;color:#a78bfa;"><i class="fas fa-calendar-check" style="margin-right:4px;"></i>${p.num_sessoes} sessão${p.num_sessoes > 1 ? 'ões' : ''}</span>
+                        <span style="font-size:15px;font-weight:700;color:#34d399;">R$ ${parseFloat(p.valor).toFixed(2)}</span>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                    <button onclick="copiarLinkPacote('${linkPagamento}')"
+                        style="background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">
+                        <i class="fas fa-copy" style="margin-right:4px;"></i>Copiar Link
+                    </button>
+                    <button onclick="editarPacote(${p.id})"
+                        style="background:rgba(96,165,250,0.1);color:#60a5fa;border:1px solid rgba(96,165,250,0.25);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">
+                        <i class="fas fa-edit" style="margin-right:4px;"></i>Editar
+                    </button>
+                    <button onclick="excluirPacote(${p.id})"
+                        style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:12px;font-family:'Roboto',sans-serif;">
+                        <i class="fas fa-trash" style="margin-right:4px;"></i>Excluir
+                    </button>
+                </div>
+            </div>
+            <!-- Link copiável -->
+            <div style="margin-top:12px;background:#141d2b;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;">
+                <i class="fas fa-link" style="color:#64748b;font-size:12px;flex-shrink:0;"></i>
+                <span style="font-size:11px;color:#64748b;font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${linkPagamento}</span>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ── Renderizar vendas de pacotes ─────────────────────────────
+async function renderizarVendasPacotes() {
+    const tbody = document.getElementById('pacotes-vendidos-tbody');
+    if (!tbody) return;
+
+    try {
+        const res = await fetch(`${API_URL}/api/pacotes-vendidos`, { headers: headersAuth() });
+        const vendas = await res.json();
+
+        if (!vendas.length) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;padding:24px;">Nenhuma venda ainda.</td></tr>';
+            return;
+        }
+
+        const cores = { pago: '#34d399', pendente: '#fbbf24', cancelado: '#f87171' };
+        tbody.innerHTML = vendas.map(v => `
+            <tr>
+                <td style="padding:12px 16px;">
+                    <div style="color:#e2e8f0;font-weight:500;">${v.paciente_nome}</div>
+                    <div style="color:#64748b;font-size:12px;">${v.paciente_email}</div>
+                </td>
+                <td style="padding:12px 16px;color:#a78bfa;">${v.pacote_nome}</td>
+                <td style="padding:12px 16px;color:#94a3b8;text-align:center;">${v.num_sessoes}</td>
+                <td style="padding:12px 16px;color:#34d399;font-weight:600;">R$ ${parseFloat(v.valor).toFixed(2)}</td>
+                <td style="padding:12px 16px;">
+                    <span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;background:${cores[v.status]}22;color:${cores[v.status]};">${v.status}</span>
+                </td>
+                <td style="padding:12px 16px;color:#64748b;font-size:12px;">
+                    ${v.pago_em ? new Date(v.pago_em).toLocaleDateString('pt-BR') : new Date(v.criado_em).toLocaleDateString('pt-BR')}
+                </td>
+            </tr>`).join('');
+    } catch (err) { console.error('Erro ao carregar vendas:', err); }
+}
+
+// ── Copiar link do pacote ────────────────────────────────────
+function copiarLinkPacote(link) {
+    navigator.clipboard.writeText(link).then(() => {
+        alert('Link copiado! Envie para o paciente via WhatsApp ou e-mail.');
+    }).catch(() => {
+        // fallback para browsers antigos
+        const el = document.createElement('textarea');
+        el.value = link;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert('Link copiado!');
+    });
+}
+
+// ── Criar / Salvar pacote ────────────────────────────────────
+async function salvarPacote() {
+    const nome = document.getElementById('pacote-form-nome')?.value?.trim();
+    const descricao = document.getElementById('pacote-form-descricao')?.value?.trim();
+    const num_sessoes = document.getElementById('pacote-form-sessoes')?.value;
+    const valor = document.getElementById('pacote-form-valor')?.value;
+    const feedback = document.getElementById('pacote-form-feedback');
+    const btn = document.getElementById('btn-salvar-pacote');
+
+    if (!nome || !num_sessoes || !valor) {
+        feedback.textContent = '⚠️ Preencha nome, número de sessões e valor.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+
+    try {
+        const method = pacoteEditandoId ? 'PUT' : 'POST';
+        const url = pacoteEditandoId
+            ? `${API_URL}/api/pacotes/${pacoteEditandoId}`
+            : `${API_URL}/api/pacotes`;
+
+        const res = await fetch(url, {
+            method,
+            headers: headersAuth(),
+            body: JSON.stringify({ nome, descricao, num_sessoes: parseInt(num_sessoes), valor: parseFloat(valor) })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            feedback.textContent = pacoteEditandoId ? '✅ Pacote atualizado!' : '✅ Pacote criado com sucesso!';
+            feedback.style.color = '#34d399';
+            feedback.style.display = 'block';
+            limparFormPacote();
+            await carregarPacotes();
+        } else {
+            feedback.textContent = `❌ ${data.erro}`;
+            feedback.style.color = '#f87171';
+            feedback.style.display = 'block';
+        }
+    } catch (err) {
+        feedback.textContent = '❌ Erro de conexão.';
+        feedback.style.color = '#f87171';
+        feedback.style.display = 'block';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Salvar Pacote';
+    }
+}
+
+// ── Editar pacote (preenche o form) ─────────────────────────
+function editarPacote(id) {
+    const pacote = pacotesLista.find(p => p.id === id);
+    if (!pacote) return;
+    pacoteEditandoId = id;
+    document.getElementById('pacote-form-nome').value = pacote.nome;
+    document.getElementById('pacote-form-descricao').value = pacote.descricao || '';
+    document.getElementById('pacote-form-sessoes').value = pacote.num_sessoes;
+    document.getElementById('pacote-form-valor').value = pacote.valor;
+    document.getElementById('pacote-form-titulo').textContent = '✏️ Editar Pacote';
+    document.getElementById('btn-cancelar-edicao-pacote').style.display = 'inline-flex';
+    document.getElementById('pacote-form-nome').focus();
+    document.getElementById('pacote-form-nome').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── Cancelar edição ──────────────────────────────────────────
+function cancelarEdicaoPacote() {
+    limparFormPacote();
+}
+
+function limparFormPacote() {
+    pacoteEditandoId = null;
+    ['pacote-form-nome', 'pacote-form-descricao', 'pacote-form-sessoes', 'pacote-form-valor'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    const titulo = document.getElementById('pacote-form-titulo');
+    if (titulo) titulo.textContent = '+ Criar Novo Pacote';
+    const btnCancelar = document.getElementById('btn-cancelar-edicao-pacote');
+    if (btnCancelar) btnCancelar.style.display = 'none';
+    const feedback = document.getElementById('pacote-form-feedback');
+    if (feedback) feedback.style.display = 'none';
+}
+
+// ── Excluir pacote ───────────────────────────────────────────
+async function excluirPacote(id) {
+    const pacote = pacotesLista.find(p => p.id === id);
+    if (!confirm(`Remover o pacote "${pacote?.nome}"? O link deixará de funcionar.`)) return;
+    try {
+        await fetch(`${API_URL}/api/pacotes/${id}`, { method: 'DELETE', headers: headersAuth() });
+        await carregarPacotes();
+    } catch (err) { alert('Erro ao excluir pacote.'); }
+}

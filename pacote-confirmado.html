@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Confirmado — ProntPsi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', sans-serif; background: #0a0f1a; color: #e2e8f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .card { background: #111827; border: 1px solid rgba(52,211,153,0.3); border-radius: 16px; padding: 40px; width: 100%; max-width: 460px; text-align: center; }
+        .icone { font-size: 56px; margin-bottom: 16px; animation: pop .4s ease; }
+        @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        h1 { font-size: 24px; font-weight: 700; color: #34d399; margin-bottom: 10px; }
+        .subtitulo { font-size: 14px; color: #94a3b8; line-height: 1.7; margin-bottom: 24px; }
+        .destaque { background: #1a2332; border: 1px solid rgba(52,211,153,0.2); border-radius: 10px; padding: 20px; text-align: left; margin-bottom: 24px; }
+        .destaque p { font-size: 14px; color: #e2e8f0; margin-bottom: 8px; }
+        .destaque p:last-child { margin-bottom: 0; }
+        .loading { color: #64748b; font-size: 14px; }
+        .rodape { font-size: 12px; color: #475569; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="icone">✅</div>
+    <h1>Pagamento confirmado!</h1>
+    <p class="subtitulo">Obrigada! Você receberá um e-mail de confirmação em instantes.</p>
+
+    <div class="destaque" id="info-confirmacao">
+        <p class="loading">Verificando pagamento...</p>
+    </div>
+
+    <p class="subtitulo">Seu terapeuta entrará em contato em breve para agendar as sessões. 🗓️</p>
+    <p class="rodape">ProntPsi — Sistema Clínico</p>
+</div>
+
+<script>
+    const API_URL = 'https://prontpsiback-production.up.railway.app';
+    const params = new URLSearchParams(window.location.search);
+    const vendaId = params.get('venda');
+
+    async function confirmar() {
+        const box = document.getElementById('info-confirmacao');
+        if (!vendaId) {
+            box.innerHTML = '<p style="color:#f87171;">ID de venda não encontrado.</p>';
+            return;
+        }
+        try {
+            const res = await fetch(`${API_URL}/api/pacotes/confirmar/${vendaId}`, { method: 'POST' });
+            const data = await res.json();
+            if (data.confirmado) {
+                box.innerHTML = `
+                    <p>👤 <strong>${data.paciente_nome}</strong></p>
+                    <p style="color:#a78bfa;margin-top:6px;">📦 ${data.pacote_nome}</p>
+                    <p style="color:#34d399;margin-top:6px;font-size:13px;">✔ Pagamento recebido com sucesso</p>`;
+            } else {
+                box.innerHTML = '<p style="color:#fbbf24;">⏳ Pagamento ainda sendo processado. Aguarde o e-mail de confirmação.</p>';
+            }
+        } catch (err) {
+            box.innerHTML = '<p style="color:#64748b;">Não foi possível verificar o pagamento agora, mas você receberá o e-mail de confirmação.</p>';
+        }
+    }
+
+    confirmar();
+</script>
+</body>
+</html>
