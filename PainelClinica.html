@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProntPsi — Administração da Clínica</title>
+    <title>ProntPsi — Secretaria</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -31,7 +31,7 @@
             width: 240px;
             min-width: 240px;
             background: #0d1424;
-            border-right: 1px solid rgba(139,92,246,0.15);
+            border-right: 1px solid rgba(96,165,250,0.15);
             display: flex;
             flex-direction: column;
             padding: 0 0 16px;
@@ -42,7 +42,7 @@
             z-index: 100;
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: rgba(139,92,246,0.3) transparent;
+            scrollbar-color: rgba(96,165,250,0.3) transparent;
         }
 
             .sidebar::-webkit-scrollbar {
@@ -50,20 +50,21 @@
             }
 
             .sidebar::-webkit-scrollbar-thumb {
-                background: rgba(139,92,246,0.3);
+                background: rgba(96,165,250,0.3);
                 border-radius: 4px;
             }
 
         .sidebar-logo {
             padding: 24px 20px 16px;
-            border-bottom: 1px solid rgba(139,92,246,0.15);
+            border-bottom: 1px solid rgba(96,165,250,0.15);
             margin-bottom: 8px;
         }
 
             .sidebar-logo h2 {
                 font-size: 20px;
                 font-weight: 700;
-                color: #8b5cf6;
+                color: #60a5fa;
+                letter-spacing: -0.5px;
             }
 
             .sidebar-logo span {
@@ -75,12 +76,12 @@
 
         .clinica-badge {
             margin: 0 12px 8px;
-            background: rgba(139,92,246,0.1);
-            border: 1px solid rgba(139,92,246,0.25);
+            background: rgba(96,165,250,0.08);
+            border: 1px solid rgba(96,165,250,0.2);
             border-radius: 8px;
             padding: 8px 12px;
             font-size: 12px;
-            color: #a78bfa;
+            color: #60a5fa;
         }
 
             .clinica-badge span {
@@ -114,13 +115,13 @@
             }
 
                 .sidebar ul li button:hover {
-                    background: rgba(139,92,246,0.1);
-                    color: #c4b5fd;
+                    background: rgba(96,165,250,0.08);
+                    color: #93c5fd;
                 }
 
                 .sidebar ul li button.active {
-                    background: rgba(139,92,246,0.18);
-                    color: #a78bfa;
+                    background: rgba(96,165,250,0.15);
+                    color: #60a5fa;
                     font-weight: 500;
                 }
 
@@ -142,7 +143,7 @@
 
         .sidebar-footer {
             padding: 12px;
-            border-top: 1px solid rgba(139,92,246,0.12);
+            border-top: 1px solid rgba(96,165,250,0.12);
             margin-top: 8px;
         }
 
@@ -203,70 +204,9 @@
                 margin-top: 2px;
             }
 
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .card-stat {
-            background: #111827;
-            border: 1px solid rgba(139,92,246,0.12);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .card-stat-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .icon-purple {
-            background: rgba(139,92,246,0.15);
-            color: #a78bfa;
-        }
-
-        .icon-blue {
-            background: rgba(59,130,246,0.12);
-            color: #60a5fa;
-        }
-
-        .icon-green {
-            background: rgba(52,211,153,0.12);
-            color: #34d399;
-        }
-
-        .icon-amber {
-            background: rgba(251,191,36,0.12);
-            color: #fbbf24;
-        }
-
-        .card-stat h3 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #f1f5f9;
-            line-height: 1;
-        }
-
-        .card-stat p {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 2px;
-        }
-
         .table-card {
             background: #111827;
-            border: 1px solid rgba(139,92,246,0.12);
+            border: 1px solid rgba(96,165,250,0.1);
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 24px;
@@ -274,7 +214,7 @@
 
         .table-card-header {
             padding: 16px 20px;
-            border-bottom: 1px solid rgba(139,92,246,0.1);
+            border-bottom: 1px solid rgba(96,165,250,0.08);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -301,14 +241,14 @@
             color: #475569;
             font-weight: 600;
             padding: 12px 16px;
-            border-bottom: 1px solid rgba(139,92,246,0.08);
+            border-bottom: 1px solid rgba(96,165,250,0.06);
         }
 
         td {
             padding: 12px 16px;
             font-size: 13.5px;
             color: #cbd5e1;
-            border-bottom: 1px solid rgba(139,92,246,0.05);
+            border-bottom: 1px solid rgba(96,165,250,0.04);
         }
 
         tr:last-child td {
@@ -316,7 +256,7 @@
         }
 
         tr:hover td {
-            background: rgba(139,92,246,0.03);
+            background: rgba(96,165,250,0.03);
         }
 
         .badge {
@@ -327,19 +267,19 @@
             text-transform: uppercase;
         }
 
-        .badge-admin {
-            background: rgba(139,92,246,0.2);
-            color: #a78bfa;
+        .badge-pago {
+            background: rgba(52,211,153,0.12);
+            color: #34d399;
         }
 
-        .badge-sec {
-            background: rgba(59,130,246,0.15);
+        .badge-convenio {
+            background: rgba(96,165,250,0.12);
             color: #60a5fa;
         }
 
-        .badge-prof {
-            background: rgba(52,211,153,0.12);
-            color: #34d399;
+        .badge-particular {
+            background: rgba(139,92,246,0.12);
+            color: #a78bfa;
         }
 
         .badge-agendado {
@@ -347,29 +287,14 @@
             color: #34d399;
         }
 
-        .badge-confirmado {
-            background: rgba(59,130,246,0.12);
-            color: #60a5fa;
-        }
-
-        .badge-realizado {
-            background: rgba(139,92,246,0.15);
-            color: #a78bfa;
-        }
-
         .badge-cancelado {
             background: rgba(248,113,113,0.15);
             color: #f87171;
         }
 
-        .badge-entrada {
-            background: rgba(52,211,153,0.12);
-            color: #34d399;
-        }
-
-        .badge-saida {
-            background: rgba(248,113,113,0.12);
-            color: #f87171;
+        .badge-realizado {
+            background: rgba(139,92,246,0.15);
+            color: #a78bfa;
         }
 
         .btn {
@@ -387,32 +312,22 @@
         }
 
         .btn-primary {
-            background: #7c3aed;
+            background: #2563eb;
             color: #fff;
         }
 
             .btn-primary:hover {
-                background: #6d28d9;
+                background: #1d4ed8;
             }
 
         .btn-outline {
             background: transparent;
-            border: 1px solid rgba(139,92,246,0.3);
-            color: #a78bfa;
+            border: 1px solid rgba(96,165,250,0.3);
+            color: #60a5fa;
         }
 
             .btn-outline:hover {
-                background: rgba(139,92,246,0.1);
-            }
-
-        .btn-green {
-            background: transparent;
-            border: 1px solid rgba(52,211,153,0.3);
-            color: #34d399;
-        }
-
-            .btn-green:hover {
-                background: rgba(52,211,153,0.08);
+                background: rgba(96,165,250,0.08);
             }
 
         .btn-danger {
@@ -445,7 +360,7 @@
             .form-group input, .form-group select, .form-group textarea {
                 width: 100%;
                 background: #0a0f1a;
-                border: 1px solid rgba(139,92,246,0.2);
+                border: 1px solid rgba(96,165,250,0.2);
                 border-radius: 8px;
                 color: #e2e8f0;
                 font-family: 'Roboto', sans-serif;
@@ -455,18 +370,13 @@
                 transition: border-color 0.2s;
             }
 
-                .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-                    border-color: #7c3aed;
+                .form-group input:focus, .form-group select:focus {
+                    border-color: #2563eb;
                 }
 
                 .form-group select option {
                     background: #111827;
                 }
-
-            .form-group textarea {
-                resize: vertical;
-                min-height: 80px;
-            }
 
         .form-grid-2 {
             display: grid;
@@ -478,7 +388,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.7);
             z-index: 500;
             align-items: center;
             justify-content: center;
@@ -491,11 +401,11 @@
 
         .modal {
             background: #111827;
-            border: 1px solid rgba(139,92,246,0.2);
+            border: 1px solid rgba(96,165,250,0.2);
             border-radius: 14px;
             padding: 28px;
             width: 100%;
-            max-width: 540px;
+            max-width: 520px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -514,7 +424,7 @@
             margin-top: 20px;
         }
 
-        .agenda-chips {
+        .agenda-prof-selector {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
@@ -522,8 +432,8 @@
         }
 
         .prof-chip {
-            background: rgba(139,92,246,0.08);
-            border: 1px solid rgba(139,92,246,0.2);
+            background: rgba(96,165,250,0.06);
+            border: 1px solid rgba(96,165,250,0.2);
             border-radius: 20px;
             padding: 5px 14px;
             font-size: 12px;
@@ -533,97 +443,29 @@
         }
 
             .prof-chip.active {
-                background: rgba(139,92,246,0.2);
-                color: #a78bfa;
-                border-color: rgba(139,92,246,0.5);
+                background: rgba(96,165,250,0.18);
+                color: #60a5fa;
+                border-color: rgba(96,165,250,0.5);
             }
 
-        .fin-resumo {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #475569;
         }
 
-        .fin-card {
-            background: #111827;
-            border: 1px solid rgba(139,92,246,0.1);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-            .fin-card h4 {
-                font-size: 11px;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                color: #475569;
-                margin-bottom: 10px;
+            .empty-state i {
+                font-size: 36px;
+                margin-bottom: 12px;
+                display: block;
             }
-
-            .fin-card .valor {
-                font-size: 26px;
-                font-weight: 700;
-            }
-
-        .verde {
-            color: #34d399;
-        }
-
-        .vermelho {
-            color: #f87171;
-        }
-
-        .azul {
-            color: #60a5fa;
-        }
-
-        .fin-filtros {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .evolucao-card {
-            background: #0d1424;
-            border: 1px solid rgba(139,92,246,0.1);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .evolucao-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-            .evolucao-card-header strong {
-                font-size: 13px;
-                color: #a78bfa;
-            }
-
-            .evolucao-card-header span {
-                font-size: 11px;
-                color: #475569;
-            }
-
-        .evolucao-card p {
-            font-size: 13.5px;
-            color: #cbd5e1;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
 
         #toast {
             position: fixed;
             bottom: 24px;
             right: 24px;
             background: #1e293b;
-            border: 1px solid rgba(139,92,246,0.3);
+            border: 1px solid rgba(96,165,250,0.3);
             color: #e2e8f0;
             padding: 12px 20px;
             border-radius: 10px;
@@ -645,18 +487,6 @@
                 color: #f87171;
             }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #475569;
-        }
-
-            .empty-state i {
-                font-size: 36px;
-                margin-bottom: 12px;
-                display: block;
-            }
-
         .hamburger {
             display: none;
             position: fixed;
@@ -664,8 +494,8 @@
             left: 14px;
             z-index: 200;
             background: #111827;
-            border: 1px solid rgba(139,92,246,0.2);
-            color: #a78bfa;
+            border: 1px solid rgba(96,165,250,0.2);
+            color: #60a5fa;
             border-radius: 8px;
             padding: 8px 11px;
             cursor: pointer;
@@ -678,6 +508,53 @@
             inset: 0;
             background: rgba(0,0,0,0.5);
             z-index: 99;
+        }
+
+        .tab-btn {
+            padding: 9px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(96,165,250,0.25);
+            background: transparent;
+            color: #64748b;
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.18s;
+        }
+
+            .tab-btn:hover {
+                color: #93c5fd;
+                border-color: rgba(96,165,250,0.4);
+            }
+
+        .tab-ativo {
+            background: rgba(96,165,250,0.15);
+            color: #60a5fa;
+            border-color: rgba(96,165,250,0.4);
+            font-weight: 500;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+
+            #doc-print, #doc-print * {
+                visibility: visible !important;
+            }
+
+            #doc-print {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background: white;
+                z-index: 99999;
+                padding: 0;
+            }
         }
 
         @media (max-width: 768px) {
@@ -712,22 +589,31 @@
 <body>
     <div class="container">
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-logo"><h2>ProntPsi</h2><span>Admin da Clínica</span></div>
-            <div class="clinica-badge"><span>Clínica ativa</span><strong id="nome-clinica-badge">—</strong></div>
+            <div class="sidebar-logo">
+                <h2>ProntPsi</h2>
+                <span>Secretaria</span>
+            </div>
+            <div class="clinica-badge">
+                <span>Clínica</span>
+                <strong id="nome-clinica-badge">—</strong>
+            </div>
             <ul>
-                <li><button id="btn-dashboard" class="active" onclick="mostrarSecao('dashboard')"><i class="fas fa-home"></i> Dashboard</button></li>
-                <li class="menu-group-label">Equipe</li>
-                <li><button id="btn-equipe" onclick="mostrarSecao('equipe')"><i class="fas fa-users"></i> Equipe</button></li>
-                <li class="menu-group-label">Clínico</li>
+                <li><button id="btn-dashboard" class="active" onclick="mostrarSecao('dashboard')"><i class="fas fa-home"></i> Início</button></li>
+                <li class="menu-group-label">Agenda</li>
                 <li><button id="btn-agenda" onclick="mostrarSecao('agenda')"><i class="fas fa-calendar-alt"></i> Agenda</button></li>
-                <li><button id="btn-prontuarios" onclick="mostrarSecao('prontuarios')"><i class="fas fa-notes-medical"></i> Prontuários</button></li>
-                <li class="menu-group-label">Gestão</li>
-                <li><button id="btn-financeiro" onclick="mostrarSecao('financeiro')"><i class="fas fa-chart-line"></i> Financeiro</button></li>
-                <li><button id="btn-relatorio" onclick="mostrarSecao('relatorio')"><i class="fas fa-file-alt"></i> Relatórios</button></li>
-                <li><button id="btn-config" onclick="mostrarSecao('config')"><i class="fas fa-cog"></i> Configurações</button></li>
+                <li class="menu-group-label">Cadastros</li>
+                <li><button id="btn-profissionais" onclick="mostrarSecao('profissionais')"><i class="fas fa-user-md"></i> Profissionais</button></li>
+                <li><button id="btn-pacientes" onclick="mostrarSecao('pacientes')"><i class="fas fa-user-injured"></i> Pacientes</button></li>
+                <li class="menu-group-label">Financeiro</li>
+                <li><button id="btn-pacotes" onclick="mostrarSecao('pacotes')"><i class="fas fa-box"></i> Pacotes e Pagamento</button></li>
+                <li class="menu-group-label">Documentos</li>
+                <li><button id="btn-documentos" onclick="mostrarSecao('documentos')"><i class="fas fa-file-pdf"></i> Recibos e Declarações</button></li>
             </ul>
             <div class="sidebar-footer">
-                <div style="font-size:12px;color:#475569;margin-bottom:10px;padding:0 4px;"><i class="fas fa-user-shield" style="color:#a78bfa;margin-right:6px;"></i><span id="nome-admin-sidebar">Admin</span></div>
+                <div style="font-size:12px;color:#475569;margin-bottom:10px;padding:0 4px;">
+                    <i class="fas fa-id-badge" style="color:#60a5fa;margin-right:6px;"></i>
+                    <span id="nome-sec-sidebar">Secretaria</span>
+                </div>
                 <button class="btn-sair" onclick="sair()"><i class="fas fa-sign-out-alt"></i> Sair</button>
             </div>
         </nav>
@@ -738,44 +624,39 @@
 
             <!-- DASHBOARD -->
             <section id="sec-dashboard" class="section active-section">
-                <div class="section-header"><div><h2>Dashboard</h2><p id="txt-bom-dia">Bem-vindo ao painel administrativo</p></div></div>
-                <div class="dashboard-cards">
-                    <div class="card-stat"><div class="card-stat-icon icon-purple"><i class="fas fa-users"></i></div><div><h3 id="stat-membros">—</h3><p>Membros ativos</p></div></div>
-                    <div class="card-stat"><div class="card-stat-icon icon-blue"><i class="fas fa-user-injured"></i></div><div><h3 id="stat-pacientes">—</h3><p>Pacientes</p></div></div>
-                    <div class="card-stat"><div class="card-stat-icon icon-green"><i class="fas fa-calendar-check"></i></div><div><h3 id="stat-hoje">—</h3><p>Consultas hoje</p></div></div>
-                    <div class="card-stat"><div class="card-stat-icon icon-amber"><i class="fas fa-dollar-sign"></i></div><div><h3 id="stat-mes">—</h3><p>Receita do mês</p></div></div>
-                </div>
-                <div class="table-card">
-                    <div class="table-card-header"><h3><i class="fas fa-calendar-alt" style="color:#a78bfa;margin-right:8px;"></i>Próximas consultas (7 dias)</h3></div>
-                    <div id="lista-proximas"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Carregando...</p></div></div>
-                </div>
-            </section>
-
-            <!-- EQUIPE -->
-            <section id="sec-equipe" class="section">
                 <div class="section-header">
-                    <div><h2>Equipe da Clínica</h2><p>Cadastre e gerencie profissionais e secretarias</p></div>
-                    <button class="btn btn-primary" onclick="abrirModalCadastro()"><i class="fas fa-user-plus"></i> Cadastrar membro</button>
+                    <div><h2>Olá, <span id="nome-sec-header">Secretaria</span> 👋</h2><p id="data-hoje-dash"></p></div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px;">
+                    <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;">
+                        <div style="width:44px;height:44px;background:rgba(96,165,250,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#60a5fa;font-size:18px;"><i class="fas fa-calendar-check"></i></div>
+                        <div><div id="stat-hoje" style="font-size:26px;font-weight:700;color:#f1f5f9;">—</div><div style="font-size:12px;color:#64748b;">Consultas hoje</div></div>
+                    </div>
+                    <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;">
+                        <div style="width:44px;height:44px;background:rgba(52,211,153,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#34d399;font-size:18px;"><i class="fas fa-user-md"></i></div>
+                        <div><div id="stat-profs" style="font-size:26px;font-weight:700;color:#f1f5f9;">—</div><div style="font-size:12px;color:#64748b;">Profissionais</div></div>
+                    </div>
+                    <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;">
+                        <div style="width:44px;height:44px;background:rgba(139,92,246,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#a78bfa;font-size:18px;"><i class="fas fa-user-injured"></i></div>
+                        <div><div id="stat-pacientes" style="font-size:26px;font-weight:700;color:#f1f5f9;">—</div><div style="font-size:12px;color:#64748b;">Pacientes</div></div>
+                    </div>
                 </div>
                 <div class="table-card">
-                    <div class="table-card-header">
-                        <h3>Membros ativos</h3>
-                        <input type="text" id="busca-membro" placeholder="Buscar por nome..." oninput="filtrarMembros()" style="background:#0a0f1a;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-family:Roboto,sans-serif;font-size:13px;padding:7px 12px;outline:none;width:200px;">
-                    </div>
-                    <table>
-                        <thead><tr><th>Nome</th><th>E-mail</th><th>Especialidade</th><th>Papel</th><th>Pacientes</th><th>Último acesso</th><th>Ações</th></tr></thead>
-                        <tbody id="tbody-membros"><tr><td colspan="7"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div></td></tr></tbody>
-                    </table>
+                    <div class="table-card-header"><h3><i class="fas fa-calendar-alt" style="color:#60a5fa;margin-right:8px;"></i>Agenda do dia</h3></div>
+                    <div id="agenda-hoje-lista"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Carregando...</p></div></div>
                 </div>
             </section>
 
             <!-- AGENDA -->
             <section id="sec-agenda" class="section">
                 <div class="section-header">
-                    <div><h2>Agenda da Clínica</h2><p>Gerencie a agenda de cada profissional</p></div>
+                    <div><h2>Agenda</h2><p>Gerencie a agenda de todos os profissionais</p></div>
                     <button class="btn btn-primary" onclick="abrirModalAgenda()"><i class="fas fa-plus"></i> Novo agendamento</button>
                 </div>
-                <div style="margin-bottom:16px;"><label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:8px;">Selecione o profissional</label><div class="agenda-chips" id="chips-prof"></div></div>
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:8px;">Profissional</label>
+                    <div class="agenda-prof-selector" id="chips-agenda"></div>
+                </div>
                 <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
                     <div class="form-group" style="margin:0;flex:1;min-width:140px;"><label>Data início</label><input type="date" id="agenda-inicio" onchange="carregarAgenda()"></div>
                     <div class="form-group" style="margin:0;flex:1;min-width:140px;"><label>Data fim</label><input type="date" id="agenda-fim" onchange="carregarAgenda()"></div>
@@ -788,117 +669,168 @@
                 </div>
             </section>
 
-            <!-- PRONTUÁRIOS -->
-            <section id="sec-prontuarios" class="section">
-                <div class="section-header"><div><h2>Prontuários</h2><p>Todos os pacientes da clínica</p></div></div>
-                <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-                    <input type="text" id="busca-paciente" placeholder="Buscar paciente..." oninput="filtrarPacientes()" style="flex:1;min-width:200px;background:#111827;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-family:Roboto,sans-serif;font-size:14px;padding:10px 14px;outline:none;">
-                    <select id="filtro-prof-pac" onchange="filtrarPacientes()" style="background:#111827;border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:#e2e8f0;font-family:Roboto,sans-serif;font-size:13px;padding:10px 14px;outline:none;"><option value="">Todos os profissionais</option></select>
-                </div>
-                <div id="painel-lista-pac">
-                    <div class="table-card">
-                        <table>
-                            <thead><tr><th>Paciente</th><th>Profissional</th><th>Contato</th><th>Convênio</th><th>Ações</th></tr></thead>
-                            <tbody id="tbody-pacientes"><tr><td colspan="5"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div></td></tr></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="painel-evolucoes" style="display:none;">
-                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-                        <button class="btn btn-outline btn-sm" onclick="fecharEvolucoes()"><i class="fas fa-arrow-left"></i> Voltar</button>
-                        <h3 id="titulo-evolucoes" style="font-size:16px;color:#f1f5f9;"></h3>
-                    </div>
-                    <div id="lista-evolucoes"></div>
-                </div>
-            </section>
-
-            <!-- FINANCEIRO -->
-            <section id="sec-financeiro" class="section">
+            <!-- PROFISSIONAIS -->
+            <section id="sec-profissionais" class="section">
                 <div class="section-header">
-                    <div><h2>Financeiro</h2><p>Entradas e saídas de toda a clínica</p></div>
-                    <button class="btn btn-primary" onclick="abrirModalLancamento()"><i class="fas fa-plus"></i> Novo lançamento</button>
-                </div>
-                <div class="fin-filtros">
-                    <div class="form-group" style="margin:0;flex:1;min-width:130px;"><label>Mês/Ano</label><input type="month" id="fin-mes" onchange="carregarFinanceiro()"></div>
-                    <div class="form-group" style="margin:0;flex:1;min-width:150px;"><label>Profissional</label><select id="fin-prof-filtro" onchange="carregarFinanceiro()"><option value="">Todos</option></select></div>
-                    <div class="form-group" style="margin:0;flex:1;min-width:120px;"><label>Tipo</label><select id="fin-tipo-filtro" onchange="carregarFinanceiro()"><option value="">Todos</option><option value="entrada">Entradas</option><option value="saida">Saídas</option></select></div>
-                </div>
-                <div class="fin-resumo">
-                    <div class="fin-card"><h4><i class="fas fa-arrow-up" style="color:#34d399;margin-right:4px;"></i>Total entradas</h4><div class="valor verde" id="fin-total-entrada">R$ —</div></div>
-                    <div class="fin-card"><h4><i class="fas fa-arrow-down" style="color:#f87171;margin-right:4px;"></i>Total saídas</h4><div class="valor vermelho" id="fin-total-saida">R$ —</div></div>
-                    <div class="fin-card"><h4><i class="fas fa-balance-scale" style="color:#60a5fa;margin-right:4px;"></i>Saldo</h4><div class="valor azul" id="fin-saldo">R$ —</div></div>
+                    <div><h2>Profissionais</h2><p>Cadastre e gerencie a equipe da clínica</p></div>
+                    <button class="btn btn-primary" onclick="abrirModalProf()"><i class="fas fa-user-plus"></i> Cadastrar profissional</button>
                 </div>
                 <div class="table-card">
-                    <div class="table-card-header"><h3>Lançamentos</h3></div>
                     <table>
-                        <thead><tr><th>Data</th><th>Descrição</th><th>Profissional</th><th>Categoria</th><th>Tipo</th><th>Valor</th><th>Ações</th></tr></thead>
-                        <tbody id="tbody-financeiro"><tr><td colspan="7"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div></td></tr></tbody>
+                        <thead><tr><th>Nome</th><th>E-mail</th><th>Especialidade</th><th>CRP / CRM</th><th>Telefone</th><th>Papel</th></tr></thead>
+                        <tbody id="tbody-profissionais"><tr><td colspan="6"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div></td></tr></tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- RELATÓRIOS -->
-            <section id="sec-relatorio" class="section">
-                <div class="section-header"><div><h2>Relatórios</h2><p>Gere relatórios financeiros e de atendimento</p></div></div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
-                    <div style="background:#111827;border:1px solid rgba(139,92,246,0.12);border-radius:12px;padding:24px;">
-                        <h3 style="font-size:15px;color:#f1f5f9;margin-bottom:4px;"><i class="fas fa-file-invoice-dollar" style="color:#a78bfa;margin-right:8px;"></i>Relatório Financeiro</h3>
-                        <p style="font-size:12px;color:#64748b;margin-bottom:18px;">Exporta entradas, saídas e saldo por período</p>
-                        <div class="form-grid-2" style="gap:10px;margin-bottom:14px;">
-                            <div class="form-group" style="margin:0;"><label>De</label><input type="date" id="rel-fin-de"></div>
-                            <div class="form-group" style="margin:0;"><label>Até</label><input type="date" id="rel-fin-ate"></div>
-                        </div>
-                        <div class="form-group" style="margin-bottom:14px;"><label>Profissional</label><select id="rel-fin-prof"><option value="">Todos</option></select></div>
-                        <button class="btn btn-outline" onclick="gerarRelatorioFinanceiro()" style="width:100%;justify-content:center;"><i class="fas fa-download"></i> Gerar CSV</button>
+            <!-- PACIENTES -->
+            <section id="sec-pacientes" class="section">
+                <div class="section-header">
+                    <div><h2>Pacientes</h2><p>Todos os pacientes da clínica</p></div>
+                    <button class="btn btn-primary" onclick="abrirModalPaciente()"><i class="fas fa-plus"></i> Novo paciente</button>
+                </div>
+                <div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;">
+                    <input type="text" id="busca-paciente" placeholder="Buscar paciente..." oninput="filtrarPacientes()"
+                           style="flex:1;min-width:200px;background:#111827;border:1px solid rgba(96,165,250,0.2);border-radius:8px;color:#e2e8f0;font-family:Roboto,sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+                    <select id="filtro-prof-pac" onchange="filtrarPacientes()"
+                            style="background:#111827;border:1px solid rgba(96,165,250,0.2);border-radius:8px;color:#e2e8f0;font-family:Roboto,sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+                        <option value="">Todos os profissionais</option>
+                    </select>
+                </div>
+                <div class="table-card">
+                    <table>
+                        <thead><tr><th>Paciente</th><th>Profissional</th><th>Contato</th><th>Convênio / Pagamento</th></tr></thead>
+                        <tbody id="tbody-pacientes"><tr><td colspan="4"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div></td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- PACOTES E PAGAMENTO -->
+            <section id="sec-pacotes" class="section">
+                <div class="section-header">
+                    <div><h2>Pacotes e Pagamento</h2><p>Gerencie pacotes e formas de pagamento dos pacientes</p></div>
+                </div>
+                <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:20px;margin-bottom:24px;">
+                    <p style="font-size:13px;color:#94a3b8;margin-bottom:16px;">Selecione um paciente para ver e editar informações de pagamento.</p>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <select id="pacote-paciente-sel"
+                                style="flex:2;min-width:200px;background:#0a0f1a;border:1px solid rgba(96,165,250,0.2);border-radius:8px;color:#e2e8f0;font-family:Roboto,sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+                            <option value="">Selecione o paciente...</option>
+                        </select>
+                        <button class="btn btn-outline" onclick="carregarPacotePaciente()"><i class="fas fa-search"></i> Buscar</button>
                     </div>
-                    <div style="background:#111827;border:1px solid rgba(139,92,246,0.12);border-radius:12px;padding:24px;">
-                        <h3 style="font-size:15px;color:#f1f5f9;margin-bottom:4px;"><i class="fas fa-calendar-check" style="color:#34d399;margin-right:8px;"></i>Relatório de Atendimentos</h3>
-                        <p style="font-size:12px;color:#64748b;margin-bottom:18px;">Total de consultas por profissional e período</p>
-                        <div class="form-grid-2" style="gap:10px;margin-bottom:14px;">
-                            <div class="form-group" style="margin:0;"><label>De</label><input type="date" id="rel-at-de"></div>
-                            <div class="form-group" style="margin:0;"><label>Até</label><input type="date" id="rel-at-ate"></div>
+                </div>
+                <div id="painel-pacote" style="display:none;">
+                    <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:24px;">
+                        <h3 style="font-size:15px;color:#f1f5f9;margin-bottom:18px;" id="titulo-pacote-pac">Informações do paciente</h3>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Modo de pagamento</label>
+                                <select id="pac-modo-pagamento">
+                                    <option value="">Selecione...</option>
+                                    <option value="particular">Particular</option>
+                                    <option value="convenio">Convênio</option>
+                                    <option value="gratuito">Gratuito / Pro bono</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Convênio (se houver)</label>
+                                <input type="text" id="pac-convenio" placeholder="Ex: Unimed, Amil...">
+                            </div>
+                            <div class="form-group">
+                                <label>Valor por sessão (R$)</label>
+                                <input type="number" id="pac-valor-sessao" placeholder="0,00" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label>Observações de pagamento</label>
+                                <input type="text" id="pac-obs-pagamento" placeholder="Observações...">
+                            </div>
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;"><label>Profissional</label><select id="rel-at-prof"><option value="">Todos</option></select></div>
-                        <button class="btn btn-green" onclick="gerarRelatorioAtendimentos()" style="width:100%;justify-content:center;"><i class="fas fa-download"></i> Gerar CSV</button>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+                            <button class="btn btn-primary" onclick="salvarPagamentoPaciente()"><i class="fas fa-save"></i> Salvar</button>
+                            <span id="pacote-feedback" style="font-size:13px;align-self:center;display:none;"></span>
+                        </div>
                     </div>
                 </div>
             </section>
-            <!-- CONFIGURAÇÕES -->
-            <section id="sec-config" class="section">
-                <div class="section-header"><div><h2>Configurações da Clínica</h2><p>Dados que aparecem em todos os relatórios e documentos</p></div></div>
-                <!-- Logo -->
-                <div style="background:#111827;border:1px solid rgba(139,92,246,0.12);border-radius:12px;padding:24px;margin-bottom:20px;">
-                    <h3 style="font-size:14px;color:#a78bfa;margin-bottom:16px;"><i class="fas fa-image" style="margin-right:8px;"></i>Logo da Clínica</h3>
-                    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-                        <div id="logo-preview" style="width:120px;height:120px;background:#0a0f1a;border:2px dashed rgba(139,92,246,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
-                            <i class="fas fa-image" style="font-size:32px;color:#475569;" id="logo-icon"></i>
-                            <img id="logo-img" src="" style="width:100%;height:100%;object-fit:contain;display:none;">
+
+
+            <!-- DOCUMENTOS -->
+            <section id="sec-documentos" class="section">
+                <div class="section-header">
+                    <div><h2>Recibos e Declarações</h2><p>Gere documentos com o logo e dados da clínica</p></div>
+                </div>
+
+                <!-- Tabs -->
+                <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+                    <button id="tab-recibo" onclick="trocarTab('recibo')" class="tab-btn tab-ativo">
+                        <i class="fas fa-receipt"></i> Recibo de Pagamento
+                    </button>
+                    <button id="tab-nota" onclick="trocarTab('nota')" class="tab-btn">
+                        <i class="fas fa-file-invoice-dollar"></i> Nota Fiscal
+                    </button>
+                    <button id="tab-decl" onclick="trocarTab('decl')" class="tab-btn">
+                        <i class="fas fa-file-signature"></i> Declaração de Horas
+                    </button>
+                </div>
+
+                <!-- RECIBO -->
+                <div id="form-recibo" class="doc-form">
+                    <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:24px;">
+                        <div class="form-grid-2">
+                            <div class="form-group"><label>Paciente *</label><select id="rec-paciente"><option value="">Selecione...</option></select></div>
+                            <div class="form-group"><label>Profissional *</label><select id="rec-profissional"><option value="">Selecione...</option></select></div>
+                            <div class="form-group"><label>Data do serviço *</label><input type="date" id="rec-data"></div>
+                            <div class="form-group"><label>Valor (R$) *</label><input type="number" id="rec-valor" placeholder="0,00" step="0.01"></div>
+                            <div class="form-group">
+                                <label>Forma de pagamento</label>
+                                <select id="rec-pagamento">
+                                    <option value="Dinheiro">Dinheiro</option>
+                                    <option value="PIX">PIX</option>
+                                    <option value="Cartão de crédito">Cartão de crédito</option>
+                                    <option value="Cartão de débito">Cartão de débito</option>
+                                    <option value="Transferência bancária">Transferência bancária</option>
+                                    <option value="Convênio">Convênio</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label>Número do recibo</label><input type="text" id="rec-numero" placeholder="001"></div>
                         </div>
-                        <div>
-                            <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Formatos aceitos: PNG, JPG, SVG. Máximo 5MB.<br>Recomendado: fundo transparente (PNG).</p>
-                            <label style="cursor:pointer;" class="btn btn-outline"><i class="fas fa-upload"></i> Escolher logo<input type="file" id="input-logo" accept="image/*" style="display:none;" onchange="previewLogo(this)"></label>
-                            <button class="btn btn-primary" style="margin-left:8px;" onclick="uploadLogo()"><i class="fas fa-save"></i> Salvar logo</button>
-                        </div>
+                        <div class="form-group"><label>Descrição do serviço *</label><input type="text" id="rec-descricao" placeholder="Ex: Consulta de psicoterapia individual — 50 minutos"></div>
+                        <div class="form-group"><label>Observações</label><input type="text" id="rec-obs" placeholder="Opcional"></div>
+                        <button class="btn btn-primary" style="margin-top:8px;" onclick="gerarRecibo()"><i class="fas fa-print"></i> Gerar e imprimir recibo</button>
                     </div>
                 </div>
-                <!-- Dados da clínica -->
-                <div style="background:#111827;border:1px solid rgba(139,92,246,0.12);border-radius:12px;padding:24px;">
-                    <h3 style="font-size:14px;color:#a78bfa;margin-bottom:16px;"><i class="fas fa-building" style="margin-right:8px;"></i>Dados da Clínica</h3>
-                    <div class="form-grid-2">
-                        <div class="form-group"><label>Nome da clínica *</label><input type="text" id="cfg-nome" placeholder="Nome oficial"></div>
-                        <div class="form-group"><label>CNPJ</label><input type="text" id="cfg-cnpj" placeholder="00.000.000/0000-00"></div>
-                        <div class="form-group"><label>Telefone</label><input type="text" id="cfg-telefone" placeholder="(11) 99999-9999"></div>
-                        <div class="form-group"><label>E-mail</label><input type="email" id="cfg-email" placeholder="contato@clinica.com"></div>
-                        <div class="form-group"><label>Endereço</label><input type="text" id="cfg-endereco" placeholder="Rua, número"></div>
-                        <div class="form-group"><label>Cidade</label><input type="text" id="cfg-cidade" placeholder="São Paulo"></div>
-                        <div class="form-group"><label>Estado</label><input type="text" id="cfg-estado" placeholder="SP" maxlength="2"></div>
-                        <div class="form-group"><label>CEP</label><input type="text" id="cfg-cep" placeholder="00000-000"></div>
-                        <div class="form-group"><label>Site</label><input type="text" id="cfg-site" placeholder="www.clinica.com.br"></div>
+
+                <!-- NOTA FISCAL -->
+                <div id="form-nota" class="doc-form" style="display:none;">
+                    <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:24px;">
+                        <div class="form-grid-2">
+                            <div class="form-group"><label>Paciente / Tomador *</label><select id="nota-paciente"><option value="">Selecione...</option></select></div>
+                            <div class="form-group"><label>Profissional *</label><select id="nota-profissional"><option value="">Selecione...</option></select></div>
+                            <div class="form-group"><label>Data de emissão *</label><input type="date" id="nota-data"></div>
+                            <div class="form-group"><label>Valor (R$) *</label><input type="number" id="nota-valor" placeholder="0,00" step="0.01"></div>
+                            <div class="form-group"><label>Número da nota</label><input type="text" id="nota-numero" placeholder="001"></div>
+                            <div class="form-group"><label>Alíquota ISS (%)</label><input type="number" id="nota-iss" value="2" step="0.1" min="0" max="5"></div>
+                        </div>
+                        <div class="form-group"><label>Descrição do serviço *</label><input type="text" id="nota-descricao" placeholder="Ex: Serviços de psicoterapia individual"></div>
+                        <div class="form-group"><label>CPF / CNPJ do tomador</label><input type="text" id="nota-cpf-tomador" placeholder="000.000.000-00"></div>
+                        <button class="btn btn-primary" style="margin-top:8px;" onclick="gerarNota()"><i class="fas fa-print"></i> Gerar e imprimir nota</button>
                     </div>
-                    <div class="form-group"><label>Descrição / Especialidade da clínica</label><textarea id="cfg-descricao" rows="2" placeholder="Ex: Clínica especializada em saúde mental..."></textarea></div>
-                    <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-                        <button class="btn btn-primary" onclick="salvarConfig()"><i class="fas fa-save"></i> Salvar dados</button>
-                        <span id="cfg-feedback" style="font-size:13px;display:none;"></span>
+                </div>
+
+                <!-- DECLARAÇÃO DE HORAS -->
+                <div id="form-decl" class="doc-form" style="display:none;">
+                    <div style="background:#111827;border:1px solid rgba(96,165,250,0.1);border-radius:12px;padding:24px;">
+                        <div class="form-grid-2">
+                            <div class="form-group"><label>Profissional *</label><select id="decl-profissional"><option value="">Selecione...</option></select></div>
+                            <div class="form-group"><label>Período — de *</label><input type="date" id="decl-de"></div>
+                            <div class="form-group"><label>Período — até *</label><input type="date" id="decl-ate"></div>
+                            <div class="form-group"><label>Total de horas *</label><input type="number" id="decl-horas" placeholder="Ex: 40" step="0.5"></div>
+                            <div class="form-group"><label>Total de atendimentos</label><input type="number" id="decl-atendimentos" placeholder="Ex: 32"></div>
+                            <div class="form-group"><label>Cidade e data da declaração</label><input type="text" id="decl-local" placeholder="São Paulo, 28 de maio de 2026"></div>
+                        </div>
+                        <div class="form-group"><label>Finalidade / Observações</label><input type="text" id="decl-finalidade" placeholder="Ex: Para fins de comprovação junto ao CRP"></div>
+                        <button class="btn btn-primary" style="margin-top:8px;" onclick="gerarDeclaracao()"><i class="fas fa-print"></i> Gerar e imprimir declaração</button>
                     </div>
                 </div>
             </section>
@@ -906,35 +838,71 @@
         </main>
     </div>
 
-    <!-- Modal: Cadastrar membro -->
-    <div class="modal-overlay" id="modal-cadastro">
-        <div class="modal" style="max-width:580px;">
-            <h3><i class="fas fa-user-plus" style="color:#a78bfa;margin-right:8px;"></i>Cadastrar membro na clínica</h3>
-            <div style="display:flex;gap:8px;margin-bottom:20px;">
-                <button id="aba-novo" onclick="trocarAba('novo')" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(139,92,246,0.3);background:rgba(139,92,246,0.18);color:#a78bfa;cursor:pointer;font-family:Roboto,sans-serif;font-size:13px;font-weight:500;">Criar nova conta</button>
-                <button id="aba-existente" onclick="trocarAba('existente')" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(139,92,246,0.15);background:transparent;color:#64748b;cursor:pointer;font-family:Roboto,sans-serif;font-size:13px;">Já tem conta no ProntPsi</button>
-            </div>
-            <div id="form-novo">
-                <div class="form-grid-2">
-                    <div class="form-group"><label>Nome completo *</label><input type="text" id="novo-nome" placeholder="Dr(a). Nome"></div>
-                    <div class="form-group"><label>E-mail de acesso *</label><input type="email" id="novo-email" placeholder="email@exemplo.com"></div>
-                    <div class="form-group"><label>Senha *</label><input type="password" id="novo-senha" placeholder="Mínimo 6 caracteres"></div>
-                    <div class="form-group"><label>CRP / CRM *</label><input type="text" id="novo-crp" placeholder="CRP 00/000000"></div>
-                    <div class="form-group">
-                        <label>Especialidade *</label>
-                        <select id="novo-especialidade"><option value="">Selecione...</option><option>Psicólogo</option><option>Psiquiatra</option><option>Psicanalista</option><option>Terapeuta</option><option>Neuropsicólogo</option><option>Outro</option></select>
-                    </div>
-                    <div class="form-group"><label>Telefone</label><input type="text" id="novo-telefone" placeholder="(11) 99999-9999"></div>
+    <!-- Modal: Cadastrar profissional -->
+    <div class="modal-overlay" id="modal-prof">
+        <div class="modal">
+            <h3><i class="fas fa-user-plus" style="color:#60a5fa;margin-right:8px;"></i>Cadastrar profissional</h3>
+            <div class="form-grid-2">
+                <div class="form-group"><label>Nome completo *</label><input type="text" id="prof-nome" placeholder="Dr(a). Nome"></div>
+                <div class="form-group"><label>E-mail de acesso *</label><input type="email" id="prof-email" placeholder="email@exemplo.com"></div>
+                <div class="form-group"><label>Senha de acesso *</label><input type="password" id="prof-senha" placeholder="Mínimo 6 caracteres"></div>
+                <div class="form-group"><label>CRP / CRM *</label><input type="text" id="prof-crp" placeholder="CRP 00/000000"></div>
+                <div class="form-group">
+                    <label>Especialidade *</label>
+                    <select id="prof-especialidade">
+                        <option value="">Selecione...</option>
+                        <option value="Psicólogo">Psicólogo</option>
+                        <option value="Psiquiatra">Psiquiatra</option>
+                        <option value="Psicanalista">Psicanalista</option>
+                        <option value="Terapeuta">Terapeuta</option>
+                        <option value="Neuropsicólogo">Neuropsicólogo</option>
+                        <option value="Outro">Outro</option>
+                    </select>
                 </div>
-                <div class="form-group"><label>Papel na clínica *</label><select id="novo-papel"><option value="profissional">Profissional</option><option value="secretaria">Secretaria</option></select></div>
+                <div class="form-group"><label>Telefone</label><input type="text" id="prof-telefone" placeholder="(11) 99999-9999"></div>
             </div>
-            <div id="form-existente" style="display:none;">
-                <div class="form-group"><label>E-mail cadastrado no ProntPsi *</label><input type="email" id="exist-email" placeholder="email@exemplo.com"></div>
-                <div class="form-group"><label>Papel na clínica *</label><select id="exist-papel"><option value="profissional">Profissional</option><option value="secretaria">Secretaria</option></select></div>
+            <div class="form-group">
+                <label>Papel na clínica</label>
+                <select id="prof-papel">
+                    <option value="profissional">Profissional</option>
+                    <option value="secretaria">Secretaria</option>
+                </select>
             </div>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="fecharModal('modal-cadastro')">Cancelar</button>
-                <button class="btn btn-primary" onclick="cadastrarMembro()"><i class="fas fa-save"></i> Cadastrar</button>
+                <button class="btn btn-outline" onclick="fecharModal('modal-prof')">Cancelar</button>
+                <button class="btn btn-primary" onclick="cadastrarProfissional()"><i class="fas fa-save"></i> Cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Novo paciente -->
+    <div class="modal-overlay" id="modal-paciente">
+        <div class="modal">
+            <h3><i class="fas fa-user-plus" style="color:#60a5fa;margin-right:8px;"></i>Novo paciente</h3>
+            <div class="form-grid-2">
+                <div class="form-group"><label>Nome completo *</label><input type="text" id="pac-nome" placeholder="Nome do paciente"></div>
+                <div class="form-group">
+                    <label>Profissional responsável *</label>
+                    <select id="pac-prof-resp"></select>
+                </div>
+                <div class="form-group"><label>E-mail</label><input type="email" id="pac-email" placeholder="email@exemplo.com"></div>
+                <div class="form-group"><label>Telefone</label><input type="text" id="pac-tel" placeholder="(11) 99999-9999"></div>
+                <div class="form-group"><label>Data de nascimento</label><input type="date" id="pac-nasc"></div>
+                <div class="form-group"><label>CPF</label><input type="text" id="pac-cpf" placeholder="000.000.000-00"></div>
+                <div class="form-group">
+                    <label>Modo de pagamento</label>
+                    <select id="pac-modo">
+                        <option value="">Selecione...</option>
+                        <option value="particular">Particular</option>
+                        <option value="convenio">Convênio</option>
+                        <option value="gratuito">Gratuito</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Convênio</label><input type="text" id="pac-conv" placeholder="Unimed, Amil..."></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="fecharModal('modal-paciente')">Cancelar</button>
+                <button class="btn btn-primary" onclick="cadastrarPaciente()"><i class="fas fa-save"></i> Cadastrar</button>
             </div>
         </div>
     </div>
@@ -942,15 +910,31 @@
     <!-- Modal: Agendamento -->
     <div class="modal-overlay" id="modal-agenda">
         <div class="modal">
-            <h3><i class="fas fa-calendar-plus" style="color:#a78bfa;margin-right:8px;"></i><span id="titulo-modal-agenda">Novo agendamento</span></h3>
+            <h3><i class="fas fa-calendar-plus" style="color:#60a5fa;margin-right:8px;"></i><span id="titulo-modal-agenda">Novo agendamento</span></h3>
             <input type="hidden" id="agenda-edit-id">
-            <div class="form-group"><label>Profissional *</label><select id="agenda-prof-sel" onchange="popularPacientesModal()"></select></div>
+            <div class="form-group"><label>Profissional *</label><select id="agenda-prof-sel" onchange="popularPacientesAgenda()"></select></div>
             <div class="form-group"><label>Paciente</label><select id="agenda-pac-sel"><option value="">— Nenhum —</option></select></div>
             <div class="form-grid-2">
                 <div class="form-group"><label>Início *</label><input type="datetime-local" id="agenda-dt-inicio"></div>
                 <div class="form-group"><label>Fim *</label><input type="datetime-local" id="agenda-dt-fim"></div>
-                <div class="form-group"><label>Tipo</label><select id="agenda-tipo"><option value="consulta">Consulta</option><option value="retorno">Retorno</option><option value="avaliacao">Avaliação</option><option value="bloqueio">Bloqueio</option></select></div>
-                <div class="form-group"><label>Status</label><select id="agenda-status"><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="realizado">Realizado</option><option value="cancelado">Cancelado</option></select></div>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="agenda-tipo">
+                        <option value="consulta">Consulta</option>
+                        <option value="retorno">Retorno</option>
+                        <option value="avaliacao">Avaliação</option>
+                        <option value="bloqueio">Bloqueio</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="agenda-status">
+                        <option value="agendado">Agendado</option>
+                        <option value="confirmado">Confirmado</option>
+                        <option value="realizado">Realizado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group"><label>Observações</label><textarea id="agenda-obs" rows="2"></textarea></div>
             <div class="modal-actions">
@@ -960,79 +944,40 @@
         </div>
     </div>
 
-    <!-- Modal: Lançamento financeiro -->
-    <div class="modal-overlay" id="modal-lancamento">
-        <div class="modal">
-            <h3><i class="fas fa-dollar-sign" style="color:#a78bfa;margin-right:8px;"></i><span id="titulo-modal-lanc">Novo lançamento</span></h3>
-            <input type="hidden" id="lanc-edit-id">
-            <div class="form-grid-2">
-                <div class="form-group"><label>Tipo *</label><select id="lanc-tipo"><option value="entrada">Entrada</option><option value="saida">Saída</option></select></div>
-                <div class="form-group"><label>Data *</label><input type="date" id="lanc-data"></div>
-                <div class="form-group"><label>Valor (R$) *</label><input type="number" id="lanc-valor" placeholder="0,00" step="0.01" min="0"></div>
-                <div class="form-group">
-                    <label>Categoria</label>
-                    <select id="lanc-categoria">
-                        <option value="consulta_particular">Consulta particular</option>
-                        <option value="convenio">Convênio</option>
-                        <option value="pacote">Pacote</option>
-                        <option value="aluguel">Aluguel</option>
-                        <option value="salario">Salário</option>
-                        <option value="material">Material</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="outro">Outro</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group"><label>Profissional relacionado</label><select id="lanc-prof"><option value="">— Nenhum —</option></select></div>
-            <div class="form-group"><label>Descrição *</label><input type="text" id="lanc-descricao" placeholder="Ex: Consulta paciente João"></div>
-            <div class="form-group"><label>Observações</label><textarea id="lanc-obs" rows="2"></textarea></div>
-            <div class="modal-actions">
-                <button class="btn btn-outline" onclick="fecharModal('modal-lancamento')">Cancelar</button>
-                <button class="btn btn-primary" onclick="salvarLancamento()"><i class="fas fa-save"></i> Salvar</button>
-            </div>
-        </div>
-    </div>
-
     <div id="toast"></div>
 
     <script>
         const API = 'https://prontpsiback-production.up.railway.app';
-        let TOKEN = localStorage.getItem('token_clinica') || localStorage.getItem('token');
+        let TOKEN = localStorage.getItem('token');
         let CLINICA_ID = localStorage.getItem('clinica_id');
-        let profAtual = JSON.parse(localStorage.getItem('profissional_clinica') || localStorage.getItem('profissional') || '{}');
-        let membros = [], pacientes = [], lancamentos = [], profSelecionado = null, abaAtiva = 'novo';
+        let profAtual = JSON.parse(localStorage.getItem('profissional') || '{}');
+        let membros = [], pacientes = [], profSelecionado = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
             if (!TOKEN) return location.href = 'login.html';
-            document.getElementById('nome-admin-sidebar').textContent = profAtual.nome || 'Admin';
-            document.getElementById('txt-bom-dia').textContent = `Bem-vindo, ${profAtual.nome || 'Admin'}!`;
+            document.getElementById('nome-sec-sidebar').textContent = profAtual.nome || 'Secretaria';
+            document.getElementById('nome-sec-header').textContent = profAtual.nome || 'Secretaria';
+            document.getElementById('data-hoje-dash').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
 
             if (!CLINICA_ID) {
-                const r = await apiFetch('/api/minhas-clinicas').catch(() => []);
-                if (r.length) { CLINICA_ID = r[0].id; localStorage.setItem('clinica_id', CLINICA_ID); }
+                const r = await apiFetch('/api/minhas-clinicas');
+                if (r && r.length) { CLINICA_ID = r[0].id; localStorage.setItem('clinica_id', CLINICA_ID); }
                 else { toast('Você não está vinculado a nenhuma clínica.', true); return; }
             }
 
             const clinica = await apiFetch(`/api/clinicas/${CLINICA_ID}`).catch(() => null);
             if (clinica) document.getElementById('nome-clinica-badge').textContent = clinica.nome;
 
+            await carregarMembros();
+            await carregarPacientes();
+            await carregarConfigClinica();
+            popularSelectsDocs();
+            await carregarDashboard();
+
             const hoje = new Date();
             const fim7 = new Date(); fim7.setDate(hoje.getDate() + 7);
             document.getElementById('agenda-inicio').value = hoje.toISOString().split('T')[0];
             document.getElementById('agenda-fim').value = fim7.toISOString().split('T')[0];
-            document.getElementById('fin-mes').value = hoje.toISOString().slice(0, 7);
-            const m = String(hoje.getMonth() + 1).padStart(2, '0');
-            document.getElementById('rel-fin-de').value = `${hoje.getFullYear()}-${m}-01`;
-            document.getElementById('rel-fin-ate').value = hoje.toISOString().split('T')[0];
-            document.getElementById('rel-at-de').value = `${hoje.getFullYear()}-${m}-01`;
-            document.getElementById('rel-at-ate').value = hoje.toISOString().split('T')[0];
-            document.getElementById('lanc-data').value = hoje.toISOString().split('T')[0];
-
-            await carregarMembros();
-            await carregarPacientes();
-            await carregarDashboard();
-            await carregarFinanceiro();
-            await carregarConfig();
         });
 
         async function apiFetch(path, opts = {}) {
@@ -1042,151 +987,170 @@
             return data;
         }
 
-        async function carregarDashboard() {
-            try {
-                const d = await apiFetch(`/api/clinicas/${CLINICA_ID}/dashboard?clinicaId=${CLINICA_ID}`);
-                document.getElementById('stat-membros').textContent = d.total_membros;
-                document.getElementById('stat-pacientes').textContent = d.total_pacientes;
-                document.getElementById('stat-hoje').textContent = d.consultas_hoje;
-                renderProximas(d.proximas_semana);
-            } catch (e) { toast(e.message, true); }
-            try {
-                const mes = new Date().toISOString().slice(0, 7);
-                const f = await apiFetch(`/api/clinicas/${CLINICA_ID}/financeiro?clinicaId=${CLINICA_ID}&mes=${mes}`);
-                const entradas = f.filter(l => l.tipo === 'entrada').reduce((s, l) => s + parseFloat(l.valor || 0), 0);
-                document.getElementById('stat-mes').textContent = 'R$ ' + entradas.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            } catch { document.getElementById('stat-mes').textContent = '—'; }
-        }
-
-        function renderProximas(lista) {
-            const el = document.getElementById('lista-proximas');
-            if (!lista || !lista.length) { el.innerHTML = '<div class="empty-state"><i class="fas fa-calendar"></i><p>Nenhuma consulta nos próximos 7 dias</p></div>'; return; }
-            el.innerHTML = `<table><thead><tr><th>Data/Hora</th><th>Profissional</th><th>Paciente</th><th>Tipo</th><th>Status</th></tr></thead><tbody>
-            ${lista.map(a => `<tr><td>${fmtDt(a.data_hora_inicio)}</td><td>${a.profissional_nome || '—'}</td><td>${a.paciente_nome || '—'}</td><td>${a.tipo || 'consulta'}</td><td><span class="badge badge-${a.status}">${a.status}</span></td></tr>`).join('')}
-        </tbody></table>`;
-        }
-
         async function carregarMembros() {
-            try {
-                membros = await apiFetch(`/api/clinicas/${CLINICA_ID}/membros?clinicaId=${CLINICA_ID}`);
-                renderMembros(membros); popularSelectsProf();
-            } catch (e) { toast(e.message, true); }
-        }
+            membros = await apiFetch(`/api/clinicas/${CLINICA_ID}/membros?clinicaId=${CLINICA_ID}`).catch(() => []);
+            const profissionais = membros.filter(m => m.papel === 'profissional');
+            document.getElementById('stat-profs').textContent = profissionais.length;
 
-        function renderMembros(lista) {
-            const tbody = document.getElementById('tbody-membros');
-            tbody.innerHTML = lista.length ? lista.map(m => `
-            <tr>
-                <td><strong style="color:#f1f5f9;">${m.nome}</strong></td>
-                <td style="color:#64748b;font-size:12px;">${m.email}</td>
-                <td>${m.especialidade || '—'}</td>
-                <td><span class="badge badge-${m.papel === 'admin_clinica' ? 'admin' : m.papel === 'secretaria' ? 'sec' : 'prof'}">${labelPapel(m.papel)}</span></td>
-                <td>${m.total_pacientes ?? '—'}</td>
-                <td style="color:#64748b;font-size:12px;">${m.ultimo_acesso ? fmtData(m.ultimo_acesso) : 'Nunca'}</td>
-                <td><button class="btn btn-danger btn-sm" onclick="removerMembro(${m.profissional_id},'${m.nome.replace(/'/g, "\\'")}')"><i class="fas fa-user-minus"></i></button></td>
-            </tr>`).join('') : '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-users"></i><p>Nenhum membro ainda</p></div></td></tr>';
-        }
+            // Chips de agenda
+            const chips = document.getElementById('chips-agenda');
+            chips.innerHTML = profissionais.map(p =>
+                `<div class="prof-chip" data-id="${p.profissional_id}" onclick="selecionarProf(${p.profissional_id},this)">${p.nome}</div>`
+            ).join('');
 
-        function filtrarMembros() {
-            const q = document.getElementById('busca-membro').value.toLowerCase();
-            renderMembros(membros.filter(m => m.nome.toLowerCase().includes(q) || m.email.toLowerCase().includes(q)));
-        }
+            // Select modal agenda
+            const sel = document.getElementById('agenda-prof-sel');
+            sel.innerHTML = profissionais.map(p => `<option value="${p.profissional_id}">${p.nome}</option>`).join('');
 
-        function popularSelectsProf() {
-            const profs = membros.filter(m => m.papel === 'profissional');
-            document.getElementById('chips-prof').innerHTML = profs.map(p => `<div class="prof-chip" data-id="${p.profissional_id}" onclick="selecionarProf(${p.profissional_id},this)">${p.nome}</div>`).join('');
-            const opts = profs.map(p => `<option value="${p.profissional_id}">${p.nome}</option>`).join('');
-            document.getElementById('agenda-prof-sel').innerHTML = opts;
-            document.getElementById('fin-prof-filtro').innerHTML = '<option value="">Todos</option>' + opts;
-            document.getElementById('rel-fin-prof').innerHTML = '<option value="">Todos</option>' + opts;
-            document.getElementById('rel-at-prof').innerHTML = '<option value="">Todos</option>' + opts;
-            document.getElementById('lanc-prof').innerHTML = '<option value="">— Nenhum —</option>' + opts;
-            document.getElementById('filtro-prof-pac').innerHTML = '<option value="">Todos os profissionais</option>' + opts;
-        }
+            // Select paciente responsável
+            const selResp = document.getElementById('pac-prof-resp');
+            selResp.innerHTML = profissionais.map(p => `<option value="${p.profissional_id}">${p.nome}</option>`).join('');
 
-        function abrirModalCadastro() {
-            trocarAba('novo');
-            ['novo-nome', 'novo-email', 'novo-senha', 'novo-crp', 'novo-telefone', 'exist-email'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-            document.getElementById('novo-especialidade').value = ''; document.getElementById('novo-papel').value = 'profissional'; document.getElementById('exist-papel').value = 'profissional';
-            document.getElementById('modal-cadastro').classList.add('open');
-        }
+            // Filtro profissional pacientes
+            const filtro = document.getElementById('filtro-prof-pac');
+            filtro.innerHTML = '<option value="">Todos os profissionais</option>' +
+                profissionais.map(p => `<option value="${p.profissional_id}">${p.nome}</option>`).join('');
 
-        function trocarAba(aba) {
-            abaAtiva = aba;
-            document.getElementById('form-novo').style.display = aba === 'novo' ? 'block' : 'none';
-            document.getElementById('form-existente').style.display = aba === 'existente' ? 'block' : 'none';
-            const bN = document.getElementById('aba-novo'), bE = document.getElementById('aba-existente');
-            bN.style.background = aba === 'novo' ? 'rgba(139,92,246,0.18)' : 'transparent'; bN.style.color = aba === 'novo' ? '#a78bfa' : '#64748b';
-            bE.style.background = aba === 'existente' ? 'rgba(139,92,246,0.18)' : 'transparent'; bE.style.color = aba === 'existente' ? '#a78bfa' : '#64748b';
-        }
-
-        async function cadastrarMembro() {
-            try {
-                if (abaAtiva === 'novo') {
-                    const body = { clinicaId: CLINICA_ID, nome: document.getElementById('novo-nome').value.trim(), email: document.getElementById('novo-email').value.trim(), senha: document.getElementById('novo-senha').value, crp_crm: document.getElementById('novo-crp').value.trim(), especialidade: document.getElementById('novo-especialidade').value, telefone: document.getElementById('novo-telefone').value.trim(), papel: document.getElementById('novo-papel').value };
-                    if (!body.nome || !body.email || !body.senha || !body.crp_crm || !body.especialidade) return toast('Preencha todos os campos obrigatórios (*).', true);
-                    await apiFetch(`/api/clinicas/${CLINICA_ID}/cadastrar-profissional?clinicaId=${CLINICA_ID}`, { method: 'POST', body: JSON.stringify(body) });
-                } else {
-                    const email = document.getElementById('exist-email').value.trim(), papel = document.getElementById('exist-papel').value;
-                    if (!email) return toast('Informe o e-mail.', true);
-                    await apiFetch(`/api/clinicas/${CLINICA_ID}/membros?clinicaId=${CLINICA_ID}`, { method: 'POST', body: JSON.stringify({ clinicaId: CLINICA_ID, email, papel }) });
-                }
-                fecharModal('modal-cadastro'); toast('Membro cadastrado e vinculado!');
-                await carregarMembros(); await carregarDashboard();
-            } catch (e) { toast(e.message, true); }
-        }
-
-        async function removerMembro(profId, nome) {
-            if (!confirm(`Remover ${nome} da clínica?`)) return;
-            try { await apiFetch(`/api/clinicas/${CLINICA_ID}/membros/${profId}?clinicaId=${CLINICA_ID}`, { method: 'DELETE' }); toast('Membro removido.'); await carregarMembros(); } catch (e) { toast(e.message, true); }
+            // Tabela profissionais
+            const tbody = document.getElementById('tbody-profissionais');
+            tbody.innerHTML = membros.length ? membros.map(m => `
+                <tr>
+                    <td><strong style="color:#f1f5f9;">${m.nome}</strong></td>
+                    <td style="color:#64748b;font-size:12px;">${m.email}</td>
+                    <td>${m.especialidade || '—'}</td>
+                    <td style="color:#475569;font-size:12px;">—</td>
+                    <td style="color:#475569;font-size:12px;">${m.telefone || '—'}</td>
+                    <td><span class="badge badge-${m.papel === 'secretaria' ? 'convenio' : 'particular'}">${m.papel}</span></td>
+                </tr>`).join('') : '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-users"></i><p>Nenhum membro</p></div></td></tr>';
         }
 
         async function carregarPacientes() {
             pacientes = await apiFetch(`/api/clinicas/${CLINICA_ID}/pacientes?clinicaId=${CLINICA_ID}`).catch(() => []);
+            document.getElementById('stat-pacientes').textContent = pacientes.length;
             renderPacientes(pacientes);
+
+            // Select pacote
+            const sel = document.getElementById('pacote-paciente-sel');
+            sel.innerHTML = '<option value="">Selecione o paciente...</option>' +
+                pacientes.map(p => `<option value="${p.id}">${p.nome} — ${p.profissional_nome || ''}</option>`).join('');
         }
 
-        function selecionarProf(id, el) { document.querySelectorAll('.prof-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); profSelecionado = id; carregarAgenda(); }
+        function renderPacientes(lista) {
+            const tbody = document.getElementById('tbody-pacientes');
+            tbody.innerHTML = lista.length ? lista.map(p => `
+                <tr>
+                    <td><strong style="color:#f1f5f9;">${p.nome}</strong></td>
+                    <td style="color:#60a5fa;font-size:12px;">${p.profissional_nome || '—'}</td>
+                    <td style="color:#64748b;font-size:12px;">${p.telefone || p.email || '—'}</td>
+                    <td><span class="badge badge-${p.modo_pagamento === 'convenio' ? 'convenio' : p.modo_pagamento === 'particular' ? 'particular' : 'pago'}">${p.modo_pagamento || '—'}</span> ${p.convenio ? `<span style="font-size:11px;color:#475569;">${p.convenio}</span>` : ''}</td>
+                </tr>`).join('') : '<tr><td colspan="4"><div class="empty-state"><i class="fas fa-user-injured"></i><p>Nenhum paciente</p></div></td></tr>';
+        }
+
+        function filtrarPacientes() {
+            const q = document.getElementById('busca-paciente').value.toLowerCase();
+            const profId = document.getElementById('filtro-prof-pac').value;
+            renderPacientes(pacientes.filter(p => p.nome.toLowerCase().includes(q) && (!profId || p.profissional_id == profId)));
+        }
+
+        async function carregarDashboard() {
+            const d = await apiFetch(`/api/clinicas/${CLINICA_ID}/dashboard?clinicaId=${CLINICA_ID}`).catch(() => null);
+            if (!d) return;
+            document.getElementById('stat-hoje').textContent = d.consultas_hoje;
+            const el = document.getElementById('agenda-hoje-lista');
+            const hoje = d.proximas_semana.filter(a => {
+                const dataA = new Date(a.data_hora_inicio);
+                const agora = new Date();
+                return dataA.toDateString() === agora.toDateString();
+            });
+            if (!hoje.length) { el.innerHTML = '<div class="empty-state"><i class="fas fa-calendar"></i><p>Nenhuma consulta hoje</p></div>'; return; }
+            el.innerHTML = `<table><thead><tr><th>Hora</th><th>Profissional</th><th>Paciente</th><th>Status</th></tr></thead><tbody>
+                ${hoje.map(a => `<tr><td>${fmtHora(a.data_hora_inicio)}</td><td>${a.profissional_nome}</td><td>${a.paciente_nome || '—'}</td><td><span class="badge badge-${a.status}">${a.status}</span></td></tr>`).join('')}
+            </tbody></table>`;
+        }
+
+        // ── AGENDA ──
+        function selecionarProf(id, el) {
+            document.querySelectorAll('.prof-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            profSelecionado = id;
+            carregarAgenda();
+        }
 
         async function carregarAgenda() {
             if (!profSelecionado) return;
-            const ini = document.getElementById('agenda-inicio').value, fim = document.getElementById('agenda-fim').value;
+            const ini = document.getElementById('agenda-inicio').value;
+            const fim = document.getElementById('agenda-fim').value;
             let url = `/api/clinicas/${CLINICA_ID}/agenda/${profSelecionado}?clinicaId=${CLINICA_ID}`;
-            if (ini) url += `&inicio=${ini}T00:00:00`; if (fim) url += `&fim=${fim}T23:59:59`;
+            if (ini) url += `&inicio=${ini}T00:00:00`;
+            if (fim) url += `&fim=${fim}T23:59:59`;
             const agenda = await apiFetch(url).catch(() => []);
             const profNome = membros.find(m => m.profissional_id == profSelecionado)?.nome || '';
             const tbody = document.getElementById('tbody-agenda');
-            tbody.innerHTML = agenda.length ? agenda.map(a => `<tr><td>${fmtDt(a.data_hora_inicio)}</td><td>${profNome}</td><td>${a.paciente_nome || '—'}</td><td>${a.tipo || 'consulta'}</td><td><span class="badge badge-${a.status}">${a.status}</span></td><td style="display:flex;gap:6px;"><button class="btn btn-outline btn-sm" onclick='editarAgenda(${JSON.stringify(a).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="excluirAgenda(${a.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') : '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-calendar"></i><p>Nenhum agendamento</p></div></td></tr>';
+            tbody.innerHTML = agenda.length ? agenda.map(a => `
+                <tr>
+                    <td>${fmtDt(a.data_hora_inicio)}</td>
+                    <td>${profNome}</td>
+                    <td>${a.paciente_nome || '—'}</td>
+                    <td>${a.tipo || 'consulta'}</td>
+                    <td><span class="badge badge-${a.status}">${a.status}</span></td>
+                    <td style="display:flex;gap:6px;">
+                        <button class="btn btn-outline btn-sm" onclick='editarAgenda(${JSON.stringify(a).replace(/'/g, "&#39;")})"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="excluirAgenda(${a.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`).join('') : '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-calendar"></i><p>Nenhum agendamento neste período</p></div></td></tr>';
         }
 
         function abrirModalAgenda() {
-            document.getElementById('titulo-modal-agenda').textContent = 'Novo agendamento'; document.getElementById('agenda-edit-id').value = '';
-            document.getElementById('agenda-obs').value = ''; document.getElementById('agenda-tipo').value = 'consulta'; document.getElementById('agenda-status').value = 'agendado';
+            document.getElementById('titulo-modal-agenda').textContent = 'Novo agendamento';
+            document.getElementById('agenda-edit-id').value = '';
+            document.getElementById('agenda-obs').value = '';
+            document.getElementById('agenda-tipo').value = 'consulta';
+            document.getElementById('agenda-status').value = 'agendado';
             if (profSelecionado) document.getElementById('agenda-prof-sel').value = profSelecionado;
-            popularPacientesModal(); document.getElementById('modal-agenda').classList.add('open');
+            popularPacientesAgenda();
+            document.getElementById('modal-agenda').classList.add('open');
         }
 
         function editarAgenda(a) {
-            document.getElementById('titulo-modal-agenda').textContent = 'Editar agendamento'; document.getElementById('agenda-edit-id').value = a.id;
-            document.getElementById('agenda-dt-inicio').value = a.data_hora_inicio?.slice(0, 16) || ''; document.getElementById('agenda-dt-fim').value = a.data_hora_fim?.slice(0, 16) || '';
-            document.getElementById('agenda-obs').value = a.observacoes || ''; document.getElementById('agenda-tipo').value = a.tipo || 'consulta'; document.getElementById('agenda-status').value = a.status || 'agendado';
-            popularPacientesModal(a.paciente_id); document.getElementById('modal-agenda').classList.add('open');
+            document.getElementById('titulo-modal-agenda').textContent = 'Editar agendamento';
+            document.getElementById('agenda-edit-id').value = a.id;
+            document.getElementById('agenda-dt-inicio').value = a.data_hora_inicio?.slice(0, 16) || '';
+            document.getElementById('agenda-dt-fim').value = a.data_hora_fim?.slice(0, 16) || '';
+            document.getElementById('agenda-obs').value = a.observacoes || '';
+            document.getElementById('agenda-tipo').value = a.tipo || 'consulta';
+            document.getElementById('agenda-status').value = a.status || 'agendado';
+            popularPacientesAgenda(a.paciente_id);
+            document.getElementById('modal-agenda').classList.add('open');
         }
 
-        function popularPacientesModal(sel) {
+        function popularPacientesAgenda(selecionado) {
             const profId = document.getElementById('agenda-prof-sel').value;
             const lista = pacientes.filter(p => !profId || p.profissional_id == profId);
-            document.getElementById('agenda-pac-sel').innerHTML = '<option value="">— Nenhum —</option>' + lista.map(p => `<option value="${p.id}" ${p.id == sel ? 'selected' : ''}>${p.nome}</option>`).join('');
+            const sel = document.getElementById('agenda-pac-sel');
+            sel.innerHTML = '<option value="">— Nenhum —</option>' +
+                lista.map(p => `<option value="${p.id}" ${p.id == selecionado ? 'selected' : ''}>${p.nome}</option>`).join('');
         }
 
         async function salvarAgenda() {
-            const editId = document.getElementById('agenda-edit-id').value, profId = document.getElementById('agenda-prof-sel').value;
-            const body = { clinicaId: CLINICA_ID, data_hora_inicio: document.getElementById('agenda-dt-inicio').value, data_hora_fim: document.getElementById('agenda-dt-fim').value, observacoes: document.getElementById('agenda-obs').value, tipo: document.getElementById('agenda-tipo').value, status: document.getElementById('agenda-status').value, paciente_id: document.getElementById('agenda-pac-sel').value || null };
+            const editId = document.getElementById('agenda-edit-id').value;
+            const profId = document.getElementById('agenda-prof-sel').value;
+            const body = {
+                clinicaId: CLINICA_ID,
+                data_hora_inicio: document.getElementById('agenda-dt-inicio').value,
+                data_hora_fim: document.getElementById('agenda-dt-fim').value,
+                observacoes: document.getElementById('agenda-obs').value,
+                tipo: document.getElementById('agenda-tipo').value,
+                status: document.getElementById('agenda-status').value,
+                paciente_id: document.getElementById('agenda-pac-sel').value || null
+            };
             if (!body.data_hora_inicio || !body.data_hora_fim) return toast('Preencha início e fim.', true);
             try {
                 if (editId) await apiFetch(`/api/clinicas/${CLINICA_ID}/agenda/${editId}?clinicaId=${CLINICA_ID}`, { method: 'PUT', body: JSON.stringify(body) });
                 else await apiFetch(`/api/clinicas/${CLINICA_ID}/agenda/${profId}?clinicaId=${CLINICA_ID}`, { method: 'POST', body: JSON.stringify(body) });
-                fecharModal('modal-agenda'); toast(editId ? 'Atualizado!' : 'Agendado!'); carregarAgenda(); carregarDashboard();
+                fecharModal('modal-agenda');
+                toast(editId ? 'Atualizado!' : 'Agendado!');
+                carregarAgenda();
+                carregarDashboard();
             } catch (e) { toast(e.message, true); }
         }
 
@@ -1196,93 +1160,326 @@
             toast('Removido.'); carregarAgenda();
         }
 
-        function renderPacientes(lista) {
-            const tbody = document.getElementById('tbody-pacientes');
-            tbody.innerHTML = lista.length ? lista.map(p => `<tr><td><strong style="color:#f1f5f9;">${p.nome}</strong></td><td style="color:#a78bfa;font-size:12px;">${p.profissional_nome || '—'}</td><td style="color:#64748b;font-size:12px;">${p.telefone || p.email || '—'}</td><td style="font-size:12px;">${p.convenio || p.modo_pagamento || '—'}</td><td><button class="btn btn-outline btn-sm" onclick="verEvolucoes(${p.id},'${p.nome.replace(/'/g, "\\'")}')"><i class="fas fa-notes-medical"></i> Prontuário</button></td></tr>`).join('') : '<tr><td colspan="5"><div class="empty-state"><i class="fas fa-user-injured"></i><p>Nenhum paciente</p></div></td></tr>';
+        // ── PROFISSIONAIS ──
+        function abrirModalProf() {
+            ['prof-nome', 'prof-email', 'prof-senha', 'prof-crp', 'prof-telefone'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('prof-especialidade').value = '';
+            document.getElementById('prof-papel').value = 'profissional';
+            document.getElementById('modal-prof').classList.add('open');
         }
 
-        function filtrarPacientes() {
-            const q = document.getElementById('busca-paciente').value.toLowerCase(), profId = document.getElementById('filtro-prof-pac').value;
-            renderPacientes(pacientes.filter(p => p.nome.toLowerCase().includes(q) && (!profId || p.profissional_id == profId)));
-        }
-
-        async function verEvolucoes(pacienteId, nome) {
-            document.getElementById('painel-lista-pac').style.display = 'none'; document.getElementById('painel-evolucoes').style.display = 'block';
-            document.getElementById('titulo-evolucoes').textContent = `Prontuário: ${nome}`;
-            document.getElementById('lista-evolucoes').innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div>';
+        async function cadastrarProfissional() {
+            const body = {
+                clinicaId: CLINICA_ID,
+                nome: document.getElementById('prof-nome').value.trim(),
+                email: document.getElementById('prof-email').value.trim(),
+                senha: document.getElementById('prof-senha').value,
+                crp_crm: document.getElementById('prof-crp').value.trim(),
+                especialidade: document.getElementById('prof-especialidade').value,
+                telefone: document.getElementById('prof-telefone').value.trim(),
+                papel: document.getElementById('prof-papel').value
+            };
+            if (!body.nome || !body.email || !body.senha || !body.crp_crm || !body.especialidade)
+                return toast('Preencha todos os campos obrigatórios (*).', true);
             try {
-                const evs = await apiFetch(`/api/clinicas/${CLINICA_ID}/pacientes/${pacienteId}/evolucoes?clinicaId=${CLINICA_ID}`);
-                document.getElementById('lista-evolucoes').innerHTML = evs.length ? evs.map(e => `<div class="evolucao-card"><div class="evolucao-card-header"><strong><i class="fas fa-user-md"></i> ${e.profissional_nome || 'Profissional'}</strong><span>${fmtDt(e.data_hora)}</span></div>${e.cid10 ? `<div style="font-size:11px;color:#475569;margin-bottom:6px;">CID-10: ${e.cid10}</div>` : ''}<p>${e.texto_evolucao}</p></div>`).join('') : '<div class="empty-state"><i class="fas fa-notes-medical"></i><p>Nenhuma evolução</p></div>';
+                await apiFetch(`/api/clinicas/${CLINICA_ID}/cadastrar-profissional?clinicaId=${CLINICA_ID}`, { method: 'POST', body: JSON.stringify(body) });
+                fecharModal('modal-prof');
+                toast('Profissional cadastrado e vinculado!');
+                await carregarMembros();
             } catch (e) { toast(e.message, true); }
         }
 
-        function fecharEvolucoes() { document.getElementById('painel-evolucoes').style.display = 'none'; document.getElementById('painel-lista-pac').style.display = 'block'; }
-
-        async function carregarFinanceiro() {
-            const mes = document.getElementById('fin-mes').value, profId = document.getElementById('fin-prof-filtro').value, tipo = document.getElementById('fin-tipo-filtro').value;
-            let url = `/api/clinicas/${CLINICA_ID}/financeiro?clinicaId=${CLINICA_ID}`;
-            if (mes) url += `&mes=${mes}`; if (profId) url += `&profissional_id=${profId}`; if (tipo) url += `&tipo=${tipo}`;
-            try { lancamentos = await apiFetch(url); renderFinanceiro(lancamentos); }
-            catch { document.getElementById('tbody-financeiro').innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-plus-circle"></i><p>Adicione lançamentos manualmente.</p></div></td></tr>'; atualizarResumoFin([]); }
+        // ── PACIENTES ──
+        function abrirModalPaciente() {
+            ['pac-nome', 'pac-email', 'pac-tel', 'pac-cpf', 'pac-conv'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('pac-nasc').value = '';
+            document.getElementById('pac-modo').value = '';
+            document.getElementById('modal-paciente').classList.add('open');
         }
 
-        function renderFinanceiro(lista) {
-            atualizarResumoFin(lista);
-            const tbody = document.getElementById('tbody-financeiro');
-            tbody.innerHTML = lista.length ? lista.map(l => `<tr><td>${fmtData(l.data)}</td><td>${l.descricao || '—'}</td><td style="color:#a78bfa;font-size:12px;">${l.profissional_nome || '—'}</td><td style="font-size:12px;color:#64748b;">${l.categoria || '—'}</td><td><span class="badge badge-${l.tipo}">${l.tipo}</span></td><td style="font-weight:600;color:${l.tipo === 'entrada' ? '#34d399' : '#f87171'};">R$ ${parseFloat(l.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td><td><button class="btn btn-danger btn-sm" onclick="excluirLancamento(${l.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') : '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-dollar-sign"></i><p>Nenhum lançamento neste período</p></div></td></tr>';
-        }
-
-        function atualizarResumoFin(lista) {
-            const ent = lista.filter(l => l.tipo === 'entrada').reduce((s, l) => s + parseFloat(l.valor || 0), 0);
-            const sai = lista.filter(l => l.tipo === 'saida').reduce((s, l) => s + parseFloat(l.valor || 0), 0);
-            const sal = ent - sai; const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            document.getElementById('fin-total-entrada').textContent = fmt(ent);
-            document.getElementById('fin-total-saida').textContent = fmt(sai);
-            document.getElementById('fin-saldo').textContent = fmt(sal);
-            document.getElementById('fin-saldo').className = `valor ${sal >= 0 ? 'verde' : 'vermelho'}`;
-        }
-
-        function abrirModalLancamento() {
-            document.getElementById('titulo-modal-lanc').textContent = 'Novo lançamento'; document.getElementById('lanc-edit-id').value = '';
-            document.getElementById('lanc-descricao').value = ''; document.getElementById('lanc-obs').value = ''; document.getElementById('lanc-valor').value = '';
-            document.getElementById('lanc-data').value = new Date().toISOString().split('T')[0];
-            document.getElementById('modal-lancamento').classList.add('open');
-        }
-
-        async function salvarLancamento() {
-            const body = { clinicaId: CLINICA_ID, tipo: document.getElementById('lanc-tipo').value, data: document.getElementById('lanc-data').value, valor: document.getElementById('lanc-valor').value, categoria: document.getElementById('lanc-categoria').value, profissional_id: document.getElementById('lanc-prof').value || null, descricao: document.getElementById('lanc-descricao').value.trim(), observacoes: document.getElementById('lanc-obs').value };
-            if (!body.valor || !body.data || !body.descricao) return toast('Preencha data, valor e descrição.', true);
-            try { await apiFetch(`/api/clinicas/${CLINICA_ID}/financeiro?clinicaId=${CLINICA_ID}`, { method: 'POST', body: JSON.stringify(body) }); fecharModal('modal-lancamento'); toast('Lançamento salvo!'); carregarFinanceiro(); carregarDashboard(); } catch (e) { toast(e.message, true); }
-        }
-
-        async function excluirLancamento(id) {
-            if (!confirm('Excluir lançamento?')) return;
-            try { await apiFetch(`/api/clinicas/${CLINICA_ID}/financeiro/${id}?clinicaId=${CLINICA_ID}`, { method: 'DELETE' }); toast('Removido.'); carregarFinanceiro(); } catch (e) { toast(e.message, true); }
-        }
-
-        function gerarRelatorioFinanceiro() {
-            const de = document.getElementById('rel-fin-de').value, ate = document.getElementById('rel-fin-ate').value, profId = document.getElementById('rel-fin-prof').value;
-            if (!de || !ate) return toast('Selecione o período.', true);
-            const filtrados = lancamentos.filter(l => { const d = l.data?.slice(0, 10); return d >= de && d <= ate && (!profId || l.profissional_id == profId); });
-            exportarCSV(filtrados.map(l => ({ Data: fmtData(l.data), Descrição: l.descricao, Profissional: l.profissional_nome || '', Categoria: l.categoria, Tipo: l.tipo, Valor: parseFloat(l.valor || 0).toFixed(2) })), `relatorio_financeiro_${de}_${ate}.csv`);
-        }
-
-        async function gerarRelatorioAtendimentos() {
-            const de = document.getElementById('rel-at-de').value, ate = document.getElementById('rel-at-ate').value, profId = document.getElementById('rel-at-prof').value;
-            if (!de || !ate) return toast('Selecione o período.', true);
+        async function cadastrarPaciente() {
+            const profId = document.getElementById('pac-prof-resp').value;
+            const nome = document.getElementById('pac-nome').value.trim();
+            if (!nome || !profId) return toast('Nome e profissional responsável são obrigatórios.', true);
+            const body = {
+                nome,
+                profissional_id: profId,
+                email: document.getElementById('pac-email').value || null,
+                telefone: document.getElementById('pac-tel').value || null,
+                data_nascimento: document.getElementById('pac-nasc').value || null,
+                cpf: document.getElementById('pac-cpf').value || null,
+                modo_pagamento: document.getElementById('pac-modo').value || null,
+                convenio: document.getElementById('pac-conv').value || null
+            };
             try {
-                const lista = await apiFetch(`/api/clinicas/${CLINICA_ID}/agenda/todos?clinicaId=${CLINICA_ID}&inicio=${de}T00:00:00&fim=${ate}T23:59:59${profId ? '&profissional_id=' + profId : ''}`);
-                exportarCSV(lista.map(a => ({ Data: fmtDt(a.data_hora_inicio), Profissional: a.profissional_nome || '', Paciente: a.paciente_nome || '', Tipo: a.tipo, Status: a.status })), `relatorio_atendimentos_${de}_${ate}.csv`);
-            } catch { toast('Erro ao gerar relatório.', true); }
+                // Usa a rota da clínica para que o paciente seja corretamente
+                // vinculado ao profissional escolhido (e não à secretaria logada)
+                const res = await apiFetch(`/api/clinicas/${CLINICA_ID}/pacientes`, {
+                    method: 'POST',
+                    body: JSON.stringify(body)
+                });
+                fecharModal('modal-paciente');
+                toast('Paciente cadastrado!');
+                await carregarPacientes();
+            } catch (e) { toast(e.message || 'Erro ao cadastrar paciente.', true); }
         }
 
-        function exportarCSV(dados, nome) {
-            if (!dados.length) return toast('Nenhum dado para exportar.', true);
-            const cab = Object.keys(dados[0]).join(';'), lin = dados.map(d => Object.values(d).map(v => `"${v}"`).join(';'));
-            const blob = new Blob(['\uFEFF' + [cab, ...lin].join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nome; a.click(); toast('Relatório gerado!');
+        // ── PACOTES ──
+        let pacotePacienteAtual = null;
+        async function carregarPacotePaciente() {
+            const id = document.getElementById('pacote-paciente-sel').value;
+            if (!id) return toast('Selecione um paciente.', true);
+            const p = pacientes.find(x => x.id == id);
+            if (!p) return;
+            pacotePacienteAtual = p;
+            document.getElementById('titulo-pacote-pac').textContent = p.nome;
+            document.getElementById('pac-modo-pagamento').value = p.modo_pagamento || '';
+            document.getElementById('pac-convenio').value = p.convenio || '';
+            document.getElementById('pac-valor-sessao').value = '';
+            document.getElementById('pac-obs-pagamento').value = p.observacoes || '';
+            document.getElementById('painel-pacote').style.display = 'block';
         }
 
+        async function salvarPagamentoPaciente() {
+            if (!pacotePacienteAtual) return;
+            const body = {
+                modo_pagamento: document.getElementById('pac-modo-pagamento').value,
+                convenio: document.getElementById('pac-convenio').value,
+                observacoes: document.getElementById('pac-obs-pagamento').value
+            };
+            const fb = document.getElementById('pacote-feedback');
+            try {
+                await apiFetch(`/api/pacientes/${pacotePacienteAtual.id}`, { method: 'PUT', body: JSON.stringify({ ...pacotePacienteAtual, ...body }) });
+                fb.style.display = 'inline'; fb.style.color = '#34d399'; fb.textContent = '✓ Salvo!';
+                setTimeout(() => fb.style.display = 'none', 2500);
+                await carregarPacientes();
+            } catch (e) { fb.style.display = 'inline'; fb.style.color = '#f87171'; fb.textContent = e.message; }
+        }
+
+
+        // ── DOCUMENTOS ──
+        let CLINICA_CONFIG = {};
+
+        async function carregarConfigClinica() {
+            try {
+                const res = await fetch(`${API}/api/clinicas/${CLINICA_ID}/config?clinicaId=${CLINICA_ID}`, {
+                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                });
+                if (res.ok) CLINICA_CONFIG = await res.json();
+            } catch (_) { }
+        }
+
+        function trocarTab(tab) {
+            ['recibo', 'nota', 'decl'].forEach(t => {
+                document.getElementById('form-' + t).style.display = t === tab ? 'block' : 'none';
+                const btn = document.getElementById('tab-' + t);
+                btn.classList.toggle('tab-ativo', t === tab);
+            });
+        }
+
+        function popularSelectsDocs() {
+            const profissionais = membros.filter(m => m.papel === 'profissional');
+            const optPac = '<option value="">Selecione...</option>' + pacientes.map(p => `<option value="${p.id}" data-nome="${p.nome}" data-cpf="${p.cpf || ''}">${p.nome}</option>`).join('');
+            const optProf = '<option value="">Selecione...</option>' + profissionais.map(p => `<option value="${p.profissional_id}" data-nome="${p.nome}" data-crp="${p.crp_crm || ''}" data-esp="${p.especialidade || ''}">${p.nome}</option>`).join('');
+            ['rec-paciente', 'nota-paciente'].forEach(id => document.getElementById(id).innerHTML = optPac);
+            ['rec-profissional', 'nota-profissional', 'decl-profissional'].forEach(id => document.getElementById(id).innerHTML = optProf);
+            // Data padrão
+            const hoje = new Date().toISOString().split('T')[0];
+            ['rec-data', 'nota-data', 'decl-ate'].forEach(id => document.getElementById(id).value = hoje);
+            // Local padrão
+            document.getElementById('decl-local').value = `${CLINICA_CONFIG.cidade || 'sua cidade'}, ${new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+        }
+
+        function cabecalhoClinica() {
+            const c = CLINICA_CONFIG;
+            const logo = c.logo_url ? `<img src="${c.logo_url}" style="height:70px;max-width:200px;object-fit:contain;margin-bottom:8px;">` : '';
+            return `
+                <div style="text-align:center;border-bottom:2px solid #1e3a5f;padding-bottom:16px;margin-bottom:20px;">
+                    ${logo}
+                    <div style="font-size:18px;font-weight:700;color:#1e3a5f;">${c.nome || 'Clínica'}</div>
+                    ${c.cnpj ? `<div style="font-size:12px;color:#555;">CNPJ: ${c.cnpj}</div>` : ''}
+                    ${c.endereco ? `<div style="font-size:12px;color:#555;">${c.endereco}${c.cidade ? ', ' + c.cidade : ''}${c.estado ? ' - ' + c.estado : ''} ${c.cep || ''}</div>` : ''}
+                    ${c.telefone ? `<div style="font-size:12px;color:#555;">Tel: ${c.telefone}${c.email ? ' | ' + c.email : ''}</div>` : ''}
+                </div>`;
+        }
+
+        function rodapeDoc() {
+            return `<div style="text-align:center;border-top:1px solid #ddd;padding-top:12px;margin-top:24px;font-size:11px;color:#888;">
+                Documento gerado pelo sistema ProntPsi • ${new Date().toLocaleDateString('pt-BR')}
+            </div>`;
+        }
+
+        function abrirImpressao(html) {
+            const win = window.open('', '_blank', 'width=800,height=700');
+            win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+                <style>
+                    body { font-family: Arial, sans-serif; color: #222; background: white; padding: 40px; max-width: 750px; margin: 0 auto; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { padding: 8px 12px; text-align: left; border: 1px solid #ddd; font-size: 13px; }
+                    th { background: #f0f4f8; color: #1e3a5f; font-weight: 600; }
+                    .valor-destaque { font-size: 22px; font-weight: 700; color: #1e3a5f; }
+                    @media print { button { display: none !important; } }
+                </style>
+            </head><body>${html}
+                <div style="text-align:center;margin-top:32px;">
+                    <button onclick="window.print()" style="padding:10px 28px;background:#1e3a5f;color:white;border:none;border-radius:6px;font-size:14px;cursor:pointer;">
+                        🖨️ Imprimir / Salvar PDF
+                    </button>
+                </div>
+            </body></html>`);
+            win.document.close();
+        }
+
+        function gerarRecibo() {
+            const pacSel = document.getElementById('rec-paciente');
+            const profSel = document.getElementById('rec-profissional');
+            const valor = parseFloat(document.getElementById('rec-valor').value);
+            const data = document.getElementById('rec-data').value;
+            const desc = document.getElementById('rec-descricao').value.trim();
+            if (!pacSel.value || !profSel.value || !valor || !data || !desc)
+                return toast('Preencha todos os campos obrigatórios.', true);
+
+            const pacNome = pacSel.options[pacSel.selectedIndex].dataset.nome;
+            const pacCpf = pacSel.options[pacSel.selectedIndex].dataset.cpf;
+            const profNome = profSel.options[profSel.selectedIndex].dataset.nome;
+            const profCrp = profSel.options[profSel.selectedIndex].dataset.crp;
+            const profEsp = profSel.options[profSel.selectedIndex].dataset.esp;
+            const num = document.getElementById('rec-numero').value || '001';
+            const pgto = document.getElementById('rec-pagamento').value;
+            const obs = document.getElementById('rec-obs').value;
+            const valorFmt = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            const html = `
+                ${cabecalhoClinica()}
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <h2 style="font-size:20px;color:#1e3a5f;font-weight:700;">RECIBO DE PAGAMENTO</h2>
+                    <span style="font-size:13px;color:#555;">Nº ${num} | ${new Date(data + 'T12:00:00').toLocaleDateString('pt-BR')}</span>
+                </div>
+                <table style="margin-bottom:20px;">
+                    <tr><th style="width:35%">Paciente</th><td>${pacNome}${pacCpf ? ' | CPF: ' + pacCpf : ''}</td></tr>
+                    <tr><th>Profissional</th><td>${profNome}${profCrp ? ' | ' + profCrp : ''} ${profEsp ? '| ' + profEsp : ''}</td></tr>
+                    <tr><th>Serviço prestado</th><td>${desc}</td></tr>
+                    <tr><th>Forma de pagamento</th><td>${pgto}</td></tr>
+                    ${obs ? `<tr><th>Observações</th><td>${obs}</td></tr>` : ''}
+                </table>
+                <div style="background:#f0f4f8;border-radius:8px;padding:16px;text-align:center;margin-bottom:24px;">
+                    <div style="font-size:13px;color:#555;margin-bottom:4px;">VALOR RECEBIDO</div>
+                    <div class="valor-destaque">${valorFmt}</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px;">
+                    <div style="text-align:center;">
+                        <div style="border-top:1px solid #555;padding-top:8px;font-size:12px;color:#555;">Assinatura do profissional<br>${profNome}</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="border-top:1px solid #555;padding-top:8px;font-size:12px;color:#555;">Assinatura do paciente<br>${pacNome}</div>
+                    </div>
+                </div>
+                ${rodapeDoc()}`;
+
+            abrirImpressao(html);
+        }
+
+        function gerarNota() {
+            const pacSel = document.getElementById('nota-paciente');
+            const profSel = document.getElementById('nota-profissional');
+            const valor = parseFloat(document.getElementById('nota-valor').value);
+            const data = document.getElementById('nota-data').value;
+            const desc = document.getElementById('nota-descricao').value.trim();
+            if (!pacSel.value || !profSel.value || !valor || !data || !desc)
+                return toast('Preencha todos os campos obrigatórios.', true);
+
+            const c = CLINICA_CONFIG;
+            const pacNome = pacSel.options[pacSel.selectedIndex].dataset.nome;
+            const profNome = profSel.options[profSel.selectedIndex].dataset.nome;
+            const profCrp = profSel.options[profSel.selectedIndex].dataset.crp;
+            const num = document.getElementById('nota-numero').value || '001';
+            const iss = parseFloat(document.getElementById('nota-iss').value) || 2;
+            const cpfTom = document.getElementById('nota-cpf-tomador').value;
+            const valorISS = valor * iss / 100;
+            const valorFmt = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const issFmt = valorISS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            const html = `
+                ${cabecalhoClinica()}
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <h2 style="font-size:20px;color:#1e3a5f;font-weight:700;">NOTA FISCAL DE SERVIÇOS</h2>
+                    <span style="font-size:13px;color:#555;">Nº ${num} | ${new Date(data + 'T12:00:00').toLocaleDateString('pt-BR')}</span>
+                </div>
+                <table style="margin-bottom:16px;">
+                    <tr><th colspan="2" style="background:#1e3a5f;color:white;">PRESTADOR DE SERVIÇOS</th></tr>
+                    <tr><th style="width:35%">Razão Social</th><td>${c.nome || ''}</td></tr>
+                    ${c.cnpj ? `<tr><th>CNPJ</th><td>${c.cnpj}</td></tr>` : ''}
+                    ${c.endereco ? `<tr><th>Endereço</th><td>${c.endereco}${c.cidade ? ', ' + c.cidade : ''}${c.estado ? ' - ' + c.estado : ''}</td></tr>` : ''}
+                    <tr><th>Profissional</th><td>${profNome}${profCrp ? ' | ' + profCrp : ''}</td></tr>
+                </table>
+                <table style="margin-bottom:16px;">
+                    <tr><th colspan="2" style="background:#1e3a5f;color:white;">TOMADOR DE SERVIÇOS</th></tr>
+                    <tr><th style="width:35%">Nome</th><td>${pacNome}</td></tr>
+                    ${cpfTom ? `<tr><th>CPF / CNPJ</th><td>${cpfTom}</td></tr>` : ''}
+                </table>
+                <table style="margin-bottom:16px;">
+                    <tr><th colspan="2" style="background:#1e3a5f;color:white;">DISCRIMINAÇÃO DO SERVIÇO</th></tr>
+                    <tr><td colspan="2">${desc}</td></tr>
+                </table>
+                <table>
+                    <tr><th>Valor bruto</th><td>${valorFmt}</td></tr>
+                    <tr><th>ISS (${iss}%)</th><td>${issFmt}</td></tr>
+                    <tr><th style="color:#1e3a5f;">Valor líquido</th><td class="valor-destaque">${(valor - valorISS).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td></tr>
+                </table>
+                <div style="font-size:11px;color:#888;margin-top:12px;">* Este documento tem caráter informativo. A nota fiscal oficial deve ser emitida pelo sistema municipal de NFS-e.</div>
+                ${rodapeDoc()}`;
+
+            abrirImpressao(html);
+        }
+
+        function gerarDeclaracao() {
+            const profSel = document.getElementById('decl-profissional');
+            const de = document.getElementById('decl-de').value;
+            const ate = document.getElementById('decl-ate').value;
+            const horas = document.getElementById('decl-horas').value;
+            const atend = document.getElementById('decl-atendimentos').value;
+            const local = document.getElementById('decl-local').value;
+            const final = document.getElementById('decl-finalidade').value;
+            if (!profSel.value || !de || !ate || !horas)
+                return toast('Preencha profissional, período e total de horas.', true);
+
+            const c = CLINICA_CONFIG;
+            const profNome = profSel.options[profSel.selectedIndex].dataset.nome;
+            const profCrp = profSel.options[profSel.selectedIndex].dataset.crp;
+            const profEsp = profSel.options[profSel.selectedIndex].dataset.esp;
+            const deFmt = new Date(de + 'T12:00:00').toLocaleDateString('pt-BR');
+            const ateFmt = new Date(ate + 'T12:00:00').toLocaleDateString('pt-BR');
+
+            const html = `
+                ${cabecalhoClinica()}
+                <h2 style="text-align:center;font-size:18px;color:#1e3a5f;font-weight:700;margin-bottom:24px;text-transform:uppercase;letter-spacing:1px;">
+                    Declaração de Horas de Atendimento
+                </h2>
+                <p style="font-size:14px;line-height:1.9;text-align:justify;">
+                    ${c.nome ? `A clínica <strong>${c.nome}</strong>${c.cnpj ? ', inscrita no CNPJ ' + c.cnpj + ',' : ''} declara` : 'Declaramos'} que o(a) profissional
+                    <strong>${profNome}</strong>${profCrp ? ' (' + profCrp + ')' : ''} ${profEsp ? ', ' + profEsp + ',' : ''}
+                    prestou atendimentos nesta clínica no período de <strong>${deFmt}</strong> a <strong>${ateFmt}</strong>,
+                    totalizando <strong>${horas} hora(s)</strong> de atendimento clínico
+                    ${atend ? `, distribuídas em <strong>${atend} atendimentos</strong>` : ''}.
+                </p>
+                ${final ? `<p style="font-size:14px;line-height:1.9;margin-top:12px;">${final}.</p>` : ''}
+                <p style="font-size:14px;line-height:1.9;margin-top:12px;">
+                    Por ser verdade, firmamos a presente declaração.
+                </p>
+                <div style="margin-top:48px;text-align:center;">
+                    <div style="font-size:13px;color:#555;margin-bottom:32px;">${local}</div>
+                    <div style="display:inline-block;border-top:1px solid #555;padding-top:8px;min-width:260px;">
+                        <div style="font-size:13px;color:#333;font-weight:600;">${c.nome || 'Clínica'}</div>
+                        ${c.cnpj ? `<div style="font-size:12px;color:#555;">CNPJ: ${c.cnpj}</div>` : ''}
+                        <div style="font-size:12px;color:#555;">Responsável pela clínica</div>
+                    </div>
+                </div>
+                ${rodapeDoc()}`;
+
+            abrirImpressao(html);
+        }
+
+        // ── UTILS ──
         function mostrarSecao(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
             document.getElementById('sec-' + id).classList.add('active-section');
@@ -1292,91 +1489,10 @@
         }
         function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('open'); }
-        function sair() { ['token', 'token_clinica', 'clinica_id', 'profissional', 'profissional_clinica'].forEach(k => localStorage.removeItem(k)); location.href = 'login.html'; }
+        function sair() { ['token', 'clinica_id', 'profissional'].forEach(k => localStorage.removeItem(k)); location.href = 'login.html'; }
         function toast(msg, erro = false) { const el = document.getElementById('toast'); el.textContent = msg; el.className = 'show' + (erro ? ' erro' : ''); setTimeout(() => el.className = '', 3500); }
         function fmtDt(s) { if (!s) return '—'; const d = new Date(s); return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
-        function fmtData(s) { if (!s) return '—'; return new Date(s).toLocaleDateString('pt-BR'); }
-
-        // ── CONFIGURAÇÕES ──
-        async function carregarConfig() {
-            try {
-                const c = await apiFetch(`/api/clinicas/${CLINICA_ID}/config?clinicaId=${CLINICA_ID}`);
-                document.getElementById('cfg-nome').value = c.nome || '';
-                document.getElementById('cfg-cnpj').value = c.cnpj || '';
-                document.getElementById('cfg-telefone').value = c.telefone || '';
-                document.getElementById('cfg-email').value = c.email || '';
-                document.getElementById('cfg-endereco').value = c.endereco || '';
-                document.getElementById('cfg-cidade').value = c.cidade || '';
-                document.getElementById('cfg-estado').value = c.estado || '';
-                document.getElementById('cfg-cep').value = c.cep || '';
-                document.getElementById('cfg-site').value = c.site || '';
-                document.getElementById('cfg-descricao').value = c.descricao || '';
-                if (c.logo_url) {
-                    document.getElementById('logo-img').src = c.logo_url;
-                    document.getElementById('logo-img').style.display = 'block';
-                    document.getElementById('logo-icon').style.display = 'none';
-                }
-                window.CLINICA_CONFIG = c;
-                document.getElementById('nome-clinica-badge').textContent = c.nome;
-            } catch (e) { console.error('Erro ao carregar config:', e); }
-        }
-
-        function previewLogo(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('logo-img').src = e.target.result;
-                document.getElementById('logo-img').style.display = 'block';
-                document.getElementById('logo-icon').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function uploadLogo() {
-            const input = document.getElementById('input-logo');
-            if (!input.files[0]) return toast('Selecione uma imagem primeiro.', true);
-            const formData = new FormData();
-            formData.append('logo', input.files[0]);
-            try {
-                const res = await fetch(`${API}/api/clinicas/${CLINICA_ID}/logo?clinicaId=${CLINICA_ID}`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${TOKEN}` },
-                    body: formData
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.erro);
-                toast('Logo salvo!');
-                window.CLINICA_CONFIG = { ...window.CLINICA_CONFIG, logo_url: data.url };
-            } catch (e) { toast(e.message, true); }
-        }
-
-        async function salvarConfig() {
-            const body = {
-                clinicaId: CLINICA_ID,
-                nome: document.getElementById('cfg-nome').value.trim(),
-                cnpj: document.getElementById('cfg-cnpj').value.trim(),
-                telefone: document.getElementById('cfg-telefone').value.trim(),
-                email: document.getElementById('cfg-email').value.trim(),
-                endereco: document.getElementById('cfg-endereco').value.trim(),
-                cidade: document.getElementById('cfg-cidade').value.trim(),
-                estado: document.getElementById('cfg-estado').value.trim(),
-                cep: document.getElementById('cfg-cep').value.trim(),
-                site: document.getElementById('cfg-site').value.trim(),
-                descricao: document.getElementById('cfg-descricao').value.trim()
-            };
-            if (!body.nome) return toast('Nome é obrigatório.', true);
-            const fb = document.getElementById('cfg-feedback');
-            try {
-                await apiFetch(`/api/clinicas/${CLINICA_ID}/config?clinicaId=${CLINICA_ID}`, { method: 'PUT', body: JSON.stringify(body) });
-                fb.style.display = 'inline'; fb.style.color = '#34d399'; fb.textContent = '✓ Dados salvos!';
-                setTimeout(() => fb.style.display = 'none', 2500);
-                window.CLINICA_CONFIG = { ...window.CLINICA_CONFIG, ...body };
-                document.getElementById('nome-clinica-badge').textContent = body.nome;
-            } catch (e) { fb.style.display = 'inline'; fb.style.color = '#f87171'; fb.textContent = e.message; }
-        }
-
-        function labelPapel(p) { return { admin_clinica: 'Admin', secretaria: 'Secretaria', profissional: 'Profissional' }[p] || p; }
+        function fmtHora(s) { if (!s) return '—'; return new Date(s).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
     </script>
 </body>
 </html>
